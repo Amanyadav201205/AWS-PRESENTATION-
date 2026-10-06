@@ -1,0 +1,652 @@
+export interface ClientWorkload {
+  id: string;
+  title: string;
+  category: string;
+  iconName: string;
+  badge: string;
+  customerProfile: {
+    clientType: string;
+    trafficScale: string;
+    businessNeed: string;
+    criticalConstraints: string[];
+  };
+  naiveApproach: {
+    title: string;
+    prescribedStack: string;
+    flaws: string[];
+    monthlyCost: number;
+    annualWaste: number;
+    failureRisk: string;
+  };
+  wellArchSolution: {
+    title: string;
+    prescribedStack: string;
+    architectureHighlights: string[];
+    monthlyCost: number;
+    netSavingsPercent: number;
+    annualCost: number;
+    availabilitySLA: string;
+    rto: string;
+    rpo: string;
+  };
+  costCuttingLevers: {
+    lever: string;
+    description: string;
+    monthlySavings: string;
+  }[];
+  simulatedFlow: {
+    stepName: string;
+    service: string;
+    latency: string;
+    description: string;
+    naiveBehavior: string;
+    wellArchBehavior: string;
+  }[];
+  pillarsApplied: {
+    pillar: string;
+    implementation: string;
+  }[];
+}
+
+export const clientWorkloads: ClientWorkload[] = [
+  {
+    id: 'ecommerce-cart',
+    title: 'High-Traffic E-Commerce & Shopping Cart Platform',
+    category: 'Retail & Consumer Web',
+    iconName: 'ShoppingCart',
+    badge: 'Flash-Sale Resilient',
+    customerProfile: {
+      clientType: 'Fast-growing Direct-to-Consumer (DTC) Fashion Retailer',
+      trafficScale: '20,000 daily active buyers with sudden 15x spikes during Black Friday & influencer drops (up to 300,000 concurrent shoppers)',
+      businessNeed: 'Seamless shopping cart state persistence, instant sub-50ms checkout responses, zero cart abandonment due to timeouts, and PCI-DSS compliant credit card handling.',
+      criticalConstraints: [
+        'Cart sessions must never drop even if backend servers crash or scale out',
+        'Database write deadlocks during limited inventory drops must be 100% prevented',
+        'Must cut idle server costs during non-peak midnight hours'
+      ]
+    },
+    naiveApproach: {
+      title: 'Monolithic PHP/Node Server with Local Session Files & Single MySQL Instance',
+      prescribedStack: '2x Over-provisioned m5.4xlarge EC2 instances + Single-AZ MySQL on gp2 storage + Local Apache sessions',
+      flaws: [
+        'Session affinity (sticky sessions) pins shoppers to a single EC2 instance; when that instance crashes, thousands lose their active carts',
+        'Direct synchronous DB writes during flash checkout lock inventory rows, causing HTTP 504 timeouts and lost sales',
+        'Over-provisioned $1,800/mo server capacity sits at 5% CPU 90% of the year'
+      ],
+      monthlyCost: 3850,
+      annualWaste: 28400,
+      failureRisk: 'Cart session wipe on instance death; database connection saturation during flash drops'
+    },
+    wellArchSolution: {
+      title: 'Serverless Event-Driven E-Commerce with ElastiCache Redis & SQS Checkout',
+      prescribedStack: 'CloudFront Edge Caching + ALB + Auto-Scaled Fargate Graviton3 + ElastiCache Redis Cluster + Aurora Serverless v2 + SQS Order Queue',
+      architectureHighlights: [
+        'Active shopping carts stored in Redis with DynamoDB TTL backup: sub-2ms cart updates and zero session loss',
+        'Asynchronous checkout via Amazon SQS: shoppers receive instant 200 OK order confirmation in 28ms while worker fleets process inventory smoothly',
+        'CloudFront caches 94% of product catalog pages and product images at edge locations, preventing database strain'
+      ],
+      monthlyCost: 1420,
+      netSavingsPercent: 63,
+      annualCost: 17040,
+      availabilitySLA: '99.99%',
+      rto: '< 20 Seconds',
+      rpo: '0 Seconds (Multi-AZ Replicated)'
+    },
+    costCuttingLevers: [
+      {
+        lever: 'Edge Catalog Offload',
+        description: 'CloudFront absorbs 94% of product browsing hits, reducing compute cluster size from 8 instances to 2 baseline containers.',
+        monthlySavings: '$1,200 / mo'
+      },
+      {
+        lever: 'Serverless Auto-Scaling',
+        description: 'Compute scales down to minimum baseline outside flash sales and scales out within 45 seconds during drops.',
+        monthlySavings: '$780 / mo'
+      },
+      {
+        lever: 'Aurora Serverless v2 Rightsizing',
+        description: 'Database automatically scales ACUs from 0.5 to 16 dynamically instead of paying for always-on max provisioning.',
+        monthlySavings: '$450 / mo'
+      }
+    ],
+    simulatedFlow: [
+      {
+        stepName: '1. Catalog Browsing',
+        service: 'Amazon CloudFront & S3',
+        latency: '12 ms',
+        description: 'Shopper browses product pages and images',
+        naiveBehavior: 'Every request hits EC2 and query joins relational MySQL tables (480ms latency)',
+        wellArchBehavior: 'CloudFront edge location serves cached HTML and WebP images with sub-15ms response'
+      },
+      {
+        stepName: '2. Add to Cart',
+        service: 'Amazon ElastiCache Redis',
+        latency: '2 ms',
+        description: 'Shopper adds item to cart; state stored in-memory',
+        naiveBehavior: 'Session stored on local EC2 disk; lost if server crashes or load-balancer reroutes',
+        wellArchBehavior: 'Multi-AZ Redis cluster stores encrypted cart object with cross-AZ replica in 2ms'
+      },
+      {
+        stepName: '3. Checkout Submission',
+        service: 'Amazon SQS & API Gateway',
+        latency: '24 ms',
+        description: 'Shopper clicks Buy Now; order submitted',
+        naiveBehavior: 'Synchronous DB transaction blocks web worker thread; crashes if inventory lock contention occurs',
+        wellArchBehavior: 'API Gateway places order into FIFO SQS queue; returns instant confirmation with order ID in 24ms'
+      },
+      {
+        stepName: '4. Order Processing & Inventory',
+        service: 'AWS Lambda & Aurora Multi-AZ',
+        latency: '45 ms (Background)',
+        description: 'Worker consumes queue and updates ledger',
+        naiveBehavior: 'Database connection pool exhausted by thousands of simultaneous checkout attempts',
+        wellArchBehavior: 'Serverless worker fleet consumes queue at steady rate; Aurora processes batch commits safely'
+      }
+    ],
+    pillarsApplied: [
+      { pillar: 'Reliability', implementation: 'Decoupled SQS queuing absorbs flash sale traffic surges without dropping orders' },
+      { pillar: 'Performance Efficiency', implementation: 'In-memory Redis cart storage delivers sub-2ms response times' },
+      { pillar: 'Cost Optimization', implementation: 'Serverless scale-to-zero compute eliminates idle night-time server bills (63% savings)' }
+    ]
+  },
+  {
+    id: 'saas-multitenant',
+    title: 'Dynamic Web Application & Multi-Tenant B2B SaaS',
+    category: 'Enterprise SaaS',
+    iconName: 'Building',
+    badge: 'Tenant-Isolated & Scalable',
+    customerProfile: {
+      clientType: 'B2B CRM & Workflow Automation SaaS Startup',
+      trafficScale: '450 enterprise business clients (each with 50-500 employees), fluctuating heavily during business hours (9 AM - 5 PM)',
+      businessNeed: 'Strict tenant data isolation, sub-30ms dynamic API responses, role-based access control (RBAC), and rapid automated tenant onboarding.',
+      criticalConstraints: [
+        'Tenant data breach or cross-tenant data leakage is fatal to business existence',
+        'Predictable cost per tenant: infrastructure spend must correlate directly with subscriber revenue',
+        'High availability during global business hours across US and European timezones'
+      ]
+    },
+    naiveApproach: {
+      title: 'Single Shared EC2 Server with Tenant ID in Query String',
+      prescribedStack: 'Single m5.2xlarge EC2 instance + Shared MySQL database with tenant_id column filtering + Hardcoded DB credentials',
+      flaws: [
+        'A single missing WHERE tenant_id = X in software leaks confidential corporate data across competitors',
+        'No noisy neighbor protection: a single tenant running heavy exports saturates the CPU for all other 449 tenants',
+        'Single point of failure: an OS patch or disk corruption brings all paying corporate clients down simultaneously'
+      ],
+      monthlyCost: 2950,
+      annualWaste: 21600,
+      failureRisk: 'Cross-tenant data exposure liability; noisy neighbor resource exhaustion'
+    },
+    wellArchSolution: {
+      title: 'Containerized Multi-Tenant SaaS with IAM Tenant Isolation & Aurora Serverless',
+      prescribedStack: 'Route 53 Path Routing + ALB + ECS Fargate Microservices + AWS Cognito + Aurora Serverless v2 with Row-Level Security (RLS) + Secrets Manager',
+      architectureHighlights: [
+        'PostgreSQL Row-Level Security (RLS) and IAM Session Policies enforce hardware-level tenant isolation',
+        'ECS Fargate container tasks auto-scale dynamically; noisy tenants are capped by API Gateway throttling limits',
+        'AWS Secrets Manager rotates database passwords every 30 days automatically with zero downtime'
+      ],
+      monthlyCost: 1180,
+      netSavingsPercent: 60,
+      annualCost: 14160,
+      availabilitySLA: '99.99%',
+      rto: '< 30 Seconds',
+      rpo: '0 Seconds (Aurora Synchronous Storage)'
+    },
+    costCuttingLevers: [
+      {
+        lever: 'Fargate Container Density',
+        description: 'Pack microservice containers densely on Fargate ARM64 instead of over-provisioning dedicated virtual machines.',
+        monthlySavings: '$950 / mo'
+      },
+      {
+        lever: 'Compute Scaling Outside Business Hours',
+        description: 'Auto-scaling reduces container task count from 18 during daytime to 2 baseline tasks overnight.',
+        monthlySavings: '$520 / mo'
+      },
+      {
+        lever: 'Cognito Managed Authentication',
+        description: 'Replaces custom identity servers with AWS Cognito, eliminating server maintenance and patch cycles.',
+        monthlySavings: '$300 / mo'
+      }
+    ],
+    simulatedFlow: [
+      {
+        stepName: '1. Tenant Ingress & Auth',
+        service: 'Amazon Route 53 & Cognito',
+        latency: '15 ms',
+        description: 'User visits tenant1.app.com and authenticates',
+        naiveBehavior: 'Plain username/password verified against unencrypted database table with static session token',
+        wellArchBehavior: 'Cognito issues short-lived JWT token containing tenant claims and IAM scoped permissions'
+      },
+      {
+        stepName: '2. API Routing & WAF',
+        service: 'AWS Application Load Balancer & WAF',
+        latency: '8 ms',
+        description: 'ALB inspects token and routes to microservice',
+        naiveBehavior: 'Direct public access to EC2 port 80 with zero rate-limiting or Layer 7 inspection',
+        wellArchBehavior: 'ALB validates SSL, terminates TLS 1.3, and applies tenant rate-limiting rules'
+      },
+      {
+        stepName: '3. Isolated Compute Execution',
+        service: 'AWS ECS Fargate (Graviton3)',
+        latency: '14 ms',
+        description: 'Microservice runs business logic in private subnet',
+        naiveBehavior: 'Heavy background task from Tenant A starves CPU for Tenant B',
+        wellArchBehavior: 'Container CPU quotas ensure complete performance isolation across tenant workloads'
+      },
+      {
+        stepName: '4. Tenant-Isolated Data Query',
+        service: 'Aurora Serverless v2 (PostgreSQL RLS)',
+        latency: '11 ms',
+        description: 'Database query executed with tenant filter',
+        naiveBehavior: 'Developer bug can query without WHERE tenant_id, leaking customer records',
+        wellArchBehavior: 'Postgres Row-Level Security automatically enforces tenant filter at kernel DB level'
+      }
+    ],
+    pillarsApplied: [
+      { pillar: 'Security', implementation: 'PostgreSQL Row-Level Security and short-lived Cognito JWT tokens guarantee tenant isolation' },
+      { pillar: 'Operational Excellence', implementation: 'Infrastructure as Code provisions new tenant environments in under 3 minutes via Terraform' },
+      { pillar: 'Cost Optimization', implementation: 'Dynamic auto-scaling matches cloud spend directly to active tenant usage (60% savings)' }
+    ]
+  },
+  {
+    id: 'media-streaming',
+    title: 'Global Video Streaming & Media Content Delivery',
+    category: 'Media & Entertainment',
+    iconName: 'Video',
+    badge: 'Low-Latency CDN',
+    customerProfile: {
+      clientType: 'Online Education & Video On Demand (VOD) Platform',
+      trafficScale: '150,000 global students streaming high-definition video lessons across 40 countries',
+      businessNeed: 'Buffer-free video playback, fast global start times (<1 second), secure DRM tokenized access to prevent piracy, and minimal bandwidth egress fees.',
+      criticalConstraints: [
+        'Egress bandwidth bills can easily bankrupt media companies if traffic traverses origin servers',
+        'Video chunks must stream with zero rebuffering even on mobile cellular connections',
+        'Cold video archives (thousands of legacy lectures) must not incur premium storage costs'
+      ]
+    },
+    naiveApproach: {
+      title: 'Origin EC2 Servers Streaming Directly from S3 Standard',
+      prescribedStack: '4x c5.2xlarge streaming EC2 instances + S3 Standard bucket without CloudFront or Origin Shield',
+      flaws: [
+        'Paying peak S3 data transfer out ($0.09/GB) for all video playback across the globe ($7,200/mo just in bandwidth)',
+        'Students in Europe or Asia experience 350ms+ latency and frequent buffering because all files stream from us-east-1',
+        'Old lectures watched once a year cost the same $0.023/GB/mo as today’s viral courses'
+      ],
+      monthlyCost: 8900,
+      annualWaste: 64800,
+      failureRisk: 'Origin server collapse under concurrent streams; exorbitant egress bandwidth bills'
+    },
+    wellArchSolution: {
+      title: 'Edge-Accelerated Video Distribution with S3 Intelligent-Tiering & CloudFront',
+      prescribedStack: 'Amazon CloudFront (Origin Shield) + S3 Intelligent-Tiering + AWS Elemental MediaConvert + Lambda@Edge Signed URLs',
+      architectureHighlights: [
+        'CloudFront Origin Shield absorbs 96% of video chunk requests at edge locations worldwide, slashing egress bills by 68%',
+        'S3 Intelligent-Tiering auto-archives unwatched lectures to Glacier Deep Archive, reducing storage costs from $1,150 to $310/mo',
+        'Lambda@Edge generates cryptographically signed cookies in 4ms, preventing unauthorized link sharing and video piracy'
+      ],
+      monthlyCost: 2850,
+      netSavingsPercent: 68,
+      annualCost: 34200,
+      availabilitySLA: '99.99%',
+      rto: '< 15 Seconds',
+      rpo: '0 Seconds (Multi-Region S3 Replication)'
+    },
+    costCuttingLevers: [
+      {
+        lever: 'CloudFront Egress Discount Tiers',
+        description: 'Routing video traffic through CloudFront saves over 40% compared to raw S3 data transfer out fees.',
+        monthlySavings: '$3,800 / mo'
+      },
+      {
+        lever: 'S3 Cold Object Archiving',
+        description: 'Automatically transitions untouched video files to Glacier Instant Retrieval and Deep Archive ($0.00099/GB).',
+        monthlySavings: '$1,450 / mo'
+      },
+      {
+        lever: 'Eliminating Origin EC2 Streaming Fleet',
+        description: 'Videos stream directly from edge POPs; origin EC2 instances are eliminated entirely in favor of serverless APIs.',
+        monthlySavings: '$800 / mo'
+      }
+    ],
+    simulatedFlow: [
+      {
+        stepName: '1. Playback Request & Auth',
+        service: 'Lambda@Edge & CloudFront',
+        latency: '8 ms',
+        description: 'Student clicks Play on 4K lecture',
+        naiveBehavior: 'Hits origin EC2 web server to validate session cookie against central database (220ms)',
+        wellArchBehavior: 'Lambda@Edge validates signed token at nearest edge POP in 8ms with zero origin traffic'
+      },
+      {
+        stepName: '2. Video Chunk Retrieval',
+        service: 'CloudFront Origin Shield',
+        latency: '14 ms',
+        description: 'Player requests video HLS stream chunks',
+        naiveBehavior: 'Requests travel cross-ocean to S3 us-east-1; high packet loss and video stuttering',
+        wellArchBehavior: 'Edge POP serves cached HLS chunks directly with 96% cache hit ratio'
+      },
+      {
+        stepName: '3. Adaptive Bitrate Transcoding',
+        service: 'AWS Elemental MediaConvert',
+        latency: 'Automated',
+        description: 'Source videos encoded to 1080p, 720p, 480p',
+        naiveBehavior: 'Expensive GPU EC2 instances run FFmpeg manually and sit idle between uploads',
+        wellArchBehavior: 'Event-driven serverless MediaConvert pays only per minute of video transcoded'
+      },
+      {
+        stepName: '4. Cold Archive Migration',
+        service: 'S3 Intelligent-Tiering',
+        latency: 'Automated',
+        description: 'Videos older than 90 days tiered down',
+        naiveBehavior: 'Unwatched lectures sit on S3 Standard forever at peak price',
+        wellArchBehavior: 'Zero-effort automated transition to Glacier saves 72% with instant retrieval'
+      }
+    ],
+    pillarsApplied: [
+      { pillar: 'Performance Efficiency', implementation: 'CloudFront edge distribution brings video streaming sub-15ms from users worldwide' },
+      { pillar: 'Cost Optimization', implementation: 'Origin Shield caching and Glacier archiving reduce monthly bills by 68%' },
+      { pillar: 'Sustainability', implementation: 'Eliminating idle origin streaming servers reduces server kilowatt-hour consumption' }
+    ]
+  },
+  {
+    id: 'fintech-payments',
+    title: 'Financial FinTech & Payment Gateway Platform',
+    category: 'Financial Services',
+    iconName: 'CreditCard',
+    badge: 'Zero Data Loss (RPO=0)',
+    customerProfile: {
+      clientType: 'Digital Neobank & Real-Time Payment Settlement Gateway',
+      trafficScale: '12,000 payment authorizations per minute ($45M daily settlement volume)',
+      businessNeed: 'Guaranteed RPO = 0 (zero lost transaction cents), sub-40ms ledger authorization, strict PCI-DSS Level 1 compliance, and multi-region disaster recovery.',
+      criticalConstraints: [
+        'A single transaction lost during a datacenter failure causes regulatory investigation and immediate license revocation',
+        'Cryptographic keys (HSMs) must protect card numbers with hardware-enforced isolation',
+        'End-to-end TLS 1.3 encryption with strict immutable audit logging'
+      ]
+    },
+    naiveApproach: {
+      title: 'Single-Region PostgreSQL with Nightly Backups & App-Level Encryption Keys',
+      prescribedStack: '2x EC2 instances running payment app + RDS PostgreSQL Single-AZ + Keys saved in application .env files',
+      flaws: [
+        'Encryption keys stored on application filesystem violate PCI-DSS compliance; a single server compromise leaks all cardholder data',
+        'Single-AZ database: if the availability zone fails, hours of pending transactions are lost (RPO = 24 hours)',
+        'Synchronous REST chaining to third-party bank partners causes ledger timeouts and double-charge errors'
+      ],
+      monthlyCost: 5400,
+      annualWaste: 38000,
+      failureRisk: 'PCI-DSS decertification; double-charging transactions; catastrophic data loss on AZ failure'
+    },
+    wellArchSolution: {
+      title: 'Multi-Region Active-Active Ledger with AWS KMS HSMs & Aurora Global Database',
+      prescribedStack: 'Route 53 ARC + AWS WAF + ECS Fargate (Private Subnet) + AWS KMS (Custom Key Store / CloudHSM) + Aurora Global Database + EventBridge Audit Ledger',
+      architectureHighlights: [
+        'AWS KMS Customer Managed Keys backed by FIPS 140-3 Level 3 HSMs encrypt all card data at rest and in flight',
+        'Amazon Aurora Global Database provides physical storage-level replication across 2 AWS regions in under 1 second',
+        'Amazon EventBridge captures every authorization event into an immutable S3 Object Lock audit bucket for 7-year regulatory retention'
+      ],
+      monthlyCost: 2450,
+      netSavingsPercent: 55,
+      annualCost: 29400,
+      availabilitySLA: '99.999% (5 Nines)',
+      rto: '< 15 Seconds',
+      rpo: '0 Seconds (Storage Quorum)'
+    },
+    costCuttingLevers: [
+      {
+        lever: 'KMS Envelope Encryption Caching',
+        description: 'Local KMS data key caching reduces redundant KMS API calls from millions to thousands, slashing API fees.',
+        monthlySavings: '$1,600 / mo'
+      },
+      {
+        lever: 'Right-Sized Aurora Global Replication',
+        description: 'Dedicated storage-level replication eliminates the need for expensive cross-region compute bridge servers.',
+        monthlySavings: '$850 / mo'
+      },
+      {
+        lever: 'Serverless Compliance Auditing',
+        description: 'Serverless EventBridge & Athena replace heavy third-party SIEM virtual appliances ($500/mo server cost avoided).',
+        monthlySavings: '$500 / mo'
+      }
+    ],
+    simulatedFlow: [
+      {
+        stepName: '1. Ingress & TLS Handshake',
+        service: 'AWS WAF & ALB',
+        latency: '6 ms',
+        description: 'Payment authorization request enters VPC',
+        naiveBehavior: 'Old TLS 1.0/1.1 accepted; vulnerable to MITM attacks and fails PCI audit',
+        wellArchBehavior: 'Strict TLS 1.3 with AWS WAF payload inspection rejects SQL injection and tampering in 6ms'
+      },
+      {
+        stepName: '2. Card Tokenization',
+        service: 'AWS KMS (CloudHSM)',
+        latency: '4 ms',
+        description: 'PAN card number tokenized with HSM key',
+        naiveBehavior: 'Symmetric key saved in application memory; stolen if memory dump is captured',
+        wellArchBehavior: 'FIPS 140-3 Level 3 hardware HSM generates token; plaintext PAN never touches application disk'
+      },
+      {
+        stepName: '3. Ledger Debit Transaction',
+        service: 'Amazon Aurora Multi-AZ (Quorum)',
+        latency: '18 ms',
+        description: 'Transaction recorded in balance ledger',
+        naiveBehavior: 'Single database disk write; vulnerable to power loss before flush',
+        wellArchBehavior: 'Aurora 6-way storage writes synchronously across 3 AZs; 4/6 quorum confirmation in 18ms'
+      },
+      {
+        stepName: '4. Immutable Audit Ledger',
+        service: 'Amazon EventBridge & S3 Object Lock',
+        latency: '10 ms (Async)',
+        description: 'Event streamed to immutable compliance vault',
+        naiveBehavior: 'Logs stored on local disk; admin can tamper with or delete audit logs',
+        wellArchBehavior: 'S3 Object Lock in Compliance Mode prevents modification or deletion even by root for 7 years'
+      }
+    ],
+    pillarsApplied: [
+      { pillar: 'Security', implementation: 'FIPS 140-3 HSM key management and PCI-DSS Level 1 compliance guardrails' },
+      { pillar: 'Reliability', implementation: 'Aurora Global Database achieves RPO = 0 and sub-15s regional failover' },
+      { pillar: 'Operational Excellence', implementation: 'Immutable EventBridge audit trails provide 100% forensic visibility' }
+    ]
+  },
+  {
+    id: 'healthcare-hipaa',
+    title: 'Healthcare & Telemedicine Patient Records (HIPAA)',
+    category: 'Healthcare & Life Sciences',
+    iconName: 'Activity',
+    badge: 'HIPAA WORM Compliant',
+    customerProfile: {
+      clientType: 'National Telehealth Provider & Digital Health Record System',
+      trafficScale: '85,000 daily doctor-patient video consultations and 2.5TB of daily medical imaging (DICOM/MRI)',
+      businessNeed: 'HIPAA compliance certification, permanent protection against ransomware deletion, sub-100ms retrieval of historical patient charts during surgery, and strict least-privilege doctor access.',
+      criticalConstraints: [
+        'Patient Protected Health Information (PHI) must be encrypted at rest and in transit',
+        'Records must remain immutable for 7 years under HIPAA rule; accidental deletion or cryptoware is illegal',
+        'Database must reside in private isolated subnets with zero internet ingress routes'
+      ]
+    },
+    naiveApproach: {
+      title: 'Flat S3 Bucket with Public ACLs & Un-partitioned EBS Storage',
+      prescribedStack: 'Unmanaged EC2 instance holding patient database + S3 Standard bucket without Object Lock + Static IAM user credentials',
+      flaws: [
+        'Ransomware can execute "aws s3 rm --recursive" and permanently wipe medical histories',
+        'Static developer credentials leaked on GitHub expose private patient charts to internet crawlers',
+        'Paying peak storage pricing ($0.023/GB) for millions of 5-year-old medical scans that are never viewed'
+      ],
+      monthlyCost: 6200,
+      annualWaste: 44000,
+      failureRisk: 'Catastrophic HIPAA violation fines ($50,000 per record); permanent loss of patient medical records'
+    },
+    wellArchSolution: {
+      title: 'HIPAA-Compliant Encrypted Vault with S3 Object Lock & Private isolated Subnets',
+      prescribedStack: 'Private VPC (3-Tier) + S3 Object Lock (Compliance Mode) + S3 Intelligent-Tiering + AWS KMS CMK + Aurora Multi-AZ + AWS Backup',
+      architectureHighlights: [
+        'S3 Object Lock enforces WORM (Write Once, Read Many): objects cannot be deleted even by root credentials',
+        'S3 Intelligent-Tiering automatically archives scans older than 30 days to Glacier, cutting monthly storage costs by 74%',
+        'All compute communicates with S3 via Gateway VPC Endpoints, keeping private medical scans off the public internet'
+      ],
+      monthlyCost: 1650,
+      netSavingsPercent: 73,
+      annualCost: 19800,
+      availabilitySLA: '99.999%',
+      rto: '< 30 Seconds',
+      rpo: '0 Seconds (11 9s Durability)'
+    },
+    costCuttingLevers: [
+      {
+        lever: 'Intelligent Storage Tiering',
+        description: 'Medical scans older than 30 days automatically move to Glacier Deep Archive ($0.00099/GB) saving 74% on storage.',
+        monthlySavings: '$3,100 / mo'
+      },
+      {
+        lever: 'Gateway VPC Endpoints',
+        description: 'Traffic to S3 routes via free Gateway Endpoints instead of paying NAT Gateway per-GB processing fees.',
+        monthlySavings: '$850 / mo'
+      },
+      {
+        lever: 'Automated Snapshot Lifecycle',
+        description: 'AWS Backup moves database snapshots to cold storage after 14 days, preventing snapshot sprawl.',
+        monthlySavings: '$600 / mo'
+      }
+    ],
+    simulatedFlow: [
+      {
+        stepName: '1. Doctor Chart Lookup',
+        service: 'Private Subnet ALB & ECS',
+        latency: '18 ms',
+        description: 'Physician accesses patient record in surgery',
+        naiveBehavior: 'Requests travel over public internet to server public IP; unencrypted in transit',
+        wellArchBehavior: 'Requests route through private TLS 1.3 ALB inside private application subnet'
+      },
+      {
+        stepName: '2. DICOM Image Retrieval',
+        service: 'S3 via Gateway VPC Endpoint',
+        latency: '25 ms',
+        description: '50MB MRI scan loaded into viewer',
+        naiveBehavior: 'Data routes through NAT Gateway incurring $0.045/GB bandwidth penalty fees',
+        wellArchBehavior: 'Traffic stays on private AWS network backbone via Gateway Endpoint with zero transit fees'
+      },
+      {
+        stepName: '3. Ransomware Attempt Block',
+        service: 'S3 Object Lock Compliance Mode',
+        latency: '2 ms',
+        description: 'Malicious script attempts to wipe bucket',
+        naiveBehavior: 'Bucket wiped completely; ransomware operator extorts hospital for millions',
+        wellArchBehavior: 'S3 Object Lock rejects delete API call with 403 AccessDenied; alert dispatched to GuardDuty'
+      },
+      {
+        stepName: '4. Immutable Recovery Point',
+        service: 'AWS Backup Vault Lock',
+        latency: 'Continuous',
+        description: 'Air-gapped immutable backup created',
+        naiveBehavior: 'No backups exist or backups stored in same account accessible by compromised admin key',
+        wellArchBehavior: 'Air-gapped secondary AWS account holds immutable backup recovery points'
+      }
+    ],
+    pillarsApplied: [
+      { pillar: 'Security', implementation: 'S3 Object Lock WORM compliance and private Gateway VPC Endpoints prevent breaches' },
+      { pillar: 'Cost Optimization', implementation: 'Automated Glacier cold tiering cuts storage spend by 74% while maintaining 11 9s durability' },
+      { pillar: 'Reliability', implementation: 'AWS Backup Vault Lock ensures ransomware recovery within 30 seconds' }
+    ]
+  },
+  {
+    id: 'iot-streaming',
+    title: 'Real-Time Connected Fleet IoT & Telemetry Platform',
+    category: 'IoT & Connected Devices',
+    iconName: 'Cpu',
+    badge: '100k TPS Ingestion',
+    customerProfile: {
+      clientType: 'Autonomous Fleet Management & Smart Logistics Enterprise',
+      trafficScale: '50,000 delivery vehicles streaming GPS, engine temperature, and accelerometer telemetry every 3 seconds (~100,000 transactions/sec)',
+      businessNeed: 'Continuous real-time anomaly detection (engine overheating), geofencing alerts in <1 second, and petabyte-scale historical analytics for route optimization.',
+      criticalConstraints: [
+        'Burst traffic from all vehicles cannot crash ingestion endpoints',
+        'Storing raw sensor logs in relational databases will exhaust disk IOPS and balloon costs',
+        'Cost per sensor event must remain under $0.000001 to maintain business profitability'
+      ]
+    },
+    naiveApproach: {
+      title: 'HTTP REST Endpoints Inserting Directly into MongoDB/MySQL on EC2',
+      prescribedStack: 'Cluster of 6x c5.xlarge ingestion servers + MongoDB on unpartitioned EBS gp2 disks',
+      flaws: [
+        'Vehicles reconnecting after cellular dead zones trigger massive thundering herds that crash HTTP web servers',
+        'High disk I/O write locks freeze database queries; queries for live vehicle locations take 12+ seconds',
+        'Massive $4,500/mo server cluster runs 24/7 paying for peak capacity even when vehicles are parked overnight'
+      ],
+      monthlyCost: 5800,
+      annualWaste: 42000,
+      failureRisk: 'Ingestion pipeline dropped events; database storage exhaustion; unmanageable fleet bills'
+    },
+    wellArchSolution: {
+      title: 'Serverless Streaming Lakehouse with AWS IoT Core, Kinesis, & Athena Parquet',
+      prescribedStack: 'AWS IoT Core (MQTT) + Amazon Kinesis Data Streams + AWS Lambda + Amazon DynamoDB (On-Demand) + Kinesis Firehose + S3 Parquet Data Lake',
+      architectureHighlights: [
+        'AWS IoT Core terminates lightweight MQTT connections, consuming 90% less cellular data bandwidth than HTTP',
+        'Amazon Kinesis buffers up to 100,000 events/sec smoothly with zero dropped packets during cellular reconnect bursts',
+        'Kinesis Firehose converts raw JSON telemetry into compressed Apache Parquet format in S3, reducing query scan costs by 92%'
+      ],
+      monthlyCost: 1520,
+      netSavingsPercent: 74,
+      annualCost: 18240,
+      availabilitySLA: '99.99%',
+      rto: '< 30 Seconds',
+      rpo: '0 Seconds (Stream Replicated)'
+    },
+    costCuttingLevers: [
+      {
+        lever: 'Columnar Parquet Compression',
+        description: 'Compressing sensor logs from JSON to Parquet in S3 reduces query data scanned by Amazon Athena from 10TB to 800GB.',
+        monthlySavings: '$2,300 / mo'
+      },
+      {
+        lever: 'MQTT Lightweight Protocol',
+        description: 'Binary MQTT over IoT Core eliminates heavy HTTP header overhead, slashing device data transmission fees.',
+        monthlySavings: '$1,100 / mo'
+      },
+      {
+        lever: 'DynamoDB On-Demand Live State',
+        description: 'Stores current vehicle locations in DynamoDB with sub-5ms lookups, paying strictly per write instead of provisioned capacity.',
+        monthlySavings: '$880 / mo'
+      }
+    ],
+    simulatedFlow: [
+      {
+        stepName: '1. MQTT Telemetry Ping',
+        service: 'AWS IoT Core',
+        latency: '4 ms',
+        description: 'Vehicle streams GPS & engine diagnostics',
+        naiveBehavior: 'Heavy HTTP POST headers consume cellular data; web server thread blocked per connection',
+        wellArchBehavior: 'Lightweight binary MQTT payload validated and ingested by managed AWS IoT Core in 4ms'
+      },
+      {
+        stepName: '2. Stream Ingestion Buffer',
+        service: 'Amazon Kinesis Data Streams',
+        latency: '6 ms',
+        description: 'Stream buffered across resilient shards',
+        naiveBehavior: 'Database disk writes hit IOPS limit; incoming telemetry dropped permanently',
+        wellArchBehavior: 'Kinesis buffers 100,000 events/sec across shards; decouples ingestion from storage'
+      },
+      {
+        stepName: '3. Real-Time Alert Evaluation',
+        service: 'AWS Lambda & Amazon DynamoDB',
+        latency: '15 ms',
+        description: 'Engine temperature checked for overheat',
+        naiveBehavior: 'Batch script runs every 10 minutes; driver alerted too late after engine breaks down',
+        wellArchBehavior: 'Lambda triggers in 15ms; if temperature > 105°C, SNS dispatches instant push alert'
+      },
+      {
+        stepName: '4. Columnar Data Lake Archiving',
+        service: 'Kinesis Firehose & S3 Athena',
+        latency: '60 s (Batch)',
+        description: 'Historical telemetry compressed to Parquet',
+        naiveBehavior: 'Raw JSON text files accumulate in expensive relational tables, bloating queries',
+        wellArchBehavior: 'Firehose buffers, batches, and writes snappy-compressed Parquet files to S3 data lake'
+      }
+    ],
+    pillarsApplied: [
+      { pillar: 'Performance Efficiency', implementation: 'Kinesis stream processing processes 100k events/sec in real time' },
+      { pillar: 'Cost Optimization', implementation: 'Apache Parquet columnar conversion reduces analytics query costs by 92%' },
+      { pillar: 'Reliability', implementation: 'Stream buffers eliminate packet drop when thousands of vehicles reconnect simultaneously' }
+    ]
+  }
+];
