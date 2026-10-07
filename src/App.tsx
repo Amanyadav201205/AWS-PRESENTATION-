@@ -419,10 +419,39 @@ export function App() {
           if (cmd.label || cmd.modal) showHudToast(spk, `Opened ${cmd.label || cmd.modal}`);
           break;
         }
+        case 'INSPECT_NODE': {
+          if (cmd.targetId) {
+            closeAllModals();
+            const wellNode = activeDomain.wellArch.nodes.find(n => n.id === cmd.targetId);
+            if (wellNode) {
+              setSelectedNode(wellNode);
+              setIsWellArchSelected(cmd.isWellArch !== false);
+              showHudToast(spk, `Inspecting ${wellNode.name}`);
+              break;
+            }
+            const naiveNode = activeDomain.naive.nodes.find(n => n.id === cmd.targetId);
+            if (naiveNode) {
+              setSelectedNode(naiveNode);
+              setIsWellArchSelected(false);
+              showHudToast(spk, `Inspecting ${naiveNode.name}`);
+              break;
+            }
+          }
+          break;
+        }
+        case 'TOGGLE_AUDIO': {
+          setAudioEnabled(prev => {
+            const next = !prev;
+            soundFX.enabled = next;
+            showHudToast(spk, next ? 'Audio FX Enabled 🔊' : 'Audio FX Muted 🔇');
+            return next;
+          });
+          break;
+        }
       }
     });
     return unsub;
-  }, [remoteSync, currentDomainIndex, handleTriggerChaos, handleResetChaos, closeAllModals, showHudToast]);
+  }, [remoteSync, currentDomainIndex, activeDomain, handleTriggerChaos, handleResetChaos, closeAllModals, showHudToast]);
 
   // Listen to connection state changes
   useEffect(() => {
@@ -436,6 +465,7 @@ export function App() {
   // Broadcast current stage state to connected phones on every relevant state change
   useEffect(() => {
     const anyModalOpen =
+      selectedNode ? 'node' :
       isPrompterOpen ? 'script' :
       is6PillarsOpen ? '6pillars' :
       isExecutiveReviewOpen ? 'executive' :
@@ -446,6 +476,7 @@ export function App() {
       isTheoryOpen ? 'theory' :
       isAdvisorOpen ? 'advisor' :
       isAiGovernanceOpen ? 'governance' :
+      isPairingModalOpen ? 'pairing' :
       null;
 
     remoteSync.broadcastState({
@@ -463,6 +494,9 @@ export function App() {
       activeAttack,
       storylineStage: activeStorylineStage,
       activeModal: anyModalOpen,
+      audioEnabled,
+      selectedNodeId: selectedNode?.id ?? null,
+      selectedNodeName: selectedNode?.name ?? null,
       elapsedSeconds: 0,
       connectedDevicesCount: remoteDeviceCount,
       spotlightTarget: null,
@@ -472,7 +506,8 @@ export function App() {
   }, [
     remoteSync, currentDomainIndex, viewMode, chaosPhase, displayMode,
     slideMode, isSlideGridOpen, userLoad, activeAttack, activeStorylineStage,
-    remoteDeviceCount, hudSpeakerName, hudActionNotice,
+    remoteDeviceCount, hudSpeakerName, hudActionNotice, audioEnabled,
+    selectedNode,
     isPrompterOpen, is6PillarsOpen, isExecutiveReviewOpen, isStressLabOpen,
     isPacketSimulatorOpen, isClientSolutionsOpen, isSubtopicLabsOpen,
     isTheoryOpen, isAdvisorOpen, isAiGovernanceOpen, isPairingModalOpen,

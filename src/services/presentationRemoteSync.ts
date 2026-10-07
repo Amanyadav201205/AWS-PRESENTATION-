@@ -37,6 +37,8 @@ export type RemoteCommandType =
   | 'TOGGLE_SLIDE_GRID'
   | 'SET_TRAFFIC'
   | 'TRIGGER_ATTACK'
+  | 'INSPECT_NODE'
+  | 'TOGGLE_AUDIO'
   | 'PING'
   | 'PONG';
 
@@ -54,6 +56,7 @@ export interface RemoteCommand {
   slideMode?: 'keynote' | 'dual' | 'theory';
   trafficLoad?: number;
   attackScenario?: string;
+  isWellArch?: boolean;
   timestamp: number;
 }
 
@@ -72,6 +75,9 @@ export interface StageState {
   activeAttack?: string;
   storylineStage?: StorylineStage;
   activeModal: string | null;
+  audioEnabled?: boolean;
+  selectedNodeId?: string | null;
+  selectedNodeName?: string | null;
   elapsedSeconds: number;
   connectedDevicesCount: number;
   spotlightTarget: string | null;

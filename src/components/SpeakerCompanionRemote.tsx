@@ -25,7 +25,13 @@ import {
   X,
   Shield,
   Lock,
-  Database
+  Database,
+  Volume2,
+  VolumeX,
+  Briefcase,
+  Layers,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { allDomains } from '../data';
 import {
@@ -63,6 +69,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
   const [activeTab, setActiveTab] = useState<'script' | 'actions' | 'qa' | 'deck'>('script');
   const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xl'>('large');
   const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [isToolsExpanded, setIsToolsExpanded] = useState<boolean>(false);
+  const [isQaExpanded, setIsQaExpanded] = useState<boolean>(false);
+  const [isComponentsExpanded, setIsComponentsExpanded] = useState<boolean>(true);
 
   // Synced state from stage
   const [stageState, setStageState] = useState<StageState>({
@@ -79,6 +88,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
     trafficLoad: 2500,
     activeAttack: 'none',
     activeModal: null,
+    audioEnabled: false,
+    selectedNodeId: null,
+    selectedNodeName: null,
     elapsedSeconds: 0,
     connectedDevicesCount: 1,
     spotlightTarget: null,
@@ -235,6 +247,16 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
     sendCmd({ type: 'GOTO_MODULE', index });
   };
 
+  const handleInspectNode = (nodeId: string, nodeName: string, isWellArch: boolean = true) => {
+    triggerHaptic(30);
+    sendCmd({ type: 'INSPECT_NODE', targetId: nodeId, label: nodeName, isWellArch });
+  };
+
+  const handleToggleAudio = () => {
+    triggerHaptic(25);
+    sendCmd({ type: 'TOGGLE_AUDIO' });
+  };
+
   const handleSaveRoomCode = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     let clean = tempRoomInput.trim().toUpperCase();
@@ -366,6 +388,27 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                 title={timerSeconds < 480 ? 'Pacing: On Track' : timerSeconds < 720 ? 'Pacing: Wrap up' : 'Pacing: Move to conclusion'}
               />
             </div>
+
+            {/* Big Screen Audio FX Toggle */}
+            <button
+              onClick={handleToggleAudio}
+              style={{
+                background: stageState.audioEnabled ? 'rgba(48, 209, 88, 0.2)' : 'rgba(255, 255, 255, 0.08)',
+                border: `1px solid ${stageState.audioEnabled ? '#30d158' : 'rgba(255, 255, 255, 0.12)'}`,
+                color: stageState.audioEnabled ? '#30d158' : '#8e8e93',
+                fontSize: 11,
+                padding: '3px 8px',
+                borderRadius: 12,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 4
+              }}
+              title={stageState.audioEnabled ? 'Stage Audio FX Enabled (Tap to Mute)' : 'Stage Audio FX Muted (Tap to Enable)'}
+            >
+              {stageState.audioEnabled ? <Volume2 size={11} /> : <VolumeX size={11} />}
+              <span style={{ fontSize: 10, fontWeight: 700 }}>{stageState.audioEnabled ? 'AUDIO' : 'MUTE'}</span>
+            </button>
 
             {onExitRemote && (
               <button
@@ -601,7 +644,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <span style={{ fontSize: 13 }}>⚠️</span>
             <span style={{ fontSize: 12, color: '#ff453a', fontWeight: 600 }}>
-              Modal Open on Screen: <strong>{stageState.activeModal}</strong>
+              Active on Big Screen: <strong>{stageState.selectedNodeName ? `Component Specs: ${stageState.selectedNodeName}` : stageState.activeModal}</strong>
             </span>
           </div>
           <button
@@ -773,42 +816,51 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         {/* ========================================================================= */}
         {activeTab === 'script' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            {/* Presentation Mode Context Bar */}
+            {/* Adaptive Screen Mode Command Strip (Synchronized to Big Screen) */}
             {isPresenter ? (
               <div style={{
                 background: 'rgba(255, 153, 0, 0.08)',
-                border: '1px solid rgba(255, 153, 0, 0.25)',
+                border: '1px solid rgba(255, 153, 0, 0.28)',
                 borderRadius: 16,
-                padding: '10px 14px',
+                padding: '12px 14px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 8
+                gap: 10
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase' }}>
-                    🎬 Slide Canvas Controls (Big Screen)
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ fontSize: 14 }}>🎬</span>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      16:9 Presentation Deck Canvas
+                    </span>
+                  </div>
                   <button
                     onClick={handleToggleSlideGrid}
                     style={{
-                      background: 'rgba(255,255,255,0.1)',
+                      background: stageState.isSlideGridOpen ? 'var(--accent)' : 'rgba(255,255,255,0.1)',
                       border: 'none',
-                      color: '#fff',
+                      color: stageState.isSlideGridOpen ? '#000' : '#fff',
                       fontSize: 11,
-                      padding: '3px 8px',
+                      fontWeight: 600,
+                      padding: '4px 9px',
                       borderRadius: 8,
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 4
                     }}
                   >
-                    🗂️ 15-Slide Grid
+                    <LayoutGrid size={11} />
+                    <span>15-Slide Grid [G]</span>
                   </button>
                 </div>
 
+                {/* 3 Slide View Modes */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
                   <button
                     onClick={() => handleSetSlideMode('keynote')}
                     style={{
-                      padding: '6px 4px',
+                      padding: '8px 4px',
                       borderRadius: 10,
                       border: 'none',
                       fontSize: 11,
@@ -823,7 +875,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   <button
                     onClick={() => handleSetSlideMode('dual')}
                     style={{
-                      padding: '6px 4px',
+                      padding: '8px 4px',
                       borderRadius: 10,
                       border: 'none',
                       fontSize: 11,
@@ -838,7 +890,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   <button
                     onClick={() => handleSetSlideMode('theory')}
                     style={{
-                      padding: '6px 4px',
+                      padding: '8px 4px',
                       borderRadius: 10,
                       border: 'none',
                       fontSize: 11,
@@ -852,69 +904,409 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   </button>
                 </div>
 
-                {/* Direct Traffic Pulse Trigger on Slide */}
-                <button
-                  onClick={handleRunSlideSim}
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    borderRadius: 10,
-                    border: 'none',
-                    background: 'linear-gradient(135deg, rgba(255,153,0,0.9), rgba(220,120,0,0.9))',
-                    color: '#000',
-                    fontSize: 12,
-                    fontWeight: 700,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: 6,
-                    cursor: 'pointer'
-                  }}
-                >
-                  <Play size={12} fill="#000" />
-                  <span>Run Live Traffic Pulse on Slide</span>
-                </button>
+                {/* Primary Slide Actions: Live Pulse + Outage */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 6 }}>
+                  <button
+                    onClick={handleRunSlideSim}
+                    style={{
+                      padding: '9px 10px',
+                      borderRadius: 10,
+                      border: 'none',
+                      background: 'linear-gradient(135deg, rgba(255,153,0,0.92), rgba(220,120,0,0.92))',
+                      color: '#000',
+                      fontSize: 11.5,
+                      fontWeight: 700,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 6,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <Play size={12} fill="#000" />
+                    <span>Run Traffic Pulse</span>
+                  </button>
+
+                  <button
+                    onClick={handleTriggerChaos}
+                    style={{
+                      padding: '9px 8px',
+                      borderRadius: 10,
+                      border: 'none',
+                      fontSize: 11.5,
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      background: stageState.isChaosActive ? '#30d158' : 'rgba(255, 69, 58, 0.25)',
+                      color: stageState.isChaosActive ? '#000000' : '#ff453a',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 5
+                    }}
+                  >
+                    {stageState.isChaosActive ? <RotateCcw size={12} /> : <Zap size={12} />}
+                    <span>{stageState.isChaosActive ? 'Heal Outage' : 'Fail AZ-1'}</span>
+                  </button>
+                </div>
+
+                {/* Slide Deep-Dive Launchers */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
+                  <button
+                    onClick={() => handleOpenModal('latency')}
+                    style={{
+                      padding: '7px 4px',
+                      borderRadius: 9,
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      color: '#ffffff',
+                      fontSize: 10.5,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 4
+                    }}
+                  >
+                    <Clock size={11} color="var(--accent)" />
+                    <span>Flight [L]</span>
+                  </button>
+                  <button
+                    onClick={() => handleOpenModal('workloads')}
+                    style={{
+                      padding: '7px 4px',
+                      borderRadius: 9,
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      color: '#ffffff',
+                      fontSize: 10.5,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 4
+                    }}
+                  >
+                    <Briefcase size={11} color="var(--accent)" />
+                    <span>Clients [W]</span>
+                  </button>
+                  <button
+                    onClick={() => handleOpenModal('subtopics')}
+                    style={{
+                      padding: '7px 4px',
+                      borderRadius: 9,
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      color: '#ffffff',
+                      fontSize: 10.5,
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 4
+                    }}
+                  >
+                    <Sliders size={11} color="#30d158" />
+                    <span>Labs [T]</span>
+                  </button>
+                </div>
               </div>
             ) : (
               <div style={{
                 background: 'rgba(10, 132, 255, 0.08)',
-                border: '1px solid rgba(10, 132, 255, 0.25)',
-                borderRadius: 14,
-                padding: '8px 12px',
+                border: '1px solid rgba(10, 132, 255, 0.28)',
+                borderRadius: 16,
+                padding: '12px 14px',
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: 8
+                flexDirection: 'column',
+                gap: 10
               }}>
-                <span style={{ fontSize: 11, fontWeight: 600, color: '#5ac8fa' }}>
-                  Big Screen Viewport Auto-Scroll:
-                </span>
-                <div style={{ display: 'flex', gap: 4 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ fontSize: 14 }}>💻</span>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#5ac8fa', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      Architecture Studio Stage Controls
+                    </span>
+                  </div>
                   <button
-                    onClick={() => handleScrollTo('journey')}
-                    style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', fontSize: 11, padding: '4px 8px', borderRadius: 8, cursor: 'pointer' }}
+                    onClick={handlePresenterMode}
+                    style={{
+                      background: 'var(--accent)',
+                      border: 'none',
+                      color: '#000',
+                      fontSize: 11,
+                      fontWeight: 700,
+                      padding: '4px 10px',
+                      borderRadius: 8,
+                      cursor: 'pointer'
+                    }}
                   >
-                    📋 Req
-                  </button>
-                  <button
-                    onClick={() => handleScrollTo('topology')}
-                    style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', fontSize: 11, padding: '4px 8px', borderRadius: 8, cursor: 'pointer' }}
-                  >
-                    🗺️ Map
-                  </button>
-                  <button
-                    onClick={() => handleScrollTo('metrics')}
-                    style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', fontSize: 11, padding: '4px 8px', borderRadius: 8, cursor: 'pointer' }}
-                  >
-                    📊 SLA
-                  </button>
-                  <button
-                    onClick={() => handleScrollTo('iac')}
-                    style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', fontSize: 11, padding: '4px 8px', borderRadius: 8, cursor: 'pointer' }}
-                  >
-                    📜 IaC
+                    Launch Slides 🎬
                   </button>
                 </div>
+
+                {/* View Mode Selector: Split | WAF Only | Naive Only */}
+                <div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: '#8e8e93', textTransform: 'uppercase', marginBottom: 5 }}>
+                    Topology Perspective
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
+                    {[
+                      { mode: 'split' as const, label: '⚖️ Split View' },
+                      { mode: 'well-arch-only' as const, label: '🛡️ WAF Only' },
+                      { mode: 'naive-only' as const, label: '⚠️ Naive Only' },
+                    ].map(({ mode, label }) => (
+                      <button
+                        key={mode}
+                        onClick={() => {
+                          triggerHaptic(25);
+                          sendCmd({ type: 'SET_VIEW_MODE', mode });
+                        }}
+                        style={{
+                          padding: '7px 4px',
+                          borderRadius: 9,
+                          border: 'none',
+                          fontSize: 11,
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          background: stageState.viewMode === mode ? '#ffffff' : 'rgba(255,255,255,0.08)',
+                          color: stageState.viewMode === mode ? '#000000' : '#d1d1d6'
+                        }}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Storyline Stage Selector */}
+                <div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: '#8e8e93', textTransform: 'uppercase', marginBottom: 5 }}>
+                    Storyline Journey Stage
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 5 }}>
+                    {[
+                      { stage: 'requirement' as const, label: '📋 Req' },
+                      { stage: 'prescription' as const, label: '💊 Norm' },
+                      { stage: 'waf-solution' as const, label: '🛡️ WAF' },
+                      { stage: 'theory' as const, label: '📖 Theory' },
+                    ].map(({ stage, label }) => (
+                      <button
+                        key={stage}
+                        onClick={() => handleStorylineStage(stage)}
+                        style={{
+                          padding: '6px 2px',
+                          borderRadius: 8,
+                          border: 'none',
+                          fontSize: 10.5,
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          background: stageState.storylineStage === stage ? 'var(--accent)' : 'rgba(255,255,255,0.06)',
+                          color: stageState.storylineStage === stage ? '#000000' : '#d1d1d6'
+                        }}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Live Traffic Sandbox Presets & Disasters */}
+                <div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: '#8e8e93', textTransform: 'uppercase', marginBottom: 5 }}>
+                    Traffic &amp; Disaster Sandbox
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 5, marginBottom: 6 }}>
+                    {[
+                      { load: 1000, label: '1k Baseline' },
+                      { load: 25000, label: '25k Surge' },
+                      { load: 100000, label: '100k Peak' },
+                    ].map(({ load, label }) => (
+                      <button
+                        key={load}
+                        onClick={() => handleSetTraffic(load)}
+                        style={{
+                          padding: '6px 2px',
+                          borderRadius: 8,
+                          border: 'none',
+                          fontSize: 10.5,
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          background: stageState.trafficLoad === load ? 'var(--accent)' : 'rgba(255,255,255,0.06)',
+                          color: stageState.trafficLoad === load ? '#000000' : '#d1d1d6'
+                        }}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                    <button
+                      onClick={handleTriggerChaos}
+                      style={{
+                        padding: '6px 2px',
+                        borderRadius: 8,
+                        border: 'none',
+                        fontSize: 10.5,
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        background: stageState.isChaosActive ? '#30d158' : 'rgba(255, 69, 58, 0.25)',
+                        color: stageState.isChaosActive ? '#000000' : '#ff453a'
+                      }}
+                    >
+                      {stageState.isChaosActive ? '🟢 Heal' : '🔴 Outage'}
+                    </button>
+                  </div>
+
+                  {/* 4 Attack Scenarios */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 5 }}>
+                    <button
+                      onClick={() => handleTriggerAttack('az-outage', 'AZ-1 Outage')}
+                      style={{ padding: '5px 2px', borderRadius: 7, border: 'none', background: 'rgba(255,69,58,0.18)', color: '#ff453a', fontSize: 10, fontWeight: 600, cursor: 'pointer' }}
+                    >
+                      ⚡ AZ Outage
+                    </button>
+                    <button
+                      onClick={() => handleTriggerAttack('ransomware', 'Ransomware Attack')}
+                      style={{ padding: '5px 2px', borderRadius: 7, border: 'none', background: 'rgba(255,69,58,0.18)', color: '#ff453a', fontSize: 10, fontWeight: 600, cursor: 'pointer' }}
+                    >
+                      🔒 Ransom
+                    </button>
+                    <button
+                      onClick={() => handleTriggerAttack('ddos', '500k DDoS Attack')}
+                      style={{ padding: '5px 2px', borderRadius: 7, border: 'none', background: 'rgba(255,69,58,0.18)', color: '#ff453a', fontSize: 10, fontWeight: 600, cursor: 'pointer' }}
+                    >
+                      🌊 DDoS
+                    </button>
+                    <button
+                      onClick={() => handleTriggerAttack('bill-shock', 'FinOps Bill Shock')}
+                      style={{ padding: '5px 2px', borderRadius: 7, border: 'none', background: 'rgba(255,159,10,0.18)', color: '#ff9f0a', fontSize: 10, fontWeight: 600, cursor: 'pointer' }}
+                    >
+                      💰 Bill Shock
+                    </button>
+                  </div>
+                </div>
+
+                {/* Viewport Auto-Scroll Targets */}
+                <div>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: '#8e8e93', textTransform: 'uppercase', marginBottom: 5 }}>
+                    Big Screen Viewport Auto-Scroll
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 5 }}>
+                    {[
+                      { target: 'top' as const, label: '🔝 Top' },
+                      { target: 'journey' as const, label: '📋 Req' },
+                      { target: 'topology' as const, label: '🗺️ Map' },
+                      { target: 'metrics' as const, label: '📊 SLA' },
+                      { target: 'iac' as const, label: '📜 IaC' },
+                    ].map(({ target, label }) => (
+                      <button
+                        key={target}
+                        onClick={() => handleScrollTo(target)}
+                        style={{
+                          padding: '6px 2px',
+                          borderRadius: 8,
+                          border: '1px solid rgba(255,255,255,0.1)',
+                          background: 'rgba(255,255,255,0.05)',
+                          color: '#ffffff',
+                          fontSize: 10.5,
+                          fontWeight: 600,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Architecture Components Inspection & Laser Focus Section */}
+            {currentDomain.wellArch.nodes.length > 0 && (
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                borderRadius: 16,
+                padding: '12px 14px'
+              }}>
+                <div
+                  onClick={() => setIsComponentsExpanded(prev => !prev)}
+                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <Sparkles size={13} color="var(--accent)" />
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      Component Specs &amp; Laser Focus
+                    </span>
+                    <span style={{ fontSize: 10, color: '#8e8e93' }}>({currentDomain.wellArch.nodes.length} services)</span>
+                  </div>
+                  {isComponentsExpanded ? <ChevronUp size={14} color="#8e8e93" /> : <ChevronDown size={14} color="#8e8e93" />}
+                </div>
+
+                {isComponentsExpanded && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 10 }}>
+                    {currentDomain.wellArch.nodes.map(node => (
+                      <div
+                        key={node.id}
+                        style={{
+                          padding: '8px 10px',
+                          borderRadius: 10,
+                          background: 'rgba(255, 255, 255, 0.04)',
+                          border: '1px solid rgba(255, 255, 255, 0.08)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: 8
+                        }}
+                      >
+                        <div style={{ minWidth: 0 }}>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {node.name}
+                          </div>
+                          <div style={{ fontSize: 10, color: '#8e8e93', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {node.service} · {node.tier || 'cloud'}
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
+                          <button
+                            onClick={() => handleSpotlight(node.id, node.name)}
+                            style={{
+                              padding: '4px 8px',
+                              borderRadius: 8,
+                              border: '1px solid rgba(255, 153, 0, 0.3)',
+                              background: 'rgba(255, 153, 0, 0.12)',
+                              color: 'var(--accent)',
+                              fontSize: 10.5,
+                              fontWeight: 600,
+                              cursor: 'pointer'
+                            }}
+                            title="Flashes yellow laser spotlight on big screen"
+                          >
+                            🔦 Laser
+                          </button>
+                          <button
+                            onClick={() => handleInspectNode(node.id, node.name, true)}
+                            style={{
+                              padding: '4px 8px',
+                              borderRadius: 8,
+                              border: 'none',
+                              background: 'var(--accent)',
+                              color: '#000000',
+                              fontSize: 10.5,
+                              fontWeight: 700,
+                              cursor: 'pointer'
+                            }}
+                            title="Opens full technical specifications, IAM policies, and Terraform HCL on big screen"
+                          >
+                            🔎 Specs
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
@@ -1258,6 +1650,115 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               >
                 <span>⚡ Execute This Stage Cue Now</span>
               </button>
+            </div>
+
+            {/* Anticipated Jury Defense Q&A Section */}
+            {currentScript.juryQuestions && currentScript.juryQuestions.length > 0 && (
+              <div style={{
+                background: 'rgba(255, 153, 0, 0.04)',
+                border: '1px solid rgba(255, 153, 0, 0.22)',
+                borderRadius: 16,
+                padding: '12px 14px'
+              }}>
+                <div
+                  onClick={() => {
+                    triggerHaptic(20);
+                    setIsQaExpanded(prev => !prev);
+                  }}
+                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <HelpCircle size={13} color="var(--accent)" />
+                    <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      Anticipated Jury Defense Q&amp;A
+                    </span>
+                    <span style={{ fontSize: 10, color: '#8e8e93' }}>({currentScript.juryQuestions.length} Questions)</span>
+                  </div>
+                  {isQaExpanded ? <ChevronUp size={14} color="#8e8e93" /> : <ChevronDown size={14} color="#8e8e93" />}
+                </div>
+
+                {isQaExpanded && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 10 }}>
+                    {currentScript.juryQuestions.map((qa, i) => (
+                      <div key={i} style={{ background: 'rgba(0,0,0,0.35)', padding: '10px 12px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.06)' }}>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: '#ffffff', marginBottom: 4 }}>
+                          Q: {qa.question}
+                        </div>
+                        <div style={{ fontSize: 11.5, color: '#d1d1d6', lineHeight: 1.5 }}>
+                          A: {qa.answer}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Big Screen Deep-Dive Tools & Labs Quick Launcher */}
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: 16,
+              padding: '12px 14px'
+            }}>
+              <div
+                onClick={() => {
+                  triggerHaptic(20);
+                  setIsToolsExpanded(prev => !prev);
+                }}
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <Layers size={13} color="var(--accent)" />
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#ffffff', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    Big Screen Deep-Dive Tools &amp; Labs
+                  </span>
+                  <span style={{ fontSize: 10, color: 'var(--accent)' }}>[10 Tools]</span>
+                </div>
+                {isToolsExpanded ? <ChevronUp size={14} color="#8e8e93" /> : <ChevronDown size={14} color="#8e8e93" />}
+              </div>
+
+              {isToolsExpanded && (
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginTop: 10 }}>
+                  {[
+                    { id: 'advisor', title: '🧠 Advisor Q&A' },
+                    { id: '6pillars', title: '🏛️ 6 Pillars' },
+                    { id: 'executive', title: '📊 Exec ROI' },
+                    { id: 'stresslab', title: '🧪 Stress Lab' },
+                    { id: 'latency', title: '✈️ Packet Flight' },
+                    { id: 'workloads', title: '💼 Case Studies' },
+                    { id: 'subtopics', title: '🔬 Deep Labs' },
+                    { id: 'theory', title: '📖 Theory Law' },
+                    { id: 'governance', title: '⚖️ Governance' },
+                    { id: 'pairing', title: '📱 Pair Remote' },
+                  ].map(tool => {
+                    const isActive = stageState.activeModal === tool.id;
+                    return (
+                      <button
+                        key={tool.id}
+                        onClick={() => handleOpenModal(tool.id)}
+                        style={{
+                          padding: '8px 10px',
+                          borderRadius: 10,
+                          border: `1px solid ${isActive ? 'var(--accent)' : 'rgba(255,255,255,0.08)'}`,
+                          background: isActive ? 'rgba(255, 153, 0, 0.22)' : 'rgba(255, 255, 255, 0.05)',
+                          color: isActive ? 'var(--accent)' : '#ffffff',
+                          fontSize: 11,
+                          fontWeight: isActive ? 700 : 500,
+                          textAlign: 'left',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between'
+                        }}
+                      >
+                        <span>{tool.title}</span>
+                        {isActive && <span style={{ fontSize: 9, color: 'var(--accent)' }}>● Live</span>}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
 
             {/* Speaker Hand-Off Bar */}
@@ -2124,27 +2625,53 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             <span>{stageState.isChaosActive ? 'Heal AZ' : 'Fail AZ-1'}</span>
           </button>
 
-          {/* Toggle WAF vs Naive mode */}
-          <button
-            onClick={handleToggleViewMode}
-            style={{
-              padding: '9px 6px',
-              borderRadius: 12,
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              cursor: 'pointer',
-              background: 'rgba(255, 255, 255, 0.06)',
-              color: '#ffffff',
-              fontWeight: 600,
-              fontSize: 12,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 4
-            }}
-          >
-            <Eye size={13} color="var(--accent)" />
-            <span>Mode: {stageState.viewMode === 'split' ? 'Split' : stageState.viewMode === 'well-arch-only' ? 'WAF' : 'Naive'}</span>
-          </button>
+          {/* Context-aware mode button: Slide Mode if presenting, View Mode if in studio */}
+          {isPresenter ? (
+            <button
+              onClick={() => {
+                const nextSlideMode = stageState.slideMode === 'keynote' ? 'dual' : stageState.slideMode === 'dual' ? 'theory' : 'keynote';
+                handleSetSlideMode(nextSlideMode);
+              }}
+              style={{
+                padding: '9px 6px',
+                borderRadius: 12,
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                cursor: 'pointer',
+                background: 'rgba(255, 255, 255, 0.06)',
+                color: '#ffffff',
+                fontWeight: 600,
+                fontSize: 12,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 4
+              }}
+            >
+              <Eye size={13} color="var(--accent)" />
+              <span>Slide: {stageState.slideMode === 'keynote' ? 'Arch' : stageState.slideMode === 'dual' ? 'Notes' : 'Proof'}</span>
+            </button>
+          ) : (
+            <button
+              onClick={handleToggleViewMode}
+              style={{
+                padding: '9px 6px',
+                borderRadius: 12,
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                cursor: 'pointer',
+                background: 'rgba(255, 255, 255, 0.06)',
+                color: '#ffffff',
+                fontWeight: 600,
+                fontSize: 12,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 4
+              }}
+            >
+              <Eye size={13} color="var(--accent)" />
+              <span>Mode: {stageState.viewMode === 'split' ? 'Split' : stageState.viewMode === 'well-arch-only' ? 'WAF' : 'Naive'}</span>
+            </button>
+          )}
 
           {/* Scroll to Top / Overview */}
           <button
