@@ -22,12 +22,10 @@ export const IaCInspector: React.FC<IaCProps> = ({ naiveIaC, wellArchIaC }) => {
   return (
     <div className="card-apple" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', padding: 0, overflow: 'hidden' }}>
       {/* Header with filename alone and H2 heading (Audit 3a & 1.15) */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 'var(--space-3) var(--space-4)', borderBottom: '1px solid var(--separator)' }}>
+      <div className="iac-inspector-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <Terminal size={14} color="var(--text-secondary)" />
-          <h2 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
-            {snippet.filename}
-          </h2>
+          <h2 className="iac-filename-title">{snippet.filename}</h2>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
@@ -75,7 +73,7 @@ export const IaCInspector: React.FC<IaCProps> = ({ naiveIaC, wellArchIaC }) => {
 
       {/* Notes footer */}
       {snippet.notes && (
-        <div style={{ padding: 'var(--space-3) var(--space-4)', fontSize: 12, color: 'var(--text-secondary)', borderTop: '1px solid var(--separator-subtle)', background: 'var(--bg-surface)' }}>
+        <div className="iac-notes-footer">
           {snippet.notes}
         </div>
       )}

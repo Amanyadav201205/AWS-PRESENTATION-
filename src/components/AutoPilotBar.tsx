@@ -249,17 +249,8 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               </div>
 
               {/* Auto-Outage Simulation Option */}
-              <label 
-                style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: 6, 
-                  fontSize: 12, 
-                  color: 'var(--text-secondary)',
-                  cursor: 'pointer',
-                  marginLeft: 4,
-                  userSelect: 'none'
-                }}
+              <label
+                className="autopilot-chaos-label"
                 title="Automatically trigger outage and self-healing recovery midway through each slide"
               >
                 <input
@@ -275,9 +266,8 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
             {/* Quick Action Launchers */}
             <div className="autopilot-launchers-group">
               <button
-                className="btn-action"
+                className="btn-action autopilot-launcher-btn"
                 onClick={onOpenScriptPrompter}
-                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Open speaker script and jury defense questions [S]"
               >
                 <FileText size={12} color="var(--accent)" />
@@ -285,9 +275,8 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               </button>
 
               <button
-                className="btn-action"
+                className="btn-action autopilot-launcher-btn"
                 onClick={onOpenAiCopilot}
-                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Open Guided Architecture Q&A [A]"
               >
                 <Compass size={12} color="var(--accent)" />
@@ -295,9 +284,8 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               </button>
 
               <button
-                className="btn-action"
+                className="btn-action autopilot-launcher-btn"
                 onClick={onOpen6Pillars}
-                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Explore the 6 Pillars of the AWS Well-Architected Framework"
               >
                 <span style={{ fontSize: 12 }}>🏛️</span>
@@ -305,9 +293,8 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               </button>
 
               <button
-                className="btn-action"
+                className="btn-action autopilot-launcher-btn"
                 onClick={onOpenExecutiveReview}
-                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="View full AWS Well-Architected Review audit & ROI savings calculator"
               >
                 <span style={{ fontSize: 12 }}>📊</span>
@@ -315,9 +302,8 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               </button>
 
               <button
-                className="btn-action"
+                className="btn-action autopilot-launcher-btn"
                 onClick={onOpenStressLab}
-                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Run live incident stress tests"
               >
                 <Zap size={12} color="var(--status-warning)" />
@@ -325,9 +311,8 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               </button>
 
               <button
-                className="btn-action"
+                className="btn-action autopilot-launcher-btn"
                 onClick={onOpenPacketSimulator}
-                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Simulate side-by-side animated packet latency"
               >
                 <Clock size={12} color="var(--accent)" />
@@ -335,9 +320,8 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               </button>
 
               <button
-                className="btn-action"
+                className="btn-action autopilot-launcher-btn"
                 onClick={onOpenClientSolutions}
-                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Explore real-world client workload requirements [W]"
               >
                 <Briefcase size={12} color="var(--accent)" />
@@ -345,9 +329,8 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               </button>
 
               <button
-                className="btn-action"
+                className="btn-action autopilot-launcher-btn"
                 onClick={onOpenSubtopics}
-                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Interactive subtopic labs [T]"
               >
                 <Sliders size={12} color="var(--status-success)" />
@@ -355,9 +338,8 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               </button>
 
               <button
-                className="btn-action"
+                className="btn-action autopilot-launcher-btn"
                 onClick={onOpenTheory}
-                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Master Theoretical Foundations and Academic Literature [K]"
               >
                 <BookOpen size={12} color="var(--accent)" />

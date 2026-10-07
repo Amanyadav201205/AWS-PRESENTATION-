@@ -179,33 +179,21 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
             <p style={{ fontSize: 'var(--text-base)', color: 'var(--text-primary)', marginTop: 4, lineHeight: 1.47 }}>
               {wafSummary}
             </p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 12, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>Pillars:</span>
-              {pillars.map((p) => (
-                <span
-                  key={p}
-                  style={{
-                    fontSize: 11,
-                    padding: '2px 8px',
-                    borderRadius: 'var(--radius-pill)',
-                    background: 'var(--bg-subtle)',
-                    color: 'var(--text-primary)',
-                    border: '1px solid var(--separator)'
-                  }}
-                >
-                  {p}
-                </span>
-              ))}
-            </div>
           </div>
 
-          <div style={{ background: 'var(--status-success-subtle)', border: '1px solid rgba(48, 209, 88, 0.2)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+          {/* Right panel shows which WAF pillars this module addresses — not a duplicate of the summary */}
+          <div style={{ background: 'var(--status-success-subtle)', border: '1px solid rgba(48, 209, 88, 0.2)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
             <span style={{ fontSize: 'var(--text-xs)', color: 'var(--status-success)', fontWeight: 600 }}>
-              Production resilience
+              Framework pillars addressed
             </span>
-            <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-primary)', marginTop: 6, lineHeight: 1.42 }}>
-              {wafSummary}
-            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {pillars.map((p) => (
+                <div key={p} className="journey-pillar-item">
+                  <span className="journey-pillar-check" aria-hidden="true">✓</span>
+                  <span>{p}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}

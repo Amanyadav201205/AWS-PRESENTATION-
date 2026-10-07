@@ -126,7 +126,7 @@ export const Header: React.FC<HeaderProps> = ({
             </span>
           </div>
           <div className="brand-meta-wrapper" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span className="brand-meta" style={{ fontVariantNumeric: 'tabular-nums' }}>Module {currentDomainIndex + 1} of {totalDomains}</span>
+            <span className="brand-meta">Module {currentDomainIndex + 1} of {totalDomains}</span>
             <span style={{ color: 'var(--text-tertiary)', fontSize: 10 }}>•</span>
             <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}>Cloud Architecture Defense &amp; Analysis</span>
           </div>
@@ -137,7 +137,7 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="header-controls header-controls-desktop">
         {/* Outage Simulation Toggle (Stable Button Label, P1 Fix 1.10) */}
         <button
-          className={`btn-action ${isChaosActive ? 'danger-quiet active' : ''}`}
+          className={`btn-action pill ${isChaosActive ? 'danger-quiet active' : ''}`}
           onClick={(e) => {
             e.stopPropagation();
             if (isChaosActive) {
@@ -147,7 +147,6 @@ export const Header: React.FC<HeaderProps> = ({
             }
           }}
           title={isChaosActive ? "Reset active outage simulation [R]" : "Simulate Multi-AZ outage [C]"}
-          style={{ borderRadius: 'var(--radius-pill)' }}
         >
           <AlertCircle size={13} color={isChaosActive ? "var(--status-danger)" : "var(--status-danger)"} />
           <span>{isChaosActive ? 'Outage: ON' : 'Outage: OFF'}</span>
@@ -156,7 +155,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Simulators Dropdown */}
         <div className="header-dropdown-wrap" ref={simRef} style={{ position: 'relative' }}>
           <button
-            className={`btn-action ${simMenuOpen ? 'active-quiet' : ''}`}
+            className={`btn-action pill ${simMenuOpen ? 'active-quiet' : ''}`}
             onClick={(e) => {
               e.stopPropagation();
               soundFX.playClick();
@@ -166,7 +165,6 @@ export const Header: React.FC<HeaderProps> = ({
             }}
             title="Interactive architecture simulators"
             aria-expanded={simMenuOpen}
-            style={{ borderRadius: 'var(--radius-pill)' }}
           >
             <Zap size={13} color="var(--status-warning)" />
             <span>Simulators</span>
@@ -262,7 +260,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Framework Dropdown */}
         <div className="header-dropdown-wrap" ref={fwRef} style={{ position: 'relative' }}>
           <button
-            className={`btn-action ${fwMenuOpen ? 'active-quiet' : ''}`}
+            className={`btn-action pill ${fwMenuOpen ? 'active-quiet' : ''}`}
             onClick={(e) => {
               e.stopPropagation();
               soundFX.playClick();
@@ -272,7 +270,6 @@ export const Header: React.FC<HeaderProps> = ({
             }}
             title="Explore 6 Pillars & academic foundation"
             aria-expanded={fwMenuOpen}
-            style={{ borderRadius: 'var(--radius-pill)' }}
           >
             <Layers size={13} color="var(--accent)" />
             <span>Framework</span>
@@ -351,24 +348,13 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Guided Q&A Direct Trigger */}
         <button
-          className="btn-action"
+          className="btn-action pill btn-action--qa"
           onClick={(e) => {
             e.stopPropagation();
             soundFX.playClick();
             onOpenAdvisor();
           }}
           title="Open Guided Architecture Q&A [A]"
-          style={{
-            height: 30,
-            padding: '0 12px',
-            borderRadius: 'var(--radius-pill)',
-            background: 'linear-gradient(135deg, rgba(41, 151, 255, 0.18), rgba(41, 151, 255, 0.06))',
-            border: '1px solid rgba(41, 151, 255, 0.38)',
-            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-            color: 'var(--accent)',
-            fontWeight: 600,
-            gap: 6
-          }}
         >
           <Compass size={13} color="var(--accent)" />
           <span>Guided Q&amp;A</span>
@@ -376,14 +362,13 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Speaker Script Prompter */}
         <button
-          className="btn-action"
+          className="btn-action pill"
           onClick={(e) => {
             e.stopPropagation();
             soundFX.playClick();
             onOpenScriptPrompter();
           }}
           title="Verbatim presentation script and anticipated jury Q&A [S]"
-          style={{ borderRadius: 'var(--radius-pill)' }}
         >
           <FileText size={13} color="var(--accent)" />
           <span>Script</span>
@@ -391,24 +376,24 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Presenter Mode Button */}
         <button
-          className="btn-action primary"
+          className="btn-action primary pill"
           onClick={(e) => {
             e.stopPropagation();
             soundFX.playClick();
             onTogglePresenter();
           }}
           title="Launch full-screen presentation deck [P]"
-          style={{ height: 30, padding: '0 14px', fontWeight: 600, gap: 6, borderRadius: 'var(--radius-pill)' }}
+          style={{ padding: '0 14px' }}
         >
           <Presentation size={14} />
           <span>{isPresenterMode ? 'Exit Deck' : 'Present'}</span>
         </button>
 
-        <span className="header-divider" style={{ width: 1, height: 16, background: 'var(--separator)', margin: '0 2px' }} />
+        <span className="header-divider" aria-hidden="true" />
 
         {/* Audio Toggle (Muted by default per 1.19) */}
         <button
-          className="btn-action btn-icon"
+          className="btn-action btn-icon pill"
           onClick={(e) => {
             e.stopPropagation();
             soundFX.playClick();
@@ -416,7 +401,6 @@ export const Header: React.FC<HeaderProps> = ({
           }}
           title={audioEnabled ? "Sound on" : "Sound muted"}
           aria-label={audioEnabled ? "Sound on" : "Sound muted"}
-          style={{ borderRadius: 'var(--radius-pill)' }}
         >
           {audioEnabled ? <Volume2 size={15} /> : <VolumeX size={15} color="var(--text-tertiary)" />}
         </button>
@@ -425,21 +409,20 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Mobile Drawer / '⋯' Menu Trigger (< 900px, P0 Fix 1.7) */}
       <div className="header-controls-mobile" ref={mobileRef} style={{ position: 'relative' }}>
         <button
-          className="btn-action primary"
+          className="btn-action primary pill"
           onClick={(e) => {
             e.stopPropagation();
             soundFX.playClick();
             onTogglePresenter();
           }}
           title="Launch Presentation Deck [P]"
-          style={{ borderRadius: 'var(--radius-pill)' }}
         >
           <Presentation size={13} />
           <span>Present</span>
         </button>
 
         <button
-          className={`btn-action btn-icon ${mobileMenuOpen ? 'active-quiet' : ''}`}
+          className={`btn-action btn-icon pill ${mobileMenuOpen ? 'active-quiet' : ''}`}
           onClick={(e) => {
             e.stopPropagation();
             soundFX.playClick();
@@ -449,7 +432,6 @@ export const Header: React.FC<HeaderProps> = ({
           aria-label="Open mobile action menu"
           aria-expanded={mobileMenuOpen}
           aria-haspopup="menu"
-          style={{ borderRadius: 'var(--radius-pill)' }}
         >
           <MoreHorizontal size={16} />
         </button>
