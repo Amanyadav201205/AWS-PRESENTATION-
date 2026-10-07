@@ -3594,3 +3594,239 @@ pre {
   max-width: calc(100vw - 32px) !important;
 }
 
+/* ==========================================================================
+   MOBILE PHONE OPTIMIZATION SUITE (Apple iOS Safari & Android Chrome)
+   ========================================================================== */
+
+/* Universal mobile touch feel */
+@media (max-width: 768px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button, 
+  .btn-action,
+  .segmented-item,
+  .apple-node,
+  .preset-chip,
+  .disaster-attack-btn {
+    touch-action: manipulation;
+  }
+
+  /* Prevent iOS Safari auto-zoom on input focus */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+
+  /* iOS Safe Area Insets on App Header */
+  .app-header {
+    height: calc(54px + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-left: max(12px, env(safe-area-inset-left, 0px));
+    padding-right: max(12px, env(safe-area-inset-right, 0px));
+  }
+
+  /* App content safe areas for landscape / portrait notches */
+  .app-content {
+    padding-left: max(var(--space-3), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--space-3), env(safe-area-inset-right, 0px));
+  }
+
+  /* LaTeX Mathematical formula touch scrolling without page blowout */
+  .katex-display {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    max-width: 100% !important;
+    padding: 8px 0 !important;
+    margin: 8px 0 !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+  .katex-display::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Radar chart SVG responsiveness */
+  .card-apple svg {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Smartphone screen optimizations (≤ 640px) */
+@media (max-width: 640px) {
+  /* Telemetry HUD in stage panels: 2 columns with clear breathing room */
+  .stage-telemetry-hud {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    padding: 8px 10px !important;
+  }
+
+  .hud-metric {
+    min-width: 0;
+  }
+
+  .hud-label {
+    font-size: 9px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hud-val {
+    font-size: 13px !important;
+  }
+
+  /* Simulation Sandbox Bar on Phones */
+  .simulation-sandbox-bar {
+    padding: 12px 14px !important;
+    gap: 10px !important;
+  }
+
+  .sandbox-top-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .sandbox-label-group {
+    justify-content: space-between !important;
+    width: 100%;
+  }
+
+  .sandbox-traffic-slider-wrap {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .sandbox-presets-row {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    padding-bottom: 2px;
+  }
+  .sandbox-presets-row .preset-chip {
+    flex-shrink: 0;
+  }
+
+  /* Disaster Attack Buttons: smooth horizontal swipe strip on phone */
+  .disaster-attacks-row {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    padding-bottom: 4px;
+    gap: 6px !important;
+  }
+
+  .disaster-attack-btn {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  /* Stage Controls Bar: architecture title + controls scroll cleanly */
+  .stage-controls-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .stage-controls-bar > div:last-child {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+    justify-content: flex-start !important;
+    flex-wrap: nowrap !important;
+  }
+
+  /* Architecture Nodes: tactile, easy-to-tap touch targets */
+  .topology-box {
+    padding: 10px !important;
+  }
+
+  .apple-node {
+    min-height: 44px;
+    padding: 8px 10px !important;
+    flex: 1 1 140px;
+  }
+
+  /* AutoPilot Dock: smooth horizontal launcher strip */
+  .autopilot-floating-bar {
+    bottom: max(10px, env(safe-area-inset-bottom, 10px)) !important;
+    width: calc(100% - 16px) !important;
+  }
+
+  .autopilot-inner-container {
+    padding: 5px 8px !important;
+  }
+
+  .autopilot-launchers-group {
+    overflow-x: auto !important;
+    max-width: 100% !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 2px 0 !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .autopilot-launcher-btn {
+    flex-shrink: 0 !important;
+  }
+
+  /* Modals as native iOS bottom-sheets on phones */
+  .sheet-overlay {
+    padding: 0 !important;
+    align-items: flex-end !important;
+  }
+
+  .sheet-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: calc(100dvh - 20px) !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-top-left-radius: 20px !important;
+    border-top-right-radius: 20px !important;
+    padding: 16px !important;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 12px)) !important;
+  }
+
+  /* Full-bleed presenter deck on mobile phones */
+  .presenter-overlay {
+    padding: 0 !important;
+  }
+
+  .presenter-dialog.presenter-dialog--full {
+    width: 100% !important;
+    max-width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    border-radius: 0 !important;
+    padding: 12px 14px !important;
+    padding-top: max(12px, env(safe-area-inset-top, 12px)) !important;
+    padding-bottom: max(12px, env(safe-area-inset-bottom, 12px)) !important;
+  }
+
+  .presenter-header > div:last-child {
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    flex-wrap: nowrap !important;
+    padding-bottom: 2px !important;
+    width: 100% !important;
+  }
+
+  /* Prevent wide minmax grids from causing overflow on small phone screens */
+  [style*="minmax(3"],
+  [style*="minmax(28"],
+  [style*="minmax(26"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+

@@ -193,6 +193,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         WebkitBackdropFilter: 'blur(20px)',
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
         padding: '10px 16px',
+        paddingTop: 'max(10px, env(safe-area-inset-top, 10px))',
+        paddingLeft: 'max(16px, env(safe-area-inset-left, 16px))',
+        paddingRight: 'max(16px, env(safe-area-inset-right, 16px))',
         display: 'flex',
         flexDirection: 'column',
         gap: 8
@@ -932,6 +935,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         borderTop: '1px solid rgba(255, 255, 255, 0.12)',
         padding: '10px 16px',
         paddingBottom: 'max(20px, env(safe-area-inset-bottom, 20px))',
+        paddingLeft: 'max(16px, env(safe-area-inset-left, 16px))',
+        paddingRight: 'max(16px, env(safe-area-inset-right, 16px))',
         display: 'flex',
         flexDirection: 'column',
         gap: 10,
