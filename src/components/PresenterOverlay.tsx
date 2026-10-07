@@ -52,9 +52,14 @@ interface PresenterProps {
   onOpenSubtopics?: () => void;
   allDomains?: DomainData[];
   onSelectIndex?: (index: number) => void;
+  slideMode?: SlideViewMode;
+  onSlideModeChange?: (mode: SlideViewMode) => void;
+  isGridOpen?: boolean;
+  onToggleGrid?: (open?: boolean) => void;
+  slideSimTrigger?: number;
 }
 
-type SlideViewMode = 'keynote' | 'dual' | 'theory';
+export type SlideViewMode = 'keynote' | 'dual' | 'theory';
 
 export const PresenterOverlay: React.FC<PresenterProps> = ({
   domain,
@@ -71,15 +76,42 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
   onOpenClientSolutions,
   onOpenSubtopics,
   allDomains,
-  onSelectIndex
+  onSelectIndex,
+  slideMode: externalSlideMode,
+  onSlideModeChange,
+  isGridOpen: externalGridOpen,
+  onToggleGrid,
+  slideSimTrigger
 }) => {
-  const [slideMode, setSlideMode] = useState<SlideViewMode>('keynote');
-  const [isGridOpen, setIsGridOpen] = useState<boolean>(false);
+  const [internalSlideMode, setInternalSlideMode] = useState<SlideViewMode>('keynote');
+  const slideMode = externalSlideMode ?? internalSlideMode;
+  const setSlideMode = (mode: SlideViewMode) => {
+    if (onSlideModeChange) onSlideModeChange(mode);
+    setInternalSlideMode(mode);
+  };
+
+  const [internalGridOpen, setInternalGridOpen] = useState<boolean>(false);
+  const isGridOpen = externalGridOpen !== undefined ? externalGridOpen : internalGridOpen;
+  const setIsGridOpen = (val: boolean | ((prev: boolean) => boolean)) => {
+    const nextVal = typeof val === 'function' ? val(isGridOpen) : val;
+    if (onToggleGrid) onToggleGrid(nextVal);
+    setInternalGridOpen(nextVal);
+  };
+
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
   const [isLiveSimulating, setIsLiveSimulating] = useState<boolean>(false);
   const [simStep, setSimStep] = useState<number>(0);
 
   const timerRef = useRef<number | null>(null);
+  const lastSimTriggerRef = useRef<number>(0);
+
+  // Trigger live simulation when requested by phone remote
+  useEffect(() => {
+    if (slideSimTrigger && slideSimTrigger > lastSimTriggerRef.current) {
+      lastSimTriggerRef.current = slideSimTrigger;
+      handleRunSlideSim();
+    }
+  }, [slideSimTrigger]);
 
   // Presentation Timer
   useEffect(() => {

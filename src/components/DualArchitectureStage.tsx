@@ -38,9 +38,13 @@ interface DualStageProps {
   chaosPhase: ChaosPhase;
   affectedNodeIds: string[];
   onSelectNode: (node: ArchitectureNode, isWellArch: boolean) => void;
+  externalUserLoad?: number;
+  onUserLoadChange?: (val: number) => void;
+  externalAttack?: AttackScenario;
+  onAttackChange?: (attack: AttackScenario) => void;
 }
 
-type AttackScenario = 'none' | 'az-outage' | 'ransomware' | 'ddos' | 'bill-shock';
+export type AttackScenario = 'none' | 'az-outage' | 'ransomware' | 'ddos' | 'bill-shock';
 
 export const DualArchitectureStage: React.FC<DualStageProps> = ({
   naive,
@@ -49,12 +53,29 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
   setViewMode,
   chaosPhase,
   affectedNodeIds,
-  onSelectNode
+  onSelectNode,
+  externalUserLoad,
+  onUserLoadChange,
+  externalAttack,
+  onAttackChange
 }) => {
   const [trafficActive, setTrafficActive] = useState<boolean>(true);
   const [trafficSpeed, setTrafficSpeed] = useState<number>(1);
-  const [userLoad, setUserLoad] = useState<number>(2500);
-  const [activeAttack, setActiveAttack] = useState<AttackScenario>('none');
+  const [internalUserLoad, setInternalUserLoad] = useState<number>(2500);
+  const userLoad = externalUserLoad !== undefined ? externalUserLoad : internalUserLoad;
+  const setUserLoad = (val: number | ((prev: number) => number)) => {
+    const nextVal = typeof val === 'function' ? val(userLoad) : val;
+    if (onUserLoadChange) onUserLoadChange(nextVal);
+    setInternalUserLoad(nextVal);
+  };
+
+  const [internalActiveAttack, setInternalActiveAttack] = useState<AttackScenario>('none');
+  const activeAttack = externalAttack !== undefined ? externalAttack : internalActiveAttack;
+  const setActiveAttack = (att: AttackScenario) => {
+    if (onAttackChange) onAttackChange(att);
+    setInternalActiveAttack(att);
+  };
+
   const [showSubnetBoundaries, setShowSubnetBoundaries] = useState<boolean>(true);
   
   const isChaos = chaosPhase !== 'idle' || activeAttack === 'az-outage';

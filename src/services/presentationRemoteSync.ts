@@ -3,7 +3,18 @@ import { AppDisplayMode, ChaosPhase, ViewMode, StorylineStage } from '../types';
 
 export type RemoteSpeaker = 'devarsh' | 'aman' | 'both';
 
-export type RemoteScrollTarget = 'topology' | 'journey' | 'metrics' | 'iac' | 'radar' | 'top';
+export type RemoteScrollTarget =
+  | 'top'
+  | 'hero'
+  | 'storyline'
+  | 'journey'
+  | 'comparison'
+  | 'sandbox'
+  | 'topology'
+  | 'metrics'
+  | 'iac'
+  | 'radar'
+  | 'footer';
 
 export type RemoteCommandType =
   | 'GOTO_MODULE'
@@ -21,6 +32,11 @@ export type RemoteCommandType =
   | 'ENTER_PRESENTER_MODE'
   | 'EXIT_PRESENTER_MODE'
   | 'SET_STORYLINE_STAGE'
+  | 'SET_SLIDE_MODE'
+  | 'RUN_SLIDE_SIM'
+  | 'TOGGLE_SLIDE_GRID'
+  | 'SET_TRAFFIC'
+  | 'TRIGGER_ATTACK'
   | 'PING'
   | 'PONG';
 
@@ -35,6 +51,9 @@ export interface RemoteCommand {
   label?: string;
   modal?: string;
   storylineStage?: StorylineStage;
+  slideMode?: 'keynote' | 'dual' | 'theory';
+  trafficLoad?: number;
+  attackScenario?: string;
   timestamp: number;
 }
 
@@ -47,6 +66,11 @@ export interface StageState {
   chaosPhase: ChaosPhase;
   isChaosActive: boolean;
   displayMode: AppDisplayMode;
+  slideMode?: 'keynote' | 'dual' | 'theory';
+  isSlideGridOpen?: boolean;
+  trafficLoad?: number;
+  activeAttack?: string;
+  storylineStage?: StorylineStage;
   activeModal: string | null;
   elapsedSeconds: number;
   connectedDevicesCount: number;

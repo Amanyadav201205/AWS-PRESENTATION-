@@ -20,6 +20,8 @@ import {
 } from './services/presentationRemoteSync';
 import { StorylineStage } from './types';
 import { StageRemoteHUDToast } from './components/StageRemoteHUDToast';
+import type { SlideViewMode } from './components/PresenterOverlay';
+import type { AttackScenario } from './components/DualArchitectureStage';
 
 // Lazy-load controller and presenter overlay — phone controller uses SpeakerCompanionRemote
 const SpeakerCompanionRemote = lazy(() => import('./components/SpeakerCompanionRemote').then(m => ({ default: m.SpeakerCompanionRemote })));
@@ -78,6 +80,15 @@ export function App() {
   const [currentDomainIndex, setCurrentDomainIndex] = useState<number>(getInitialIndexFromHash);
   const [viewMode, setViewMode] = useState<ViewMode>('split');
   const [displayMode, setDisplayMode] = useState<AppDisplayMode>('studio');
+
+  // Presentation Deck remote sync states
+  const [slideMode, setSlideMode] = useState<SlideViewMode>('keynote');
+  const [isSlideGridOpen, setIsSlideGridOpen] = useState<boolean>(false);
+  const [slideSimTrigger, setSlideSimTrigger] = useState<number>(0);
+
+  // Simulation traffic and attack scenario remote sync states
+  const [userLoad, setUserLoad] = useState<number>(2500);
+  const [activeAttack, setActiveAttack] = useState<AttackScenario>('none');
   
   // Audited requirement 1.19: Sound effects default to muted
   const [audioEnabled, setAudioEnabled] = useState<boolean>(false);
@@ -301,6 +312,40 @@ export function App() {
             showHudToast(spk, `Storyline: ${stageLabels[cmd.storylineStage]}`);
           }
           break;
+        case 'SET_SLIDE_MODE':
+          if (cmd.slideMode) {
+            setSlideMode(cmd.slideMode);
+            const slideModeLabels = { keynote: 'Architecture Slide', dual: 'Speaker Notes', theory: 'Theoretical Proof' };
+            showHudToast(spk, `Slide: ${slideModeLabels[cmd.slideMode] || cmd.slideMode}`);
+          }
+          break;
+        case 'RUN_SLIDE_SIM':
+          setSlideSimTrigger(prev => prev + 1);
+          showHudToast(spk, 'Triggered Live Traffic Pulse on Slide');
+          break;
+        case 'TOGGLE_SLIDE_GRID':
+          setIsSlideGridOpen(prev => !prev);
+          showHudToast(spk, 'Toggled Slide Overview Grid');
+          break;
+        case 'SET_TRAFFIC':
+          if (cmd.trafficLoad !== undefined) {
+            setUserLoad(cmd.trafficLoad);
+            showHudToast(spk, `Traffic: ${(cmd.trafficLoad / 1000).toFixed(0)}k req/s`);
+          }
+          break;
+        case 'TRIGGER_ATTACK':
+          if (cmd.attackScenario) {
+            setActiveAttack(cmd.attackScenario as AttackScenario);
+            const attackLabels: Record<string, string> = {
+              none: 'Nominal Traffic',
+              'az-outage': 'AZ-1 Outage Disaster',
+              ransomware: 'Ransomware Attack',
+              ddos: 'DDoS Traffic Flood',
+              'bill-shock': 'Bill Shock Surge'
+            };
+            showHudToast(spk, `Attack: ${attackLabels[cmd.attackScenario] || cmd.label || cmd.attackScenario}`);
+          }
+          break;
         case 'SCROLL_TO':
           if (cmd.target === 'top') {
             mainRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
@@ -412,16 +457,22 @@ export function App() {
       chaosPhase,
       isChaosActive: chaosPhase !== 'idle',
       displayMode,
+      slideMode,
+      isSlideGridOpen,
+      trafficLoad: userLoad,
+      activeAttack,
+      storylineStage: activeStorylineStage,
       activeModal: anyModalOpen,
       elapsedSeconds: 0,
       connectedDevicesCount: remoteDeviceCount,
       spotlightTarget: null,
-      latestSpeakerName: null,
-      latestActionNotice: null,
+      latestSpeakerName: hudSpeakerName,
+      latestActionNotice: hudActionNotice,
     });
   }, [
     remoteSync, currentDomainIndex, viewMode, chaosPhase, displayMode,
-    remoteDeviceCount,
+    slideMode, isSlideGridOpen, userLoad, activeAttack, activeStorylineStage,
+    remoteDeviceCount, hudSpeakerName, hudActionNotice,
     isPrompterOpen, is6PillarsOpen, isExecutiveReviewOpen, isStressLabOpen,
     isPacketSimulatorOpen, isClientSolutionsOpen, isSubtopicLabsOpen,
     isTheoryOpen, isAdvisorOpen, isAiGovernanceOpen, isPairingModalOpen,
@@ -553,6 +604,7 @@ export function App() {
 
         {/* Main Content Area with bottom padding for minimized dock */}
         <main className="app-content" ref={mainRef} id="main-content">
+          <div id="section-hero" />
           {/* Domain Hero - Derived 1-based Module Index (P0 Fix 1.2) */}
           <section className="domain-hero" aria-labelledby="domain-title">
             <div className="hero-meta-row">
@@ -590,6 +642,7 @@ export function App() {
           )}
 
           {/* Customer Journey & Requirement Storyline */}
+          <div id="section-storyline" />
           <div id="section-journey" />
           <CustomerJourneyCard
             customer={activeDomain.customerRequirement}
@@ -602,6 +655,8 @@ export function App() {
           />
 
           {/* Dual Architecture Stage */}
+          <div id="section-comparison" />
+          <div id="section-sandbox" />
           <div id="section-topology" />
           <DualArchitectureStage
             naive={activeDomain.naive}
@@ -611,6 +666,10 @@ export function App() {
             chaosPhase={chaosPhase}
             affectedNodeIds={activeDomain.chaos.affectedNodeIds}
             onSelectNode={handleNodeClick}
+            externalUserLoad={userLoad}
+            onUserLoadChange={setUserLoad}
+            externalAttack={activeAttack}
+            onAttackChange={setActiveAttack}
           />
 
           {/* Disaster Recovery Interactive Explorer (Module 14) */}
@@ -641,6 +700,7 @@ export function App() {
           </div>
 
           {/* Clean Executive Attribution Footer (P0/P1 Fix 2.1, 2.2, 3b) */}
+          <div id="section-footer" />
           <PresenterFooter />
         </main>
       </div>
@@ -698,6 +758,11 @@ export function App() {
             onOpenSubtopics={() => setIsSubtopicLabsOpen(true)}
             allDomains={allDomains}
             onSelectIndex={(idx) => setCurrentDomainIndex(idx)}
+            slideMode={slideMode}
+            onSlideModeChange={setSlideMode}
+            isGridOpen={isSlideGridOpen}
+            onToggleGrid={(val) => setIsSlideGridOpen(typeof val === 'boolean' ? val : !isSlideGridOpen)}
+            slideSimTrigger={slideSimTrigger}
           />
         )}
 
