@@ -103,31 +103,13 @@ Visit **`http://localhost:5173/`** in your browser.
 
 ---
 
-## 🌐 Deploying to GitHub Pages (0-Error Setup)
+## 🌐 Production Deployment (Vercel)
 
-This repository is pre-configured with a **GitHub Actions automated workflow** (`.github/workflows/deploy.yml`) and relative asset paths (`base: './'`), guaranteeing 100% error-free deployment.
+The platform is continuously deployed to **Vercel** with global edge CDN distribution, zero cold-starts, and isolated WebRTC remote chunks:
 
-### Step-by-Step Instructions:
-
-1. **Push this repository to GitHub**:
-   ```bash
-   git add .
-   git commit -m "feat: AWS Well-Architected Framework presentation platform with AI Copilot & Governance"
-   git remote add origin https://github.com/<your-username>/<your-repo-name>.git
-   git branch -M main
-   git push -u origin main
-   ```
-
-2. **Enable GitHub Pages in your repository settings**:
-   * Navigate to your repo on GitHub: **Settings** ➔ **Pages** (under "Code and automation").
-   * Under **Build and deployment** ➔ **Source**, select **GitHub Actions**.
-
-3. **Automatic Deployment**:
-   * The included `.github/workflows/deploy.yml` workflow will automatically trigger, build the production bundle, and publish your site.
-   * Your site will be live at:
-     ```
-     https://<your-username>.github.io/<your-repo-name>/
-     ```
+* **Live Presentation Stage (Big Screen / Projector)**: [https://wafpresentation.vercel.app/](https://wafpresentation.vercel.app/)
+* **Devarsh's Mobile Remote**: [https://wafpresentation.vercel.app/?mode=remote&speaker=devarsh](https://wafpresentation.vercel.app/?mode=remote&speaker=devarsh)
+* **Aman's Mobile Remote**: [https://wafpresentation.vercel.app/?mode=remote&speaker=aman](https://wafpresentation.vercel.app/?mode=remote&speaker=aman)
 
 ---
 
