@@ -451,7 +451,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
       </div>
 
       {/* Main Body Content Scroll Area */}
-      <div style={{ flex: 1, padding: '16px', overflowY: 'auto', paddingBottom: 160 }}>
+      <div style={{ flex: 1, padding: '16px', overflowY: 'auto', paddingBottom: 300 }}>
         {/* Tab 1: Spoken Teleprompter */}
         {activeTab === 'script' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
@@ -930,7 +930,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         backdropFilter: 'blur(25px) saturate(180%)',
         WebkitBackdropFilter: 'blur(25px) saturate(180%)',
         borderTop: '1px solid rgba(255, 255, 255, 0.12)',
-        padding: '10px 16px 24px',
+        padding: '10px 16px',
+        paddingBottom: 'max(20px, env(safe-area-inset-bottom, 20px))',
         display: 'flex',
         flexDirection: 'column',
         gap: 10,

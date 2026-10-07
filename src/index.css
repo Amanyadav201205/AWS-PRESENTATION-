@@ -3390,3 +3390,207 @@ input[type="range"] { min-height: 28px; accent-color: var(--accent); cursor: poi
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
+/* ==========================================================================
+   STAGE REMOTE SPOTLIGHT & PRESENTATION COMPANION TOKENS
+   ========================================================================== */
+
+@keyframes stageSpotlightPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 153, 0, 0.7), 0 0 24px rgba(255, 153, 0, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(255, 153, 0, 0.25), 0 0 50px rgba(255, 153, 0, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 153, 0, 0.7), 0 0 24px rgba(255, 153, 0, 0.4);
+  }
+}
+
+.stage-spotlight-active {
+  animation: stageSpotlightPulse 1.8s infinite ease-in-out !important;
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 4px !important;
+  position: relative !important;
+  z-index: 40 !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+@keyframes slideDownFade {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -12px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+/* ==========================================================================
+   PHONE-FIRST MOBILE POLISH
+   Lock out horizontal scroll, tighten layout, respect safe areas
+   ========================================================================== */
+
+/* 1. Hard-block horizontal overflow — nothing should ever widen the page */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* 2. All SVG graphics scale with their container (except tiny icon SVGs) */
+svg:not([width="20"]):not([width="16"]):not([width="14"]):not([width="12"]):not([width="10"]):not([width="60"]):not([width="28"]):not([width="18"]):not([width="24"]) {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 3. Code blocks scroll instead of blowing out the layout */
+pre {
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: pre;
+}
+
+/* 4. Tables in content scroll horizontally, never overflow */
+.app-content table {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 5. Small phone layout tightening (≤ 480px) */
+@media (max-width: 480px) {
+  .app-content {
+    padding: var(--space-3) var(--space-3);
+    gap: var(--space-4);
+  }
+
+  /* Cards: trim padding from 24px → 16px so content doesn't feel crushed */
+  .card-apple {
+    padding: var(--space-4);
+  }
+
+  /* Hero module tag + badge row: allow them to stack if screen is too narrow */
+  .hero-meta-row {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  /* Hero title: keep the minimum at 22px on the smallest phones */
+  .hero-title {
+    font-size: clamp(22px, 6vw, 32px);
+  }
+
+  /* Hero subtitle: let it fill the column */
+  .hero-subtitle {
+    max-width: 100%;
+    font-size: 14px;
+  }
+
+  /* Segmented controls: single-line scroll without the extra fade mask on very small screens */
+  .segmented-control {
+    -webkit-mask-image: linear-gradient(to right, #000 80%, transparent);
+    mask-image: linear-gradient(to right, #000 80%, transparent);
+  }
+
+  /* Domain navigation side padding matches tighter content area */
+  .domain-hero {
+    padding-bottom: var(--space-3);
+  }
+
+  /* AutoPilot dock: tighter on phones */
+  .autopilot-floating-bar {
+    bottom: env(safe-area-inset-bottom, 6px);
+    width: calc(100% - 16px);
+  }
+
+  /* Modal dialogs: full-width on very small phones */
+  .sheet-content,
+  .presenter-dialog {
+    max-width: calc(100vw - 16px) !important;
+    max-height: calc(100dvh - 16px) !important;
+  }
+}
+
+/* 6. Auto-pilot bar safe-area bottom */
+.autopilot-inner-container {
+  padding-bottom: max(6px, env(safe-area-inset-bottom, 6px));
+}
+
+/* 7. Safe-area bottom padding on main content — clears the autopilot dock */
+@media (max-width: 768px) {
+  main.app-content {
+    padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+/* 8. Sidebar horizontal pill bar on phones: show active item first */
+@media (max-width: 768px) {
+  .app-sidebar {
+    /* Prevent the pill bar from shrinking too short */
+    min-height: 52px;
+  }
+
+  /* Pill items: fixed height so the bar is stable */
+  .sidebar-list {
+    height: 52px;
+    align-items: center;
+  }
+
+  /* Fade the right edge to hint at more items */
+  .sidebar-list {
+    -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+    mask-image: linear-gradient(to right, #000 85%, transparent);
+  }
+}
+
+/* 9. Metric grids: single column on very small phones */
+@media (max-width: 360px) {
+  .metric-quad-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-content {
+    padding: var(--space-2) var(--space-2);
+  }
+
+  .card-apple {
+    padding: var(--space-3);
+  }
+}
+
+/* 10. Presenter overlay: full-bleed on phones, no side margin */
+@media (max-width: 640px) {
+  .presenter-overlay {
+    padding: 0 !important;
+  }
+
+  .presenter-dialog.presenter-dialog--full {
+    border-radius: 0;
+    padding: var(--space-3);
+    padding-bottom: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* 11. Remote status badge in hero: never overflows its row */
+.remote-badge {
+  flex-shrink: 0;
+  max-width: calc(100vw - 180px);
+}
+
+/* 12. Modals: max-height must include safe area for scroll on phones */
+.sheet-overlay,
+.presenter-overlay {
+  padding: max(8px, env(safe-area-inset-top, 8px))
+           max(8px, env(safe-area-inset-right, 8px))
+           max(8px, env(safe-area-inset-bottom, 8px))
+           max(8px, env(safe-area-inset-left, 8px));
+}
+
+/* 13. Any inline-width panels: clamp to screen width */
+[style*="width: '960px'"],
+[style*="width: '1080px'"] {
+  max-width: calc(100vw - 32px) !important;
+}
+
