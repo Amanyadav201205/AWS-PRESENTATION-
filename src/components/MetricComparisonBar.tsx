@@ -7,10 +7,15 @@ interface MetricBarProps {
 
 export const MetricComparisonBar: React.FC<MetricBarProps> = ({ metrics }) => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-      <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', fontWeight: 500 }}>
-        Quantitative architectural metrics
-      </span>
+    <section className="metrics-section" aria-labelledby="metrics-heading" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <h2 id="metrics-heading" style={{ fontSize: 'var(--text-base)', color: 'var(--text-primary)', fontWeight: 600 }}>
+          Before / after
+        </h2>
+        <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)' }}>
+          Direct architectural comparison
+        </span>
+      </div>
 
       <div className="metric-quad-grid">
         {metrics.map((m, idx) => (
@@ -24,6 +29,8 @@ export const MetricComparisonBar: React.FC<MetricBarProps> = ({ metrics }) => {
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 };
+
+export default MetricComparisonBar;

@@ -2,14 +2,14 @@ import { DomainData } from '../../types';
 
 export const databaseDomain: DomainData = {
   id: 'database-layer',
-  number: 3,
+  number: 4,
   title: 'Database Layer',
   subtitle: 'Amazon Aurora Multi-AZ with Auto-scaling Replicas vs. Self-Managed EC2 MySQL',
   category: 'Infrastructure Core',
   pillars: ['Reliability', 'Performance Efficiency', 'Operational Excellence'],
   customerRequirement: {
     clientName: 'FinPulse Global Trading & CRM',
-    businessGoal: 'Relational database handling 25,000 transactions/sec for international financial accounts with sub-30s failover SLA and zero data loss guarantee.',
+    businessGoal: 'Relational database handling 25,000 transactions/sec for international financial accounts with failover typically < 30s and zero data loss guarantee.',
     challenges: [
       'Single database host crashing loses millions in active trading revenue',
       'Nightly mysqldump locks tables and causes checkout timeouts',

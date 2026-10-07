@@ -44,49 +44,44 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
 
-      {/* Domain Navigation Rows */}
-      <nav className="sidebar-list">
+      {/* Domain Navigation Rows using semantic buttons with aria-current="page" */}
+      <nav className="sidebar-list" aria-label="15 Architecture Modules" style={{ paddingBottom: 24 }}>
         {filtered.map((d) => {
+          const globalIdx = domains.findIndex(item => item.id === d.id);
+          const moduleNumber = globalIdx !== -1 ? globalIdx + 1 : d.number + 1;
           const isActive = d.id === selectedDomainId;
           const isDone = completedDomainIds.includes(d.id);
 
           return (
-            <div
+            <button
               key={d.id}
+              type="button"
               className={`sidebar-row ${isActive ? 'active' : ''}`}
               onClick={() => {
                 soundFX.playClick();
                 onSelectDomain(d.id);
               }}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  soundFX.playClick();
-                  onSelectDomain(d.id);
-                }
-              }}
               aria-current={isActive ? 'page' : undefined}
             >
-              <span className="row-index">{d.number}</span>
+              <span className="row-index">{String(moduleNumber).padStart(2, '0')}</span>
               <span className="row-title">{d.title}</span>
               {isDone && !isActive && (
                 <Check size={12} color="var(--text-tertiary)" />
               )}
-            </div>
+            </button>
           );
         })}
 
         {filtered.length === 0 && (
           <div style={{ padding: '16px', fontSize: 13, color: 'var(--text-tertiary)', textAlign: 'center' }}>
-            No matching domains
+            No matching modules
           </div>
         )}
       </nav>
 
-      {/* Keyboard Hint footer */}
+      {/* Clean Keyboard Hint footer with generous padding */}
       <div className="sidebar-keyboard-hint">
-        <span>Navigate</span>
+        <span>Navigate modules</span>
         <span style={{ fontFamily: 'var(--font-mono)' }}>[← / →]</span>
       </div>
     </aside>

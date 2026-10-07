@@ -2,7 +2,7 @@ import { DomainData } from '../../types';
 
 export const monitoringDomain: DomainData = {
   id: 'monitoring-elasticity',
-  number: 7,
+  number: 8,
   title: 'Monitoring, Elasticity & High Availability',
   subtitle: 'CloudWatch Synthetics, Composite Alarms, & EventBridge Self-Healing vs. Silent Failures',
   category: 'Operations & Reliability',

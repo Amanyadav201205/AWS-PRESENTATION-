@@ -11,7 +11,7 @@ const PILLARS: { key: keyof PillarScore; label: string; short: string }[] = [
   { key: 'security', label: 'Security', short: 'Security' },
   { key: 'reliability', label: 'Reliability', short: 'Reliability' },
   { key: 'performanceEfficiency', label: 'Performance', short: 'Perf' },
-  { key: 'costOptimization', label: 'Cost', short: 'Cost' },
+  { key: 'costOptimization', label: 'Cost Optimization', short: 'Cost' },
   { key: 'sustainability', label: 'Sustainability', short: 'Sustain' }
 ];
 
@@ -19,9 +19,10 @@ export const PillarRadarChart: React.FC<PillarRadarProps> = ({
   naiveScores,
   wellArchScores
 }) => {
-  const size = 260;
+  // Generous SVG bounds with plenty of padding to prevent edge clipping (P2 Fix 1.17)
+  const size = 280;
   const center = size / 2;
-  const radius = 85;
+  const radius = 80;
   const totalAxes = PILLARS.length;
 
   const getCoordinates = (value: number, index: number) => {
@@ -56,9 +57,9 @@ export const PillarRadarChart: React.FC<PillarRadarProps> = ({
           <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', fontWeight: 500 }}>
             Framework alignment
           </span>
-          <h4 style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--text-primary)' }}>
+          <h2 style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text-primary)', marginTop: 2 }}>
             6-Pillar Scorecard
-          </h4>
+          </h2>
         </div>
         <div style={{ fontSize: 'var(--text-xs)', fontFamily: 'var(--font-mono)' }}>
           <span style={{ color: 'var(--text-tertiary)' }}>{naiveAvg}%</span>
@@ -67,8 +68,13 @@ export const PillarRadarChart: React.FC<PillarRadarProps> = ({
         </div>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '6px 0', overflow: 'visible' }}>
+        <svg 
+          width={size} 
+          height={size} 
+          viewBox={`0 0 ${size} ${size}`} 
+          style={{ overflow: 'visible' }}
+        >
           {/* Concentric rings */}
           {[0.25, 0.5, 0.75, 1.0].map((step) => {
             const stepPoints = PILLARS.map((_, i) => {
@@ -89,7 +95,7 @@ export const PillarRadarChart: React.FC<PillarRadarProps> = ({
           {/* Spokes */}
           {PILLARS.map((p, i) => {
             const { x, y } = getCoordinates(100, i);
-            const labelCoord = getCoordinates(118, i);
+            const labelCoord = getCoordinates(124, i);
             return (
               <g key={p.key}>
                 <line
@@ -104,9 +110,9 @@ export const PillarRadarChart: React.FC<PillarRadarProps> = ({
                   x={labelCoord.x}
                   y={labelCoord.y}
                   fill="var(--text-secondary)"
-                  fontSize="9"
+                  fontSize="11"
                   fontFamily="var(--font-sans)"
-                  fontWeight="500"
+                  fontWeight="600"
                   textAnchor="middle"
                   dominantBaseline="central"
                 >
@@ -135,15 +141,43 @@ export const PillarRadarChart: React.FC<PillarRadarProps> = ({
         </svg>
       </div>
 
-      {/* Breakdown list */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4px 12px', fontSize: 11, borderTop: '1px solid var(--separator)', paddingTop: 8 }}>
+      {/* 2-Column Table Legend with Fixed Columns so no row wraps awkwardly */}
+      <div 
+        style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', 
+          gap: '6px 16px', 
+          fontSize: 12, 
+          borderTop: '1px solid var(--separator)', 
+          paddingTop: 10 
+        }}
+      >
         {PILLARS.map((p) => (
-          <div key={p.key} style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span style={{ color: 'var(--text-secondary)' }}>{p.label}</span>
-            <span style={{ fontFamily: 'var(--font-mono)' }}>
+          <div 
+            key={p.key} 
+            style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'space-between',
+              minWidth: 0,
+              gap: 8
+            }}
+          >
+            <span 
+              style={{ 
+                color: 'var(--text-secondary)', 
+                overflow: 'hidden', 
+                textOverflow: 'ellipsis', 
+                whiteSpace: 'nowrap' 
+              }}
+              title={p.label}
+            >
+              {p.label}
+            </span>
+            <span style={{ fontFamily: 'var(--font-mono)', flexShrink: 0, fontSize: 11 }}>
               <span style={{ color: 'var(--text-tertiary)' }}>{naiveScores[p.key]}%</span>
-              {' '}
-              <span style={{ color: 'var(--status-success)' }}>{wellArchScores[p.key]}%</span>
+              <span style={{ margin: '0 3px', color: 'var(--separator)' }}>/</span>
+              <span style={{ color: 'var(--status-success)', fontWeight: 600 }}>{wellArchScores[p.key]}%</span>
             </span>
           </div>
         ))}
@@ -151,3 +185,5 @@ export const PillarRadarChart: React.FC<PillarRadarProps> = ({
     </div>
   );
 };
+
+export default PillarRadarChart;

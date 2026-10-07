@@ -37,15 +37,15 @@ export const domainPresentationScripts: DomainPresentationScript[] = [
   {
     domainId: 'overview-thesis',
     domainNumber: 0,
-    domainTitle: 'Executive Architecture Overview',
-    openingHook: 'In cloud computing, anyone can launch an EC2 instance in five minutes. But building a cloud workload that survives catastrophic failures and cuts bills by 60% requires architectural discipline.',
-    verbatimScript: `Respected professors, evaluators, and colleagues, welcome to our interactive masterclass and simulation on the AWS Well-Architected Framework.
+    domainTitle: 'Architecture Overview',
+    openingHook: 'In cloud computing, anyone can launch an EC2 instance in five minutes. But building a cloud workload that survives catastrophic failures and cuts monthly spend by 59.1% ($4,450 to $1,820/mo) requires architectural discipline.',
+    verbatimScript: `Respected evaluators and colleagues, welcome to our interactive presentation and simulation on the AWS Well-Architected Framework.
 
-Behind me is the comprehensive blueprint of our entire study. On the left is the standard monolithic anti-pattern that over 80% of organizations mistakenly build: an oversized EC2 monolith connected to an un-replicated database and flat S3 bucket in a single public subnet. This architecture carries 13 High-Risk Issues, an estimated downtime liability of nearly $140,000 per year, and an MTTR of four to eight hours.
+Behind me is the comprehensive blueprint of our entire study. On the left is the standard monolithic anti-pattern that teams commonly build when prototyping: an oversized EC2 monolith connected to an un-replicated database and flat S3 bucket in a single public subnet. This architecture carries critical High-Risk Issues and an MTTR of four to eight hours.
 
-On the right side is the AWS Well-Architected solution. By applying the 6 core pillars, we establish defense in depth: Route 53 Anycast latency routing, CloudFront edge caching, multi-AZ Auto Scaling compute, Aurora multi-AZ databases with sub-30 second failover, and decoupled asynchronous queues. Over the course of our presentation, we will walk through each of the 13 syllabus domains side-by-side to prove how the Well-Architected Framework eliminates every single failure mode.`,
-    screenActionCue: 'Point to the side-by-side end-to-end architectures. Notice the 13 High Risk Issues flagged in red on the naive stack vs 0 HRIs on the Well-Architected stack.',
-    architectDefense: 'Establishes the systemic foundation of the AWS Well-Architected Framework across all 6 Pillars, setting the quantitative baseline for our 13-domain evaluation.',
+On the right side is the AWS Well-Architected solution. By applying the 6 core pillars, we establish defense in depth: Route 53 latency-based routing, CloudFront edge caching, multi-AZ Auto Scaling compute, Aurora multi-AZ databases with failover typically under 30 seconds, and decoupled asynchronous storage. Over the course of our presentation, we will walk through each of the 15 syllabus domains side-by-side to prove how the Well-Architected Framework eliminates these failure modes.`,
+    screenActionCue: 'Point to the side-by-side end-to-end architectures. Notice the critical High Risk Issues flagged in red on the naive stack vs 0 HRIs on the Well-Architected stack.',
+    architectDefense: 'Establishes the systemic foundation of the AWS Well-Architected Framework across all 6 Pillars, setting the quantitative baseline for our 15-domain evaluation.',
     juryQuestions: [
       {
         question: 'What is the primary difference between a well-architected cloud review and a traditional security audit?',

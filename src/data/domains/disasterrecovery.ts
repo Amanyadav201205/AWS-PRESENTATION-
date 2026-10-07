@@ -2,7 +2,7 @@ import { DomainData } from '../../types';
 
 export const disasterRecoveryDomain: DomainData = {
   id: 'disaster-recovery',
-  number: 13,
+  number: 14,
   title: 'Disaster Recovery (DR) Planning & Management',
   subtitle: '4 AWS DR Strategies (Backup/Restore -> Pilot Light -> Warm Standby -> Multi-Region Active-Active) vs. "Backup & Hope"',
   category: 'Operations & Reliability',

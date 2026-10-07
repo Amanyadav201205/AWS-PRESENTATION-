@@ -2,20 +2,20 @@ import { DomainData } from '../../types';
 
 export const conclusionDomain: DomainData = {
   id: 'executive-conclusion',
-  number: 14,
+  number: 15,
   title: 'Executive Conclusion & Architectural Verdict',
-  subtitle: 'The 13-Domain Transformation Matrix, 10 Golden Rules, & Certified Architect Sign-Off',
+  subtitle: 'The 15-Domain Transformation Matrix, 10 Golden Rules, & Architecture Sign-Off',
   category: 'Executive Verdict',
   pillars: ['Operational Excellence', 'Security', 'Reliability', 'Performance Efficiency', 'Cost Optimization', 'Sustainability'],
   customerRequirement: {
     clientName: 'Board of Directors & Executive Architecture Review Jury',
-    businessGoal: 'Deliver definitive architectural verification confirming that all 13 syllabus domains comply with AWS Well-Architected Framework guidelines, with certified risk mitigation and FinOps ROI.',
+    businessGoal: 'Deliver definitive architectural verification confirming that all 15 syllabus domains comply with AWS Well-Architected Framework guidelines, with certified risk mitigation and FinOps ROI.',
     challenges: [
-      'Validating that all 13 High-Risk Issues (HRIs) have been completely remediated',
+      'Validating that critical High-Risk Issues (HRIs) have been completely remediated',
       'Demonstrating audit readiness for enterprise compliance standards (SOC2, HIPAA, ISO 27001)',
       'Ensuring operational self-sufficiency through Infrastructure as Code and automated event-driven playbooks'
     ],
-    budgetOrSlaTarget: 'Executive Board Sign-Off | Zero HRIs | 59% TCO Reduction Validated | 99.99% Enterprise SLA'
+    budgetOrSlaTarget: 'Executive Sign-Off | Zero HRIs | 59.1% Cost Reduction ($4,450 → $1,820/mo) | 99.99% Enterprise SLA'
   },
   normalPrescription: {
     title: 'Unreviewed Technical Debt & Fragmented Cloud Silos',
@@ -239,8 +239,8 @@ Signed: Certified AWS Solutions Architect Lead`,
   speakerNotes: {
     hook: 'Architecture is not just about what you build; it is about what you prevent from breaking.',
     keyPoints: [
-      'Across all 13 domains evaluated today, the AWS Well-Architected Framework delivered a measurable 59% reduction in cloud costs while increasing availability from 98.5% to 99.99%.',
-      'We eliminated all 13 High-Risk Issues and reduced disaster recovery time from 48 hours down to under 30 seconds.',
+      'Across all 15 domains evaluated today, the AWS Well-Architected Framework delivered a measurable 59.1% reduction in cloud costs ($4,450 to $1,820/mo) while increasing availability from 98.5% to 99.99%.',
+      'We eliminated critical High-Risk Issues and reduced disaster recovery time from 48 hours down to typically under 30 seconds.',
       'The 10 Golden Rules of AWS Well-Architected (Operations as Code, Apply Security Everywhere, Stop Guessing Capacity, Decouple Components, etc.) provide a permanent blueprint for engineering excellence.'
     ],
     architectTip: 'Schedule continuous quarterly Well-Architected reviews to ensure that architecture evolves proactively alongside business growth.',

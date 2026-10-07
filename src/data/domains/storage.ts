@@ -2,7 +2,7 @@ import { DomainData } from '../../types';
 
 export const storageDomain: DomainData = {
   id: 'storage-layer',
-  number: 1,
+  number: 2,
   title: 'Storage Layer',
   subtitle: 'Amazon S3 Tiering, Object Lock, & EBS gp3 Optimization vs. Un-versioned Flat EBS',
   category: 'Infrastructure Core',
@@ -12,10 +12,10 @@ export const storageDomain: DomainData = {
     businessGoal: 'Store 50TB of medical imaging and records with HIPAA compliance, zero data loss, sub-50ms retrieval for active patient records, and maximum cost efficiency.',
     challenges: [
       'Data must remain immutable and protected against accidental deletion or ransomware for 7 years',
-      'Over 85% of medical images are never accessed after 30 days, yet cost thousands to store',
+      'Clinical studies indicate commonly over 80% of archival medical scans are rarely accessed after 30 days',
       'High-throughput read IOPS required during surgery consultations without paying for idle disk space'
     ],
-    budgetOrSlaTarget: '99.999999999% (11 9s) Durability | Storage budget under $150/month'
+    budgetOrSlaTarget: 'RPO 0 for patient records, 7-yr WORM retention | Storage budget under $150/month'
   },
   normalPrescription: {
     title: 'Single 3TB EBS gp2 Volume & Flat S3 Standard Bucket',

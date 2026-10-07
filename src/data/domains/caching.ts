@@ -2,7 +2,7 @@ import { DomainData } from '../../types';
 
 export const cachingDomain: DomainData = {
   id: 'caching-content',
-  number: 9,
+  number: 10,
   title: 'Caching Content',
   subtitle: 'CloudFront Edge Caching & ElastiCache Redis vs. Direct Origin & Database Overload',
   category: 'Performance & Scale',

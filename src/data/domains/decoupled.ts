@@ -2,7 +2,7 @@ import { DomainData } from '../../types';
 
 export const decoupledDomain: DomainData = {
   id: 'decoupled-architecture',
-  number: 10,
+  number: 11,
   title: 'Building Decoupled Architecture',
   subtitle: 'Amazon SQS FIFO, SNS Fan-Out, & Dead-Letter Queues (DLQ) vs. Blocking Synchronous HTTP Chains',
   category: 'Performance & Scale',

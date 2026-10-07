@@ -187,7 +187,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
           {/* Left: Brand, Slide Title & Timer */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255, 255, 255, 0.04)', padding: '3px 8px', borderRadius: 6, border: '1px solid var(--separator-subtle)' }}>
-              <AwsLogo height={16} width={28} />
+              <AwsLogo height={16} width={28} color="#FFFFFF" />
               <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--accent)', fontWeight: 700 }}>
                 SLIDE {currentIndex + 1}/{totalDomains}
               </span>
@@ -195,14 +195,14 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
                 <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>
-                  {domain.number}. {domain.title}
+                  {currentIndex + 1}. {domain.title}
                 </span>
                 <span style={{ fontSize: 11, color: 'var(--text-tertiary)' }}>
                   ({domain.category})
                 </span>
               </div>
-              <span style={{ fontSize: 10, color: 'var(--accent)', fontWeight: 500 }}>
-                Presented by Devarsh Patel &amp; Aman Kumar
+              <span style={{ fontSize: 10, color: 'var(--text-secondary)', fontWeight: 500 }}>
+                Devarsh Patel &amp; Aman Kumar
               </span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(255, 255, 255, 0.04)', padding: '2px 8px', borderRadius: 4, fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
@@ -219,7 +219,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
               title="16:9 Presentation Slide Canvas [1]"
             >
               <Maximize2 size={12} />
-              <span>1. Keynote Slide</span>
+              <span>1. Architecture Slide</span>
             </button>
             <button 
               className={`segmented-item ${slideMode === 'dual' ? 'active' : ''}`}
@@ -462,10 +462,10 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                     ))}
                   </div>
 
-                  {/* Resilience Guarantee Banner */}
+                  {/* Resilience Details Banner */}
                   <div style={{ marginTop: 'auto', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(48, 209, 88, 0.2)', padding: '10px 12px', borderRadius: 6 }}>
                     <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--status-success)' }}>
-                      Self-Healing Guarantee:
+                      Automated Recovery Architecture:
                     </div>
                     <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2 }}>
                       {domain.chaos.wellArchConsequence.narrative}

@@ -2,7 +2,7 @@ import { DomainData } from '../../types';
 
 export const dataPipelinesDomain: DomainData = {
   id: 'data-pipelines',
-  number: 12,
+  number: 13,
   title: 'Data Pipelines',
   subtitle: 'Kinesis Streaming, AWS Glue Serverless ETL, S3 Lake & Athena vs. Cron EC2 Bash Dumps',
   category: 'Modern Application Design',

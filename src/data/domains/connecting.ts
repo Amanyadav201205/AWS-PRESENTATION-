@@ -2,7 +2,7 @@ import { DomainData } from '../../types';
 
 export const connectingDomain: DomainData = {
   id: 'connecting-networks',
-  number: 5,
+  number: 6,
   title: 'Connecting Networks',
   subtitle: 'AWS Transit Gateway Hub-and-Spoke with Direct Connect & VPN Failover vs. O(N²) Peering Mesh',
   category: 'Network & Connectivity',

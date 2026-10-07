@@ -1,10 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-  Sun, 
-  Moon, 
   Volume2, 
   VolumeX, 
-  RotateCcw,
   Presentation,
   AlertCircle,
   FileText,
@@ -16,7 +13,8 @@ import {
   BookOpen,
   ChevronDown,
   Layers,
-  Sparkles
+  Compass,
+  MoreHorizontal
 } from 'lucide-react';
 import { soundFX } from '../utils/soundEffects';
 import { AwsLogo } from './AwsLogo';
@@ -24,8 +22,6 @@ import { AwsLogo } from './AwsLogo';
 interface HeaderProps {
   currentDomainIndex: number;
   totalDomains: number;
-  isDarkMode: boolean;
-  onToggleTheme: () => void;
   audioEnabled: boolean;
   onToggleAudio: () => void;
   isChaosActive: boolean;
@@ -41,15 +37,13 @@ interface HeaderProps {
   onOpenClientSolutions: () => void;
   onOpenSubtopics: () => void;
   onOpenTheory: () => void;
-  onOpenAiCopilot: () => void;
+  onOpenAdvisor: () => void;
   onOpenAiGovernance: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   currentDomainIndex,
   totalDomains,
-  isDarkMode,
-  onToggleTheme,
   audioEnabled,
   onToggleAudio,
   isChaosActive,
@@ -65,29 +59,36 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenClientSolutions,
   onOpenSubtopics,
   onOpenTheory,
-  onOpenAiCopilot,
+  onOpenAdvisor,
   onOpenAiGovernance
 }) => {
   const [simMenuOpen, setSimMenuOpen] = useState<boolean>(false);
   const [fwMenuOpen, setFwMenuOpen] = useState<boolean>(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
 
   const simRef = useRef<HTMLDivElement>(null);
   const fwRef = useRef<HTMLDivElement>(null);
+  const mobileRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdowns on outside click
+  // Close dropdowns on outside click with proper propagation isolation
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
-      if (simRef.current && !simRef.current.contains(e.target as Node)) {
+      const target = e.target as Node;
+      if (simRef.current && !simRef.current.contains(target)) {
         setSimMenuOpen(false);
       }
-      if (fwRef.current && !fwRef.current.contains(e.target as Node)) {
+      if (fwRef.current && !fwRef.current.contains(target)) {
         setFwMenuOpen(false);
+      }
+      if (mobileRef.current && !mobileRef.current.contains(target)) {
+        setMobileMenuOpen(false);
       }
     };
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setSimMenuOpen(false);
         setFwMenuOpen(false);
+        setMobileMenuOpen(false);
       }
     };
     window.addEventListener('mousedown', handleOutsideClick);
@@ -100,18 +101,15 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="app-header" role="banner">
-      {/* Official AWS Brand & Presenter Authorship */}
-      <div className="header-brand" style={{ flexShrink: 0, whiteSpace: 'nowrap' }}>
-        <div className="brand-glyph-aws" aria-hidden="true" title="Amazon Web Services Official">
-          <AwsLogo height={22} width={38} />
+      {/* Brand & 1-based Module Tracker */}
+      <div className="header-brand" style={{ flexShrink: 0 }}>
+        <div className="brand-glyph-aws" aria-hidden="true" title="AWS Architecture Study">
+          <AwsLogo height={22} width={38} color="#FFFFFF" />
         </div>
         <div className="brand-title-group" style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <span className="brand-title" style={{ fontWeight: 700, fontSize: 15, letterSpacing: '-0.02em', color: '#FFFFFF' }}>
               AWS Well-Architected Framework
-            </span>
-            <span className="brand-author-chip">
-              Devarsh Patel &amp; Aman Kumar
             </span>
           </div>
           <div className="brand-meta-wrapper" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -122,45 +120,41 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      {/* Streamlined Apple-Grade Control Center */}
-      <div className="header-controls">
-        {/* Outage Simulation Trigger */}
-        {isChaosActive ? (
-          <button
-            className="btn-action danger-quiet"
-            onClick={onResetChaos}
-            aria-label="Reset simulation to normal state"
-            title="Reset active Multi-AZ outage simulation [R]"
-          >
-            <RotateCcw size={13} />
-            <span>Reset [R]</span>
-          </button>
-        ) : (
-          <button
-            className="btn-action chaos-trigger-btn"
-            onClick={onTriggerChaos}
-            aria-label="Simulate workload outage"
-            title="Simulate sudden Multi-AZ workload disaster outage [C]"
-          >
-            <AlertCircle size={13} color="var(--status-danger)" />
-            <span>Simulate Outage [C]</span>
-          </button>
-        )}
+      {/* Desktop Navigation Controls */}
+      <div className="header-controls header-controls-desktop">
+        {/* Outage Simulation Toggle (Stable Button Label, P1 Fix 1.10) */}
+        <button
+          className={`btn-action ${isChaosActive ? 'danger-quiet active' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (isChaosActive) {
+              onResetChaos();
+            } else {
+              onTriggerChaos();
+            }
+          }}
+          title={isChaosActive ? "Reset active outage simulation [R]" : "Simulate Multi-AZ outage [C]"}
+        >
+          <AlertCircle size={13} color={isChaosActive ? "var(--status-danger)" : "var(--status-danger)"} />
+          <span>{isChaosActive ? 'Outage: ON' : 'Outage: OFF'}</span>
+        </button>
 
-        {/* Dropdown: Interactive Simulators Menu */}
+        {/* Simulators Dropdown */}
         <div className="header-dropdown-wrap" ref={simRef} style={{ position: 'relative' }}>
           <button
             className={`btn-action ${simMenuOpen ? 'active-quiet' : ''}`}
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               soundFX.playClick();
               setSimMenuOpen(!simMenuOpen);
               setFwMenuOpen(false);
+              setMobileMenuOpen(false);
             }}
-            title="Open Interactive Architecture Simulators"
+            title="Interactive architecture simulators"
             aria-expanded={simMenuOpen}
           >
             <Zap size={13} color="var(--status-warning)" />
-            <span className="btn-label-desktop">Simulators</span>
+            <span>Simulators</span>
             <ChevronDown size={11} style={{ opacity: 0.7 }} />
           </button>
 
@@ -168,22 +162,24 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="header-dropdown-menu" role="menu">
               <button
                 className="dropdown-item"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   soundFX.playClick();
                   setSimMenuOpen(false);
-                  onOpenAiCopilot();
+                  onOpenAdvisor();
                 }}
                 role="menuitem"
               >
-                <Sparkles size={14} color="#FF9900" />
+                <Compass size={14} color="var(--accent)" />
                 <div className="dropdown-text">
-                  <span className="dropdown-title">AI Architecture Copilot [A]</span>
-                  <span className="dropdown-desc">Grounded RAG advisor &amp; safe agent remediation</span>
+                  <span className="dropdown-title">Architecture Advisor [A]</span>
+                  <span className="dropdown-desc">Guided questions &amp; safe framework remediation</span>
                 </div>
               </button>
               <button
                 className="dropdown-item"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   soundFX.playClick();
                   setSimMenuOpen(false);
                   onOpenPacketSimulator();
@@ -192,13 +188,14 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <Clock size={14} color="var(--accent)" />
                 <div className="dropdown-text">
-                  <span className="dropdown-title">Packet Flight Simulator [L]</span>
-                  <span className="dropdown-desc">Real-time packet flight latency benchmark</span>
+                  <span className="dropdown-title">Packet Latency Simulator [L]</span>
+                  <span className="dropdown-desc">Comparative edge-to-database latency benchmark</span>
                 </div>
               </button>
               <button
                 className="dropdown-item"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   soundFX.playClick();
                   setSimMenuOpen(false);
                   onOpenClientSolutions();
@@ -213,7 +210,8 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
               <button
                 className="dropdown-item"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   soundFX.playClick();
                   setSimMenuOpen(false);
                   onOpenSubtopics();
@@ -228,7 +226,8 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
               <button
                 className="dropdown-item"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   soundFX.playClick();
                   setSimMenuOpen(false);
                   onOpenStressLab();
@@ -245,20 +244,22 @@ export const Header: React.FC<HeaderProps> = ({
           )}
         </div>
 
-        {/* Dropdown: Framework Explorer Menu */}
+        {/* Framework Dropdown */}
         <div className="header-dropdown-wrap" ref={fwRef} style={{ position: 'relative' }}>
           <button
             className={`btn-action ${fwMenuOpen ? 'active-quiet' : ''}`}
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               soundFX.playClick();
               setFwMenuOpen(!fwMenuOpen);
               setSimMenuOpen(false);
+              setMobileMenuOpen(false);
             }}
-            title="Explore 6 Pillars & Academic Framework"
+            title="Explore 6 Pillars & academic foundation"
             aria-expanded={fwMenuOpen}
           >
             <Layers size={13} color="var(--accent)" />
-            <span className="btn-label-desktop">Framework</span>
+            <span>Framework</span>
             <ChevronDown size={11} style={{ opacity: 0.7 }} />
           </button>
 
@@ -266,7 +267,8 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="header-dropdown-menu" role="menu">
               <button
                 className="dropdown-item"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   soundFX.playClick();
                   setFwMenuOpen(false);
                   onOpen6Pillars();
@@ -281,7 +283,8 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
               <button
                 className="dropdown-item"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   soundFX.playClick();
                   setFwMenuOpen(false);
                   onOpenExecutiveReview();
@@ -296,7 +299,8 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
               <button
                 className="dropdown-item"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   soundFX.playClick();
                   setFwMenuOpen(false);
                   onOpenTheory();
@@ -311,7 +315,8 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
               <button
                 className="dropdown-item"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   soundFX.playClick();
                   setFwMenuOpen(false);
                   onOpenAiGovernance();
@@ -321,92 +326,182 @@ export const Header: React.FC<HeaderProps> = ({
                 <span style={{ fontSize: 14 }}>⚖️</span>
                 <div className="dropdown-text">
                   <span className="dropdown-title">AI Governance &amp; Launch Readiness [G]</span>
-                  <span className="dropdown-desc">12-Pillar production standard &amp; checklist audit</span>
+                  <span className="dropdown-desc">Production readiness standards &amp; checklist audit</span>
                 </div>
               </button>
             </div>
           )}
         </div>
 
-        {/* AI Copilot Direct Hero Trigger Button */}
+        {/* Guided Q&A Direct Trigger (Clean honest naming, P0 Fix 1.3) */}
         <button
           className="btn-action"
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             soundFX.playClick();
-            onOpenAiCopilot();
+            onOpenAdvisor();
           }}
-          aria-label="Launch AI Well-Architected Copilot"
-          title="Launch Grounded AI Architecture Copilot [A]"
+          title="Open Guided Architecture Q&A [A]"
           style={{
             height: 30,
             padding: '0 10px',
-            background: 'linear-gradient(135deg, rgba(255, 153, 0, 0.22), rgba(255, 153, 0, 0.06))',
-            border: '1px solid rgba(255, 153, 0, 0.45)',
-            color: '#FF9900',
+            background: 'linear-gradient(135deg, rgba(41, 151, 255, 0.16), rgba(41, 151, 255, 0.05))',
+            border: '1px solid rgba(41, 151, 255, 0.35)',
+            color: 'var(--accent)',
             fontWeight: 600,
             gap: 6
           }}
         >
-          <Sparkles size={13} color="#FF9900" />
-          <span className="btn-label-desktop">AI Copilot [A]</span>
+          <Compass size={13} color="var(--accent)" />
+          <span>Guided Q&amp;A</span>
         </button>
 
         {/* Speaker Script Prompter */}
         <button
           className="btn-action"
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             soundFX.playClick();
             onOpenScriptPrompter();
           }}
-          aria-label="Open Speaker Script and Defense Prompter"
           title="Verbatim presentation script and anticipated jury Q&A [S]"
         >
           <FileText size={13} color="var(--accent)" />
-          <span className="btn-label-desktop">Script [S]</span>
+          <span>Script</span>
         </button>
 
-        {/* Hero Presenter Mode Button */}
+        {/* Presenter Mode Button (Renamed from Keynote per 3a) */}
         <button
           className="btn-action primary"
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             soundFX.playClick();
             onTogglePresenter();
           }}
-          aria-label="Toggle presentation deck mode"
-          title="Launch full-screen Keynote presentation deck [P]"
+          title="Launch full-screen presentation deck [P]"
           style={{ height: 30, padding: '0 12px', fontWeight: 600, gap: 6 }}
         >
           <Presentation size={14} />
-          <span>Launch Keynote [P]</span>
+          <span>{isPresenterMode ? 'Exit Deck' : 'Present'}</span>
         </button>
 
         <span className="header-divider" style={{ width: 1, height: 16, background: 'var(--separator)', margin: '0 2px' }} />
 
-        {/* Audio Toggle */}
+        {/* Audio Toggle (Muted by default per 1.19) */}
         <button
           className="btn-action btn-icon"
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             soundFX.playClick();
             onToggleAudio();
           }}
-          aria-label={audioEnabled ? "Mute audio sound effects" : "Enable audio sound effects"}
           title={audioEnabled ? "Sound on" : "Sound muted"}
+          aria-label={audioEnabled ? "Sound on" : "Sound muted"}
         >
           {audioEnabled ? <Volume2 size={15} /> : <VolumeX size={15} color="var(--text-tertiary)" />}
         </button>
+      </div>
 
-        {/* Dark / Light Mode Toggle */}
+      {/* Mobile Drawer / '⋯' Menu Trigger (< 900px, P0 Fix 1.7) */}
+      <div className="header-controls-mobile" ref={mobileRef} style={{ position: 'relative' }}>
         <button
-          className="btn-action btn-icon"
-          onClick={() => {
+          className="btn-action primary"
+          onClick={(e) => {
+            e.stopPropagation();
             soundFX.playClick();
-            onToggleTheme();
+            onTogglePresenter();
           }}
-          aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-          title={isDarkMode ? "Light mode" : "Dark mode"}
+          style={{ height: 30, padding: '0 10px', fontSize: 12 }}
+          title="Launch Presentation Deck [P]"
         >
-          {isDarkMode ? <Sun size={15} /> : <Moon size={15} />}
+          <Presentation size={13} />
+          <span>Present</span>
         </button>
+
+        <button
+          className={`btn-action btn-icon ${mobileMenuOpen ? 'active-quiet' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            soundFX.playClick();
+            setMobileMenuOpen(!mobileMenuOpen);
+          }}
+          title="More actions"
+          aria-label="Open mobile action menu"
+          style={{ height: 30, width: 30 }}
+        >
+          <MoreHorizontal size={16} />
+        </button>
+
+        {mobileMenuOpen && (
+          <div className="header-dropdown-menu mobile-dropdown-menu" role="menu">
+            <button
+              className="dropdown-item"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenAdvisor();
+              }}
+              role="menuitem"
+            >
+              <Compass size={14} color="var(--accent)" />
+              <div className="dropdown-text">
+                <span className="dropdown-title">Guided Architecture Q&amp;A</span>
+              </div>
+            </button>
+            <button
+              className="dropdown-item"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenScriptPrompter();
+              }}
+              role="menuitem"
+            >
+              <FileText size={14} color="var(--accent)" />
+              <div className="dropdown-text">
+                <span className="dropdown-title">Speaker Script</span>
+              </div>
+            </button>
+            <button
+              className="dropdown-item"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpen6Pillars();
+              }}
+              role="menuitem"
+            >
+              <span style={{ fontSize: 14 }}>🏛️</span>
+              <div className="dropdown-text">
+                <span className="dropdown-title">6 Pillars Master Audit</span>
+              </div>
+            </button>
+            <button
+              className="dropdown-item"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                if (isChaosActive) onResetChaos();
+                else onTriggerChaos();
+              }}
+              role="menuitem"
+            >
+              <AlertCircle size={14} color="var(--status-danger)" />
+              <div className="dropdown-text">
+                <span className="dropdown-title">{isChaosActive ? 'Reset Outage' : 'Simulate Outage'}</span>
+              </div>
+            </button>
+            <button
+              className="dropdown-item"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onToggleAudio();
+              }}
+              role="menuitem"
+            >
+              {audioEnabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
+              <div className="dropdown-text">
+                <span className="dropdown-title">{audioEnabled ? 'Mute Sounds' : 'Enable Sounds'}</span>
+              </div>
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );

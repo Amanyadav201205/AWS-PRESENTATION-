@@ -2,7 +2,7 @@ import { DomainData } from '../../types';
 
 export const serverlessDomain: DomainData = {
   id: 'serverless-microservices',
-  number: 11,
+  number: 12,
   title: 'Serverless Architecture & Microservices',
   subtitle: 'API Gateway, Lambda ARM64, Step Functions, & DynamoDB vs. Stateful VM Monolith',
   category: 'Modern Application Design',

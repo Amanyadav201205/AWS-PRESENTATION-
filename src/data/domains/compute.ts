@@ -2,7 +2,7 @@ import { DomainData } from '../../types';
 
 export const computeDomain: DomainData = {
   id: 'compute-layer',
-  number: 2,
+  number: 3,
   title: 'Compute Layer',
   subtitle: 'Auto Scaling, Graviton3 ARM, & Mixed Spot Fleets vs. Static Single-AZ Monolith',
   category: 'Infrastructure Core',

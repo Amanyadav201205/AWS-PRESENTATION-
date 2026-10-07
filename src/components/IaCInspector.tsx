@@ -21,30 +21,29 @@ export const IaCInspector: React.FC<IaCProps> = ({ naiveIaC, wellArchIaC }) => {
 
   return (
     <div className="card-apple" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)', padding: 0, overflow: 'hidden' }}>
-      {/* Header */}
+      {/* Header with filename alone and H2 heading (Audit 3a & 1.15) */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 'var(--space-3) var(--space-4)', borderBottom: '1px solid var(--separator)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <Terminal size={14} color="var(--text-secondary)" />
-          <span style={{ fontSize: 'var(--text-xs)', fontWeight: 600, color: 'var(--text-primary)' }}>
-            Infrastructure specification
-          </span>
-          <span style={{ fontSize: 11, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
-            ({snippet.filename})
-          </span>
+          <h2 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}>
+            {snippet.filename}
+          </h2>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
           {/* Segmented Tab */}
-          <div className="segmented-control">
+          <div className="segmented-control" style={{ height: 32, padding: 2 }}>
             <button
               className={`segmented-item ${activeTab === 'well-arch' ? 'active' : ''}`}
               onClick={() => setActiveTab('well-arch')}
+              style={{ minHeight: 28 }}
             >
               Well-Architected
             </button>
             <button
               className={`segmented-item ${activeTab === 'naive' ? 'active' : ''}`}
               onClick={() => setActiveTab('naive')}
+              style={{ minHeight: 28 }}
             >
               Anti-pattern
             </button>
@@ -53,7 +52,7 @@ export const IaCInspector: React.FC<IaCProps> = ({ naiveIaC, wellArchIaC }) => {
           <button
             className="btn-action"
             onClick={handleCopy}
-            style={{ height: 28, fontSize: 11, padding: '0 8px' }}
+            style={{ minHeight: 32, fontSize: 11, padding: '0 10px' }}
             aria-label="Copy code snippet"
           >
             {copied ? <Check size={12} color="var(--status-success)" /> : <Copy size={12} />}
@@ -62,27 +61,30 @@ export const IaCInspector: React.FC<IaCProps> = ({ naiveIaC, wellArchIaC }) => {
         </div>
       </div>
 
-      {/* Code body */}
-      <pre
-        style={{
-          margin: 0,
-          padding: 'var(--space-4)',
-          background: 'var(--bg-canvas)',
-          color: 'var(--text-primary)',
-          fontFamily: 'var(--font-mono)',
-          fontSize: 12,
-          lineHeight: 1.6,
-          overflowX: 'auto',
-          maxHeight: 220
+      {/* Code Block with Monospace reserved for code */}
+      <pre 
+        style={{ 
+          margin: 0, 
+          padding: 'var(--space-4)', 
+          background: 'var(--bg-canvas)', 
+          color: 'var(--text-primary)', 
+          fontFamily: 'var(--font-mono)', 
+          fontSize: 12, 
+          lineHeight: 1.55, 
+          overflowX: 'auto' 
         }}
       >
         <code>{snippet.code}</code>
       </pre>
 
-      {/* Footer annotation */}
-      <div style={{ padding: '8px var(--space-4)', borderTop: '1px solid var(--separator)', fontSize: 11, color: 'var(--text-secondary)' }}>
-        {snippet.notes}
-      </div>
+      {/* Notes footer */}
+      {snippet.notes && (
+        <div style={{ padding: 'var(--space-3) var(--space-4)', fontSize: 12, color: 'var(--text-secondary)', borderTop: '1px solid var(--separator-subtle)', background: 'var(--bg-surface)' }}>
+          {snippet.notes}
+        </div>
+      )}
     </div>
   );
 };
+
+export default IaCInspector;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   ArrowRight, 
   Split, 
@@ -13,13 +13,10 @@ import {
   ShieldCheck,
   AlertOctagon,
   RefreshCw,
-  Gauge,
-  Sliders,
   Flame,
   ShieldAlert,
   Skull,
-  DollarSign,
-  TrendingDown
+  DollarSign
 } from 'lucide-react';
 import { ArchitectureNode, ArchitectureSpec, ChaosPhase, ViewMode } from '../types';
 import { AwsServiceIcon } from './AwsServiceIcon';
@@ -76,36 +73,35 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
     let effectiveNodes = [...nodes];
 
     // DYNAMIC AUTO-SCALING DEMO:
-    // If high load is applied to Well-Architected, dynamically spawn 2 new container/EC2 nodes across Multi-AZ subnets!
     if (isWellArch && (isHighLoad || activeAttack === 'ddos')) {
       effectiveNodes.push(
         {
           id: 'dyn-scale-node-1',
           name: 'App Worker 2 (Auto-Scaled)',
           type: 'compute',
-          service: 'Amazon EC2 (c7g Graviton3)',
+          service: 'Amazon EC2 (c7g Graviton ARM)',
           tier: 'private',
           az: 'us-east-1a',
           status: 'healthy',
-          description: 'Horizontally scaled Graviton3 worker spawned by Auto Scaling Group in response to traffic surge',
+          description: 'Horizontally scaled Graviton worker spawned by Auto Scaling Group in response to traffic surge',
           configDetails: {
-            specs: 'c7g.xlarge (Graviton3 ARM64) auto-spawned in Private Subnet A',
+            specs: 'c7g.xlarge (Graviton ARM64) auto-spawned in Private Subnet A',
             securityPolicy: 'Isolated Security Group (Inbound from ALB only)',
             costProfile: 'Elastic pay-per-use (shuts down when surge recedes)',
-            wafAdvantage: 'Zero dropped transactions during 100k surge'
+            wafAdvantage: 'Zero dropped transactions during surge'
           }
         },
         {
           id: 'dyn-scale-node-2',
           name: 'App Worker 3 (Auto-Scaled)',
           type: 'compute',
-          service: 'Amazon EC2 (c7g Graviton3)',
+          service: 'Amazon EC2 (c7g Graviton ARM)',
           tier: 'private',
           az: 'us-east-1b',
           status: 'healthy',
-          description: 'Horizontally scaled Graviton3 worker spawned in AZ-b for cross-zone load balancing',
+          description: 'Horizontally scaled Graviton worker spawned in AZ-b for cross-zone load balancing',
           configDetails: {
-            specs: 'c7g.xlarge (Graviton3 ARM64) auto-spawned in Private Subnet B',
+            specs: 'c7g.xlarge (Graviton ARM64) auto-spawned in Private Subnet B',
             securityPolicy: 'Isolated Security Group (Inbound from ALB only)',
             costProfile: 'Elastic pay-per-use',
             wafAdvantage: 'High-availability cross-zone survivability'
@@ -148,7 +144,6 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
   // Render dynamic animated packet conduits between tiers
   const renderInterTierConduit = (isWellArch: boolean, tierCode: string) => {
     if (!isWellArch) {
-      // ANTI-PATTERN CONDUIT: Single constricted line, drops packets under load or attack
       const isDropping = isChaos || isHighLoad || activeAttack !== 'none';
       return (
         <div className="inter-tier-conduit anti-pattern-conduit">
@@ -159,105 +154,46 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               strokeWidth={isDropping ? 3.5 : 2} 
               strokeDasharray={isDropping ? '4 3' : '2 2'} 
             />
-            
             {trafficActive && !isChaos && (
-              <>
-                <circle cx="200" cy="4" r={isHighLoad ? 4 : 2.5} fill={isHighLoad ? '#FF453A' : '#FF9F0A'}>
-                  <animate attributeName="cy" from="0" to="34" dur={animDuration(2.0)} repeatCount="indefinite" />
-                </circle>
-                {isHighLoad && (
-                  <circle cx="204" cy="20" r="3" fill="#FF453A" opacity="0.9">
-                    <animate attributeName="cx" from="200" to="240" dur="0.8s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" from="1" to="0" dur="0.8s" repeatCount="indefinite" />
-                  </circle>
-                )}
-              </>
+              <circle cx="200" cy="17" r={isHighLoad ? 3 : 2.5} fill="#FF9F0A">
+                <animate attributeName="cy" from="0" to="34" dur={animDuration(1.4)} repeatCount="indefinite" />
+              </circle>
             )}
-
             {isDropping && (
-              <g>
-                <circle cx="200" cy="17" r="4.5" fill="#FF453A" />
-                <text x="216" y="21" fill="#FF453A" fontSize="9" fontFamily="var(--font-mono)" fontWeight="700">
-                  {isChaos ? 'DROP 100% (504)' : isHighLoad ? 'QUEUE OVERFLOW' : 'EXHAUSTED'}
-                </text>
-              </g>
+              <text x="215" y="20" fill="#FF453A" fontSize="10" fontFamily="var(--font-mono)" fontWeight="700">
+                {isChaos ? 'DROP (0%)' : 'CONGESTED'}
+              </text>
             )}
           </svg>
-
-          <div className="conduit-hud-label">
-            <span className={isDropping ? 'text-danger' : 'text-muted'}>
-              {isChaos ? 'SPOF Broken • Single Point of Failure Collapsed' : isHighLoad ? 'Queue Full • Memory Leak • Dropping 28% Requests' : 'Direct Synchronous Unbuffered Coupling'}
-            </span>
-          </div>
         </div>
       );
     }
 
-    // WELL-ARCHITECTED CONDUIT: Dual Multi-AZ Parallel Lanes, Auto-Scaling
     return (
       <div className="inter-tier-conduit well-arch-conduit">
         <svg width="100%" height="34" viewBox="0 0 400 34" className="conduit-svg" preserveAspectRatio="none">
-          <defs>
-            <filter id="packet-glow-neon" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="2" />
-              <feMerge>
-                <feMergeNode />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
+          <path d="M 120 0 L 120 34" stroke="rgba(48, 209, 88, 0.45)" strokeWidth="1.5" strokeDasharray="3 2" />
+          <path d="M 200 0 L 200 34" stroke="rgba(48, 209, 88, 0.75)" strokeWidth="2" />
+          <path d="M 280 0 L 280 34" stroke="rgba(48, 209, 88, 0.45)" strokeWidth="1.5" strokeDasharray="3 2" />
 
-          {/* Lane A: AZ-a Multi-AZ Stream */}
-          <path d="M 160 0 C 160 16, 140 18, 140 34" stroke="rgba(41, 151, 255, 0.45)" strokeWidth={isHighLoad ? 3 : 2} strokeDasharray="3 3" fill="none" />
-          
-          {/* Lane B: AZ-b Multi-AZ Stream */}
-          <path d="M 240 0 C 240 16, 260 18, 260 34" stroke="rgba(48, 209, 88, 0.45)" strokeWidth={isHighLoad ? 3 : 2} strokeDasharray="3 3" fill="none" />
-
-          {/* Center Spine */}
-          <line x1="200" y1="0" x2="200" y2="34" stroke="rgba(255, 255, 255, 0.2)" strokeWidth="1" strokeDasharray="2 2" />
-
-          {/* Flowing Laser Particles Lane A */}
           {trafficActive && (
-            <circle cx="0" cy="0" r={isHighLoad ? 4 : 3} fill="#2997FF" filter="url(#packet-glow-neon)">
-              <animateMotion path="M 160 0 C 160 16, 140 18, 140 34" dur={animDuration(1.0)} repeatCount="indefinite" />
-            </circle>
-          )}
-
-          {/* Flowing Laser Particles Lane B */}
-          {trafficActive && (
-            <circle cx="0" cy="0" r={isHighLoad ? 4 : 3} fill="#30D158" filter="url(#packet-glow-neon)">
-              <animateMotion path="M 240 0 C 240 16, 260 18, 260 34" dur={animDuration(1.0)} begin="0.35s" repeatCount="indefinite" />
-            </circle>
-          )}
-
-          {/* High Load Wave Packets */}
-          {trafficActive && isHighLoad && (
             <>
-              <circle cx="0" cy="0" r="3.5" fill="#FF9900" filter="url(#packet-glow-neon)">
-                <animateMotion path="M 160 0 C 160 16, 140 18, 140 34" dur={animDuration(0.5)} repeatCount="indefinite" />
+              <circle cx="120" cy="17" r="2.5" fill="#30D158">
+                <animate attributeName="cy" from="0" to="34" dur={animDuration(0.9)} repeatCount="indefinite" />
               </circle>
-              <circle cx="0" cy="0" r="3.5" fill="#FFFFFF" filter="url(#packet-glow-neon)">
-                <animateMotion path="M 240 0 C 240 16, 260 18, 260 34" dur={animDuration(0.5)} begin="0.2s" repeatCount="indefinite" />
+              <circle cx="200" cy="17" r="2.5" fill="#30D158">
+                <animate attributeName="cy" from="0" to="34" dur={animDuration(0.7)} repeatCount="indefinite" />
+              </circle>
+              <circle cx="280" cy="17" r="2.5" fill="#30D158">
+                <animate attributeName="cy" from="0" to="34" dur={animDuration(1.1)} repeatCount="indefinite" />
               </circle>
             </>
           )}
 
-          {/* Active Auto-Heal or Resilience Tag */}
-          {(isChaos || activeAttack !== 'none') && (
-            <g>
-              <rect x="145" y="8" width="110" height="18" rx="4" fill="rgba(48, 209, 88, 0.2)" stroke="#30D158" strokeWidth="1" />
-              <text x="200" y="21" fill="#30D158" fontSize="9" fontFamily="var(--font-mono)" fontWeight="700" textAnchor="middle">
-                {activeAttack === 'ransomware' ? 'OBJECT LOCK SAFE' : activeAttack === 'ddos' ? 'SHIELD PROTECTED' : 'MULTI-AZ HEALED'}
-              </text>
-            </g>
-          )}
+          <text x="212" y="20" fill="#30D158" fontSize="10" fontFamily="var(--font-mono)" fontWeight="600">
+            {tierCode === 'ingress' ? 'TLS 1.3 · VPC BACKBONE' : 'PRIVATE BACKBONE'}
+          </text>
         </svg>
-
-        <div className="conduit-hud-label">
-          <span className="text-success">
-            {isHighLoad ? 'Auto-Scaled Multi-AZ Ingress: 0 Dropped Packets • ALB Balanced' : isChaos ? 'Target Group Health-Check: Traffic Diverted to Healthy AZ (< 300ms)' : 'Multi-AZ Load Balanced Stream (Encrypted TLS 1.3)'}
-          </span>
-        </div>
       </div>
     );
   };
@@ -266,13 +202,14 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
     tierGroup: { title: string; nodes: ArchitectureNode[]; tierCode: string },
     isWellArch: boolean
   ) => {
+    // Exactly match Terraform CIDRs & 3 AZs (P0 Fix 2.4 & 2.5)
     const cidrHint = !isWellArch
       ? 'Flat Un-segmented VPC (10.0.0.0/16)'
       : tierGroup.tierCode === 'ingress'
-      ? 'Public Subnets: 10.0.1.0/24 (AZ-a) & 10.0.2.0/24 (AZ-b)'
+      ? 'Public Subnets: 10.0.1.0/24 (AZ-a), 10.0.2.0/24 (AZ-b), 10.0.3.0/24 (AZ-c)'
       : tierGroup.tierCode === 'compute'
-      ? 'Private App Subnets: 10.0.10.0/24 (AZ-a) & 10.0.11.0/24 (AZ-b)'
-      : 'Isolated Data Subnets: 10.0.20.0/24 (Multi-AZ Encrypted)';
+      ? 'Private App Subnets: 10.0.11.0/24 (AZ-a), 10.0.12.0/24 (AZ-b), 10.0.13.0/24 (AZ-c)'
+      : 'Isolated Data Subnets: 10.0.21.0/24 (AZ-a), 10.0.22.0/24 (AZ-b), 10.0.23.0/24 (AZ-c)';
 
     return (
       <div 
@@ -299,6 +236,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             const isHealedWellArch = isWellArch && (isChaos || activeAttack !== 'none');
             const isOverloaded = !isWellArch && (isHighLoad || activeAttack === 'ddos');
             const isDynamicScaled = isWellArch && node.id.startsWith('dyn-scale');
+            const isExposedDb = !isWellArch && (node.type === 'database' || node.service?.includes('MySQL') || node.configDetails?.securityPolicy?.includes('3306'));
 
             return (
               <div
@@ -310,9 +248,9 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
                 }}
                 role="button"
                 tabIndex={0}
-                title="Click to view deep technical specs, IAM isolation & cost breakdown"
+                title="Click to view technical specs, IAM isolation & cost breakdown"
               >
-                {/* Official AWS Service Icon */}
+                {/* AWS Service Icon */}
                 <div className="node-icon-wrapper">
                   <AwsServiceIcon service={node.service || node.name} size={30} />
                   <span className={`node-status-dot ${isFailed ? 'dot-failed' : isHealedWellArch ? 'dot-healed' : ''}`} />
@@ -332,6 +270,17 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
                 {node.isSPOF && (
                   <span className="node-spof-badge">
                     <AlertOctagon size={10} /> SPOF
+                  </span>
+                )}
+
+                {/* Database Public Ingress Security Group Tag (P1 Fix 2.9) */}
+                {isExposedDb && (
+                  <span 
+                    className="node-spof-badge" 
+                    style={{ background: 'rgba(255, 69, 58, 0.22)', color: '#FF453A', borderColor: 'rgba(255, 69, 58, 0.45)' }}
+                    title="Security Group allows direct 0.0.0.0/0 ingress on port 3306"
+                  >
+                    0.0.0.0/0 :3306
                   </span>
                 )}
 
@@ -356,9 +305,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
 
   return (
     <div className="stage-master-container" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-      {/* =========================================================================
-          INTERACTIVE ARCHITECTURE STRESS-TEST & DISASTER SANDBOX (EXCITING CONTROLS)
-          ========================================================================= */}
+      {/* Simulation Sandbox Bar */}
       <div className="simulation-sandbox-bar">
         {/* Top Row: User Load Slider & Presets */}
         <div className="sandbox-top-row">
@@ -367,7 +314,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               <Activity size={14} color="#2997FF" /> Live Traffic Load Simulator
             </span>
             <span className="stage-live-indicator">
-              <span className="pulse-circle" /> LIVE ENGINE
+              <span className="pulse-circle" /> Simulated
             </span>
           </div>
 
@@ -388,43 +335,47 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               aria-label="Adjust concurrent user traffic load"
             />
             <div className="traffic-readout">
-              👥 {userLoad.toLocaleString()} Concurrent Users
+              {userLoad.toLocaleString()} Concurrent Users
             </div>
           </div>
 
-          {/* Quick Presets */}
+          {/* Quick Presets with min 32px height and no raw emojis (P1 Fix 1.21 & 3a) */}
           <div className="sandbox-presets-row">
             <button
               className={`preset-chip ${userLoad === 1000 ? 'active' : ''}`}
               onClick={() => { soundFX.playClick(); setUserLoad(1000); setActiveAttack('none'); }}
+              style={{ minHeight: 32 }}
             >
-              ☕ Normal (1k)
+              Baseline (1k)
             </button>
             <button
               className={`preset-chip ${userLoad === 25000 ? 'active' : ''}`}
               onClick={() => { soundFX.playClick(); setUserLoad(25000); }}
+              style={{ minHeight: 32 }}
             >
-              ⚡ Flash Sale (25k)
+              Surge (25k)
             </button>
             <button
               className={`preset-chip ${userLoad === 100000 ? 'danger-active' : ''}`}
               onClick={() => { soundFX.playChaosAlarm(); setUserLoad(100000); }}
+              style={{ minHeight: 32 }}
             >
-              🚀 Black Friday (100k)
+              Peak Load (100k)
             </button>
           </div>
         </div>
 
-        {/* Bottom Row: Chaos Disaster Scenarios & Controls */}
+        {/* Bottom Row: Chaos Disaster Scenarios */}
         <div className="disaster-attacks-row">
           <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.4px', display: 'flex', alignItems: 'center', gap: 5 }}>
-            <Flame size={12} color="#FF453A" /> Inject Disaster Attack:
+            <Flame size={12} color="#FF453A" /> Inject Disaster Event:
           </span>
 
           <button
             className={`disaster-attack-btn ${activeAttack === 'az-outage' ? 'active' : ''}`}
             onClick={() => triggerAttack('az-outage')}
             title="Simulate complete power outage in us-east-1a Availability Zone"
+            style={{ minHeight: 32 }}
           >
             <AlertOctagon size={12} />
             <span>AZ-a Power Failure</span>
@@ -434,6 +385,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             className={`disaster-attack-btn ${activeAttack === 'ransomware' ? 'active' : ''}`}
             onClick={() => triggerAttack('ransomware')}
             title="Simulate malicious ransomware wiper deleting S3 and EBS data"
+            style={{ minHeight: 32 }}
           >
             <Skull size={12} />
             <span>Ransomware Wiper Attack</span>
@@ -443,6 +395,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             className={`disaster-attack-btn ${activeAttack === 'ddos' ? 'active' : ''}`}
             onClick={() => triggerAttack('ddos')}
             title="Simulate 500,000 requests/sec SYN flood attack"
+            style={{ minHeight: 32 }}
           >
             <ShieldAlert size={12} />
             <span>500k SYN Flood DDoS</span>
@@ -452,7 +405,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             className={`disaster-attack-btn ${activeAttack === 'bill-shock' ? 'active' : ''}`}
             onClick={() => triggerAttack('bill-shock')}
             title="Simulate runaway over-provisioned cloud bill shock"
-            style={{ color: '#FF9F0A', borderColor: 'rgba(255, 159, 10, 0.3)', background: 'rgba(255, 159, 10, 0.08)' }}
+            style={{ color: '#FF9F0A', borderColor: 'rgba(255, 159, 10, 0.3)', background: 'rgba(255, 159, 10, 0.08)', minHeight: 32 }}
           >
             <DollarSign size={12} />
             <span>FinOps Bill Shock</span>
@@ -462,7 +415,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             <button
               className="btn-action"
               onClick={() => { soundFX.playHealChime(); setActiveAttack('none'); }}
-              style={{ fontSize: 11, height: 26, marginLeft: 'auto', gap: 4 }}
+              style={{ fontSize: 11, minHeight: 32, marginLeft: 'auto', gap: 4 }}
             >
               <RefreshCw size={11} /> Reset Attack State
             </button>
@@ -470,12 +423,12 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
         </div>
       </div>
 
-      {/* Stage Layout Bar & View Modes */}
+      {/* Stage Layout Bar & View Modes (Clean concise label per 3a) */}
       <div className="stage-controls-bar">
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', fontWeight: 600 }}>
-            Side-by-Side Topology Comparison (select any component to inspect)
-          </span>
+          <h2 style={{ fontSize: 'var(--text-base)', color: 'var(--text-primary)', fontWeight: 600 }}>
+            Architecture
+          </h2>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', flexWrap: 'wrap' }}>
@@ -486,33 +439,33 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               soundFX.playClick();
               setTrafficActive(!trafficActive);
             }}
-            style={{ height: 28, fontSize: 11, padding: '0 8px', gap: 5 }}
+            style={{ minHeight: 32, fontSize: 11, padding: '0 10px', gap: 5 }}
             title="Toggle live packet stream simulation"
           >
             {trafficActive ? <Pause size={11} /> : <Play size={11} />}
             <span className="btn-label-desktop">{trafficActive ? 'Stream Active' : 'Stream Paused'}</span>
           </button>
 
-          {/* Speed Multiplier */}
-          <div className="segmented-control" title="Simulation Speed">
+          {/* Speed Multiplier - Min 32px height */}
+          <div className="segmented-control" title="Simulation Speed" style={{ height: 32, padding: 2 }}>
             <button
               className={`segmented-item ${trafficSpeed === 1 ? 'active' : ''}`}
               onClick={() => { soundFX.playClick(); setTrafficSpeed(1); }}
-              style={{ fontSize: 10, padding: '2px 6px' }}
+              style={{ fontSize: 11, padding: '0 8px', minHeight: 28 }}
             >
               1x
             </button>
             <button
               className={`segmented-item ${trafficSpeed === 2 ? 'active' : ''}`}
               onClick={() => { soundFX.playClick(); setTrafficSpeed(2); }}
-              style={{ fontSize: 10, padding: '2px 6px' }}
+              style={{ fontSize: 11, padding: '0 8px', minHeight: 28 }}
             >
               2x
             </button>
             <button
               className={`segmented-item ${trafficSpeed === 4 ? 'active' : ''}`}
               onClick={() => { soundFX.playClick(); setTrafficSpeed(4); }}
-              style={{ fontSize: 10, padding: '2px 6px' }}
+              style={{ fontSize: 11, padding: '0 8px', minHeight: 28 }}
             >
               4x
             </button>
@@ -525,15 +478,15 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               soundFX.playClick();
               setShowSubnetBoundaries(!showSubnetBoundaries);
             }}
-            style={{ height: 28, fontSize: 11, padding: '0 8px' }}
+            style={{ minHeight: 32, fontSize: 11, padding: '0 10px' }}
             title="Show / hide VPC Subnet isolation boundaries"
           >
             <Layers size={11} />
             <span className="btn-label-desktop">Subnet Tiers</span>
           </button>
 
-          {/* Apple Segmented View Toggle */}
-          <div className="segmented-control" role="tablist">
+          {/* View Toggle */}
+          <div className="segmented-control" role="tablist" style={{ height: 32, padding: 2 }}>
             <button
               className={`segmented-item ${viewMode === 'split' ? 'active' : ''}`}
               onClick={() => {
@@ -542,6 +495,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               }}
               role="tab"
               aria-selected={viewMode === 'split'}
+              style={{ minHeight: 28 }}
             >
               <Split size={12} />
               <span>Side-by-side</span>
@@ -554,6 +508,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               }}
               role="tab"
               aria-selected={viewMode === 'naive-only'}
+              style={{ minHeight: 28 }}
             >
               <Eye size={12} />
               <span>Anti-pattern</span>
@@ -566,6 +521,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               }}
               role="tab"
               aria-selected={viewMode === 'well-arch-only'}
+              style={{ minHeight: 28 }}
             >
               <Eye size={12} />
               <span>Well-Architected</span>
@@ -574,34 +530,34 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
         </div>
       </div>
 
-      {/* Side-by-Side Dual Stage Grid */}
-      <div className={`dual-stage-grid ${viewMode === 'split' ? 'split-view' : 'single-view'}`}>
+      {/* Side-by-Side Dual Stage Grid with Equal Heights (P2 Fix 1.22) */}
+      <div className={`dual-stage-grid ${viewMode === 'split' ? 'split-view' : 'single-view'}`} style={{ alignItems: 'stretch' }}>
         {/* Anti-Pattern Stage Panel */}
         {(viewMode === 'split' || viewMode === 'naive-only') && (
-          <div className={`stage-panel anti-pattern-panel ${isChaos ? 'failed' : ''}`}>
+          <div className={`stage-panel anti-pattern-panel ${isChaos ? 'failed' : ''}`} style={{ display: 'flex', flexDirection: 'column' }}>
             {/* Header */}
             <div className="panel-header">
               <div className="panel-label-group">
                 <span className="tag-pill naive">Anti-pattern</span>
-                <span style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--text-primary)' }}>
+                <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--text-primary)' }}>
                   {naive.name}
-                </span>
+                </h3>
               </div>
               <div className="panel-metrics-pill" style={{ color: 'var(--status-danger)' }}>
                 ${naive.monthlyCostEst}/mo • SLA {naive.availabilitySLA}
               </div>
             </div>
 
-            {/* Live Comparative Telemetry HUD */}
+            {/* Simulated Comparative Telemetry HUD */}
             <div className="stage-telemetry-hud bad-hud">
               <div className="hud-metric">
-                <span className="hud-label">Server CPU Load</span>
+                <span className="hud-label">Server CPU (Simulated)</span>
                 <span className={`hud-val ${isHighLoad ? 'text-danger' : 'text-warning'}`}>
-                  {isChaos ? 'CPU 0% (OFFLINE)' : isExtremeLoad ? '99% (OVERHEATED 🔥)' : isHighLoad ? '78% (CHOKED)' : '24%'}
+                  {isChaos ? 'CPU 0% (OFFLINE)' : isExtremeLoad ? '99% (OVERHEATED)' : isHighLoad ? '78% (CHOKED)' : '24%'}
                 </span>
               </div>
               <div className="hud-metric">
-                <span className="hud-label">Live Latency</span>
+                <span className="hud-label">Latency (Simulated)</span>
                 <span className="hud-val text-danger">
                   {isChaos ? 'TIMEOUT (∞)' : isExtremeLoad ? '4,800 ms (504)' : isHighLoad ? '1,840 ms' : '385 ms'}
                 </span>
@@ -635,8 +591,8 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             )}
 
             {/* Topology Box with Multi-Tier Architectural Lanes */}
-            <div className="topology-box">
-              <div className="tier-stack-container">
+            <div className="topology-box" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+              <div className="tier-stack-container" style={{ flex: 1 }}>
                 {groupNodesByTier(naive.nodes, false).map((tierGroup, idx) => (
                   <React.Fragment key={tierGroup.tierCode}>
                     {renderTierGroup(tierGroup, false)}
@@ -648,7 +604,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               </div>
 
               {/* Data Stream Status Bar */}
-              <div className="flow-stream-bar">
+              <div className="flow-stream-bar" style={{ marginTop: 'auto' }}>
                 <span>{isChaos ? 'Connection timeout / server uncontactable' : isHighLoad ? 'Queue saturated • Dropping transactions' : 'Direct unbuffered connection'}</span>
                 <svg width="60" height="12" viewBox="0 0 60 12">
                   <line x1="0" y1="6" x2="60" y2="6" stroke="var(--separator)" strokeWidth="1" strokeDasharray="3 3" />
@@ -672,7 +628,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             </div>
 
             {/* Checklist */}
-            <ul className="calm-list">
+            <ul className="calm-list" style={{ marginTop: 'auto' }}>
               {naive.bulletPoints.map((pt, i) => (
                 <li key={i} className="calm-item">
                   <X size={14} color="var(--status-danger)" />
@@ -685,30 +641,30 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
 
         {/* Well-Architected Stage Panel */}
         {(viewMode === 'split' || viewMode === 'well-arch-only') && (
-          <div className="stage-panel well-arch-panel">
+          <div className="stage-panel well-arch-panel" style={{ display: 'flex', flexDirection: 'column' }}>
             {/* Header */}
             <div className="panel-header">
               <div className="panel-label-group">
                 <span className="tag-pill well-arch">Well-Architected</span>
-                <span style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--text-primary)' }}>
+                <h3 style={{ fontSize: 'var(--text-sm)', fontWeight: 600, color: 'var(--text-primary)' }}>
                   {wellArch.name}
-                </span>
+                </h3>
               </div>
               <div className="panel-metrics-pill" style={{ color: 'var(--status-success)' }}>
                 ${wellArch.monthlyCostEst}/mo • SLA {wellArch.availabilitySLA}
               </div>
             </div>
 
-            {/* Live Comparative Telemetry HUD */}
+            {/* Simulated Comparative Telemetry HUD */}
             <div className="stage-telemetry-hud good-hud">
               <div className="hud-metric">
-                <span className="hud-label">Server Fleet Load</span>
+                <span className="hud-label">Server Fleet (Simulated)</span>
                 <span className="hud-val text-success">
                   {isHighLoad ? '32% (BALANCED ACROSS 3 AZs)' : '18%'}
                 </span>
               </div>
               <div className="hud-metric">
-                <span className="hud-label">Live Latency</span>
+                <span className="hud-label">Latency (Simulated)</span>
                 <span className="hud-val text-success">
                   {isChaos ? '21 ms (HEALED)' : isHighLoad ? '18 ms' : '15 ms'}
                 </span>
@@ -740,8 +696,8 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             )}
 
             {/* Topology Box with Multi-Tier Architectural Lanes */}
-            <div className="topology-box">
-              <div className="tier-stack-container">
+            <div className="topology-box" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+              <div className="tier-stack-container" style={{ flex: 1 }}>
                 {groupNodesByTier(wellArch.nodes, true).map((tierGroup, idx) => (
                   <React.Fragment key={tierGroup.tierCode}>
                     {renderTierGroup(tierGroup, true)}
@@ -753,7 +709,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               </div>
 
               {/* Data Stream Status Bar */}
-              <div className="flow-stream-bar" style={{ color: 'var(--status-success)' }}>
+              <div className="flow-stream-bar" style={{ color: 'var(--status-success)', marginTop: 'auto' }}>
                 <span>{isChaos ? 'Health check failover active' : isHighLoad ? 'Horizontal auto-scale across Multi-AZ subnets' : 'Multi-AZ encrypted request stream'}</span>
                 <svg width="60" height="12" viewBox="0 0 60 12">
                   <line x1="0" y1="6" x2="60" y2="6" stroke="var(--separator)" strokeWidth="1" strokeDasharray="3 3" />
@@ -774,7 +730,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             </div>
 
             {/* Checklist */}
-            <ul className="calm-list">
+            <ul className="calm-list" style={{ marginTop: 'auto' }}>
               {wellArch.bulletPoints.map((pt, i) => (
                 <li key={i} className="calm-item">
                   <Check size={14} color="var(--status-success)" />
@@ -788,3 +744,5 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
     </div>
   );
 };
+
+export default DualArchitectureStage;

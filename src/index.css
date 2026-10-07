@@ -4,18 +4,18 @@
    ========================================================================== */
 
 :root {
-  /* Font Stacks */
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", system-ui, sans-serif;
-  --font-mono: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  /* Font Stacks (Audit 1.12) */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  /* Typography Scale */
+  /* 5-Step Typography Scale per Audit 3b (12 / 14 / 16 / 20 / 32) */
   --text-xs: 12px;
   --text-sm: 14px;
-  --text-base: 17px;
-  --text-lg: 21px;
-  --text-xl: 28px;
-  --text-2xl: 34px;
-  --text-3xl: 48px;
+  --text-base: 16px;
+  --text-lg: 20px;
+  --text-xl: 24px;
+  --text-2xl: 32px;
+  --text-3xl: 40px;
 
   /* Spacing Scale (8pt grid, 4pt fine-tuning) */
   --space-1: 4px;
@@ -28,7 +28,7 @@
   --space-16: 64px;
 
   /* Concentric Radii */
-  --radius-outer: 18px;
+  --radius-outer: 16px;
   --radius-inner: 12px;
   --radius-control: 8px;
   --radius-pill: 9999px;
@@ -38,16 +38,16 @@
   --duration-fast: 180ms;
   --duration-normal: 280ms;
 
-  /* DARK THEME (Pure OLED Pitch Black Standard) */
-  --bg-canvas: #000000;
-  --bg-surface: #000000;
-  --bg-elevated: #060608;
-  --bg-subtle: #0B0B0E;
-  --text-primary: #FFFFFF;
-  --text-secondary: #98989F;
-  --text-tertiary: #6E6E73;
-  --separator: rgba(255, 255, 255, 0.10);
-  --separator-subtle: rgba(255, 255, 255, 0.05);
+  /* DARK THEME (Refined Slate-Black per Audit 3b: #0b0d10 page, #14171c cards, #22262d borders) */
+  --bg-canvas: #0b0d10;
+  --bg-surface: #14171c;
+  --bg-elevated: #1a1e26;
+  --bg-subtle: #181d24;
+  --text-primary: #F3F4F6;
+  --text-secondary: #9CA3AF;
+  --text-tertiary: #6B7280;
+  --separator: #22262d;
+  --separator-subtle: #1c2027;
   --accent: #2997FF;
   --accent-hover: #147CE5;
   --accent-subtle: rgba(41, 151, 255, 0.14);
@@ -57,29 +57,13 @@
   --status-success-subtle: rgba(48, 209, 88, 0.14);
   --status-warning: #FF9F0A;
   --status-warning-subtle: rgba(255, 159, 10, 0.14);
-  --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.9);
+  --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
-/* LIGHT THEME */
-body.theme-light {
-  --bg-canvas: #F5F5F7;
-  --bg-surface: #FFFFFF;
-  --bg-elevated: #FFFFFF;
-  --bg-subtle: #E8E8ED;
-  --text-primary: #1D1D1F;
-  --text-secondary: #6E6E73;
-  --text-tertiary: #86868B;
-  --separator: rgba(0, 0, 0, 0.08);
-  --separator-subtle: rgba(0, 0, 0, 0.04);
-  --accent: #0071E3;
-  --accent-hover: #0077ED;
-  --accent-subtle: rgba(0, 113, 227, 0.08);
-  --status-danger: #FF3B30;
-  --status-danger-subtle: rgba(255, 59, 48, 0.08);
-  --status-success: #34C759;
-  --status-success-subtle: rgba(52, 199, 89, 0.08);
-  --status-warning: #FF9500;
-  --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.06);
+/* Keyboard focus-visible style per Audit 1.14 */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* Base Reset */
@@ -1243,7 +1227,7 @@ body.theme-light .architecture-tier-block.with-boundary {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(20px);
   z-index: 100;
   display: flex;
@@ -1994,4 +1978,131 @@ body.theme-light .architecture-tier-block.with-boundary {
   background: linear-gradient(135deg, rgba(255, 153, 0, 0.35), rgba(255, 153, 0, 0.12)) !important;
   border-color: rgba(255, 153, 0, 0.7) !important;
 }
+
+/* ==========================================================================
+   AUDITED POLISH STYLES: Mobile Header, Clean Footer & Click Target Scales
+   ========================================================================== */
+
+/* Header Controls Desktop / Mobile */
+.header-controls-desktop {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.header-controls-mobile {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.mobile-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 240px;
+  background: var(--bg-surface);
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-inner);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  padding: 6px;
+  z-index: 99;
+}
+
+@media (max-width: 900px) {
+  .header-controls-desktop {
+    display: none !important;
+  }
+  .header-controls-mobile {
+    display: flex !important;
+  }
+  .brand-meta-wrapper {
+    display: none !important;
+  }
+  .app-header {
+    padding: 0 12px;
+  }
+}
+
+/* Enforce Minimum Click Targets (Audit 1.21: 32px desktop, 44px mobile) */
+button, 
+.btn-action, 
+.preset-chip, 
+.disaster-attack-btn,
+.segmented-item {
+  min-height: 32px;
+  box-sizing: border-box;
+}
+
+@media (pointer: coarse), (max-width: 640px) {
+  button, 
+  .btn-action, 
+  .segmented-item, 
+  .preset-chip, 
+  .disaster-attack-btn {
+    min-height: 44px;
+  }
+}
+
+/* Bottom Padding for Main Content to clear Minimized Dock (Audit 1.8) */
+main.app-content {
+  padding-bottom: 120px !important;
+}
+
+/* Clean Educational Presenter Footer (Audit 1.6, 2.1, 2.2, 3b) */
+.executive-footer-clean {
+  margin-top: var(--space-8);
+  padding: var(--space-4) var(--space-6);
+  background: var(--bg-surface);
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-inner);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.footer-clean-authors-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  flex-wrap: wrap;
+}
+
+.footer-author-name {
+  color: var(--text-primary);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.footer-separator {
+  color: var(--text-tertiary);
+}
+
+.footer-divider-bullet {
+  color: var(--separator);
+  margin: 0 2px;
+}
+
+.footer-academic-meta {
+  color: var(--text-secondary);
+}
+
+.footer-year {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.footer-clean-disclaimer {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
 

@@ -2,7 +2,7 @@ import { DomainData } from '../../types';
 
 export const securityDomain: DomainData = {
   id: 'securing-applications',
-  number: 6,
+  number: 7,
   title: 'Securing Applications & Data Access',
   subtitle: 'IAM Roles (STS), AWS Secrets Manager, KMS CMK, & AWS WAF vs. Root Keys & Hardcoded Secrets',
   category: 'Security & Governance',

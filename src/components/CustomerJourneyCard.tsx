@@ -27,11 +27,11 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <div>
           <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', fontWeight: 500 }}>
-            Architecture context & requirements
+            Architecture context &amp; requirements
           </span>
-          <h3 style={{ fontSize: 'var(--text-lg)', fontWeight: 600, color: 'var(--text-primary)', marginTop: 2 }}>
+          <h2 style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text-primary)', marginTop: 2 }}>
             {customer.clientName}
-          </h3>
+          </h2>
         </div>
 
         {/* Apple Segmented Control */}

@@ -2,7 +2,7 @@ import { DomainData } from '../../types';
 
 export const networkingDomain: DomainData = {
   id: 'networking-environment',
-  number: 4,
+  number: 5,
   title: 'Networking Environment',
   subtitle: '3-Tier Multi-AZ VPC with Private/Isolated Subnets vs. Flat Public Default VPC',
   category: 'Network & Connectivity',

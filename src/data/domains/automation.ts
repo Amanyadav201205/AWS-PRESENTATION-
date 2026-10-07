@@ -2,7 +2,7 @@ import { DomainData } from '../../types';
 
 export const automationDomain: DomainData = {
   id: 'automating-architecture',
-  number: 8,
+  number: 9,
   title: 'Automating the Architecture',
   subtitle: '100% Terraform/CDK GitOps with Drift Detection vs. Manual "ClickOps" Console Changes',
   category: 'Operations & Reliability',
