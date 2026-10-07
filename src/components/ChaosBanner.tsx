@@ -16,16 +16,6 @@ export const ChaosBanner: React.FC<ChaosBannerProps> = ({
   return (
     <div
       className="chaos-banner"
-      style={{
-        background: 'var(--status-danger-subtle)',
-        border: '1px solid rgba(255, 69, 58, 0.3)',
-        borderRadius: 'var(--radius-inner)',
-        padding: 'var(--space-4)',
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'space-between',
-        gap: 'var(--space-4)'
-      }}
       role="alert"
     >
       <div style={{ display: 'flex', gap: 'var(--space-3)' }}>

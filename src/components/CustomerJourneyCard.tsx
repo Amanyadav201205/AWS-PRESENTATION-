@@ -119,7 +119,7 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 'var(--space-3)' }}>
               {customer.challenges.map((c, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 'var(--text-sm)', color: 'var(--text-secondary)' }}>
-                  <span style={{ width: 4, height: 4, borderRadius: '50%', background: 'var(--text-tertiary)', marginTop: 8 }} />
+                  <span className="journey-challenge-bullet" aria-hidden="true" />
                   <span>{c}</span>
                 </div>
               ))}
@@ -204,7 +204,7 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
               Production resilience
             </span>
             <p style={{ fontSize: 'var(--text-sm)', color: 'var(--text-primary)', marginTop: 6, lineHeight: 1.42 }}>
-              Eliminates single points of failure, introduces horizontal elasticity, and right-sizes continuous cloud spend.
+              {wafSummary}
             </p>
           </div>
         </div>
@@ -232,7 +232,7 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
                 {theory.lawOrTheorem.formalStatement}
               </p>
               {theory.lawOrTheorem.mathematicalFormula && (
-                <div style={{ background: '#000000', border: '1px solid var(--separator-subtle)', borderRadius: 'var(--radius-control)', padding: '12px 14px', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)' }}>
+                <div style={{ background: 'var(--bg-canvas)', border: '1px solid var(--separator-subtle)', borderRadius: 'var(--radius-control)', padding: '12px 14px', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)' }}>
                   <LatexFormula
                     formula={theory.lawOrTheorem.mathematicalFormula!}
                     style={{ fontSize: 13, color: 'var(--accent)' }}

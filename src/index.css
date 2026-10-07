@@ -2373,6 +2373,91 @@ body.theme-light .architecture-tier-block.with-boundary {
   color: var(--separator);
 }
 
+/* IaC Inspector: side-by-side line numbers + code */
+.iac-code-wrap {
+  display: flex;
+  overflow-x: auto;
+  background: var(--bg-canvas);
+}
+
+.iac-line-numbers {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4) var(--space-3) var(--space-4) var(--space-4);
+  border-right: 1px solid var(--separator-subtle);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.iac-line-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-quaternary);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.iac-pre {
+  margin: 0;
+  padding: var(--space-4);
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+  flex: 1;
+  white-space: pre;
+}
+
+/* Chaos simulation banner — sits inline inside module content */
+.chaos-banner {
+  background: var(--status-danger-subtle);
+  border: 1px solid rgba(255, 69, 58, 0.3);
+  border-radius: var(--radius-inner);
+  padding: var(--space-4);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+/* Metrics section container */
+.metrics-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Metrics section: heading row */
+.metrics-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+}
+
+.metrics-section-title {
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.metrics-section-subtitle {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+/* Customer journey card: inline challenge bullet */
+.journey-challenge-bullet {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text-tertiary);
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+
 /* ==========================================================================
    AI Copilot & Enterprise Governance Architecture (12 Pillars)
    ========================================================================== */
@@ -2545,6 +2630,14 @@ main.app-content {
 .footer-clean-disclaimer {
   font-size: 11px;
   color: var(--text-tertiary);
+}
+
+.footer-capstone-label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
 
@@ -2763,5 +2856,80 @@ input[type="range"] { min-height: 28px; accent-color: var(--accent); cursor: poi
     border-width: 2px !important;
     border-color: rgba(255, 255, 255, 0.4) !important;
   }
+}
+
+/* ==========================================================================
+   COMPONENT REFINEMENTS
+   ========================================================================== */
+
+/* Metric Section Header */
+.metrics-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-2);
+}
+
+.metrics-section-title {
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  font-weight: 600;
+  margin: 0;
+}
+
+.metrics-section-subtitle {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+/* Metric Delta Arrow — shows improvement direction between naive and well-arch values */
+.metric-cell-arrow {
+  font-size: 11px;
+  color: var(--status-success);
+  opacity: 0.7;
+  flex-shrink: 0;
+  align-self: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* IaC Code Block with Line Numbers */
+.iac-code-wrap {
+  display: flex;
+  background: var(--bg-canvas);
+  overflow-x: auto;
+}
+
+.iac-line-numbers {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4) var(--space-2) var(--space-4) var(--space-3);
+  background: rgba(0, 0, 0, 0.2);
+  border-right: 1px solid var(--separator-subtle);
+  flex-shrink: 0;
+  user-select: none;
+  pointer-events: none;
+}
+
+.iac-line-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-quaternary);
+  line-height: 1.55;
+  text-align: right;
+  min-width: 24px;
+  font-variant-numeric: tabular-nums;
+}
+
+.iac-pre {
+  flex: 1;
+  margin: 0;
+  padding: var(--space-4);
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+  overflow-x: auto;
+  white-space: pre;
 }
 

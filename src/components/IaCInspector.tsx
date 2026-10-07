@@ -61,21 +61,17 @@ export const IaCInspector: React.FC<IaCProps> = ({ naiveIaC, wellArchIaC }) => {
         </div>
       </div>
 
-      {/* Code Block with Monospace reserved for code */}
-      <pre 
-        style={{ 
-          margin: 0, 
-          padding: 'var(--space-4)', 
-          background: 'var(--bg-canvas)', 
-          color: 'var(--text-primary)', 
-          fontFamily: 'var(--font-mono)', 
-          fontSize: 12, 
-          lineHeight: 1.55, 
-          overflowX: 'auto' 
-        }}
-      >
-        <code>{snippet.code}</code>
-      </pre>
+      {/* Code Block with line numbers */}
+      <div className="iac-code-wrap">
+        <div className="iac-line-numbers" aria-hidden="true">
+          {snippet.code.split('\n').map((_, i) => (
+            <span key={i} className="iac-line-num">{i + 1}</span>
+          ))}
+        </div>
+        <pre className="iac-pre">
+          <code>{snippet.code}</code>
+        </pre>
+      </div>
 
       {/* Notes footer */}
       {snippet.notes && (

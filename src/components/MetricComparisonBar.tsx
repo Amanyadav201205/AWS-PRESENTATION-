@@ -7,13 +7,13 @@ interface MetricBarProps {
 
 export const MetricComparisonBar: React.FC<MetricBarProps> = ({ metrics }) => {
   return (
-    <section className="metrics-section" aria-labelledby="metrics-heading" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <h2 id="metrics-heading" style={{ fontSize: 'var(--text-base)', color: 'var(--text-primary)', fontWeight: 600 }}>
-          Before / after
+    <section className="metrics-section" aria-labelledby="metrics-heading">
+      <div className="metrics-section-header">
+        <h2 id="metrics-heading" className="metrics-section-title">
+          Quantitative impact
         </h2>
-        <span style={{ fontSize: 'var(--text-xs)', color: 'var(--text-tertiary)' }}>
-          Direct architectural comparison
+        <span className="metrics-section-subtitle">
+          Anti-pattern → Well-Architected
         </span>
       </div>
 
@@ -23,6 +23,7 @@ export const MetricComparisonBar: React.FC<MetricBarProps> = ({ metrics }) => {
             <span className="metric-cell-label">{m.label}</span>
             <div className="metric-cell-values">
               <span className="val-naive">{m.naiveValue}</span>
+              <span className="metric-cell-arrow" aria-hidden="true">→</span>
               <span className="val-wellarch">{m.wellArchValue}</span>
             </div>
             <p className="metric-cell-caption">{m.explanation}</p>
