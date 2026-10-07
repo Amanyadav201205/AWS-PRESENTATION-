@@ -18,6 +18,9 @@ export default defineConfig({
           if (id.includes('node_modules/katex')) {
             return 'vendor-katex';
           }
+          if (id.includes('node_modules/peerjs') || id.includes('node_modules/qrcode')) {
+            return 'vendor-remote';
+          }
         }
       }
     }

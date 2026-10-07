@@ -11,8 +11,16 @@ import { IaCInspector } from './components/IaCInspector';
 import { ChaosBanner } from './components/ChaosBanner';
 import { AutoPilotBar } from './components/AutoPilotBar';
 import { PresenterFooter } from './components/PresenterFooter';
+import { RemoteStatusBadge } from './components/RemoteStatusBadge';
 import { soundFX } from './utils/soundEffects';
 import { useDialogFocusTrap } from './hooks/useDialogFocusTrap';
+import {
+  StageHostSync,
+  getOrGenerateRoomCode,
+} from './services/presentationRemoteSync';
+
+// Lazy-load ControllerView so it doesn't bloat the stage bundle
+const ControllerView = lazy(() => import('./components/ControllerView').then(m => ({ default: m.ControllerView })));
 
 // Exact id match first, then a prefix match (e.g. #/storage -> storage-layer). Unknown -> -1.
 const findDomainIndexFromHash = (raw: string): number => {
@@ -39,6 +47,18 @@ const NodeDetailModal = lazy(() => import('./components/NodeDetailModal').then(m
 const DRStrategyExplorer = lazy(() => import('./components/DRStrategyExplorer').then(m => ({ default: m.DRStrategyExplorer })));
 
 export function App() {
+  // Detect controller mode from URL: ?mode=controller&room=WAF-XXXX
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlMode = urlParams.get('mode');
+  const urlRoom = urlParams.get('room');
+  if (urlMode === 'controller' && urlRoom) {
+    return (
+      <Suspense fallback={<div style={{ background: 'var(--bg-canvas)', minHeight: '100dvh' }} />}>
+        <ControllerView roomCode={urlRoom.toUpperCase()} />
+      </Suspense>
+    );
+  }
+
   // Parse initial index from hash if available (e.g. #/storage-tiering or #/storage)
   const getInitialIndexFromHash = (): number => Math.max(0, findDomainIndexFromHash(window.location.hash));
 
@@ -66,6 +86,12 @@ export function App() {
   const [isTheoryOpen, setIsTheoryOpen] = useState<boolean>(false);
   const [isAdvisorOpen, setIsAdvisorOpen] = useState<boolean>(false);
   const [isAiGovernanceOpen, setIsAiGovernanceOpen] = useState<boolean>(false);
+
+  // Remote presenter sync (stage host)
+  const [roomCode] = useState(() => getOrGenerateRoomCode());
+  const [remoteSync] = useState(() => new StageHostSync(roomCode));
+  const [remoteConnected, setRemoteConnected] = useState(false);
+  const [remoteDeviceCount, setRemoteDeviceCount] = useState(0);
 
   // Ensure soundFX matches initial audio state
   useEffect(() => {
@@ -184,6 +210,114 @@ export function App() {
     setIsAiGovernanceOpen(false);
     setSelectedNode(null);
   }, []);
+
+  // Incoming remote commands from phones
+  useEffect(() => {
+    const unsub = remoteSync.onCommand((cmd) => {
+      switch (cmd.type) {
+        case 'NEXT_MODULE':
+          if (currentDomainIndex < allDomains.length - 1) {
+            soundFX.playClick();
+            setCurrentDomainIndex(prev => prev + 1);
+          }
+          break;
+        case 'PREV_MODULE':
+          if (currentDomainIndex > 0) {
+            soundFX.playClick();
+            setCurrentDomainIndex(prev => prev - 1);
+          }
+          break;
+        case 'GOTO_MODULE':
+          if (cmd.index !== undefined && cmd.index >= 0 && cmd.index < allDomains.length) {
+            soundFX.playClick();
+            setCurrentDomainIndex(cmd.index);
+          }
+          break;
+        case 'TRIGGER_CHAOS':
+          handleTriggerChaos();
+          break;
+        case 'RESET_CHAOS':
+          handleResetChaos();
+          break;
+        case 'SET_VIEW_MODE':
+          if (cmd.mode) setViewMode(cmd.mode);
+          break;
+        case 'SCROLL_TO':
+          if (cmd.target) {
+            const el = document.getElementById(`section-${cmd.target}`);
+            el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          break;
+        case 'CLOSE_MODALS':
+          closeAllModals();
+          break;
+        case 'OPEN_MODAL':
+          closeAllModals();
+          switch (cmd.modal) {
+            case 'script':       setIsPrompterOpen(true); break;
+            case '6pillars':     setIs6PillarsOpen(true); break;
+            case 'executive':    setIsExecutiveReviewOpen(true); break;
+            case 'stresslab':    setIsStressLabOpen(true); break;
+            case 'latency':      setIsPacketSimulatorOpen(true); break;
+            case 'workloads':    setIsClientSolutionsOpen(true); break;
+            case 'subtopics':    setIsSubtopicLabsOpen(true); break;
+            case 'theory':       setIsTheoryOpen(true); break;
+            case 'advisor':      setIsAdvisorOpen(true); break;
+            case 'governance':   setIsAiGovernanceOpen(true); break;
+          }
+          break;
+      }
+    });
+    return unsub;
+  }, [remoteSync, currentDomainIndex, handleTriggerChaos, handleResetChaos, closeAllModals]);
+
+  // Listen to connection state changes
+  useEffect(() => {
+    const unsub = remoteSync.onConnectionStatus((connected, count) => {
+      setRemoteConnected(connected);
+      setRemoteDeviceCount(count);
+    });
+    return unsub;
+  }, [remoteSync]);
+
+  // Broadcast current stage state to connected phones on every relevant state change
+  useEffect(() => {
+    const anyModalOpen =
+      isPrompterOpen ? 'script' :
+      is6PillarsOpen ? '6pillars' :
+      isExecutiveReviewOpen ? 'executive' :
+      isStressLabOpen ? 'stresslab' :
+      isPacketSimulatorOpen ? 'latency' :
+      isClientSolutionsOpen ? 'workloads' :
+      isSubtopicLabsOpen ? 'subtopics' :
+      isTheoryOpen ? 'theory' :
+      isAdvisorOpen ? 'advisor' :
+      isAiGovernanceOpen ? 'governance' :
+      null;
+
+    remoteSync.broadcastState({
+      currentDomainIndex,
+      currentDomainId: allDomains[currentDomainIndex]?.id ?? '',
+      domainTitle: allDomains[currentDomainIndex]?.title ?? '',
+      domainCategory: allDomains[currentDomainIndex]?.category ?? '',
+      viewMode,
+      chaosPhase,
+      isChaosActive: chaosPhase !== 'idle',
+      displayMode,
+      activeModal: anyModalOpen,
+      elapsedSeconds: 0,
+      connectedDevicesCount: remoteDeviceCount,
+      spotlightTarget: null,
+      latestSpeakerName: null,
+      latestActionNotice: null,
+    });
+  }, [
+    remoteSync, currentDomainIndex, viewMode, chaosPhase, displayMode,
+    remoteDeviceCount,
+    isPrompterOpen, is6PillarsOpen, isExecutiveReviewOpen, isStressLabOpen,
+    isPacketSimulatorOpen, isClientSolutionsOpen, isSubtopicLabsOpen,
+    isTheoryOpen, isAdvisorOpen, isAiGovernanceOpen,
+  ]);
 
   // Keyboard navigation when not in presenter mode or modals
   useEffect(() => {
@@ -310,7 +444,12 @@ export function App() {
               <span className="hero-tag" style={{ fontVariantNumeric: 'tabular-nums' }}>
                 Module {currentDomainIndex + 1} of {allDomains.length} • {activeDomain.category}
               </span>
-              <div style={{ display: 'flex', gap: 8 }}>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <RemoteStatusBadge
+                  roomCode={roomCode}
+                  connectedCount={remoteDeviceCount}
+                  isConnected={remoteConnected}
+                />
                 <button
                   className="btn-action"
                   onClick={() => setIsPrompterOpen(true)}
@@ -335,6 +474,7 @@ export function App() {
           )}
 
           {/* Customer Journey & Requirement Storyline */}
+          <div id="section-journey" />
           <CustomerJourneyCard
             customer={activeDomain.customerRequirement}
             normalPrescription={activeDomain.normalPrescription}
@@ -344,6 +484,7 @@ export function App() {
           />
 
           {/* Dual Architecture Stage */}
+          <div id="section-topology" />
           <DualArchitectureStage
             naive={activeDomain.naive}
             wellArch={activeDomain.wellArch}
@@ -362,19 +503,23 @@ export function App() {
           )}
 
           {/* Quantitative Metric Delta Grid */}
+          <div id="section-metrics" />
           <MetricComparisonBar metrics={activeDomain.metrics} />
 
           {/* Analytics Split: 6-Pillar Radar Scorecard + IaC Inspector */}
+          <div id="section-radar" />
           <div className="analytics-split">
             <PillarRadarChart
               naiveScores={activeDomain.naive.scores}
               wellArchScores={activeDomain.wellArch.scores}
             />
 
-            <IaCInspector
-              naiveIaC={activeDomain.naive.iacSnippet}
-              wellArchIaC={activeDomain.wellArch.iacSnippet}
-            />
+            <div id="section-iac" style={{ display: 'contents' }}>
+              <IaCInspector
+                naiveIaC={activeDomain.naive.iacSnippet}
+                wellArchIaC={activeDomain.wellArch.iacSnippet}
+              />
+            </div>
           </div>
 
           {/* Clean Executive Attribution Footer (P0/P1 Fix 2.1, 2.2, 3b) */}
