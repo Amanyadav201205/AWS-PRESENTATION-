@@ -3,18 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0d10" />
+    <meta name="color-scheme" content="dark" />
     <meta name="description" content="AWS Well-Architected Framework: Interactive side-by-side analysis contrasting single-point-of-failure anti-patterns against resilient, cost-optimized architectures." />
     
     <!-- Open Graph & Social Cards -->
     <meta property="og:title" content="AWS Well-Architected Framework · Interactive Architecture Review" />
     <meta property="og:description" content="Enterprise cloud architecture comparison across all 6 Pillars. Single-AZ anti-patterns vs. Multi-AZ resilient blueprints." />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wafpresentation.vercel.app/" />
+    <meta property="og:image" content="https://wafpresentation.vercel.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Side-by-side comparison of a single-AZ anti-pattern and a multi-AZ Well-Architected design" />
+    <link rel="canonical" href="https://wafpresentation.vercel.app/" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="AWS Well-Architected Framework · Interactive Defense" />
+    <meta name="twitter:title" content="AWS Well-Architected Framework · Interactive Architecture Review" />
+    <meta name="twitter:image" content="https://wafpresentation.vercel.app/og.png" />
     <meta name="twitter:description" content="Side-by-side cloud architecture comparisons, FinOps metrics, and resilience audits." />
 
-    <title>AWS Well-Architected Framework</title>
+    <title>AWS Well-Architected Framework · Interactive Architecture Review</title>
 
     <!-- Optimized Typography: Inter & JetBrains Mono (Essential weights only) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,6 +31,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <div id="root">
       <!-- Static Fallback Skeleton to prevent black blank screen on cold load -->
       <div id="app-initial-skeleton" style="min-height: 100vh; background: #0b0d10; color: #f0f3f6; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; text-align: center; padding: 24px;">

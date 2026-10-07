@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  Copy, 
-  Check, 
-  Volume2, 
-  HelpCircle, 
-  Eye, 
-  ShieldCheck, 
-  BookOpen, 
+import {
+  X,
+  Copy,
+  Check,
+  Volume2,
+  HelpCircle,
+  Eye,
+  ShieldCheck,
   ChevronRight,
   ChevronLeft,
-  Clock,
   Sparkles
 } from 'lucide-react';
-import { 
-  domainPresentationScripts, 
-  generalKeynoteIntro, 
+import {
+  domainPresentationScripts,
+  generalKeynoteIntro,
   generalKeynoteOutro,
-  DomainPresentationScript 
+  DomainPresentationScript
 } from '../data/presentationScripts';
-import { soundFX } from '../utils/soundEffects';
+import {
+  soundFX
+} from '../utils/soundEffects';
 
 interface SpeakerScriptPrompterProps {
   currentDomainIndex: number;
@@ -48,7 +48,7 @@ export const SpeakerScriptPrompter: React.FC<SpeakerScriptPrompterProps> = ({
     } else if (activeTab === 'conclusion') {
       textToCopy = `=== AWS WELL-ARCHITECTED FRAMEWORK - EXECUTIVE VERDICT ===\n\n${generalKeynoteOutro.verbatimScript}`;
     } else {
-      textToCopy = `=== MODULE ${currentScript.domainNumber}: ${currentScript.domainTitle} ===\n\nHOOK: ${currentScript.openingHook}\n\nVERBATIM SCRIPT:\n${currentScript.verbatimScript}\n\nSCREEN ACTION CUE:\n${currentScript.screenActionCue}\n\nARCHITECT DEFENSE:\n${currentScript.architectDefense}\n\nANTICIPATED JURY QUESTIONS:\n${currentScript.juryQuestions.map(q => `Q: ${q.question}\nA: ${q.answer}`).join('\n\n')}`;
+      textToCopy = `=== MODULE ${currentScript.domainNumber + 1}: ${currentScript.domainTitle} ===\n\nHOOK: ${currentScript.openingHook}\n\nVERBATIM SCRIPT:\n${currentScript.verbatimScript}\n\nSCREEN ACTION CUE:\n${currentScript.screenActionCue}\n\nARCHITECT DEFENSE:\n${currentScript.architectDefense}\n\nANTICIPATED JURY QUESTIONS:\n${currentScript.juryQuestions.map(q => `Q: ${q.question}\nA: ${q.answer}`).join('\n\n')}`;
     }
 
     navigator.clipboard.writeText(textToCopy);
@@ -154,7 +154,7 @@ export const SpeakerScriptPrompter: React.FC<SpeakerScriptPrompterProps> = ({
               className={`segmented-item ${activeTab === 'current' ? 'active' : ''}`}
               onClick={() => setActiveTab('current')}
             >
-              <span>2. Module {currentScript.domainNumber} ({currentScript.domainTitle})</span>
+              <span>2. Module {currentScript.domainNumber + 1} ({currentScript.domainTitle})</span>
             </button>
             <button
               className={`segmented-item ${activeTab === 'conclusion' ? 'active' : ''}`}

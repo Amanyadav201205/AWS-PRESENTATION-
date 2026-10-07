@@ -14,7 +14,9 @@ import {
   ChevronDown,
   Layers,
   Compass,
-  MoreHorizontal
+  MoreHorizontal,
+  Landmark,
+  ShieldCheck
 } from 'lucide-react';
 import { soundFX } from '../utils/soundEffects';
 import { AwsLogo } from './AwsLogo';
@@ -102,14 +104,15 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="app-header" role="banner">
       {/* Brand & 1-based Module Tracker */}
-      <div className="header-brand" style={{ flexShrink: 0 }}>
+      <div className="header-brand">
         <div className="brand-glyph-aws" aria-hidden="true" title="AWS Architecture Study">
           <AwsLogo height={22} width={38} color="#FFFFFF" />
         </div>
-        <div className="brand-title-group" style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <div className="brand-title-group">
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span className="brand-title" style={{ fontWeight: 700, fontSize: 15, letterSpacing: '-0.02em', color: '#FFFFFF' }}>
-              AWS Well-Architected Framework
+            <span className="brand-title">
+              <span className="brand-title-long">AWS Well-Architected Framework</span>
+              <span className="brand-title-short">AWS Well-Architected</span>
             </span>
           </div>
           <div className="brand-meta-wrapper" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -275,7 +278,7 @@ export const Header: React.FC<HeaderProps> = ({
                 }}
                 role="menuitem"
               >
-                <span style={{ fontSize: 14 }}>🏛️</span>
+                <Landmark size={14} color="var(--accent)" />
                 <div className="dropdown-text">
                   <span className="dropdown-title">6 Pillars Master Audit</span>
                   <span className="dropdown-desc">Operational, Security, Reliability, Cost, Perf, Sustain</span>
@@ -411,7 +414,6 @@ export const Header: React.FC<HeaderProps> = ({
             soundFX.playClick();
             onTogglePresenter();
           }}
-          style={{ height: 30, padding: '0 10px', fontSize: 12 }}
           title="Launch Presentation Deck [P]"
         >
           <Presentation size={13} />
@@ -427,79 +429,42 @@ export const Header: React.FC<HeaderProps> = ({
           }}
           title="More actions"
           aria-label="Open mobile action menu"
-          style={{ height: 30, width: 30 }}
+          aria-expanded={mobileMenuOpen}
+          aria-haspopup="menu"
         >
           <MoreHorizontal size={16} />
         </button>
 
         {mobileMenuOpen && (
           <div className="header-dropdown-menu mobile-dropdown-menu" role="menu">
-            <button
-              className="dropdown-item"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenAdvisor();
-              }}
-              role="menuitem"
-            >
-              <Compass size={14} color="var(--accent)" />
-              <div className="dropdown-text">
-                <span className="dropdown-title">Guided Architecture Q&amp;A</span>
-              </div>
-            </button>
-            <button
-              className="dropdown-item"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenScriptPrompter();
-              }}
-              role="menuitem"
-            >
-              <FileText size={14} color="var(--accent)" />
-              <div className="dropdown-text">
-                <span className="dropdown-title">Speaker Script</span>
-              </div>
-            </button>
-            <button
-              className="dropdown-item"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpen6Pillars();
-              }}
-              role="menuitem"
-            >
-              <span style={{ fontSize: 14 }}>🏛️</span>
-              <div className="dropdown-text">
-                <span className="dropdown-title">6 Pillars Master Audit</span>
-              </div>
-            </button>
-            <button
-              className="dropdown-item"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                if (isChaosActive) onResetChaos();
-                else onTriggerChaos();
-              }}
-              role="menuitem"
-            >
-              <AlertCircle size={14} color="var(--status-danger)" />
-              <div className="dropdown-text">
-                <span className="dropdown-title">{isChaosActive ? 'Reset Outage' : 'Simulate Outage'}</span>
-              </div>
-            </button>
-            <button
-              className="dropdown-item"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onToggleAudio();
-              }}
-              role="menuitem"
-            >
-              {audioEnabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
-              <div className="dropdown-text">
-                <span className="dropdown-title">{audioEnabled ? 'Mute Sounds' : 'Enable Sounds'}</span>
-              </div>
-            </button>
+            {([
+              { label: 'Guided Architecture Q&A', icon: <Compass size={16} color="var(--accent)" />, run: onOpenAdvisor },
+              { label: 'Speaker Script', icon: <FileText size={16} color="var(--accent)" />, run: onOpenScriptPrompter },
+              { label: '6 Pillars Explorer', icon: <Landmark size={16} color="var(--accent)" />, run: onOpen6Pillars },
+              { label: 'Executive Review & ROI', icon: <Activity size={16} color="var(--accent)" />, run: onOpenExecutiveReview },
+              { label: 'Stress & Incident Lab', icon: <Zap size={16} color="var(--status-warning)" />, run: onOpenStressLab },
+              { label: 'Packet Latency Simulator', icon: <Clock size={16} color="var(--status-warning)" />, run: onOpenPacketSimulator },
+              { label: 'Client Workload Solutions', icon: <Briefcase size={16} color="var(--status-warning)" />, run: onOpenClientSolutions },
+              { label: 'Subtopic Labs', icon: <Sliders size={16} color="var(--status-warning)" />, run: onOpenSubtopics },
+              { label: 'Theoretical Foundations', icon: <BookOpen size={16} color="var(--accent)" />, run: onOpenTheory },
+              { label: 'AI Governance', icon: <ShieldCheck size={16} color="var(--accent)" />, run: onOpenAiGovernance },
+              { label: isChaosActive ? 'Reset Outage' : 'Simulate Outage', icon: <AlertCircle size={16} color="var(--status-danger)" />, run: isChaosActive ? onResetChaos : onTriggerChaos },
+              { label: audioEnabled ? 'Mute Sounds' : 'Enable Sounds', icon: audioEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />, run: onToggleAudio },
+            ] as const).map((item) => (
+              <button
+                key={item.label}
+                type="button"
+                className="dropdown-item"
+                role="menuitem"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  item.run();
+                }}
+              >
+                {item.icon}
+                <span className="dropdown-title">{item.label}</span>
+              </button>
+            ))}
           </div>
         )}
       </div>

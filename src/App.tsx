@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, Suspense, lazy } from 'react';
+import { useState, useEffect, useCallback, useRef, Suspense, lazy } from 'react';
 import { allDomains } from './data';
 import { AppDisplayMode, ArchitectureNode, ChaosPhase, ViewMode } from './types';
 import { Header } from './components/Header';
@@ -12,6 +12,16 @@ import { ChaosBanner } from './components/ChaosBanner';
 import { AutoPilotBar } from './components/AutoPilotBar';
 import { PresenterFooter } from './components/PresenterFooter';
 import { soundFX } from './utils/soundEffects';
+import { useDialogFocusTrap } from './hooks/useDialogFocusTrap';
+
+// Exact id match first, then a prefix match (e.g. #/storage -> storage-layer). Unknown -> -1.
+const findDomainIndexFromHash = (raw: string): number => {
+  const hash = raw.replace(/^#\/?/, '').toLowerCase().trim();
+  if (!hash) return -1;
+  const exact = allDomains.findIndex(d => d.id.toLowerCase() === hash);
+  if (exact !== -1) return exact;
+  return allDomains.findIndex(d => d.id.toLowerCase().startsWith(hash + '-') || d.id.toLowerCase().split('-')[0] === hash);
+};
 
 // Code-split all heavy presentation modals via React.lazy() (P0 bundle size fix)
 const GuidedArchitectureQAModal = lazy(() => import('./components/GuidedArchitectureQAModal').then(m => ({ default: m.GuidedArchitectureQAModal })));
@@ -30,20 +40,7 @@ const DRStrategyExplorer = lazy(() => import('./components/DRStrategyExplorer').
 
 export function App() {
   // Parse initial index from hash if available (e.g. #/storage-tiering or #/storage)
-  const getInitialIndexFromHash = (): number => {
-    try {
-      const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
-      if (!hash) return 0;
-      const idx = allDomains.findIndex(d => 
-        d.id.toLowerCase() === hash || 
-        d.id.toLowerCase().startsWith(hash) ||
-        hash.startsWith(d.id.toLowerCase().split('-')[0])
-      );
-      return idx !== -1 ? idx : 0;
-    } catch {
-      return 0;
-    }
-  };
+  const getInitialIndexFromHash = (): number => Math.max(0, findDomainIndexFromHash(window.location.hash));
 
   const [currentDomainIndex, setCurrentDomainIndex] = useState<number>(getInitialIndexFromHash);
   const [viewMode, setViewMode] = useState<ViewMode>('split');
@@ -77,6 +74,11 @@ export function App() {
 
   // Active domain definition
   const activeDomain = allDomains[currentDomainIndex] || allDomains[0];
+  const mainRef = useRef<HTMLElement>(null);
+  const isFirstRenderRef = useRef(true);
+  const chaosTimersRef = useRef<number[]>([]);
+
+  useDialogFocusTrap();
 
   // Hash-based routing & document.title sync (P0 Fix 1.5)
   useEffect(() => {
@@ -90,13 +92,7 @@ export function App() {
   // Listen to external hash changes / browser back & forward navigation
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase();
-      if (!hash) return;
-      const idx = allDomains.findIndex(d => 
-        d.id.toLowerCase() === hash || 
-        d.id.toLowerCase().startsWith(hash) ||
-        hash.startsWith(d.id.toLowerCase().split('-')[0])
-      );
+      const idx = findDomainIndexFromHash(window.location.hash);
       if (idx !== -1 && idx !== currentDomainIndex) {
         setCurrentDomainIndex(idx);
       }
@@ -110,8 +106,16 @@ export function App() {
     if (!completedDomainIds.includes(activeDomain.id)) {
       setCompletedDomainIds(prev => [...prev, activeDomain.id]);
     }
+    chaosTimersRef.current.forEach(id => window.clearTimeout(id));
+    chaosTimersRef.current = [];
     setChaosPhase('idle');
     setSelectedNode(null);
+    // New module starts at the top, and screen readers / keyboard users land on its title
+    mainRef.current?.scrollTo({ top: 0 });
+    if (!isFirstRenderRef.current) {
+      document.getElementById('domain-title')?.focus({ preventScroll: true });
+    }
+    isFirstRenderRef.current = false;
   }, [activeDomain.id]);
 
   const handleSelectDomain = (id: string) => {
@@ -135,23 +139,32 @@ export function App() {
     }
   }, [currentDomainIndex]);
 
+  // Outage simulation timers are tracked so they can be cancelled (fixes outage leaking into the next module)
+  const clearChaosTimers = useCallback(() => {
+    chaosTimersRef.current.forEach(id => window.clearTimeout(id));
+    chaosTimersRef.current = [];
+  }, []);
+
   const handleTriggerChaos = useCallback(() => {
+    clearChaosTimers();
     soundFX.playChaosAlarm();
     setChaosPhase('injected');
-
-    setTimeout(() => {
-      setChaosPhase('healing');
-      setTimeout(() => {
+    chaosTimersRef.current.push(
+      window.setTimeout(() => setChaosPhase('healing'), 2500),
+      window.setTimeout(() => {
         setChaosPhase('resolved');
         soundFX.playHealChime();
-      }, 2500);
-    }, 2500);
-  }, []);
+      }, 5000)
+    );
+  }, [clearChaosTimers]);
 
   const handleResetChaos = useCallback(() => {
+    clearChaosTimers();
     soundFX.playClick();
     setChaosPhase('idle');
-  }, []);
+  }, [clearChaosTimers]);
+
+  useEffect(() => clearChaosTimers, [clearChaosTimers]);
 
   const handleNodeClick = (node: ArchitectureNode, isWellArch: boolean) => {
     setSelectedNode(node);
@@ -290,7 +303,7 @@ export function App() {
         />
 
         {/* Main Content Area with bottom padding for minimized dock */}
-        <main className="app-content" style={{ paddingBottom: 120 }}>
+        <main className="app-content" ref={mainRef} id="main-content">
           {/* Domain Hero - Derived 1-based Module Index (P0 Fix 1.2) */}
           <section className="domain-hero" aria-labelledby="domain-title">
             <div className="hero-meta-row">
@@ -305,16 +318,9 @@ export function App() {
                 >
                   Speaker Script
                 </button>
-                <button
-                  className="btn-action primary"
-                  onClick={() => setDisplayMode('presenter')}
-                  title="Launch full-screen presentation deck [P]"
-                >
-                  Present
-                </button>
               </div>
             </div>
-            <h1 id="domain-title" className="hero-title">{activeDomain.title}</h1>
+            <h1 id="domain-title" className="hero-title" tabIndex={-1}>{activeDomain.title}</h1>
             <p className="hero-subtitle">{activeDomain.subtitle}</p>
           </section>
 

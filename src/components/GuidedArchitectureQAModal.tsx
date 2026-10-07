@@ -1,22 +1,25 @@
 import React, { useState } from 'react';
-import { 
-  Compass, 
-  HelpCircle, 
-  ShieldCheck, 
-  FileText, 
-  Terminal, 
-  X, 
-  CheckCircle2, 
-  AlertTriangle, 
+import {
+  Compass,
+  FileText,
+  Terminal,
+  X,
+  CheckCircle2,
+  AlertTriangle,
   ArrowRight,
-  Copy,
-  Layers,
-  DollarSign,
-  Activity
+  Copy
 } from 'lucide-react';
-import { DomainData } from '../types';
-import { WAF_KNOWLEDGE_BASE, WafKnowledgeEntry, WafCitation, WafRemediationAction } from '../data/wafKnowledgeBase';
-import { soundFX } from '../utils/soundEffects';
+import {
+  DomainData
+} from '../types';
+import {
+  WAF_KNOWLEDGE_BASE,
+  WafCitation,
+  WafRemediationAction
+} from '../data/wafKnowledgeBase';
+import {
+  soundFX
+} from '../utils/soundEffects';
 
 interface GuidedArchitectureQAModalProps {
   activeDomain: DomainData;
@@ -52,7 +55,7 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
     {
       id: 'q-spof',
       category: 'Reliability',
-      question: `How does Module ${activeDomain.number + 1} eliminate Single Points of Failure (SPOFs)?`,
+      question: `How does Module ${activeDomain.number} eliminate Single Points of Failure (SPOFs)?`,
       summary: `Resolves unhedged blast radiuses by decoupling stateful services and deploying across multiple Availability Zones.`,
       antiPattern: activeDomain.normalPrescription?.whyItFailsInProduction?.[0] || domainEntry.antiPattern,
       solution: activeDomain.wafTransformationSummary || domainEntry.wellArchSolution,
@@ -201,7 +204,7 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
                   color: '#FF9900',
                   fontWeight: 600
                 }}>
-                  Module {activeDomain.number + 1}: {activeDomain.title}
+                  Module {activeDomain.number}: {activeDomain.title}
                 </span>
               </div>
               <p style={{ margin: 0, fontSize: 13, color: '#9da7b3' }}>

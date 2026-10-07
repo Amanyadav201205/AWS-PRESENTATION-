@@ -1,31 +1,39 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  X, 
-  ChevronLeft, 
-  ChevronRight, 
-  AlertCircle, 
-  RotateCcw, 
-  Check, 
-  Award, 
-  Clock, 
-  FileText, 
-  Briefcase, 
+import {
+  X,
+  ChevronLeft,
+  ChevronRight,
+  AlertCircle,
+  RotateCcw,
+  Check,
+  Award,
+  Clock,
+  FileText,
+  Briefcase,
   Sliders,
   LayoutGrid,
   Printer,
   BookOpen,
   Sparkles,
   Maximize2,
-  TrendingDown,
   ShieldCheck,
-  Zap,
   Play
 } from 'lucide-react';
-import { DomainData } from '../types';
-import { soundFX } from '../utils/soundEffects';
-import { PillarRadarChart } from './PillarRadarChart';
-import { theoreticalFoundations } from '../data/theoreticalFoundations';
-import { AwsLogo } from './AwsLogo';
+import {
+  DomainData
+} from '../types';
+import {
+  soundFX
+} from '../utils/soundEffects';
+import {
+  PillarRadarChart
+} from './PillarRadarChart';
+import {
+  theoreticalFoundations
+} from '../data/theoreticalFoundations';
+import {
+  AwsLogo
+} from './AwsLogo';
 
 interface PresenterProps {
   domain: DomainData;
@@ -168,8 +176,8 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
   };
 
   return (
-    <div className="sheet-overlay">
-      <div className="presenter-dialog" style={{ maxWidth: 1260, maxHeight: '94vh', display: 'flex', flexDirection: 'column' }}>
+    <div className="sheet-overlay presenter-overlay" role="dialog" aria-modal="true" aria-label={`Presentation deck, slide ${currentIndex + 1} of ${totalDomains}: ${domain.title}`}>
+      <div className="presenter-dialog presenter-dialog--full">
         {/* Progress Bar */}
         <div style={{ width: '100%', height: 3, background: 'rgba(255, 255, 255, 0.08)', position: 'relative' }}>
           <div 

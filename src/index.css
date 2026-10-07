@@ -45,7 +45,7 @@
   --bg-subtle: #181d24;
   --text-primary: #F3F4F6;
   --text-secondary: #9CA3AF;
-  --text-tertiary: #6B7280;
+  --text-tertiary: #8B93A1; /* was #6B7280 (3.4–4.0:1, failed WCAG AA) → 5.4:1+ */
   --separator: #22262d;
   --separator-subtle: #1c2027;
   --accent: #2997FF;
@@ -58,6 +58,14 @@
   --status-warning: #FF9F0A;
   --status-warning-subtle: rgba(255, 159, 10, 0.14);
   --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.6);
+
+  /* Aliases: these names are referenced in components but were never defined
+     (backgrounds/borders silently fell back to transparent / currentColor) */
+  --bg-panel: var(--bg-surface);
+  --border: var(--separator);
+  --border-color: var(--separator);
+  --shadow: var(--shadow-subtle);
+  --accent-border: rgba(41, 151, 255, 0.35);
 }
 
 /* Keyboard focus-visible style per Audit 1.14 */
@@ -114,6 +122,7 @@ p {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh; /* iOS Safari: account for the collapsing address bar */
   overflow: hidden;
   background-color: var(--bg-canvas);
 }
@@ -1501,7 +1510,9 @@ body.theme-light .architecture-tier-block.with-boundary {
 }
 
 .autopilot-floating-bar.minimized {
-  transform: translateX(-50%) translateY(calc(100% - 14px));
+  width: max-content;
+  max-width: calc(100% - 16px);
+  transform: translateX(-50%);
 }
 
 .autopilot-inner {
@@ -2106,3 +2117,161 @@ main.app-content {
 }
 
 
+
+
+/* ==========================================================================
+   AUDIT FIXES (Oct 2026)
+   ========================================================================== */
+
+/* Sidebar rows are <button>s: reset native button chrome (was light-grey, centered) */
+.sidebar-row {
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  font-size: var(--text-sm);
+  flex-shrink: 0;
+}
+@media (min-width: 769px) { .sidebar-row { width: 100%; } }
+
+/* Header brand must be allowed to shrink so actions never get pushed off-screen */
+.header-brand { min-width: 0; flex: 1 1 auto; }
+.header-controls, .header-controls-desktop, .header-controls-mobile { flex-shrink: 0; }
+.brand-title-group { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.brand-title {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+.brand-title-short { display: none; }
+@media (max-width: 520px) {
+  .brand-title-long { display: none; }
+  .brand-title-short { display: inline; }
+  .brand-title { font-size: 14px; }
+}
+@media (max-width: 360px) {
+  .brand-title-group { display: none; }
+}
+.header-controls-mobile .btn-icon { min-width: 44px; }
+
+/* Mobile menu: scrollable when it has many items, never wider than the screen */
+.mobile-dropdown-menu {
+  width: min(280px, calc(100vw - 24px));
+  max-height: min(70vh, 520px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.mobile-dropdown-menu .dropdown-item { align-items: center; min-height: 44px; width: 100%; }
+
+/* Auto-pilot dock: these classes were used in JSX but never styled */
+.autopilot-inner-container {
+  position: relative;
+  background: rgba(14, 14, 18, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-outer);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  padding: 6px;
+  margin-bottom: env(safe-area-inset-bottom, 0px);
+}
+.autopilot-minimized-row,
+.autopilot-expanded-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.autopilot-time-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-subtle);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.autopilot-progress-track {
+  position: absolute; left: 12px; right: 12px; top: 0; height: 2px;
+  background: var(--separator); border-radius: 2px; overflow: hidden; z-index: 1;
+}
+.autopilot-progress-fill { height: 100%; background: var(--accent); transition: width 1s linear; }
+@media (max-width: 480px) {
+  .autopilot-time-pill { display: none; }
+}
+
+/* Leave room for the floating dock at the bottom of the scroll area */
+main.app-content { padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px)) !important; }
+
+/* Range sliders: a 6px track is too thin to grab on touch screens */
+input[type="range"] { min-height: 28px; accent-color: var(--accent); cursor: pointer; }
+@media (pointer: coarse) {
+  input[type="range"] { min-height: 44px; }
+}
+
+/* Theoretical Foundations: list items were being crushed; stack panes on small screens */
+.theory-split { flex: 1; display: grid; grid-template-columns: 280px 1fr; overflow: hidden; min-height: 0; }
+.theory-list > button { flex-shrink: 0; }
+@media (max-width: 768px) {
+  .theory-split { grid-template-columns: 1fr; grid-template-rows: auto 1fr; overflow-y: auto; }
+  .theory-list {
+    flex-direction: row !important;
+    overflow-x: auto;
+    overflow-y: hidden !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--separator);
+  }
+  .theory-list > button { width: 200px; }
+}
+
+/* Clipped horizontal tab rows: show a fade so users know they scroll */
+@media (max-width: 640px) {
+  .segmented-control {
+    -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
+    mask-image: linear-gradient(to right, #000 85%, transparent);
+  }
+}
+
+/* Every dialog: never wider/taller than the screen; header actions always visible */
+[aria-modal="true"] > * { max-width: calc(100vw - 16px); max-height: calc(100dvh - 16px); }
+[aria-modal="true"] :is(h1, h2, h3) { overflow-wrap: anywhere; }
+
+/* Presenter deck: hide on phones where it cannot be laid out legibly */
+.presenter-phone-notice { display: none; }
+
+/* The h1 receives programmatic focus on module change; no ring for mouse users */
+#domain-title:focus:not(:focus-visible) { outline: none; }
+
+@media (max-width: 640px) { .hide-below-640 { display: none !important; } }
+
+/* Presenter deck fills the whole screen (it was a 1100px card floating in a dark void) */
+.presenter-overlay { padding: 0 !important; }
+.presenter-dialog.presenter-dialog--full {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  border-radius: 0;
+  border: none;
+  padding: clamp(12px, 2vw, 32px);
+  padding-bottom: calc(clamp(12px, 2vw, 32px) + env(safe-area-inset-bottom, 0px));
+  font-size: clamp(14px, 1.1vw, 20px);
+}
+@media (max-width: 640px) {
+  .presenter-header { flex-direction: column; align-items: stretch !important; }
+  .presenter-header > * { flex-wrap: wrap; max-width: 100%; }
+  .presenter-content-grid > * { min-width: 0; }
+}
+
+.skip-link { position: absolute; left: 8px; top: -48px; z-index: 2000; padding: 8px 12px; border-radius: 8px; background: var(--accent); color: #fff; font-weight: 600; text-decoration: none; }
+.skip-link:focus { top: 8px; }

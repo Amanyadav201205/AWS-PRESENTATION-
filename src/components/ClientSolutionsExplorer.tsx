@@ -1,26 +1,27 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  ShoppingCart, 
-  Building, 
-  Video, 
-  CreditCard, 
-  Activity, 
-  Cpu, 
-  TrendingDown, 
-  ShieldCheck, 
-  Check, 
-  AlertTriangle, 
-  Play, 
-  RotateCcw, 
-  Copy, 
-  Send,
-  Zap,
-  DollarSign,
-  ArrowRight
+import {
+  X,
+  ShoppingCart,
+  Building,
+  Video,
+  CreditCard,
+  Activity,
+  Cpu,
+  TrendingDown,
+  ShieldCheck,
+  Check,
+  AlertTriangle,
+  Play,
+  RotateCcw,
+  Copy,
+  Zap
 } from 'lucide-react';
-import { clientWorkloads, ClientWorkload } from '../data/clientWorkloads';
-import { soundFX } from '../utils/soundEffects';
+import {
+  clientWorkloads
+} from '../data/clientWorkloads';
+import {
+  soundFX
+} from '../utils/soundEffects';
 
 interface ClientSolutionsExplorerProps {
   onClose: () => void;

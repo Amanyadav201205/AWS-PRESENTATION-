@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  Activity, 
-  Shield, 
-  RefreshCw, 
-  Zap, 
-  DollarSign, 
-  Leaf, 
-  CheckCircle, 
+import {
+  X,
+  Activity,
+  Shield,
+  RefreshCw,
+  Zap,
+  DollarSign,
+  Leaf,
+  CheckCircle,
   AlertTriangle,
-  ArrowRight,
-  ExternalLink
+  ArrowRight
 } from 'lucide-react';
-import { pillarDetails, PillarDetail } from '../data/pillarsData';
-import { soundFX } from '../utils/soundEffects';
+import {
+  pillarDetails
+} from '../data/pillarsData';
+import {
+  soundFX
+} from '../utils/soundEffects';
 
 interface PillarsExplorerModalProps {
   onClose: () => void;

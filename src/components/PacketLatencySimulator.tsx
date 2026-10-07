@@ -1,19 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  X, 
-  Play, 
-  RotateCcw, 
-  Zap, 
-  AlertTriangle, 
-  CheckCircle, 
-  Clock, 
-  Send, 
-  Layers, 
-  Activity,
-  Flame,
-  ArrowRight
+import {
+  X,
+  RotateCcw,
+  Send,
+  Flame
 } from 'lucide-react';
-import { soundFX } from '../utils/soundEffects';
+import {
+  soundFX
+} from '../utils/soundEffects';
 
 interface PacketLatencySimulatorProps {
   onClose: () => void;

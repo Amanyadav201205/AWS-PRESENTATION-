@@ -65,19 +65,23 @@ export const NodeDetailModal: React.FC<NodeModalProps> = ({
           </button>
         </div>
 
-        {/* Status Callout */}
+        {/* Status Callout: three honest states (was: every non-SPOF node claimed multi-AZ HA) */}
         {node.isSPOF ? (
           <div style={{ background: 'var(--status-danger-subtle)', border: '1px solid rgba(255, 69, 58, 0.25)', borderRadius: 'var(--radius-control)', padding: 'var(--space-2) var(--space-3)', fontSize: 'var(--text-xs)', color: 'var(--status-danger)' }}>
             <strong>Single point of failure: </strong> Loss of this node halts application traffic.
           </div>
-        ) : (
+        ) : isWellArchNode ? (
           <div style={{ background: 'var(--status-success-subtle)', border: '1px solid rgba(48, 209, 88, 0.25)', borderRadius: 'var(--radius-control)', padding: 'var(--space-2) var(--space-3)', fontSize: 'var(--text-xs)', color: 'var(--status-success)' }}>
-            <strong>High availability: </strong> Redundant multi-AZ distribution with sub-minute failover.
+            <strong>Resilient component: </strong> Part of the redundant, multi-AZ design.
+          </div>
+        ) : (
+          <div style={{ background: 'var(--status-warning-subtle)', border: '1px solid rgba(255, 159, 10, 0.25)', borderRadius: 'var(--radius-control)', padding: 'var(--space-2) var(--space-3)', fontSize: 'var(--text-xs)', color: 'var(--status-warning)' }}>
+            <strong>Part of the anti-pattern: </strong> Not a single point of failure on its own, but it depends on the fragile components around it.
           </div>
         )}
 
         {/* Specs & Security */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 'var(--space-3)' }}>
           <div style={{ background: 'var(--bg-canvas)', border: '1px solid var(--separator-subtle)', borderRadius: 'var(--radius-control)', padding: 'var(--space-3)' }}>
             <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-secondary)' }}>Component specs</span>
             <p style={{ fontSize: 12, color: 'var(--text-primary)', marginTop: 4, lineHeight: 1.4 }}>
@@ -103,7 +107,7 @@ export const NodeDetailModal: React.FC<NodeModalProps> = ({
           </div>
 
           <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.4, background: 'var(--bg-subtle)', padding: 'var(--space-2) var(--space-3)', borderRadius: 'var(--radius-control)' }}>
-            <strong style={{ color: 'var(--text-primary)' }}>{isWellArchNode ? 'Well-Architected role: ' : 'Anti-pattern flaw: '}</strong>
+            <strong style={{ color: 'var(--text-primary)' }}>{isWellArchNode ? 'Well-Architected role: ' : 'How the Well-Architected design fixes this: '}</strong>
             {node.configDetails?.wafAdvantage || node.description}
           </div>
         </div>

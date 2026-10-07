@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  Zap, 
-  AlertTriangle, 
-  CheckCircle, 
-  RotateCcw, 
-  ShieldAlert, 
-  Activity, 
-  Gauge, 
-  TrendingUp, 
-  TrendingDown,
-  Layers,
+import {
+  X,
+  AlertTriangle,
+  RotateCcw,
   Flame
 } from 'lucide-react';
-import { soundFX } from '../utils/soundEffects';
+import {
+  soundFX
+} from '../utils/soundEffects';
 
 interface StressLabModalProps {
   onClose: () => void;

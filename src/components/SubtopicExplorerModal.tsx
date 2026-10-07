@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  Database, 
-  HardDrive, 
-  Zap, 
-  Layers, 
-  RefreshCw, 
-  Sliders, 
-  AlertTriangle, 
-  CheckCircle, 
-  Play, 
-  RotateCcw,
-  Cpu
+import {
+  X,
+  Database,
+  HardDrive,
+  Zap,
+  Layers,
+  RefreshCw,
+  Play
 } from 'lucide-react';
-import { soundFX } from '../utils/soundEffects';
+import {
+  soundFX
+} from '../utils/soundEffects';
 
 interface SubtopicExplorerModalProps {
   onClose: () => void;

@@ -1,23 +1,12 @@
 import React, { useState } from 'react';
-import { 
-  ShieldCheck, 
-  CheckCircle2, 
-  AlertTriangle, 
-  HelpCircle, 
-  Layers, 
-  Cpu, 
-  Lock, 
-  Eye, 
-  Database, 
-  Compass, 
+import {
+  CheckCircle2,
   X,
-  FileCheck,
-  TrendingUp,
-  Activity,
-  Flame,
   Scale
 } from 'lucide-react';
-import { soundFX } from '../utils/soundEffects';
+import {
+  soundFX
+} from '../utils/soundEffects';
 
 interface AiGovernanceModalProps {
   onClose: () => void;
@@ -97,13 +86,15 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
             borderBottom: '1px solid var(--border-color)',
             background: 'linear-gradient(180deg, rgba(0, 230, 118, 0.08) 0%, rgba(0,0,0,0) 100%)',
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            gap: 12
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0, flex: 1 }}>
             <div 
               style={{
+                flexShrink: 0,
                 width: 36,
                 height: 36,
                 borderRadius: 10,
@@ -117,7 +108,7 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
               <Scale size={20} color="#00E676" />
             </div>
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
                 <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#FFFFFF' }}>
                   Enterprise AI Engineering &amp; Governance Inspector
                 </h3>
@@ -143,8 +134,9 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
             <div 
+              className="hide-below-640"
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -165,7 +157,8 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
               className="btn-action"
               onClick={onClose}
               title="Close [Esc]"
-              style={{ height: 28, width: 28, padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              aria-label="Close AI governance inspector"
+              style={{ minHeight: 36, minWidth: 36, padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
               <X size={15} />
             </button>

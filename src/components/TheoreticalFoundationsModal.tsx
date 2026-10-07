@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  BookOpen, 
-  Search, 
-  ExternalLink, 
-  Copy, 
-  Check, 
-  ShieldCheck, 
-  Award,
-  FileText,
-  Bookmark
+import {
+  X,
+  BookOpen,
+  Search,
+  Copy,
+  Check,
+  ShieldCheck
 } from 'lucide-react';
-import { theoreticalFoundations, TheoryReference } from '../data/theoreticalFoundations';
-import { soundFX } from '../utils/soundEffects';
+import {
+  theoreticalFoundations
+} from '../data/theoreticalFoundations';
+import {
+  soundFX
+} from '../utils/soundEffects';
 
 interface TheoreticalFoundationsModalProps {
   onClose: () => void;
@@ -106,9 +106,9 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
         </div>
 
         {/* Main Split Body */}
-        <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '280px 1fr', overflow: 'hidden' }}>
+        <div className="theory-split">
           {/* Left: Domain & Theory List */}
-          <div style={{ borderRight: '1px solid var(--separator)', overflowY: 'auto', padding: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <div className="theory-list" style={{ borderRight: '1px solid var(--separator)', overflowY: 'auto', padding: 8, display: 'flex', flexDirection: 'column', gap: 4 }}>
             {filteredTheories.map(t => (
               <button
                 key={t.domainId}
@@ -131,7 +131,7 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: selectedDomainId === t.domainId ? 'var(--accent)' : 'var(--text-tertiary)' }}>
-                    MODULE {t.domainNumber}
+                    MODULE {t.domainNumber + 1}
                   </span>
                   <span style={{ fontSize: 10, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
                     {t.lawOrTheorem.year}
@@ -153,7 +153,7 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
               <div>
                 <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--accent)', fontWeight: 600 }}>
-                  MODULE {currentTheory.domainNumber} • {currentTheory.domainTitle}
+                  MODULE {currentTheory.domainNumber + 1} • {currentTheory.domainTitle}
                 </span>
                 <h3 style={{ fontSize: 20, fontWeight: 600, color: 'var(--text-primary)', marginTop: 2 }}>
                   {currentTheory.lawOrTheorem.name}

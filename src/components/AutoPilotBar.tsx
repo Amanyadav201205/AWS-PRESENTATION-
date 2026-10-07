@@ -85,38 +85,31 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
     setTimeLeft(durationSec);
   }, [currentDomainIndex, durationSec]);
 
+  // Pure countdown: the interval only decrements. Side effects run in a separate effect
+  // (calling navigation inside a setState updater double-fires under React StrictMode).
   useEffect(() => {
-    if (!isPlaying) {
-      if (timerRef.current) clearInterval(timerRef.current);
-      return;
-    }
-
+    if (!isPlaying) return;
     timerRef.current = window.setInterval(() => {
-      setTimeLeft(prev => {
-        if (autoChaos && prev === Math.floor(durationSec * 0.4) && !isChaosActive) {
-          onTriggerChaos();
-        }
-        if (autoChaos && prev === Math.floor(durationSec * 0.15) && isChaosActive) {
-          onResetChaos();
-        }
-
-        if (prev <= 1) {
-          if (currentDomainIndex < totalDomains - 1) {
-            onNextDomain();
-            return durationSec;
-          } else {
-            setIsPlaying(false);
-            return 0;
-          }
-        }
-        return prev - 1;
-      });
+      setTimeLeft(prev => Math.max(0, prev - 1));
     }, 1000);
-
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [isPlaying, durationSec, currentDomainIndex, totalDomains, onNextDomain, autoChaos, isChaosActive, onTriggerChaos, onResetChaos]);
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (!isPlaying) return;
+    if (autoChaos && timeLeft === Math.floor(durationSec * 0.4) && !isChaosActive) onTriggerChaos();
+    if (autoChaos && timeLeft === Math.floor(durationSec * 0.15) && isChaosActive) onResetChaos();
+    if (timeLeft === 0) {
+      if (currentDomainIndex < totalDomains - 1) {
+        onNextDomain(); // timeLeft resets via the currentDomainIndex effect above
+      } else {
+        setIsPlaying(false);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeLeft]);
 
   const handleTogglePlay = () => {
     soundFX.playClick();

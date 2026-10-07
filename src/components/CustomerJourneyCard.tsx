@@ -1,8 +1,23 @@
 import React, { useState } from 'react';
-import { CustomerRequirement, NormalPrescription, PillarType, StorylineStage } from '../types';
-import { soundFX } from '../utils/soundEffects';
-import { Target, AlertTriangle, Sparkles, Check, BookOpen, ExternalLink, ShieldCheck } from 'lucide-react';
-import { theoreticalFoundations } from '../data/theoreticalFoundations';
+import {
+  CustomerRequirement,
+  NormalPrescription,
+  PillarType,
+  StorylineStage
+} from '../types';
+import {
+  soundFX
+} from '../utils/soundEffects';
+import {
+  Target,
+  AlertTriangle,
+  Sparkles,
+  BookOpen,
+  ShieldCheck
+} from 'lucide-react';
+import {
+  theoreticalFoundations
+} from '../data/theoreticalFoundations';
 
 interface JourneyProps {
   customer: CustomerRequirement;

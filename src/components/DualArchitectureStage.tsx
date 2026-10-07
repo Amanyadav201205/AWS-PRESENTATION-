@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { 
-  ArrowRight, 
-  Split, 
-  Eye, 
-  Check, 
-  X, 
-  Play, 
+import {
+  ArrowRight,
+  Split,
+  Eye,
+  Check,
+  X,
+  Play,
   Pause,
-  Zap,
   Activity,
   Layers,
   ShieldCheck,
@@ -18,9 +17,18 @@ import {
   Skull,
   DollarSign
 } from 'lucide-react';
-import { ArchitectureNode, ArchitectureSpec, ChaosPhase, ViewMode } from '../types';
-import { AwsServiceIcon } from './AwsServiceIcon';
-import { soundFX } from '../utils/soundEffects';
+import {
+  ArchitectureNode,
+  ArchitectureSpec,
+  ChaosPhase,
+  ViewMode
+} from '../types';
+import {
+  AwsServiceIcon
+} from './AwsServiceIcon';
+import {
+  soundFX
+} from '../utils/soundEffects';
 
 interface DualStageProps {
   naive: ArchitectureSpec;

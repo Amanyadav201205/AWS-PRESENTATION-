@@ -1,20 +1,16 @@
 import React, { useState } from 'react';
-import { 
-  X, 
-  DollarSign, 
-  AlertTriangle, 
-  CheckCircle, 
-  TrendingDown, 
-  ShieldCheck, 
-  Download, 
-  Printer, 
-  Copy, 
+import {
+  X,
+  TrendingDown,
+  Copy,
   Check,
   Building,
   Rocket,
   Globe
 } from 'lucide-react';
-import { soundFX } from '../utils/soundEffects';
+import {
+  soundFX
+} from '../utils/soundEffects';
 
 interface ExecutiveReviewModalProps {
   onClose: () => void;
