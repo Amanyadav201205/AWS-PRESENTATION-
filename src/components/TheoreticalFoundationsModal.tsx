@@ -13,6 +13,7 @@ import {
 import {
   soundFX
 } from '../utils/soundEffects';
+import { LatexFormula } from './LatexFormula';
 
 interface TheoreticalFoundationsModalProps {
   onClose: () => void;
@@ -190,9 +191,10 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
                   <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.4px', color: 'var(--text-tertiary)', marginBottom: 4 }}>
                     Rigorous Mathematical Formulation:
                   </div>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 16, color: 'var(--accent)', fontWeight: 600 }}>
-                    {currentTheory.lawOrTheorem.mathematicalFormula}
-                  </div>
+                  <LatexFormula
+                    formula={currentTheory.lawOrTheorem.mathematicalFormula!}
+                    style={{ fontSize: 16, color: 'var(--accent)' }}
+                  />
                   {currentTheory.lawOrTheorem.formulaExplanation && (
                     <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 6, lineHeight: 1.4 }}>
                       {currentTheory.lawOrTheorem.formulaExplanation}

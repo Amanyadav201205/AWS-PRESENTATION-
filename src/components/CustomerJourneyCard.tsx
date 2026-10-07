@@ -8,6 +8,7 @@ import {
 import {
   soundFX
 } from '../utils/soundEffects';
+import { LatexFormula } from './LatexFormula';
 import {
   Target,
   AlertTriangle,
@@ -232,9 +233,10 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
               </p>
               {theory.lawOrTheorem.mathematicalFormula && (
                 <div style={{ background: '#000000', border: '1px solid var(--separator-subtle)', borderRadius: 'var(--radius-inner)', padding: '8px 12px' }}>
-                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--accent)', fontWeight: 600 }}>
-                    {theory.lawOrTheorem.mathematicalFormula}
-                  </div>
+                  <LatexFormula
+                    formula={theory.lawOrTheorem.mathematicalFormula!}
+                    style={{ fontSize: 13, color: 'var(--accent)' }}
+                  />
                   {theory.lawOrTheorem.formulaExplanation && (
                     <div style={{ fontSize: 11, color: 'var(--text-tertiary)', marginTop: 4 }}>
                       {theory.lawOrTheorem.formulaExplanation}

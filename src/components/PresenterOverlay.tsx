@@ -25,6 +25,7 @@ import {
 import {
   soundFX
 } from '../utils/soundEffects';
+import { LatexFormula } from './LatexFormula';
 import {
   PillarRadarChart
 } from './PillarRadarChart';
@@ -637,9 +638,10 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                     <div style={{ fontSize: 11, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 4 }}>
                       Mathematical Formulation:
                     </div>
-                    <div style={{ fontFamily: 'var(--font-mono)', fontSize: 14, color: 'var(--accent)', fontWeight: 600 }}>
-                      {theory.lawOrTheorem.mathematicalFormula}
-                    </div>
+                    <LatexFormula
+                      formula={theory.lawOrTheorem.mathematicalFormula!}
+                      style={{ fontSize: 14, color: 'var(--accent)' }}
+                    />
                     {theory.lawOrTheorem.formulaExplanation && (
                       <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 6, lineHeight: 1.35 }}>
                         {theory.lawOrTheorem.formulaExplanation}
