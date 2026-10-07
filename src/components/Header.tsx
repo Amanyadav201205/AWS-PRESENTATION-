@@ -101,8 +101,18 @@ export const Header: React.FC<HeaderProps> = ({
     };
   }, []);
 
+  const progressPct = totalDomains > 0
+    ? Math.round(((currentDomainIndex + 1) / totalDomains) * 100)
+    : 0;
+
   return (
     <header className="app-header" role="banner">
+      {/* Module progress rail — 2px, AWS orange, answers "where am I in 15 modules" */}
+      <div
+        className="header-module-progress"
+        style={{ width: `${progressPct}%` }}
+        aria-hidden="true"
+      />
       {/* Brand & 1-based Module Tracker */}
       <div className="header-brand">
         <div className="brand-glyph-aws" aria-hidden="true" title="AWS Architecture Study">

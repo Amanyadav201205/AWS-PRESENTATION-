@@ -70,6 +70,11 @@
   --accent-subtle: rgba(10, 132, 255, 0.16);
   --accent-glow: 0 0 20px rgba(10, 132, 255, 0.35);
 
+  /* AWS Brand Orange — used for wayfinding (progress, module tag) only, not interactive chrome */
+  --aws-orange: #FF9900;
+  --aws-orange-subtle: rgba(255, 153, 0, 0.12);
+  --aws-orange-border: rgba(255, 153, 0, 0.28);
+
   --status-danger: #FF453A;
   --status-danger-subtle: rgba(255, 69, 58, 0.16);
   --status-success: #30D158;
@@ -211,6 +216,25 @@ p {
   padding: 0 var(--space-6);
   flex-shrink: 0;
   z-index: 50;
+  /* needed to anchor the absolute progress bar below */
+  position: relative;
+  overflow: visible;
+}
+
+/* Module progress rail — sits at the very bottom edge of the header.
+   It is not decorative: it answers "where am I in the 15 modules?"
+   without requiring the user to count or read anything. */
+.header-module-progress {
+  position: absolute;
+  bottom: -1px; /* sits on top of the header border-bottom */
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--aws-orange) 0%, #FFB84D 100%);
+  border-radius: 0 2px 2px 0;
+  transition: width 380ms cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 8px rgba(255, 153, 0, 0.45);
+  z-index: 51;
+  pointer-events: none;
 }
 
 .header-brand {
@@ -512,9 +536,11 @@ p {
 
 .hero-tag {
   font-size: 11px;
-  color: var(--accent);
-  background: var(--accent-subtle);
-  border: 1px solid rgba(10, 132, 255, 0.28);
+  /* AWS orange: this tag is the only chrome element that carries the AWS brand colour.
+     Using the system accent (blue) here conflated brand identity with interactive state. */
+  color: var(--aws-orange);
+  background: var(--aws-orange-subtle);
+  border: 1px solid var(--aws-orange-border);
   padding: 4px 10px;
   border-radius: var(--radius-pill);
   font-weight: 600;
@@ -1608,13 +1634,70 @@ body.theme-light .architecture-tier-block.with-boundary {
   display: none;
 }
 
-.sidebar-keyboard-hint {
-  padding: 8px 16px;
+/* Sidebar category group header — thin label that groups related modules.
+   Purely wayfinding: makes 15 sequential items feel like ~7 conceptual sections
+   so the presenter can say "we're in the Operations block" without counting. */
+.sidebar-section-label {
+  padding: 10px 12px 3px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-quaternary);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* First section label has no extra top padding */
+.sidebar-section-label:first-child {
+  padding-top: 4px;
+}
+
+/* Sidebar footer: progress track + keyboard hint.
+   The progress track answers "how many modules have I covered?"
+   which the presenter needs to gauge pacing. */
+.sidebar-footer {
+  padding: 10px 12px;
   border-top: 1px solid var(--separator);
-  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-progress-label {
+  font-size: 10px;
   color: var(--text-tertiary);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.sidebar-progress-track {
+  flex: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.sidebar-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--aws-orange), rgba(255, 153, 0, 0.5));
+  border-radius: 99px;
+  transition: width 380ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sidebar-keyboard-hint {
   display: flex;
   justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-quaternary);
 }
 
 .journey-grid-row {
@@ -1712,7 +1795,10 @@ body.theme-light .architecture-tier-block.with-boundary {
     display: none;
   }
 
-  .sidebar-keyboard-hint {
+  /* footer and section labels don't fit in the horizontal pill bar */
+  .sidebar-footer,
+  .sidebar-keyboard-hint,
+  .sidebar-section-label {
     display: none;
   }
 
