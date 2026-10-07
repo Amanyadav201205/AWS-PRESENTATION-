@@ -20,7 +20,12 @@ import {
   ShieldAlert,
   Skull,
   DollarSign,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Edit3,
+  X,
+  Shield,
+  Lock,
+  Database
 } from 'lucide-react';
 import { allDomains } from '../data';
 import {
@@ -29,6 +34,9 @@ import {
   generalKeynoteIntro,
   generalKeynoteOutro
 } from '../data/presentationScripts';
+import {
+  domainScriptActionsMap
+} from '../data/domainScriptActions';
 import {
   PhoneCompanionSync,
   RemoteSpeaker,
@@ -48,7 +56,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
   initialSpeaker = 'devarsh',
   onExitRemote
 }) => {
-  const [roomCode] = useState<string>(initialRoomCode);
+  const [roomCode, setRoomCode] = useState<string>(initialRoomCode);
+  const [isEditingRoom, setIsEditingRoom] = useState<boolean>(false);
+  const [tempRoomInput, setTempRoomInput] = useState<string>(initialRoomCode);
   const [speaker, setSpeaker] = useState<RemoteSpeaker>(initialSpeaker);
   const [activeTab, setActiveTab] = useState<'script' | 'actions' | 'qa' | 'deck'>('script');
   const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xl'>('large');
@@ -220,6 +230,51 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
     sendCmd({ type: 'SET_VIEW_MODE', mode: nextMode });
   };
 
+  const handleGotoModule = (index: number) => {
+    triggerHaptic(35);
+    sendCmd({ type: 'GOTO_MODULE', index });
+  };
+
+  const handleSaveRoomCode = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    let clean = tempRoomInput.trim().toUpperCase();
+    if (!clean.startsWith('WAF-') && clean.length > 0) {
+      clean = `WAF-${clean}`;
+    }
+    if (clean.length > 0) {
+      setRoomCode(clean);
+      try {
+        sessionStorage.setItem('waf_room_code', clean);
+      } catch { /* ignore */ }
+    }
+    setIsEditingRoom(false);
+  };
+
+  const getTimerColor = (sec: number) => {
+    if (sec < 480) return '#30d158'; // Green (< 8 mins)
+    if (sec < 720) return '#ff9f0a'; // Amber (8-12 mins)
+    return '#ff453a'; // Red (> 12 mins)
+  };
+
+  const renderActionIcon = (iconName: string, color: string) => {
+    switch (iconName) {
+      case 'zap': return <Zap size={15} color={color} />;
+      case 'shield': return <Shield size={15} color={color} />;
+      case 'flame': return <Flame size={15} color={color} />;
+      case 'sparkles': return <Sparkles size={15} color={color} />;
+      case 'sliders': return <Sliders size={15} color={color} />;
+      case 'compass': return <Compass size={15} color={color} />;
+      case 'rotate': return <RotateCcw size={15} color={color} />;
+      case 'eye': return <Eye size={15} color={color} />;
+      case 'play': return <Play size={15} color={color} />;
+      case 'database': return <Database size={15} color={color} />;
+      case 'lock': return <Lock size={15} color={color} />;
+      case 'radar': return <Activity size={15} color={color} />;
+      case 'dollar': return <DollarSign size={15} color={color} />;
+      default: return <Sparkles size={15} color={color} />;
+    }
+  };
+
   const formatTime = (secs: number) => {
     const m = Math.floor(secs / 60);
     const s = secs % 60;
@@ -228,6 +283,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
 
   const isPresenter = stageState.displayMode === 'presenter';
   const primaryNode = currentDomain.wellArch.nodes[0] || currentDomain.naive.nodes[0];
+  const domainActions = domainScriptActionsMap[currentIdx] || [];
 
   return (
     <div className="speaker-remote-mobile-root" style={{
@@ -266,18 +322,49 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               background: isConnected ? '#30d158' : '#ff9f0a',
               boxShadow: isConnected ? '0 0 8px #30d158' : 'none'
             }} />
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#86868b', letterSpacing: '0.04em' }}>
-              ROOM: <strong style={{ color: '#fff' }}>{roomCode}</strong>
-            </span>
+            <button
+              onClick={() => {
+                setTempRoomInput(roomCode);
+                setIsEditingRoom(true);
+              }}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#86868b',
+                fontSize: 12,
+                fontWeight: 600,
+                letterSpacing: '0.04em',
+                cursor: 'pointer',
+                padding: '2px 4px',
+                borderRadius: 8,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 4
+              }}
+              title="Change Room Code"
+            >
+              <span>ROOM: <strong style={{ color: '#fff' }}>{roomCode}</strong></span>
+              <Edit3 size={11} color="var(--accent)" />
+            </button>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            {/* Presentation Clock */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(255, 255, 255, 0.08)', padding: '3px 8px', borderRadius: 12 }}>
+            {/* Presentation Clock with Pacing Indicator */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'rgba(255, 255, 255, 0.08)', padding: '3px 8px', borderRadius: 12 }}>
               <Clock size={11} color="var(--accent)" />
               <span style={{ fontSize: 12, fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--accent)' }}>
                 {formatTime(timerSeconds)}
               </span>
+              <div
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: '50%',
+                  background: getTimerColor(timerSeconds),
+                  boxShadow: `0 0 6px ${getTimerColor(timerSeconds)}`
+                }}
+                title={timerSeconds < 480 ? 'Pacing: On Track' : timerSeconds < 720 ? 'Pacing: Wrap up' : 'Pacing: Move to conclusion'}
+              />
             </div>
 
             {onExitRemote && (
@@ -372,6 +459,79 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
           </button>
         </div>
       </header>
+
+      {/* 15-Slide Quick Jump Ribbon (Instant 1-tap jump to any slide on stage) */}
+      <div style={{
+        display: 'flex',
+        gap: 6,
+        overflowX: 'auto',
+        padding: '8px 16px',
+        background: '#07080b',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+        WebkitOverflowScrolling: 'touch',
+        scrollbarWidth: 'none'
+      }}>
+        {allDomains.map((d, idx) => {
+          const isCurrent = idx === currentIdx;
+          const isLeadDev = idx % 2 === 0;
+          const initials = idx === 14 ? 'D+A' : isLeadDev ? 'D' : 'A';
+          return (
+            <button
+              key={d.id}
+              onClick={() => handleGotoModule(idx)}
+              style={{
+                flexShrink: 0,
+                padding: '5px 9px',
+                borderRadius: 11,
+                border: isCurrent ? '1.5px solid var(--accent)' : '1px solid rgba(255, 255, 255, 0.1)',
+                background: isCurrent ? 'rgba(255, 153, 0, 0.16)' : 'rgba(255, 255, 255, 0.04)',
+                color: isCurrent ? '#ffffff' : '#8e8e93',
+                fontSize: 11,
+                fontWeight: isCurrent ? 700 : 500,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 5,
+                cursor: 'pointer',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              <span style={{
+                width: 16,
+                height: 16,
+                borderRadius: 8,
+                background: isCurrent ? 'var(--accent)' : 'rgba(255, 255, 255, 0.12)',
+                color: isCurrent ? '#000000' : '#8e8e93',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: 9,
+                fontWeight: 800,
+                fontFamily: 'var(--font-mono)'
+              }}>
+                {idx + 1}
+              </span>
+              <span style={{
+                whiteSpace: 'nowrap',
+                maxWidth: 85,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }}>
+                {d.title.replace('AWS ', '').replace('Layer', '').trim()}
+              </span>
+              <span style={{
+                fontSize: 8.5,
+                padding: '1px 4px',
+                borderRadius: 5,
+                background: initials === 'D+A' ? 'rgba(48, 209, 88, 0.2)' : isLeadDev ? 'rgba(10, 132, 255, 0.2)' : 'rgba(255, 159, 10, 0.2)',
+                color: initials === 'D+A' ? '#30d158' : isLeadDev ? '#5ac8fa' : '#ff9f0a',
+                fontWeight: 700
+              }}>
+                {initials}
+              </span>
+            </button>
+          );
+        })}
+      </div>
 
       {/* Dynamic Screen Mode Indicator & Fast-Switch Banner */}
       <div style={{
@@ -873,6 +1033,85 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                 {currentScript.verbatimScript}
               </div>
 
+              {/* Domain-Specific Scripted Stage Triggers (Tailored to this exact module's speech) */}
+              {domainActions.length > 0 && (
+                <div style={{
+                  borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+                  paddingTop: 14,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 8
+                }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      ⚡ Scripted Stage Triggers for Module {currentIdx + 1}
+                    </span>
+                    <span style={{ fontSize: 10, color: '#8e8e93' }}>Tap while speaking</span>
+                  </div>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {domainActions.map(action => (
+                      <button
+                        key={action.id}
+                        onClick={() => {
+                          triggerHaptic(35);
+                          sendCmd(action.getCommand(primaryNode?.id, primaryNode?.name));
+                        }}
+                        style={{
+                          padding: '10px 12px',
+                          borderRadius: 12,
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          color: '#ffffff',
+                          textAlign: 'left',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          gap: 10,
+                          transition: 'all 0.15s ease'
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+                          <div style={{
+                            width: 32,
+                            height: 32,
+                            borderRadius: 8,
+                            background: 'rgba(255, 255, 255, 0.08)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0
+                          }}>
+                            {renderActionIcon(action.icon, action.color)}
+                          </div>
+                          <div style={{ minWidth: 0 }}>
+                            <div style={{ fontSize: 13, fontWeight: 700, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                              {action.label}
+                            </div>
+                            <div style={{ fontSize: 11, color: '#8e8e93', marginTop: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                              {action.description}
+                            </div>
+                          </div>
+                        </div>
+
+                        <span style={{
+                          fontSize: 10,
+                          fontWeight: 700,
+                          padding: '2px 8px',
+                          borderRadius: 8,
+                          background: 'rgba(255, 255, 255, 0.1)',
+                          color: action.color,
+                          flexShrink: 0
+                        }}>
+                          {action.badge}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* In-Script Quick Live Action Buttons (Conduct the stage while speaking) */}
               <div style={{
                 borderTop: '1px solid rgba(255, 255, 255, 0.08)',
@@ -882,7 +1121,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                 gap: 8
               }}>
                 <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                  ⚡ In-Script Live Screen Triggers (Tap while speaking)
+                  🎯 Quick Master Triggers
                 </span>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
                   <button
@@ -2003,6 +2242,111 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
           </button>
         </div>
       </footer>
+
+      {/* Edit Room Code Modal */}
+      {isEditingRoom && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 9999,
+          background: 'rgba(0, 0, 0, 0.85)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 20
+        }}>
+          <div style={{
+            background: '#12151b',
+            border: '1px solid rgba(255, 153, 0, 0.35)',
+            borderRadius: 20,
+            padding: 22,
+            width: '100%',
+            maxWidth: 340,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 14,
+            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8)'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: 14, fontWeight: 700, color: '#ffffff' }}>
+                🔗 Connect to Stage Screen
+              </span>
+              <button
+                onClick={() => setIsEditingRoom(false)}
+                style={{ background: 'transparent', border: 'none', color: '#8e8e93', cursor: 'pointer', padding: 4 }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <p style={{ fontSize: 12, color: '#8e8e93', margin: 0, lineHeight: 1.4 }}>
+              Enter the 4-digit room code shown on the laptop presentation display (e.g. <strong>WAF-1001</strong>).
+            </p>
+
+            <form onSubmit={handleSaveRoomCode} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <input
+                type="text"
+                value={tempRoomInput}
+                onChange={e => setTempRoomInput(e.target.value)}
+                placeholder="WAF-XXXX"
+                autoFocus
+                style={{
+                  padding: '12px 14px',
+                  borderRadius: 12,
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  background: 'rgba(255, 255, 255, 0.06)',
+                  color: '#ffffff',
+                  fontSize: 16,
+                  fontWeight: 700,
+                  fontFamily: 'var(--font-mono)',
+                  textAlign: 'center',
+                  letterSpacing: '0.1em'
+                }}
+              />
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                <button
+                  type="button"
+                  onClick={() => setIsEditingRoom(false)}
+                  style={{
+                    padding: '10px',
+                    borderRadius: 12,
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    background: 'rgba(255, 255, 255, 0.06)',
+                    color: '#8e8e93',
+                    fontSize: 13,
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="submit"
+                  style={{
+                    padding: '10px',
+                    borderRadius: 12,
+                    border: 'none',
+                    background: 'var(--accent)',
+                    color: '#000000',
+                    fontSize: 13,
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Connect 🚀
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
