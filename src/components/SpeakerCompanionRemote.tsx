@@ -148,6 +148,19 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
     sendCmd({ type: 'OPEN_MODAL', modal });
   };
 
+  const handlePresenterMode = () => {
+    triggerHaptic(50);
+    if (stageState.displayMode === 'presenter') {
+      sendCmd({ type: 'EXIT_PRESENTER_MODE' });
+    } else {
+      sendCmd({ type: 'ENTER_PRESENTER_MODE' });
+    }
+  };
+
+  const handleStorylineStage = (stage: 'requirement' | 'prescription' | 'waf-solution' | 'theory') => {
+    sendCmd({ type: 'SET_STORYLINE_STAGE', storylineStage: stage });
+  };
+
   const handleToggleViewMode = () => {
     const nextMode = stageState.viewMode === 'split' ? 'well-arch-only' : stageState.viewMode === 'well-arch-only' ? 'naive-only' : 'split';
     sendCmd({ type: 'SET_VIEW_MODE', mode: nextMode });
@@ -689,7 +702,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 <button
-                  onClick={() => handleOpenModal('packetSimulator')}
+                  onClick={() => handleOpenModal('latency')}
                   style={{
                     padding: '10px 14px',
                     borderRadius: 12,
@@ -709,7 +722,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                 </button>
 
                 <button
-                  onClick={() => handleOpenModal('stressLab')}
+                  onClick={() => handleOpenModal('stresslab')}
                   style={{
                     padding: '10px 14px',
                     borderRadius: 12,
@@ -729,7 +742,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                 </button>
 
                 <button
-                  onClick={() => handleOpenModal('aiAdvisor')}
+                  onClick={() => handleOpenModal('advisor')}
                   style={{
                     padding: '10px 14px',
                     borderRadius: 12,
@@ -769,7 +782,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                 </button>
 
                 <button
-                  onClick={() => handleOpenModal('subtopicLabs')}
+                  onClick={() => handleOpenModal('subtopics')}
                   style={{
                     padding: '10px 14px',
                     borderRadius: 12,
@@ -923,6 +936,65 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         gap: 10,
         boxShadow: '0 -10px 30px rgba(0, 0, 0, 0.7)'
       }}>
+        {/* Presenter Mode Toggle — GO LIVE / EXIT PRESENT */}
+        <button
+          onClick={handlePresenterMode}
+          style={{
+            width: '100%',
+            padding: '13px 16px',
+            borderRadius: 14,
+            border: 'none',
+            cursor: 'pointer',
+            background: stageState.displayMode === 'presenter'
+              ? 'rgba(255, 69, 58, 0.18)'
+              : 'linear-gradient(135deg, rgba(255, 153, 0, 0.9) 0%, rgba(220, 120, 0, 0.9) 100%)',
+            color: stageState.displayMode === 'presenter' ? '#ff453a' : '#000000',
+            fontWeight: 700,
+            fontSize: 15,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+            letterSpacing: '0.02em',
+            boxShadow: stageState.displayMode === 'presenter'
+              ? '0 0 0 1px rgba(255, 69, 58, 0.4)'
+              : '0 4px 20px rgba(255, 153, 0, 0.45)',
+          }}
+        >
+          {stageState.displayMode === 'presenter'
+            ? <><span style={{ fontSize: 17 }}>⏹</span> EXIT PRESENTATION</>
+            : <><span style={{ fontSize: 17 }}>🎬</span> GO LIVE — PRESENT</>
+          }
+        </button>
+
+        {/* Storyline Stage Switcher */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: 6 }}>
+          {([
+            { stage: 'requirement' as const, label: '📋 Req', short: 'Req' },
+            { stage: 'prescription' as const, label: '💊 Norm', short: 'Norm' },
+            { stage: 'waf-solution' as const, label: '🛡️ WAF', short: 'WAF' },
+            { stage: 'theory' as const, label: '📖 Theory', short: 'Theory' },
+          ]).map(({ stage, label }) => (
+            <button
+              key={stage}
+              onClick={() => handleStorylineStage(stage)}
+              style={{
+                padding: '7px 4px',
+                borderRadius: 10,
+                border: '1px solid rgba(255,255,255,0.1)',
+                cursor: 'pointer',
+                background: 'rgba(255,255,255,0.06)',
+                color: '#d1d1d6',
+                fontWeight: 600,
+                fontSize: 11,
+                textAlign: 'center'
+              }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
         {/* Primary Command Strip */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
           {/* Chaos Trigger button */}

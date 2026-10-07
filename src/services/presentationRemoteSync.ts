@@ -1,5 +1,5 @@
 import { Peer, DataConnection } from 'peerjs';
-import { AppDisplayMode, ChaosPhase, ViewMode } from '../types';
+import { AppDisplayMode, ChaosPhase, ViewMode, StorylineStage } from '../types';
 
 export type RemoteSpeaker = 'devarsh' | 'aman' | 'both';
 
@@ -18,6 +18,9 @@ export type RemoteCommandType =
   | 'CLOSE_MODALS'
   | 'TOGGLE_KEYNOTE'
   | 'IDENTIFY_SPEAKER'
+  | 'ENTER_PRESENTER_MODE'
+  | 'EXIT_PRESENTER_MODE'
+  | 'SET_STORYLINE_STAGE'
   | 'PING'
   | 'PONG';
 
@@ -31,6 +34,7 @@ export interface RemoteCommand {
   targetId?: string;
   label?: string;
   modal?: string;
+  storylineStage?: StorylineStage;
   timestamp: number;
 }
 

@@ -18,9 +18,11 @@ import {
   StageHostSync,
   getOrGenerateRoomCode,
 } from './services/presentationRemoteSync';
+import { StorylineStage } from './types';
+import { StageRemoteHUDToast } from './components/StageRemoteHUDToast';
 
-// Lazy-load ControllerView so it doesn't bloat the stage bundle
-const ControllerView = lazy(() => import('./components/ControllerView').then(m => ({ default: m.ControllerView })));
+// Lazy-load controller and presenter overlay — phone controller uses SpeakerCompanionRemote
+const SpeakerCompanionRemote = lazy(() => import('./components/SpeakerCompanionRemote').then(m => ({ default: m.SpeakerCompanionRemote })));
 
 // Exact id match first, then a prefix match (e.g. #/storage -> storage-layer). Unknown -> -1.
 const findDomainIndexFromHash = (raw: string): number => {
@@ -51,10 +53,14 @@ export function App() {
   const urlParams = new URLSearchParams(window.location.search);
   const urlMode = urlParams.get('mode');
   const urlRoom = urlParams.get('room');
+  const urlSpeaker = urlParams.get('speaker') as 'devarsh' | 'aman' | null;
   if (urlMode === 'controller' && urlRoom) {
     return (
-      <Suspense fallback={<div style={{ background: 'var(--bg-canvas)', minHeight: '100dvh' }} />}>
-        <ControllerView roomCode={urlRoom.toUpperCase()} />
+      <Suspense fallback={<div style={{ background: '#000', minHeight: '100dvh' }} />}>
+        <SpeakerCompanionRemote
+          initialRoomCode={urlRoom.toUpperCase()}
+          initialSpeaker={urlSpeaker ?? 'devarsh'}
+        />
       </Suspense>
     );
   }
@@ -87,11 +93,28 @@ export function App() {
   const [isAdvisorOpen, setIsAdvisorOpen] = useState<boolean>(false);
   const [isAiGovernanceOpen, setIsAiGovernanceOpen] = useState<boolean>(false);
 
+  // Storyline stage — controlled from remote (CustomerJourneyCard tabs)
+  const [activeStorylineStage, setActiveStorylineStage] = useState<StorylineStage>('requirement');
+
   // Remote presenter sync (stage host)
   const [roomCode] = useState(() => getOrGenerateRoomCode());
   const [remoteSync] = useState(() => new StageHostSync(roomCode));
   const [remoteConnected, setRemoteConnected] = useState(false);
   const [remoteDeviceCount, setRemoteDeviceCount] = useState(0);
+
+  // HUD toast shown on stage when a phone sends a command
+  const [hudSpeakerName, setHudSpeakerName] = useState<string | null>(null);
+  const [hudActionNotice, setHudActionNotice] = useState<string | null>(null);
+  const [hudVisible, setHudVisible] = useState(false);
+  const hudTimerRef = useRef<number | null>(null);
+
+  const showHudToast = useCallback((speaker: string | undefined, action: string) => {
+    if (hudTimerRef.current) window.clearTimeout(hudTimerRef.current);
+    setHudSpeakerName(speaker ?? null);
+    setHudActionNotice(action);
+    setHudVisible(true);
+    hudTimerRef.current = window.setTimeout(() => setHudVisible(false), 2800);
+  }, []);
 
   // Ensure soundFX matches initial audio state
   useEffect(() => {
@@ -214,62 +237,108 @@ export function App() {
   // Incoming remote commands from phones
   useEffect(() => {
     const unsub = remoteSync.onCommand((cmd) => {
+      const spk = cmd.speakerName;
       switch (cmd.type) {
         case 'NEXT_MODULE':
           if (currentDomainIndex < allDomains.length - 1) {
             soundFX.playClick();
             setCurrentDomainIndex(prev => prev + 1);
+            showHudToast(spk, 'Advanced to next module');
           }
           break;
         case 'PREV_MODULE':
           if (currentDomainIndex > 0) {
             soundFX.playClick();
             setCurrentDomainIndex(prev => prev - 1);
+            showHudToast(spk, 'Navigated to previous module');
           }
           break;
         case 'GOTO_MODULE':
           if (cmd.index !== undefined && cmd.index >= 0 && cmd.index < allDomains.length) {
             soundFX.playClick();
             setCurrentDomainIndex(cmd.index);
+            showHudToast(spk, `Jumped to Module ${cmd.index + 1}`);
           }
           break;
         case 'TRIGGER_CHAOS':
           handleTriggerChaos();
+          showHudToast(spk, 'Chaos Outage Injected');
           break;
         case 'RESET_CHAOS':
           handleResetChaos();
+          showHudToast(spk, 'Outage Healed & Nominal');
+          break;
+        case 'ENTER_PRESENTER_MODE':
+          soundFX.playClick();
+          setDisplayMode('presenter');
+          showHudToast(spk, 'Entered Presenter Mode');
+          break;
+        case 'EXIT_PRESENTER_MODE':
+          soundFX.playClick();
+          setDisplayMode('studio');
+          showHudToast(spk, 'Returned to Studio');
           break;
         case 'SET_VIEW_MODE':
-          if (cmd.mode) setViewMode(cmd.mode);
+          if (cmd.mode) {
+            setViewMode(cmd.mode);
+            const label = cmd.mode === 'split' ? 'Split View' : cmd.mode === 'well-arch-only' ? 'WAF Only' : 'Naive Only';
+            showHudToast(spk, `View: ${label}`);
+          }
+          break;
+        case 'SET_STORYLINE_STAGE':
+          if (cmd.storylineStage) {
+            setActiveStorylineStage(cmd.storylineStage);
+            const stageLabels = { requirement: 'Customer Requirement', prescription: 'Normal Prescription', 'waf-solution': 'WAF Solution', theory: 'Theory' };
+            showHudToast(spk, `Storyline: ${stageLabels[cmd.storylineStage]}`);
+          }
           break;
         case 'SCROLL_TO':
-          if (cmd.target) {
+          if (cmd.target === 'top') {
+            mainRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+          } else if (cmd.target) {
             const el = document.getElementById(`section-${cmd.target}`);
             el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            showHudToast(spk, `Scrolled to ${cmd.target}`);
           }
+          break;
+        case 'SPOTLIGHT':
+          if (cmd.label) showHudToast(spk, `Spotlight: ${cmd.label}`);
+          break;
+        case 'IDENTIFY_SPEAKER':
+          if (cmd.speakerName) showHudToast(cmd.speakerName, 'is presenting');
           break;
         case 'CLOSE_MODALS':
           closeAllModals();
+          showHudToast(spk, 'Closed all modals');
           break;
-        case 'OPEN_MODAL':
+        case 'OPEN_MODAL': {
           closeAllModals();
-          switch (cmd.modal) {
-            case 'script':       setIsPrompterOpen(true); break;
-            case '6pillars':     setIs6PillarsOpen(true); break;
-            case 'executive':    setIsExecutiveReviewOpen(true); break;
-            case 'stresslab':    setIsStressLabOpen(true); break;
-            case 'latency':      setIsPacketSimulatorOpen(true); break;
-            case 'workloads':    setIsClientSolutionsOpen(true); break;
-            case 'subtopics':    setIsSubtopicLabsOpen(true); break;
-            case 'theory':       setIsTheoryOpen(true); break;
-            case 'advisor':      setIsAdvisorOpen(true); break;
-            case 'governance':   setIsAiGovernanceOpen(true); break;
-          }
+          // Accept both short keys and legacy keys from SpeakerCompanionRemote
+          const modalMap: Record<string, () => void> = {
+            script:          () => setIsPrompterOpen(true),
+            '6pillars':      () => setIs6PillarsOpen(true),
+            executive:       () => setIsExecutiveReviewOpen(true),
+            stresslab:       () => setIsStressLabOpen(true),
+            stressLab:       () => setIsStressLabOpen(true),
+            latency:         () => setIsPacketSimulatorOpen(true),
+            packetSimulator: () => setIsPacketSimulatorOpen(true),
+            workloads:       () => setIsClientSolutionsOpen(true),
+            subtopics:       () => setIsSubtopicLabsOpen(true),
+            subtopicLabs:    () => setIsSubtopicLabsOpen(true),
+            theory:          () => setIsTheoryOpen(true),
+            advisor:         () => setIsAdvisorOpen(true),
+            aiAdvisor:       () => setIsAdvisorOpen(true),
+            governance:      () => setIsAiGovernanceOpen(true),
+          };
+          const open = cmd.modal ? modalMap[cmd.modal] : undefined;
+          open?.();
+          if (cmd.label || cmd.modal) showHudToast(spk, `Opened ${cmd.label || cmd.modal}`);
           break;
+        }
       }
     });
     return unsub;
-  }, [remoteSync, currentDomainIndex, handleTriggerChaos, handleResetChaos, closeAllModals]);
+  }, [remoteSync, currentDomainIndex, handleTriggerChaos, handleResetChaos, closeAllModals, showHudToast]);
 
   // Listen to connection state changes
   useEffect(() => {
@@ -425,6 +494,7 @@ export function App() {
         onOpenTheory={() => setIsTheoryOpen(true)}
         onOpenAdvisor={() => setIsAdvisorOpen(true)}
         onOpenAiGovernance={() => setIsAiGovernanceOpen(true)}
+        onOpenPairingModal={() => {}}
       />
 
       <div className="main-workspace">
@@ -481,6 +551,8 @@ export function App() {
             wafSummary={activeDomain.wafTransformationSummary}
             pillars={activeDomain.pillars}
             domainId={activeDomain.id}
+            activeStage={activeStorylineStage}
+            onStageChange={setActiveStorylineStage}
           />
 
           {/* Dual Architecture Stage */}
@@ -672,6 +744,13 @@ export function App() {
           />
         )}
       </Suspense>
+
+      {/* Stage HUD toast — shows when phone sends a command */}
+      <StageRemoteHUDToast
+        speakerName={hudSpeakerName}
+        actionNotice={hudActionNotice}
+        isVisible={hudVisible}
+      />
     </div>
   );
 }

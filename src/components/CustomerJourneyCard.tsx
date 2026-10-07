@@ -26,6 +26,8 @@ interface JourneyProps {
   wafSummary: string;
   pillars: PillarType[];
   domainId?: string;
+  activeStage?: StorylineStage;
+  onStageChange?: (stage: StorylineStage) => void;
 }
 
 export const CustomerJourneyCard: React.FC<JourneyProps> = ({
@@ -33,9 +35,16 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
   normalPrescription,
   wafSummary,
   pillars,
-  domainId
+  domainId,
+  activeStage: controlledStage,
+  onStageChange,
 }) => {
-  const [activeStage, setActiveStage] = useState<StorylineStage>('requirement');
+  const [internalStage, setInternalStage] = useState<StorylineStage>('requirement');
+  const activeStage = controlledStage ?? internalStage;
+  const setActiveStage = (s: StorylineStage) => {
+    setInternalStage(s);
+    onStageChange?.(s);
+  };
 
   return (
     <div className="card-apple" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
