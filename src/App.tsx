@@ -47,19 +47,26 @@ const TheoreticalFoundationsModal = lazy(() => import('./components/TheoreticalF
 const AiGovernanceModal = lazy(() => import('./components/AiGovernanceModal').then(m => ({ default: m.AiGovernanceModal })));
 const NodeDetailModal = lazy(() => import('./components/NodeDetailModal').then(m => ({ default: m.NodeDetailModal })));
 const DRStrategyExplorer = lazy(() => import('./components/DRStrategyExplorer').then(m => ({ default: m.DRStrategyExplorer })));
+const RemotePairingModal = lazy(() => import('./components/RemotePairingModal').then(m => ({ default: m.RemotePairingModal })));
 
 export function App() {
-  // Detect controller mode from URL: ?mode=controller&room=WAF-XXXX
+  // Detect remote presenter companion mode from URL: ?mode=remote or ?mode=controller or ?remote=WAF-XXXX
   const urlParams = new URLSearchParams(window.location.search);
   const urlMode = urlParams.get('mode');
   const urlRoom = urlParams.get('room');
   const urlSpeaker = urlParams.get('speaker') as 'devarsh' | 'aman' | null;
-  if (urlMode === 'controller' && urlRoom) {
+  const isRemoteView = urlMode === 'remote' || urlMode === 'controller' || urlParams.has('remote');
+
+  if (isRemoteView) {
+    const effectiveRoom = (urlRoom || urlParams.get('remote') || getOrGenerateRoomCode()).toUpperCase();
     return (
       <Suspense fallback={<div style={{ background: '#000', minHeight: '100dvh' }} />}>
         <SpeakerCompanionRemote
-          initialRoomCode={urlRoom.toUpperCase()}
+          initialRoomCode={effectiveRoom}
           initialSpeaker={urlSpeaker ?? 'devarsh'}
+          onExitRemote={() => {
+            window.location.href = window.location.pathname;
+          }}
         />
       </Suspense>
     );
@@ -92,6 +99,7 @@ export function App() {
   const [isTheoryOpen, setIsTheoryOpen] = useState<boolean>(false);
   const [isAdvisorOpen, setIsAdvisorOpen] = useState<boolean>(false);
   const [isAiGovernanceOpen, setIsAiGovernanceOpen] = useState<boolean>(false);
+  const [isPairingModalOpen, setIsPairingModalOpen] = useState<boolean>(false);
 
   // Storyline stage — controlled from remote (CustomerJourneyCard tabs)
   const [activeStorylineStage, setActiveStorylineStage] = useState<StorylineStage>('requirement');
@@ -231,6 +239,7 @@ export function App() {
     setIsTheoryOpen(false);
     setIsAdvisorOpen(false);
     setIsAiGovernanceOpen(false);
+    setIsPairingModalOpen(false);
     setSelectedNode(null);
   }, []);
 
@@ -295,15 +304,45 @@ export function App() {
         case 'SCROLL_TO':
           if (cmd.target === 'top') {
             mainRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+            showHudToast(spk, 'Scrolled to top of slide');
           } else if (cmd.target) {
-            const el = document.getElementById(`section-${cmd.target}`);
-            el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            showHudToast(spk, `Scrolled to ${cmd.target}`);
+            const targetElementId = `section-${cmd.target}`;
+            const el = document.getElementById(targetElementId);
+            if (el) {
+              el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              // Trigger a temporary laser spotlight glow on the container
+              const container = (el.nextElementSibling || el) as HTMLElement;
+              container.classList.add('stage-spotlight-active');
+              window.setTimeout(() => container.classList.remove('stage-spotlight-active'), 3200);
+            }
+            showHudToast(spk, `Focused on ${cmd.target.toUpperCase()}`);
           }
           break;
-        case 'SPOTLIGHT':
-          if (cmd.label) showHudToast(spk, `Spotlight: ${cmd.label}`);
+        case 'SPOTLIGHT': {
+          if (cmd.label) showHudToast(spk, `Laser Spotlight: ${cmd.label}`);
+          // Clear any active spotlights
+          document.querySelectorAll('.stage-spotlight-active').forEach(node => {
+            node.classList.remove('stage-spotlight-active');
+          });
+          let targetEl: HTMLElement | null = null;
+          if (cmd.targetId) {
+            targetEl = document.getElementById(cmd.targetId) ||
+                       document.querySelector(`[data-node-id="${cmd.targetId}"]`) ||
+                       document.querySelector(`[data-testid="${cmd.targetId}"]`);
+          }
+          if (!targetEl && cmd.label) {
+            const searchPool = Array.from(document.querySelectorAll('.arch-node, .node-card, .metric-card, .journey-stage-step, .pillar-card, .pillar-mini-badge, .badge'));
+            targetEl = (searchPool.find(el => el.textContent?.toLowerCase().includes(cmd.label!.toLowerCase())) as HTMLElement) || null;
+          }
+          if (targetEl) {
+            targetEl.classList.add('stage-spotlight-active');
+            targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            window.setTimeout(() => {
+              targetEl?.classList.remove('stage-spotlight-active');
+            }, 4500);
+          }
           break;
+        }
         case 'IDENTIFY_SPEAKER':
           if (cmd.speakerName) showHudToast(cmd.speakerName, 'is presenting');
           break;
@@ -385,7 +424,7 @@ export function App() {
     remoteDeviceCount,
     isPrompterOpen, is6PillarsOpen, isExecutiveReviewOpen, isStressLabOpen,
     isPacketSimulatorOpen, isClientSolutionsOpen, isSubtopicLabsOpen,
-    isTheoryOpen, isAdvisorOpen, isAiGovernanceOpen,
+    isTheoryOpen, isAdvisorOpen, isAiGovernanceOpen, isPairingModalOpen,
   ]);
 
   // Keyboard navigation when not in presenter mode or modals
@@ -393,7 +432,8 @@ export function App() {
     const handleKeyDown = (e: KeyboardEvent) => {
       const anyModalOpen = isPrompterOpen || is6PillarsOpen || isExecutiveReviewOpen || 
         isStressLabOpen || isPacketSimulatorOpen || isClientSolutionsOpen || 
-        isSubtopicLabsOpen || isTheoryOpen || isAdvisorOpen || isAiGovernanceOpen || selectedNode !== null;
+        isSubtopicLabsOpen || isTheoryOpen || isAdvisorOpen || isAiGovernanceOpen || 
+        isPairingModalOpen || selectedNode !== null;
 
       if (e.key === 'Escape') {
         if (displayMode === 'presenter') {
@@ -419,6 +459,9 @@ export function App() {
       } else if (e.key === 's' || e.key === 'S') {
         soundFX.playClick();
         setIsPrompterOpen(prev => !prev);
+      } else if (e.key === 'm' || e.key === 'M') {
+        soundFX.playClick();
+        setIsPairingModalOpen(prev => !prev);
       } else if (e.key === 'a' || e.key === 'A') {
         soundFX.playClick();
         setIsAdvisorOpen(prev => !prev);
@@ -464,6 +507,7 @@ export function App() {
     isTheoryOpen,
     isAdvisorOpen,
     isAiGovernanceOpen,
+    isPairingModalOpen,
     closeAllModals
   ]);
 
@@ -494,7 +538,8 @@ export function App() {
         onOpenTheory={() => setIsTheoryOpen(true)}
         onOpenAdvisor={() => setIsAdvisorOpen(true)}
         onOpenAiGovernance={() => setIsAiGovernanceOpen(true)}
-        onOpenPairingModal={() => {}}
+        onOpenPairingModal={() => setIsPairingModalOpen(true)}
+        connectedRemotesCount={remoteDeviceCount}
       />
 
       <div className="main-workspace">
@@ -519,6 +564,7 @@ export function App() {
                   roomCode={roomCode}
                   connectedCount={remoteDeviceCount}
                   isConnected={remoteConnected}
+                  onOpenModal={() => setIsPairingModalOpen(true)}
                 />
                 <button
                   className="btn-action"
@@ -617,6 +663,7 @@ export function App() {
         onOpenSubtopics={() => setIsSubtopicLabsOpen(true)}
         onOpenTheory={() => setIsTheoryOpen(true)}
         onOpenAiCopilot={() => setIsAdvisorOpen(true)}
+        onOpenPairingModal={() => setIsPairingModalOpen(true)}
       />
 
       {/* Lazy Modals Wrapped in Suspense */}
@@ -741,6 +788,16 @@ export function App() {
               setIsAiGovernanceOpen(false);
               setIsAdvisorOpen(true);
             }}
+          />
+        )}
+
+        {/* Dual-Phone Presenter Pairing Modal */}
+        {isPairingModalOpen && (
+          <RemotePairingModal
+            roomCode={roomCode}
+            connectedCount={remoteDeviceCount}
+            latestSpeakerName={hudSpeakerName}
+            onClose={() => setIsPairingModalOpen(false)}
           />
         )}
       </Suspense>

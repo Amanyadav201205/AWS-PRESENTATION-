@@ -16,7 +16,8 @@ import {
   Compass,
   MoreHorizontal,
   Landmark,
-  ShieldCheck
+  ShieldCheck,
+  Smartphone
 } from 'lucide-react';
 import { soundFX } from '../utils/soundEffects';
 import { AwsLogo } from './AwsLogo';
@@ -41,6 +42,8 @@ interface HeaderProps {
   onOpenTheory: () => void;
   onOpenAdvisor: () => void;
   onOpenAiGovernance: () => void;
+  onOpenPairingModal: () => void;
+  connectedRemotesCount?: number;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -62,7 +65,9 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenSubtopics,
   onOpenTheory,
   onOpenAdvisor,
-  onOpenAiGovernance
+  onOpenAiGovernance,
+  onOpenPairingModal,
+  connectedRemotesCount = 0
 }) => {
   const [simMenuOpen, setSimMenuOpen] = useState<boolean>(false);
   const [fwMenuOpen, setFwMenuOpen] = useState<boolean>(false);
@@ -374,6 +379,24 @@ export const Header: React.FC<HeaderProps> = ({
           <span>Script</span>
         </button>
 
+        {/* Phone Remote Pairing Trigger */}
+        <button
+          className={`btn-action pill ${connectedRemotesCount > 0 ? 'active' : ''}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            soundFX.playClick();
+            onOpenPairingModal();
+          }}
+          title="Connect Devarsh & Aman's phones to control big screen [M]"
+          style={{
+            borderColor: connectedRemotesCount > 0 ? 'rgba(48, 209, 88, 0.4)' : undefined,
+            background: connectedRemotesCount > 0 ? 'rgba(48, 209, 88, 0.1)' : undefined
+          }}
+        >
+          <Smartphone size={13} color={connectedRemotesCount > 0 ? 'var(--status-healthy)' : 'var(--accent)'} />
+          <span>{connectedRemotesCount > 0 ? `Remote (${connectedRemotesCount})` : 'Phone Remote'}</span>
+        </button>
+
         {/* Presenter Mode Button */}
         <button
           className="btn-action primary pill"
@@ -440,6 +463,7 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="header-dropdown-menu mobile-dropdown-menu" role="menu">
             {([
               { label: 'Guided Architecture Q&A', icon: <Compass size={16} color="var(--accent)" />, run: onOpenAdvisor },
+              { label: connectedRemotesCount > 0 ? `Phone Remote (${connectedRemotesCount} connected)` : 'Phone Remote (Pair Phones)', icon: <Smartphone size={16} color={connectedRemotesCount > 0 ? 'var(--status-healthy)' : 'var(--accent)'} />, run: onOpenPairingModal },
               { label: 'Speaker Script', icon: <FileText size={16} color="var(--accent)" />, run: onOpenScriptPrompter },
               { label: '6 Pillars Explorer', icon: <Landmark size={16} color="var(--accent)" />, run: onOpen6Pillars },
               { label: 'Executive Review & ROI', icon: <Activity size={16} color="var(--accent)" />, run: onOpenExecutiveReview },

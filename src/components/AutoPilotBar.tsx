@@ -12,7 +12,8 @@ import {
   Briefcase, 
   Sliders, 
   BookOpen,
-  Compass
+  Compass,
+  Smartphone
 } from 'lucide-react';
 import { soundFX } from '../utils/soundEffects';
 
@@ -33,6 +34,7 @@ interface AutoPilotBarProps {
   onOpenSubtopics: () => void;
   onOpenTheory: () => void;
   onOpenAiCopilot: () => void;
+  onOpenPairingModal?: () => void;
 }
 
 export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
@@ -51,7 +53,8 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
   onOpenClientSolutions,
   onOpenSubtopics,
   onOpenTheory,
-  onOpenAiCopilot
+  onOpenAiCopilot,
+  onOpenPairingModal
 }) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [durationSec, setDurationSec] = useState<number>(30); // 15, 30, or 60s
@@ -265,6 +268,17 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
 
             {/* Quick Action Launchers */}
             <div className="autopilot-launchers-group">
+              {onOpenPairingModal && (
+                <button
+                  className="btn-action autopilot-launcher-btn"
+                  onClick={onOpenPairingModal}
+                  title="Connect Devarsh & Aman's smartphones to control presentation [M]"
+                >
+                  <Smartphone size={12} color="var(--accent)" />
+                  <span className="btn-label-desktop">Phone Remote</span>
+                </button>
+              )}
+
               <button
                 className="btn-action autopilot-launcher-btn"
                 onClick={onOpenScriptPrompter}

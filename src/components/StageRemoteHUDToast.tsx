@@ -36,6 +36,7 @@ export const StageRemoteHUDToast: React.FC<StageRemoteHUDToastProps> = ({
 
   return (
     <aside
+      className="stage-hud-toast"
       aria-live="polite"
       aria-label="Presenter remote command execution status"
       style={{

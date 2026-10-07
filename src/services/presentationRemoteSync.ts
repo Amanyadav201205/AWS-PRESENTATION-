@@ -169,7 +169,14 @@ export class StageHostSync {
     }
   }
 
+  private recentCommandSignatures: Set<string> = new Set();
+
   private handleIncomingCommand(cmd: RemoteCommand) {
+    const signature = `${cmd.type}-${cmd.timestamp}-${cmd.speaker || ''}-${cmd.target || ''}-${cmd.modal || ''}`;
+    if (this.recentCommandSignatures.has(signature)) return;
+    this.recentCommandSignatures.add(signature);
+    setTimeout(() => this.recentCommandSignatures.delete(signature), 2000);
+
     if (cmd.type === 'PING') {
       this.broadcastCommand({ type: 'PONG', timestamp: Date.now() });
       return;
@@ -253,6 +260,7 @@ export class StageHostSync {
 
   public destroy() {
     this.isDestroyed = true;
+    this.recentCommandSignatures.clear();
     this.commandListeners.clear();
     this.connectionListeners.clear();
     this.connections.forEach(conn => conn.close());

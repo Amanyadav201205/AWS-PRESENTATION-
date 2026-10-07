@@ -6,17 +6,19 @@ interface RemoteStatusBadgeProps {
   roomCode: string;
   connectedCount: number;
   isConnected: boolean;
+  onOpenModal?: () => void;
 }
 
 export const RemoteStatusBadge: React.FC<RemoteStatusBadgeProps> = ({
   roomCode,
   connectedCount,
   isConnected,
+  onOpenModal,
 }) => {
   const [showQr, setShowQr] = useState(false);
   const [qrDataUrl, setQrDataUrl] = useState<string>('');
 
-  const controllerUrl = `${window.location.origin}${window.location.pathname}?mode=controller&room=${encodeURIComponent(roomCode)}`;
+  const controllerUrl = `${window.location.origin}${window.location.pathname}?mode=remote&room=${encodeURIComponent(roomCode)}`;
 
   useEffect(() => {
     if (!showQr) return;
@@ -31,9 +33,15 @@ export const RemoteStatusBadge: React.FC<RemoteStatusBadgeProps> = ({
     <>
       <button
         className={`remote-badge ${connectedCount > 0 ? 'remote-badge--live' : ''}`}
-        onClick={() => setShowQr(true)}
-        title={`Remote presenter — Room ${roomCode}. Click to show QR code.`}
-        aria-label={`Remote presenter control. ${connectedCount} device${connectedCount !== 1 ? 's' : ''} connected. Click to show QR code.`}
+        onClick={() => {
+          if (onOpenModal) {
+            onOpenModal();
+          } else {
+            setShowQr(true);
+          }
+        }}
+        title={`Remote presenter — Room ${roomCode}. Click to show pairing QR code.`}
+        aria-label={`Remote presenter control. ${connectedCount} device${connectedCount !== 1 ? 's' : ''} connected. Click to show pairing QR code.`}
       >
         {isConnected
           ? <Wifi size={12} />
