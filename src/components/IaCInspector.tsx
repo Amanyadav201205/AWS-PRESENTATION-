@@ -52,7 +52,7 @@ export const IaCInspector: React.FC<IaCProps> = ({ naiveIaC, wellArchIaC }) => {
           <button
             className="btn-action"
             onClick={handleCopy}
-            style={{ minHeight: 32, fontSize: 11, padding: '0 10px' }}
+            style={{ minHeight: 32, fontSize: 11, padding: '0 12px', borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
             aria-label="Copy code snippet"
           >
             {copied ? <Check size={12} color="var(--status-success)" /> : <Copy size={12} />}

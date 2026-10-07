@@ -277,7 +277,7 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               <button
                 className="btn-action"
                 onClick={onOpenScriptPrompter}
-                style={{ minHeight: 32, fontSize: 12, gap: 5 }}
+                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Open speaker script and jury defense questions [S]"
               >
                 <FileText size={12} color="var(--accent)" />
@@ -287,7 +287,7 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               <button
                 className="btn-action"
                 onClick={onOpenAiCopilot}
-                style={{ minHeight: 32, fontSize: 12, gap: 5 }}
+                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Open Guided Architecture Q&A [A]"
               >
                 <Compass size={12} color="var(--accent)" />
@@ -297,7 +297,7 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               <button
                 className="btn-action"
                 onClick={onOpen6Pillars}
-                style={{ minHeight: 32, fontSize: 12, gap: 5 }}
+                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Explore the 6 Pillars of the AWS Well-Architected Framework"
               >
                 <span style={{ fontSize: 12 }}>🏛️</span>
@@ -307,7 +307,7 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               <button
                 className="btn-action"
                 onClick={onOpenExecutiveReview}
-                style={{ minHeight: 32, fontSize: 12, gap: 5 }}
+                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="View full AWS Well-Architected Review audit & ROI savings calculator"
               >
                 <span style={{ fontSize: 12 }}>📊</span>
@@ -317,7 +317,7 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               <button
                 className="btn-action"
                 onClick={onOpenStressLab}
-                style={{ minHeight: 32, fontSize: 12, gap: 5 }}
+                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Run live incident stress tests"
               >
                 <Zap size={12} color="var(--status-warning)" />
@@ -327,7 +327,7 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               <button
                 className="btn-action"
                 onClick={onOpenPacketSimulator}
-                style={{ minHeight: 32, fontSize: 12, gap: 5 }}
+                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Simulate side-by-side animated packet latency"
               >
                 <Clock size={12} color="var(--accent)" />
@@ -337,7 +337,7 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               <button
                 className="btn-action"
                 onClick={onOpenClientSolutions}
-                style={{ minHeight: 32, fontSize: 12, gap: 5 }}
+                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Explore real-world client workload requirements [W]"
               >
                 <Briefcase size={12} color="var(--accent)" />
@@ -347,7 +347,7 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               <button
                 className="btn-action"
                 onClick={onOpenSubtopics}
-                style={{ minHeight: 32, fontSize: 12, gap: 5 }}
+                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Interactive subtopic labs [T]"
               >
                 <Sliders size={12} color="var(--status-success)" />
@@ -357,7 +357,7 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               <button
                 className="btn-action"
                 onClick={onOpenTheory}
-                style={{ minHeight: 32, fontSize: 12, gap: 5 }}
+                style={{ minHeight: 32, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 title="Master Theoretical Foundations and Academic Literature [K]"
               >
                 <BookOpen size={12} color="var(--accent)" />
@@ -368,7 +368,7 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
               <button
                 className="btn-action btn-icon"
                 onClick={() => setIsMinimized(true)}
-                style={{ minHeight: 32, minWidth: 32 }}
+                style={{ minHeight: 32, minWidth: 32, borderRadius: 'var(--radius-pill)' }}
                 title="Minimize auto-pilot dock"
                 aria-label="Minimize auto-pilot dock"
               >

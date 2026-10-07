@@ -148,21 +148,23 @@ export const StressLabModal: React.FC<StressLabModalProps> = ({ onClose }) => {
 
   return (
     <div className="sheet-overlay" role="dialog" aria-modal="true" aria-label="Interactive Stress Testing & Blast Radius Lab">
-      <div className="presenter-dialog stress-sheet" style={{ maxWidth: 940, maxHeight: '90vh' }}>
+      <div className="presenter-dialog stress-sheet" style={{ maxWidth: 940, maxHeight: '90dvh' }}>
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--separator)', paddingBottom: 'var(--space-3)', flexWrap: 'wrap', gap: 10 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ fontSize: 20 }}>⚡</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 'var(--radius-control)', background: 'var(--status-warning-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>
+              ⚡
+            </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <h2 style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text-primary)' }}>
+                <h2 style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
                   Interactive Stress & Blast Radius Simulation Lab
                 </h2>
-                <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--status-warning-subtle)', color: 'var(--status-warning)', fontWeight: 600 }}>
+                <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--status-warning-subtle)', color: 'var(--status-warning)', fontWeight: 600, letterSpacing: '0.02em' }}>
                   Live Incident Comparison
                 </span>
               </div>
-              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>
+              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', marginTop: 2 }}>
                 Directly compare architecture behavior under real-world catastrophic production failure scenarios
               </p>
             </div>
@@ -170,12 +172,12 @@ export const StressLabModal: React.FC<StressLabModalProps> = ({ onClose }) => {
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             {isSimulating ? (
-              <button className="btn-action danger-quiet" onClick={handleResetSim} style={{ height: 28, fontSize: 12, gap: 5 }}>
+              <button className="btn-action danger-quiet" onClick={handleResetSim} style={{ height: 30, fontSize: 12, gap: 6, borderRadius: 'var(--radius-pill)' }}>
                 <RotateCcw size={13} />
                 <span>Reset Baseline</span>
               </button>
             ) : (
-              <button className="btn-action primary" onClick={handleTriggerSim} style={{ height: 28, fontSize: 12, gap: 5 }}>
+              <button className="btn-action primary" onClick={handleTriggerSim} style={{ height: 30, fontSize: 12, gap: 6, borderRadius: 'var(--radius-pill)' }}>
                 <Flame size={13} />
                 <span>Inject Chaos</span>
               </button>
@@ -187,6 +189,7 @@ export const StressLabModal: React.FC<StressLabModalProps> = ({ onClose }) => {
                 soundFX.playClick();
                 onClose();
               }}
+              style={{ width: 30, height: 30, borderRadius: 'var(--radius-pill)' }}
               aria-label="Close Stress Lab"
             >
               <X size={15} />
@@ -211,6 +214,7 @@ export const StressLabModal: React.FC<StressLabModalProps> = ({ onClose }) => {
                   background: isSelected ? 'var(--accent)' : 'var(--bg-surface)',
                   color: isSelected ? '#FFFFFF' : 'var(--text-secondary)',
                   borderColor: isSelected ? 'transparent' : 'var(--separator)',
+                  borderRadius: 'var(--radius-pill)',
                   flexShrink: 0
                 }}
               >
@@ -223,27 +227,27 @@ export const StressLabModal: React.FC<StressLabModalProps> = ({ onClose }) => {
         {/* Content Body */}
         <div style={{ overflowY: 'auto', paddingRight: 6, display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', flex: 1, marginTop: 'var(--space-3)' }}>
           {/* Incident Overview Banner */}
-          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
               <AlertTriangle size={16} color="var(--status-warning)" />
-              <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text-primary)' }}>
+              <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.015em' }}>
                 {scenario.title}
               </h3>
             </div>
-            <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.45 }}>
-              <strong>Incident Trigger:</strong> {scenario.triggerDescription}
+            <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.48 }}>
+              <strong style={{ color: 'var(--text-primary)' }}>Incident Trigger:</strong> {scenario.triggerDescription}
             </p>
           </div>
 
           {/* Side-by-Side Incident Telemetry */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: 'var(--space-4)' }}>
             {/* Naive Telemetry */}
-            <div style={{ background: 'rgba(255, 69, 58, 0.06)', border: '1px solid rgba(255, 69, 58, 0.3)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+            <div style={{ background: 'rgba(255, 69, 58, 0.05)', border: '1px solid rgba(255, 69, 58, 0.25)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-3)' }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--status-danger)', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-danger)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   Naive Anti-Pattern Response
                 </span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 700, padding: '2px 8px', borderRadius: 4, background: 'rgba(255, 69, 58, 0.2)', color: 'var(--status-danger)' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700, padding: '3px 8px', borderRadius: 'var(--radius-pill)', background: 'rgba(255, 69, 58, 0.2)', color: 'var(--status-danger)', letterSpacing: '0.03em' }}>
                   {scenario.naive.status}
                 </span>
               </div>
@@ -252,57 +256,57 @@ export const StressLabModal: React.FC<StressLabModalProps> = ({ onClose }) => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
                 {/* CPU */}
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 2 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 4 }}>
                     <span style={{ color: 'var(--text-secondary)' }}>CPU Utilization</span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--status-danger)' }}>{scenario.naive.cpu}%</span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums', fontWeight: 600, color: 'var(--status-danger)' }}>{scenario.naive.cpu}%</span>
                   </div>
-                  <div style={{ height: 6, background: 'var(--bg-subtle)', borderRadius: 3, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${scenario.naive.cpu}%`, background: 'var(--status-danger)' }} />
+                  <div style={{ height: 6, background: 'var(--bg-subtle)', borderRadius: 'var(--radius-pill)', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${scenario.naive.cpu}%`, background: 'var(--status-danger)', borderRadius: 'var(--radius-pill)', transition: 'width 0.3s var(--ease-spring)' }} />
                   </div>
                 </div>
 
                 {/* Error Rate */}
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 2 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 4 }}>
                     <span style={{ color: 'var(--text-secondary)' }}>Error Rate (HTTP 5xx / Dropped)</span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--status-danger)' }}>{scenario.naive.errorRate}%</span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums', fontWeight: 600, color: 'var(--status-danger)' }}>{scenario.naive.errorRate}%</span>
                   </div>
-                  <div style={{ height: 6, background: 'var(--bg-subtle)', borderRadius: 3, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${scenario.naive.errorRate}%`, background: 'var(--status-danger)' }} />
+                  <div style={{ height: 6, background: 'var(--bg-subtle)', borderRadius: 'var(--radius-pill)', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${scenario.naive.errorRate}%`, background: 'var(--status-danger)', borderRadius: 'var(--radius-pill)', transition: 'width 0.3s var(--ease-spring)' }} />
                   </div>
                 </div>
 
                 {/* Latency */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, background: 'var(--bg-surface)', padding: '6px 10px', borderRadius: 6 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, background: 'var(--bg-surface)', padding: '8px 12px', borderRadius: 'var(--radius-control)', border: '1px solid var(--separator-subtle)' }}>
                   <span style={{ color: 'var(--text-secondary)' }}>P99 Latency</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--status-danger)' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums', fontWeight: 700, color: 'var(--status-danger)' }}>
                     {scenario.naive.latencyMs > 0 ? `${scenario.naive.latencyMs} ms (Timeout)` : 'Unreachable (0ms)'}
                   </span>
                 </div>
               </div>
 
               {/* Narrative */}
-              <div style={{ background: 'var(--bg-surface)', borderRadius: 8, padding: 'var(--space-3)', border: '1px solid var(--separator-subtle)', marginBottom: 'var(--space-2)' }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary)', marginBottom: 2, textTransform: 'uppercase' }}>
-                  Failure Mechanism:
+              <div style={{ background: 'var(--bg-surface)', borderRadius: 'var(--radius-control)', padding: 'var(--space-3)', border: '1px solid var(--separator-subtle)', marginBottom: 'var(--space-2)' }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-tertiary)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  Failure Mechanism
                 </div>
-                <p style={{ fontSize: 12, color: 'var(--text-primary)', lineHeight: 1.45 }}>
+                <p style={{ fontSize: 12, color: 'var(--text-primary)', lineHeight: 1.48 }}>
                   {scenario.naive.narrative}
                 </p>
               </div>
 
-              <div style={{ fontSize: 11, color: 'var(--status-danger)', fontWeight: 600 }}>
+              <div style={{ fontSize: 11, color: 'var(--status-danger)', fontWeight: 600, marginTop: 6 }}>
                 ⚠️ Blast Radius: {scenario.naive.blastRadius}
               </div>
             </div>
 
             {/* Well-Architected Telemetry */}
-            <div style={{ background: 'rgba(48, 209, 88, 0.06)', border: '1px solid rgba(48, 209, 88, 0.3)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+            <div style={{ background: 'rgba(48, 209, 88, 0.05)', border: '1px solid rgba(48, 209, 88, 0.25)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-3)' }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--status-success)', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-success)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   AWS Well-Architected Response
                 </span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 700, padding: '2px 8px', borderRadius: 4, background: 'rgba(48, 209, 88, 0.2)', color: 'var(--status-success)' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700, padding: '3px 8px', borderRadius: 'var(--radius-pill)', background: 'rgba(48, 209, 88, 0.2)', color: 'var(--status-success)', letterSpacing: '0.03em' }}>
                   {scenario.wellArch.status}
                 </span>
               </div>
@@ -311,46 +315,46 @@ export const StressLabModal: React.FC<StressLabModalProps> = ({ onClose }) => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)', marginBottom: 'var(--space-3)' }}>
                 {/* CPU */}
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 2 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 4 }}>
                     <span style={{ color: 'var(--text-secondary)' }}>CPU Utilization (Auto-Balanced)</span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--status-success)' }}>{scenario.wellArch.cpu}%</span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums', fontWeight: 600, color: 'var(--status-success)' }}>{scenario.wellArch.cpu}%</span>
                   </div>
-                  <div style={{ height: 6, background: 'var(--bg-subtle)', borderRadius: 3, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${scenario.wellArch.cpu}%`, background: 'var(--status-success)' }} />
+                  <div style={{ height: 6, background: 'var(--bg-subtle)', borderRadius: 'var(--radius-pill)', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${scenario.wellArch.cpu}%`, background: 'var(--status-success)', borderRadius: 'var(--radius-pill)', transition: 'width 0.3s var(--ease-spring)' }} />
                   </div>
                 </div>
 
                 {/* Error Rate */}
                 <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 2 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, marginBottom: 4 }}>
                     <span style={{ color: 'var(--text-secondary)' }}>Error Rate (HTTP 5xx / Dropped)</span>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--status-success)' }}>{scenario.wellArch.errorRate}%</span>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums', fontWeight: 600, color: 'var(--status-success)' }}>{scenario.wellArch.errorRate}%</span>
                   </div>
-                  <div style={{ height: 6, background: 'var(--bg-subtle)', borderRadius: 3, overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${Math.max(2, scenario.wellArch.errorRate * 10)}%`, background: 'var(--status-success)' }} />
+                  <div style={{ height: 6, background: 'var(--bg-subtle)', borderRadius: 'var(--radius-pill)', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${Math.max(2, scenario.wellArch.errorRate * 10)}%`, background: 'var(--status-success)', borderRadius: 'var(--radius-pill)', transition: 'width 0.3s var(--ease-spring)' }} />
                   </div>
                 </div>
 
                 {/* Latency */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, background: 'var(--bg-surface)', padding: '6px 10px', borderRadius: 6 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, background: 'var(--bg-surface)', padding: '8px 12px', borderRadius: 'var(--radius-control)', border: '1px solid var(--separator-subtle)' }}>
                   <span style={{ color: 'var(--text-secondary)' }}>P99 Latency</span>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--status-success)' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums', fontWeight: 700, color: 'var(--status-success)' }}>
                     {scenario.wellArch.latencyMs} ms (Normal SLA)
                   </span>
                 </div>
               </div>
 
               {/* Narrative */}
-              <div style={{ background: 'var(--bg-surface)', borderRadius: 8, padding: 'var(--space-3)', border: '1px solid var(--separator-subtle)', marginBottom: 'var(--space-2)' }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary)', marginBottom: 2, textTransform: 'uppercase' }}>
-                  Resilience Mechanism:
+              <div style={{ background: 'var(--bg-surface)', borderRadius: 'var(--radius-control)', padding: 'var(--space-3)', border: '1px solid var(--separator-subtle)', marginBottom: 'var(--space-2)' }}>
+                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-tertiary)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  Resilience Mechanism
                 </div>
-                <p style={{ fontSize: 12, color: 'var(--text-primary)', lineHeight: 1.45 }}>
+                <p style={{ fontSize: 12, color: 'var(--text-primary)', lineHeight: 1.48 }}>
                   {scenario.wellArch.narrative}
                 </p>
               </div>
 
-              <div style={{ fontSize: 11, color: 'var(--status-success)', fontWeight: 600 }}>
+              <div style={{ fontSize: 11, color: 'var(--status-success)', fontWeight: 600, marginTop: 6 }}>
                 🛡️ Blast Radius: {scenario.wellArch.blastRadius}
               </div>
             </div>

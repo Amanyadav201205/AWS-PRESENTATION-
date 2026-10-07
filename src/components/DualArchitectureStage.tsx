@@ -423,7 +423,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             <button
               className="btn-action"
               onClick={() => { soundFX.playHealChime(); setActiveAttack('none'); }}
-              style={{ fontSize: 11, minHeight: 32, marginLeft: 'auto', gap: 4 }}
+              style={{ fontSize: 11, minHeight: 32, marginLeft: 'auto', gap: 4, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
             >
               <RefreshCw size={11} /> Reset Attack State
             </button>
@@ -447,7 +447,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               soundFX.playClick();
               setTrafficActive(!trafficActive);
             }}
-            style={{ minHeight: 32, fontSize: 11, padding: '0 10px', gap: 5 }}
+            style={{ minHeight: 32, fontSize: 11, padding: '0 12px', gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
             title="Toggle live packet stream simulation"
           >
             {trafficActive ? <Pause size={11} /> : <Play size={11} />}
@@ -486,7 +486,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               soundFX.playClick();
               setShowSubnetBoundaries(!showSubnetBoundaries);
             }}
-            style={{ minHeight: 32, fontSize: 11, padding: '0 10px' }}
+            style={{ minHeight: 32, fontSize: 11, padding: '0 12px', borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
             title="Show / hide VPC Subnet isolation boundaries"
           >
             <Layers size={11} />

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  CheckCircle2,
   X,
   Scale
 } from 'lucide-react';
@@ -68,23 +67,26 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
         style={{
           width: '1080px',
           maxWidth: '96vw',
-          height: '88vh',
+          height: '88dvh',
           display: 'flex',
           flexDirection: 'column',
           padding: 0,
-          background: 'var(--bg-panel)',
-          borderRadius: 16,
-          border: '1px solid var(--border-color)',
+          background: 'rgba(22, 22, 26, 0.94)',
+          backdropFilter: 'blur(48px) saturate(200%)',
+          WebkitBackdropFilter: 'blur(48px) saturate(200%)',
+          borderRadius: 'var(--radius-sheet)',
+          border: '1px solid rgba(255, 255, 255, 0.14)',
+          borderTop: '1px solid var(--hairline-top)',
           overflow: 'hidden',
-          boxShadow: '0 24px 80px rgba(0, 0, 0, 0.9)'
+          boxShadow: 'var(--shadow-modal)'
         }}
       >
         {/* Modal Header */}
         <div 
           style={{
             padding: '16px 24px',
-            borderBottom: '1px solid var(--border-color)',
-            background: 'linear-gradient(180deg, rgba(0, 230, 118, 0.08) 0%, rgba(0,0,0,0) 100%)',
+            borderBottom: '1px solid var(--separator)',
+            background: 'rgba(255, 255, 255, 0.02)',
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'space-between',
@@ -97,39 +99,40 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
                 flexShrink: 0,
                 width: 36,
                 height: 36,
-                borderRadius: 10,
-                background: 'linear-gradient(135deg, rgba(0, 230, 118, 0.25), rgba(0, 230, 118, 0.05))',
-                border: '1px solid rgba(0, 230, 118, 0.4)',
+                borderRadius: 'var(--radius-control)',
+                background: 'rgba(48, 209, 88, 0.14)',
+                border: '1px solid rgba(48, 209, 88, 0.35)',
+                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}
             >
-              <Scale size={20} color="#00E676" />
+              <Scale size={20} color="var(--status-success)" />
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#FFFFFF' }}>
+                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.015em' }}>
                   Enterprise AI Engineering &amp; Governance Inspector
                 </h3>
                 <span 
                   style={{
-                    fontSize: 10,
+                    fontSize: 10.5,
                     textTransform: 'uppercase',
-                    letterSpacing: '0.06em',
+                    letterSpacing: '0.05em',
                     padding: '2px 8px',
-                    borderRadius: 99,
-                    background: 'rgba(0, 230, 118, 0.15)',
-                    color: '#00E676',
-                    border: '1px solid rgba(0, 230, 118, 0.3)',
-                    fontWeight: 700
+                    borderRadius: 'var(--radius-pill)',
+                    background: 'var(--status-success-subtle)',
+                    color: 'var(--status-success)',
+                    border: '1px solid rgba(48, 209, 88, 0.3)',
+                    fontWeight: 600
                   }}
                 >
                   12-Pillar Production Standard
                 </span>
               </div>
-              <p style={{ margin: 0, fontSize: 11, color: 'var(--text-secondary)' }}>
-                Authoritative compliance guide for building production-grade, accessible, and grounded AI websites
+              <p style={{ margin: '2px 0 0 0', fontSize: 12, color: 'var(--text-secondary)' }}>
+                Authoritative compliance guide for building production-grade, accessible, and grounded AI systems
               </p>
             </div>
           </div>
@@ -142,30 +145,32 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
                 alignItems: 'center',
                 gap: 6,
                 padding: '4px 12px',
-                borderRadius: 99,
-                background: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: 'var(--radius-pill)',
+                background: 'rgba(255, 255, 255, 0.06)',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
-                fontSize: 12
+                fontSize: 12,
+                fontFamily: 'var(--font-mono)',
+                fontVariantNumeric: 'tabular-nums'
               }}
             >
               <span style={{ color: 'var(--text-tertiary)' }}>Launch Score:</span>
-              <strong style={{ color: readinessPercent === 100 ? '#00E676' : '#FF9900' }}>
+              <strong style={{ color: readinessPercent === 100 ? 'var(--status-success)' : 'var(--status-warning)' }}>
                 {readinessPercent}% ({completedCount}/12 Gates)
               </strong>
             </div>
             <button 
-              className="btn-action"
+              className="btn-action btn-icon"
               onClick={onClose}
               title="Close [Esc]"
               aria-label="Close AI governance inspector"
-              style={{ minHeight: 36, minWidth: 36, padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              style={{ borderRadius: 'var(--radius-pill)' }}
             >
               <X size={15} />
             </button>
           </div>
         </div>
 
-        {/* Tab Navigation Ribbon */}
+        {/* Tab Navigation Ribbon (Apple Segmented Ribbon) */}
         <div 
           style={{
             display: 'flex',
@@ -173,7 +178,7 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
             gap: 4,
             padding: '8px 16px',
             background: 'rgba(255, 255, 255, 0.02)',
-            borderBottom: '1px solid var(--border-color)',
+            borderBottom: '1px solid var(--separator)',
             overflowX: 'auto',
             whiteSpace: 'nowrap'
           }}
@@ -181,23 +186,21 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           {tabs.map(t => (
             <button
               key={t.id}
+              className="btn-action"
               onClick={() => {
                 soundFX.playClick();
                 setActiveTab(t.id);
               }}
               style={{
-                background: activeTab === t.id ? 'rgba(0, 230, 118, 0.15)' : 'transparent',
-                color: activeTab === t.id ? '#00E676' : 'var(--text-secondary)',
-                border: activeTab === t.id ? '1px solid rgba(0, 230, 118, 0.35)' : '1px solid transparent',
-                borderRadius: 8,
-                padding: '6px 12px',
+                background: activeTab === t.id ? 'rgba(48, 209, 88, 0.18)' : 'rgba(255, 255, 255, 0.04)',
+                color: activeTab === t.id ? 'var(--status-success)' : 'var(--text-secondary)',
+                borderColor: activeTab === t.id ? 'rgba(48, 209, 88, 0.4)' : 'transparent',
+                borderRadius: 'var(--radius-control)',
+                padding: '0 12px',
+                height: 30,
                 fontSize: 11,
-                cursor: 'pointer',
-                fontWeight: activeTab === t.id ? 700 : 500,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 6,
-                transition: 'all 0.15s ease'
+                fontWeight: activeTab === t.id ? 600 : 500,
+                gap: 6
               }}
             >
               <span>{t.icon}</span>

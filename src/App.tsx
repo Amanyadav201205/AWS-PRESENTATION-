@@ -307,7 +307,7 @@ export function App() {
           {/* Domain Hero - Derived 1-based Module Index (P0 Fix 1.2) */}
           <section className="domain-hero" aria-labelledby="domain-title">
             <div className="hero-meta-row">
-              <span className="hero-tag">
+              <span className="hero-tag" style={{ fontVariantNumeric: 'tabular-nums' }}>
                 Module {currentDomainIndex + 1} of {allDomains.length} • {activeDomain.category}
               </span>
               <div style={{ display: 'flex', gap: 8 }}>
@@ -315,6 +315,7 @@ export function App() {
                   className="btn-action"
                   onClick={() => setIsPrompterOpen(true)}
                   title="View spoken script and jury Q&A [S]"
+                  style={{ borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 >
                   Speaker Script
                 </button>

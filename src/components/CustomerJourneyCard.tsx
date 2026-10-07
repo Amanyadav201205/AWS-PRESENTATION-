@@ -216,12 +216,12 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
         return (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--space-4)' }}>
             {/* Law & Mathematical Equation */}
-            <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 10, boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
                   Distributed Systems Law
                 </span>
-                <span style={{ fontSize: 11, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
+                <span style={{ fontSize: 11, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                   {theory.lawOrTheorem.founder} ({theory.lawOrTheorem.year})
                 </span>
               </div>
@@ -232,7 +232,7 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
                 {theory.lawOrTheorem.formalStatement}
               </p>
               {theory.lawOrTheorem.mathematicalFormula && (
-                <div style={{ background: '#000000', border: '1px solid var(--separator-subtle)', borderRadius: 'var(--radius-inner)', padding: '8px 12px' }}>
+                <div style={{ background: '#000000', border: '1px solid var(--separator-subtle)', borderRadius: 'var(--radius-control)', padding: '12px 14px', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)' }}>
                   <LatexFormula
                     formula={theory.lawOrTheorem.mathematicalFormula!}
                     style={{ fontSize: 13, color: 'var(--accent)' }}
@@ -247,7 +247,7 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
             </div>
 
             {/* AWS Whitepaper & Amazon Builders' Library Citations */}
-            <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 10, boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
               <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--status-success)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
                 Official AWS Architecture Citations
               </span>
@@ -256,10 +256,10 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
                   {theory.awsWhitepaper.title}
                 </div>
                 <div style={{ display: 'flex', gap: 6, margin: '4px 0 6px' }}>
-                  <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', padding: '1px 6px', borderRadius: 4, background: 'var(--bg-subtle)', border: '1px solid var(--separator)' }}>
+                  <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--bg-subtle)', border: '1px solid var(--separator)' }}>
                     Doc: {theory.awsWhitepaper.docCode}
                   </span>
-                  <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', padding: '1px 6px', borderRadius: 4, background: 'rgba(48, 209, 88, 0.1)', color: 'var(--status-success)', border: '1px solid rgba(48, 209, 88, 0.3)' }}>
+                  <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', padding: '1px 8px', borderRadius: 'var(--radius-pill)', background: 'rgba(48, 209, 88, 0.1)', color: 'var(--status-success)', border: '1px solid rgba(48, 209, 88, 0.3)' }}>
                     BP: {theory.awsWhitepaper.pillarBestPracticeCode}
                   </span>
                 </div>
@@ -282,13 +282,13 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
             </div>
 
             {/* Compliance Framework & Jury Defense */}
-            <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 10, boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <ShieldCheck size={13} color="var(--accent)" />
                 <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
                   {theory.complianceStandard.standard}
                 </span>
-                <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--accent)', marginLeft: 'auto' }}>
+                <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--accent)', marginLeft: 'auto', fontVariantNumeric: 'tabular-nums' }}>
                   {theory.complianceStandard.controlId}
                 </span>
               </div>
@@ -303,7 +303,7 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
                 <p style={{ fontSize: 12, color: 'var(--text-primary)', fontWeight: 500, marginTop: 2 }}>
                   "{theory.defenseQnA[0].examinerQuestion}"
                 </p>
-                <p style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 4, lineHeight: 1.4, background: 'rgba(0, 0, 0, 0.5)', padding: 8, borderRadius: 6, border: '1px solid var(--separator-subtle)' }}>
+                <p style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 4, lineHeight: 1.4, background: 'rgba(0, 0, 0, 0.5)', padding: '8px 10px', borderRadius: 'var(--radius-control)', border: '1px solid var(--separator-subtle)' }}>
                   <strong style={{ color: 'var(--status-success)' }}>Airtight Defense:</strong> {theory.defenseQnA[0].defenseAnswer}
                 </p>
               </div>

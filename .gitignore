@@ -36,3 +36,9 @@ Thumbs.db
 .user_uploaded/
 .system_generated/
 screenshots/edge_profile/
+
+# Local design & skill reference repos (do not push to git)
+skills-main/
+skills-main
+skills/
+*.zip

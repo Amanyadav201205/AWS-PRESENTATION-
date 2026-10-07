@@ -3,7 +3,6 @@ import {
   X,
   Copy,
   Check,
-  Volume2,
   HelpCircle,
   Eye,
   ShieldCheck,
@@ -67,7 +66,7 @@ export const SpeakerScriptPrompter: React.FC<SpeakerScriptPrompterProps> = ({
 
   return (
     <div className="sheet-overlay" role="dialog" aria-modal="true" aria-label="Speaker Script and Defense Prompter">
-      <div className="presenter-dialog prompter-sheet" style={{ maxWidth: 860, maxHeight: '90vh' }}>
+      <div className="presenter-dialog prompter-sheet" style={{ maxWidth: 860, maxHeight: '90dvh' }}>
         {/* Prompter Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--separator)', paddingBottom: 'var(--space-3)', flexWrap: 'wrap', gap: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -120,7 +119,7 @@ export const SpeakerScriptPrompter: React.FC<SpeakerScriptPrompterProps> = ({
             <button
               className="btn-action"
               onClick={handleCopyScript}
-              style={{ height: 28, fontSize: 12, gap: 5 }}
+              style={{ height: 28, fontSize: 12, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
               title="Copy current presentation script to clipboard"
             >
               {copied ? <Check size={13} color="var(--status-success)" /> : <Copy size={13} />}
@@ -135,6 +134,18 @@ export const SpeakerScriptPrompter: React.FC<SpeakerScriptPrompterProps> = ({
                 onClose();
               }}
               aria-label="Close prompter"
+              style={{
+                width: 30,
+                height: 30,
+                borderRadius: 'var(--radius-pill)',
+                background: 'var(--bg-elevated)',
+                border: '1px solid var(--separator)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 0,
+                flexShrink: 0
+              }}
             >
               <X size={15} />
             </button>
@@ -170,18 +181,18 @@ export const SpeakerScriptPrompter: React.FC<SpeakerScriptPrompterProps> = ({
                 className="btn-action"
                 onClick={() => onSelectDomainIndex(Math.max(0, currentDomainIndex - 1))}
                 disabled={currentDomainIndex === 0}
-                style={{ height: 26, fontSize: 11, padding: '0 8px' }}
+                style={{ height: 26, fontSize: 11, padding: '0 10px', borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
               >
                 <ChevronLeft size={12} /> Prev Module
               </button>
-              <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
+              <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', fontVariantNumeric: 'tabular-nums' }}>
                 {currentDomainIndex + 1} / {totalDomains}
               </span>
               <button
                 className="btn-action"
                 onClick={() => onSelectDomainIndex(Math.min(totalDomains - 1, currentDomainIndex + 1))}
                 disabled={currentDomainIndex === totalDomains - 1}
-                style={{ height: 26, fontSize: 11, padding: '0 8px' }}
+                style={{ height: 26, fontSize: 11, padding: '0 10px', borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
               >
                 Next Module <ChevronRight size={12} />
               </button>
@@ -193,7 +204,7 @@ export const SpeakerScriptPrompter: React.FC<SpeakerScriptPrompterProps> = ({
         <div style={{ overflowY: 'auto', paddingRight: 6, display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', flex: 1, marginTop: 'var(--space-3)' }}>
           {activeTab === 'intro' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--space-2)' }}>
                   <Sparkles size={16} color="var(--accent)" />
                   <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -212,7 +223,7 @@ export const SpeakerScriptPrompter: React.FC<SpeakerScriptPrompterProps> = ({
 
           {activeTab === 'conclusion' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 'var(--space-2)' }}>
                   <ShieldCheck size={16} color="var(--status-success)" />
                   <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--status-success)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -232,7 +243,7 @@ export const SpeakerScriptPrompter: React.FC<SpeakerScriptPrompterProps> = ({
           {activeTab === 'current' && (
             <>
               {/* Speaker Opening Hook Box */}
-              <div style={{ background: 'rgba(41, 151, 255, 0.08)', border: '1px solid rgba(41, 151, 255, 0.25)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-3)' }}>
+              <div style={{ background: 'rgba(41, 151, 255, 0.08)', border: '1px solid rgba(41, 151, 255, 0.25)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-3)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.06)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                   <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase' }}>
                     ⚡ 10-Second Attention Hook
@@ -244,12 +255,12 @@ export const SpeakerScriptPrompter: React.FC<SpeakerScriptPrompterProps> = ({
               </div>
 
               {/* Main Spoken Verbatim Script */}
-              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-3)' }}>
                   <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     🎙️ Word-for-Word Presentation Script (Read to Jury / Class)
                   </span>
-                  <span style={{ fontSize: 11, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)' }}>
+                  <span style={{ fontSize: 11, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                     Pacing: ~90-120 seconds
                   </span>
                 </div>
@@ -259,7 +270,7 @@ export const SpeakerScriptPrompter: React.FC<SpeakerScriptPrompterProps> = ({
               </div>
 
               {/* Live Screen Action Cue (What is animating on the screen behind the speaker) */}
-              <div style={{ background: 'rgba(255, 159, 10, 0.08)', border: '1px solid rgba(255, 159, 10, 0.25)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-3)' }}>
+              <div style={{ background: 'rgba(255, 159, 10, 0.08)', border: '1px solid rgba(255, 159, 10, 0.25)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-3)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.06)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                   <Eye size={14} color="var(--status-warning)" />
                   <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-warning)', textTransform: 'uppercase' }}>
@@ -272,7 +283,7 @@ export const SpeakerScriptPrompter: React.FC<SpeakerScriptPrompterProps> = ({
               </div>
 
               {/* Certified Architect Defense Tip */}
-              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-3)' }}>
+              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-3)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                   <ShieldCheck size={14} color="var(--status-success)" />
                   <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-success)', textTransform: 'uppercase' }}>
@@ -285,7 +296,7 @@ export const SpeakerScriptPrompter: React.FC<SpeakerScriptPrompterProps> = ({
               </div>
 
               {/* Anticipated Jury Questions & Answers */}
-              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 'var(--space-3)' }}>
                   <HelpCircle size={15} color="var(--accent)" />
                   <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase' }}>
@@ -295,7 +306,7 @@ export const SpeakerScriptPrompter: React.FC<SpeakerScriptPrompterProps> = ({
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
                   {currentScript.juryQuestions.map((q, idx) => (
-                    <div key={idx} style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator-subtle)', borderRadius: 8, padding: 'var(--space-3)' }}>
+                    <div key={idx} style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator-subtle)', borderRadius: 'var(--radius-control)', padding: 'var(--space-3)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
                       <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent)', marginBottom: 4 }}>
                         Q: "{q.question}"
                       </div>

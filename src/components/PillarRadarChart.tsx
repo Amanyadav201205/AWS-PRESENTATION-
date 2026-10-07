@@ -61,7 +61,7 @@ export const PillarRadarChart: React.FC<PillarRadarProps> = ({
             6-Pillar Scorecard
           </h2>
         </div>
-        <div style={{ fontSize: 'var(--text-xs)', fontFamily: 'var(--font-mono)' }}>
+        <div style={{ fontSize: 'var(--text-xs)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
           <span style={{ color: 'var(--text-tertiary)' }}>{naiveAvg}%</span>
           <span style={{ margin: '0 4px', color: 'var(--separator)' }}>→</span>
           <span style={{ color: 'var(--status-success)', fontWeight: 600 }}>{wellArchAvg}%</span>
@@ -174,7 +174,7 @@ export const PillarRadarChart: React.FC<PillarRadarProps> = ({
             >
               {p.label}
             </span>
-            <span style={{ fontFamily: 'var(--font-mono)', flexShrink: 0, fontSize: 11 }}>
+            <span style={{ fontFamily: 'var(--font-mono)', flexShrink: 0, fontSize: 11, fontVariantNumeric: 'tabular-nums' }}>
               <span style={{ color: 'var(--text-tertiary)' }}>{naiveScores[p.key]}%</span>
               <span style={{ margin: '0 3px', color: 'var(--separator)' }}>/</span>
               <span style={{ color: 'var(--status-success)', fontWeight: 600 }}>{wellArchScores[p.key]}%</span>

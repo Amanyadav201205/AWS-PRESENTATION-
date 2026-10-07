@@ -116,7 +116,7 @@ export const Header: React.FC<HeaderProps> = ({
             </span>
           </div>
           <div className="brand-meta-wrapper" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span className="brand-meta">Module {currentDomainIndex + 1} of {totalDomains}</span>
+            <span className="brand-meta" style={{ fontVariantNumeric: 'tabular-nums' }}>Module {currentDomainIndex + 1} of {totalDomains}</span>
             <span style={{ color: 'var(--text-tertiary)', fontSize: 10 }}>•</span>
             <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}>Cloud Architecture Defense &amp; Analysis</span>
           </div>
@@ -137,6 +137,7 @@ export const Header: React.FC<HeaderProps> = ({
             }
           }}
           title={isChaosActive ? "Reset active outage simulation [R]" : "Simulate Multi-AZ outage [C]"}
+          style={{ borderRadius: 'var(--radius-pill)' }}
         >
           <AlertCircle size={13} color={isChaosActive ? "var(--status-danger)" : "var(--status-danger)"} />
           <span>{isChaosActive ? 'Outage: ON' : 'Outage: OFF'}</span>
@@ -155,6 +156,7 @@ export const Header: React.FC<HeaderProps> = ({
             }}
             title="Interactive architecture simulators"
             aria-expanded={simMenuOpen}
+            style={{ borderRadius: 'var(--radius-pill)' }}
           >
             <Zap size={13} color="var(--status-warning)" />
             <span>Simulators</span>
@@ -260,6 +262,7 @@ export const Header: React.FC<HeaderProps> = ({
             }}
             title="Explore 6 Pillars & academic foundation"
             aria-expanded={fwMenuOpen}
+            style={{ borderRadius: 'var(--radius-pill)' }}
           >
             <Layers size={13} color="var(--accent)" />
             <span>Framework</span>
@@ -336,7 +339,7 @@ export const Header: React.FC<HeaderProps> = ({
           )}
         </div>
 
-        {/* Guided Q&A Direct Trigger (Clean honest naming, P0 Fix 1.3) */}
+        {/* Guided Q&A Direct Trigger */}
         <button
           className="btn-action"
           onClick={(e) => {
@@ -347,9 +350,11 @@ export const Header: React.FC<HeaderProps> = ({
           title="Open Guided Architecture Q&A [A]"
           style={{
             height: 30,
-            padding: '0 10px',
-            background: 'linear-gradient(135deg, rgba(41, 151, 255, 0.16), rgba(41, 151, 255, 0.05))',
-            border: '1px solid rgba(41, 151, 255, 0.35)',
+            padding: '0 12px',
+            borderRadius: 'var(--radius-pill)',
+            background: 'linear-gradient(135deg, rgba(41, 151, 255, 0.18), rgba(41, 151, 255, 0.06))',
+            border: '1px solid rgba(41, 151, 255, 0.38)',
+            boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.2)',
             color: 'var(--accent)',
             fontWeight: 600,
             gap: 6
@@ -368,12 +373,13 @@ export const Header: React.FC<HeaderProps> = ({
             onOpenScriptPrompter();
           }}
           title="Verbatim presentation script and anticipated jury Q&A [S]"
+          style={{ borderRadius: 'var(--radius-pill)' }}
         >
           <FileText size={13} color="var(--accent)" />
           <span>Script</span>
         </button>
 
-        {/* Presenter Mode Button (Renamed from Keynote per 3a) */}
+        {/* Presenter Mode Button */}
         <button
           className="btn-action primary"
           onClick={(e) => {
@@ -382,7 +388,7 @@ export const Header: React.FC<HeaderProps> = ({
             onTogglePresenter();
           }}
           title="Launch full-screen presentation deck [P]"
-          style={{ height: 30, padding: '0 12px', fontWeight: 600, gap: 6 }}
+          style={{ height: 30, padding: '0 14px', fontWeight: 600, gap: 6, borderRadius: 'var(--radius-pill)' }}
         >
           <Presentation size={14} />
           <span>{isPresenterMode ? 'Exit Deck' : 'Present'}</span>
@@ -400,6 +406,7 @@ export const Header: React.FC<HeaderProps> = ({
           }}
           title={audioEnabled ? "Sound on" : "Sound muted"}
           aria-label={audioEnabled ? "Sound on" : "Sound muted"}
+          style={{ borderRadius: 'var(--radius-pill)' }}
         >
           {audioEnabled ? <Volume2 size={15} /> : <VolumeX size={15} color="var(--text-tertiary)" />}
         </button>
@@ -415,6 +422,7 @@ export const Header: React.FC<HeaderProps> = ({
             onTogglePresenter();
           }}
           title="Launch Presentation Deck [P]"
+          style={{ borderRadius: 'var(--radius-pill)' }}
         >
           <Presentation size={13} />
           <span>Present</span>
@@ -431,6 +439,7 @@ export const Header: React.FC<HeaderProps> = ({
           aria-label="Open mobile action menu"
           aria-expanded={mobileMenuOpen}
           aria-haspopup="menu"
+          style={{ borderRadius: 'var(--radius-pill)' }}
         >
           <MoreHorizontal size={16} />
         </button>

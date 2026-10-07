@@ -45,7 +45,7 @@ export const PillarsExplorerModal: React.FC<PillarsExplorerModalProps> = ({
 
   return (
     <div className="sheet-overlay" role="dialog" aria-modal="true" aria-label="AWS Well-Architected Framework 6 Pillars Master Explorer">
-      <div className="presenter-dialog pillars-sheet" style={{ maxWidth: 940, maxHeight: '90vh' }}>
+      <div className="presenter-dialog pillars-sheet" style={{ maxWidth: 940, maxHeight: '90dvh' }}>
         {/* Modal Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--separator)', paddingBottom: 'var(--space-3)', flexWrap: 'wrap', gap: 10 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -72,6 +72,18 @@ export const PillarsExplorerModal: React.FC<PillarsExplorerModalProps> = ({
               onClose();
             }}
             aria-label="Close 6 Pillars Explorer"
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 'var(--radius-pill)',
+              background: 'var(--bg-elevated)',
+              border: '1px solid var(--separator)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 0,
+              flexShrink: 0
+            }}
           >
             <X size={15} />
           </button>
@@ -93,9 +105,11 @@ export const PillarsExplorerModal: React.FC<PillarsExplorerModalProps> = ({
                   height: 34,
                   fontSize: 12,
                   fontWeight: isSelected ? 600 : 500,
+                  borderRadius: 'var(--radius-pill)',
                   background: isSelected ? p.color : 'var(--bg-surface)',
                   color: isSelected ? '#FFFFFF' : 'var(--text-secondary)',
                   borderColor: isSelected ? p.color : 'var(--separator)',
+                  boxShadow: isSelected ? `0 2px 10px ${p.color}40, inset 0 1px 0 rgba(255,255,255,0.25)` : 'inset 0 1px 0 var(--hairline-top)',
                   flexShrink: 0,
                   gap: 6
                 }}
@@ -115,7 +129,8 @@ export const PillarsExplorerModal: React.FC<PillarsExplorerModalProps> = ({
             border: `1px solid ${activePillar.color}40`, 
             borderRadius: 'var(--radius-inner)', 
             padding: 'var(--space-4)',
-            borderLeft: `4px solid ${activePillar.color}`
+            borderLeft: `4px solid ${activePillar.color}`,
+            boxShadow: 'inset 0 1px 0 var(--hairline-top)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
               <span style={{ color: activePillar.color }}>{getPillarIcon(activePillar.name, 20)}</span>
@@ -132,15 +147,15 @@ export const PillarsExplorerModal: React.FC<PillarsExplorerModalProps> = ({
           </div>
 
           {/* Core Design Principles */}
-          <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+          <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
             <h4 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 'var(--space-3)' }}>
               Core AWS Design Principles
             </h4>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 'var(--space-3)' }}>
               {activePillar.designPrinciples.map((dp, idx) => (
-                <div key={idx} style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator-subtle)', borderRadius: 8, padding: 'var(--space-3)' }}>
+                <div key={idx} style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator-subtle)', borderRadius: 'var(--radius-control)', padding: 'var(--space-3)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
-                    <span style={{ color: activePillar.color, fontSize: 12, fontWeight: 700 }}>#{idx + 1}</span>
+                    <span style={{ color: activePillar.color, fontSize: 12, fontWeight: 700, fontVariantNumeric: 'tabular-nums' }}>#{idx + 1}</span>
                     <h5 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{dp.title}</h5>
                   </div>
                   <p style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.45 }}>
@@ -152,14 +167,14 @@ export const PillarsExplorerModal: React.FC<PillarsExplorerModalProps> = ({
           </div>
 
           {/* Anti-Pattern vs Best Practice Side-by-Side */}
-          <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+          <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
             <h4 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 'var(--space-3)' }}>
               Common Anti-Patterns vs. Well-Architected Best Practices
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
               {activePillar.antiPatternVsBestPractice.map((item, idx) => (
                 <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)' }}>
-                  <div style={{ background: 'rgba(255, 69, 58, 0.08)', border: '1px solid rgba(255, 69, 58, 0.25)', borderRadius: 8, padding: 'var(--space-3)' }}>
+                  <div style={{ background: 'rgba(255, 69, 58, 0.08)', border: '1px solid rgba(255, 69, 58, 0.25)', borderRadius: 'var(--radius-control)', padding: 'var(--space-3)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.06)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                       <AlertTriangle size={13} color="var(--status-danger)" />
                       <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-danger)', textTransform: 'uppercase' }}>
@@ -171,7 +186,7 @@ export const PillarsExplorerModal: React.FC<PillarsExplorerModalProps> = ({
                     </p>
                   </div>
 
-                  <div style={{ background: 'rgba(48, 209, 88, 0.08)', border: '1px solid rgba(48, 209, 88, 0.25)', borderRadius: 8, padding: 'var(--space-3)' }}>
+                  <div style={{ background: 'rgba(48, 209, 88, 0.08)', border: '1px solid rgba(48, 209, 88, 0.25)', borderRadius: 'var(--radius-control)', padding: 'var(--space-3)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.06)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
                       <CheckCircle size={13} color="var(--status-success)" />
                       <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-success)', textTransform: 'uppercase' }}>
@@ -188,15 +203,15 @@ export const PillarsExplorerModal: React.FC<PillarsExplorerModalProps> = ({
           </div>
 
           {/* Official WAF Review Checklist Questions */}
-          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
             <h4 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 'var(--space-3)' }}>
               Key Well-Architected Tool Review Questions
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
               {activePillar.keyQuestions.map((q, idx) => (
-                <div key={idx} style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator-subtle)', borderRadius: 8, padding: 'var(--space-3)' }}>
+                <div key={idx} style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator-subtle)', borderRadius: 'var(--radius-control)', padding: 'var(--space-3)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700, padding: '2px 6px', borderRadius: 4, background: `${activePillar.color}25`, color: activePillar.color }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 'var(--radius-pill)', background: `${activePillar.color}25`, color: activePillar.color, fontVariantNumeric: 'tabular-nums' }}>
                       {q.code}
                     </span>
                     <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
@@ -212,7 +227,7 @@ export const PillarsExplorerModal: React.FC<PillarsExplorerModalProps> = ({
           </div>
 
           {/* Jump to Relevant Syllabus Domains */}
-          <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-3)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10 }}>
+          <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-3)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
             <div>
               <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)' }}>
                 Demonstrated in Syllabus Modules:
@@ -231,7 +246,7 @@ export const PillarsExplorerModal: React.FC<PillarsExplorerModalProps> = ({
                     onNavigateToDomain(dId);
                     onClose();
                   }}
-                  style={{ height: 28, fontSize: 11, gap: 5, background: 'var(--bg-elevated)' }}
+                  style={{ height: 28, fontSize: 11, gap: 5, background: 'var(--bg-elevated)', borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                 >
                   <span>{dId.replace('-', ' ')}</span>
                   <ArrowRight size={11} color="var(--accent)" />

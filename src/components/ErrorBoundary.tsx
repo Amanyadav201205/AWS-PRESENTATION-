@@ -31,63 +31,75 @@ export class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div style={{
-          minHeight: '100vh',
-          background: '#0b0d10',
-          color: '#f0f3f6',
+          minHeight: '100dvh',
+          background: 'var(--bg-canvas)',
+          color: 'var(--text-primary)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
           padding: '32px',
-          fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+          fontFamily: 'var(--font-sans)',
           textAlign: 'center'
         }}>
           <div style={{
             maxWidth: '540px',
-            background: '#14171c',
-            border: '1px solid #22262d',
-            borderRadius: '16px',
-            padding: '32px',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.7)'
+            background: 'rgba(24, 24, 28, 0.92)',
+            backdropFilter: 'blur(40px) saturate(190%)',
+            WebkitBackdropFilter: 'blur(40px) saturate(190%)',
+            border: '1px solid rgba(255, 255, 255, 0.14)',
+            borderTop: '1px solid var(--hairline-top)',
+            borderRadius: 'var(--radius-sheet)',
+            padding: '36px',
+            boxShadow: 'var(--shadow-modal)'
           }}>
-            <div style={{ fontSize: '36px', marginBottom: '16px' }}>⚠️</div>
-            <h2 style={{ fontSize: '20px', fontWeight: 600, color: '#f0f3f6', margin: '0 0 10px 0' }}>
+            <div style={{
+              width: 52,
+              height: 52,
+              borderRadius: 'var(--radius-pill)',
+              background: 'var(--status-danger-subtle)',
+              border: '1px solid rgba(255, 69, 58, 0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 18px auto',
+              fontSize: 24
+            }}>
+              ⚠️
+            </div>
+            <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 10px 0', letterSpacing: '-0.02em' }}>
               Application Render Notice
             </h2>
-            <p style={{ fontSize: '14px', color: '#9da7b3', margin: '0 0 20px 0', lineHeight: 1.6 }}>
+            <p style={{ fontSize: '14px', color: 'var(--text-secondary)', margin: '0 0 20px 0', lineHeight: 1.5, letterSpacing: '-0.005em' }}>
               An unexpected display error occurred while rendering the architecture module. You can reload the application cleanly.
             </p>
             {this.state.error && (
               <pre style={{
-                background: '#05070a',
-                border: '1px solid #22262d',
-                borderRadius: '8px',
-                padding: '12px',
+                background: 'rgba(0, 0, 0, 0.75)',
+                border: '1px solid var(--separator)',
+                borderRadius: 'var(--radius-control)',
+                padding: '14px',
                 fontSize: '12px',
-                color: '#ff453a',
+                color: 'var(--status-danger)',
                 textAlign: 'left',
                 overflowX: 'auto',
-                marginBottom: '20px',
-                maxHeight: '120px'
+                marginBottom: '24px',
+                maxHeight: '120px',
+                fontFamily: 'var(--font-mono)'
               }}>
                 {this.state.error.message}
               </pre>
             )}
             <button
               onClick={this.handleReload}
+              className="btn-action primary"
               style={{
-                background: '#FF9900',
-                color: '#000000',
-                border: 'none',
-                borderRadius: '8px',
-                padding: '10px 24px',
+                height: 40,
+                padding: '0 28px',
                 fontSize: '14px',
                 fontWeight: 600,
-                cursor: 'pointer',
-                transition: 'opacity 0.2s'
+                borderRadius: 'var(--radius-pill)'
               }}
-              onMouseOver={(e) => e.currentTarget.style.opacity = '0.9'}
-              onMouseOut={(e) => e.currentTarget.style.opacity = '1'}
             >
               Reload Application
             </button>

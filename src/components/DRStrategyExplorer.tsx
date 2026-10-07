@@ -33,10 +33,12 @@ export const DRStrategyExplorer: React.FC = () => {
               style={{
                 background: isActive ? 'var(--accent-subtle)' : 'var(--bg-canvas)',
                 border: `1px solid ${isActive ? 'var(--accent)' : 'var(--separator)'}`,
+                boxShadow: isActive ? '0 2px 12px rgba(41, 151, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2)' : 'inset 0 1px 0 var(--hairline-top)',
                 borderRadius: 'var(--radius-control)',
                 padding: 'var(--space-3)',
                 cursor: 'pointer',
-                transition: 'all var(--duration-fast) var(--ease-spring)'
+                transition: 'all var(--duration-fast) var(--ease-spring)',
+                userSelect: 'none'
               }}
               role="button"
               tabIndex={0}
@@ -44,15 +46,15 @@ export const DRStrategyExplorer: React.FC = () => {
               <div style={{ fontSize: 13, fontWeight: 600, color: isActive ? 'var(--accent)' : 'var(--text-primary)', marginBottom: 6 }}>
                 {strat.name}
               </div>
-              <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', display: 'flex', justifyContent: 'space-between', fontVariantNumeric: 'tabular-nums' }}>
                 <span>RPO:</span>
                 <span style={{ color: 'var(--text-primary)' }}>{strat.rpo}</span>
               </div>
-              <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
+              <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', display: 'flex', justifyContent: 'space-between', marginTop: 2, fontVariantNumeric: 'tabular-nums' }}>
                 <span>RTO:</span>
                 <span style={{ color: 'var(--text-primary)' }}>{strat.rto}</span>
               </div>
-              <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--status-success)', display: 'flex', justifyContent: 'space-between', marginTop: 4, fontWeight: 600 }}>
+              <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--status-success)', display: 'flex', justifyContent: 'space-between', marginTop: 4, fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
                 <span>Cost:</span>
                 <span>{strat.costMultiplier}</span>
               </div>

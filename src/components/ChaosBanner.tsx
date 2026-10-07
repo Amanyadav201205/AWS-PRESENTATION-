@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertCircle, RotateCcw, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, RotateCcw } from 'lucide-react';
 import { ChaosPhase, ChaosScenario } from '../types';
 
 interface ChaosBannerProps {
@@ -56,20 +56,20 @@ export const ChaosBanner: React.FC<ChaosBannerProps> = ({
 
           {/* Outcome comparison */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)', marginTop: 'var(--space-3)' }}>
-            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-control)', padding: 'var(--space-2) var(--space-3)' }}>
+            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-control)', padding: 'var(--space-2) var(--space-3)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
               <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--status-danger)' }}>
                 Anti-pattern: {scenario.naiveConsequence.statusText}
               </div>
-              <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2 }}>
+              <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2, fontVariantNumeric: 'tabular-nums' }}>
                 Error rate: {scenario.naiveConsequence.errorRate} • Downtime: {scenario.naiveConsequence.downtime}
               </div>
             </div>
 
-            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-control)', padding: 'var(--space-2) var(--space-3)' }}>
+            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-control)', padding: 'var(--space-2) var(--space-3)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
               <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--status-success)' }}>
                 Well-Architected: {scenario.wellArchConsequence.statusText}
               </div>
-              <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2 }}>
+              <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2, fontVariantNumeric: 'tabular-nums' }}>
                 Error rate: {scenario.wellArchConsequence.errorRate} • Failover: {scenario.wellArchConsequence.failoverTime}
               </div>
             </div>
@@ -80,7 +80,7 @@ export const ChaosBanner: React.FC<ChaosBannerProps> = ({
       <button
         className="btn-action"
         onClick={onReset}
-        style={{ flexShrink: 0 }}
+        style={{ flexShrink: 0, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
         aria-label="Reset outage simulation"
       >
         <RotateCcw size={13} />

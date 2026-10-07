@@ -108,21 +108,23 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
 
   return (
     <div className="sheet-overlay" role="dialog" aria-modal="true" aria-label="Client Solutions & Workload Architecture Explorer">
-      <div className="presenter-dialog client-sheet" style={{ maxWidth: 980, maxHeight: '92vh' }}>
+      <div className="presenter-dialog client-sheet" style={{ maxWidth: 980, maxHeight: '92dvh' }}>
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--separator)', paddingBottom: 'var(--space-3)', flexWrap: 'wrap', gap: 10 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <span style={{ fontSize: 22 }}>💼</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 'var(--radius-control)', background: 'var(--accent-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>
+              💼
+            </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <h2 style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text-primary)' }}>
+                <h2 style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
                   Real-World Client Solutions & Workload Blueprints
                 </h2>
-                <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--status-success-subtle)', color: 'var(--status-success)', fontWeight: 600 }}>
+                <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--status-success-subtle)', color: 'var(--status-success)', fontWeight: 600, letterSpacing: '0.02em' }}>
                   Customer WAF Transformation
                 </span>
               </div>
-              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)' }}>
+              <p style={{ fontSize: 'var(--text-xs)', color: 'var(--text-secondary)', marginTop: 2 }}>
                 How to tailor the AWS Well-Architected Framework to diverse customer business requirements while slashing cloud spend
               </p>
             </div>
@@ -132,11 +134,11 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
             <button
               className="btn-action"
               onClick={handleCopyProposal}
-              style={{ height: 28, fontSize: 12, gap: 5 }}
+              style={{ height: 30, fontSize: 12, gap: 6, borderRadius: 'var(--radius-pill)' }}
               title="Copy complete client architecture proposal"
             >
               {copied ? <Check size={13} color="var(--status-success)" /> : <Copy size={13} />}
-              <span>{copied ? 'Proposal Copied!' : 'Copy Proposal'}</span>
+              <span>{copied ? 'Proposal Copied' : 'Copy Proposal'}</span>
             </button>
 
             <button
@@ -145,6 +147,7 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
                 soundFX.playClick();
                 onClose();
               }}
+              style={{ width: 30, height: 30, borderRadius: 'var(--radius-pill)' }}
               aria-label="Close Client Solutions Explorer"
             >
               <X size={15} />
@@ -172,6 +175,7 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
                   background: isSelected ? 'var(--accent)' : 'var(--bg-surface)',
                   color: isSelected ? '#FFFFFF' : 'var(--text-secondary)',
                   borderColor: isSelected ? 'transparent' : 'var(--separator)',
+                  borderRadius: 'var(--radius-pill)',
                   flexShrink: 0,
                   gap: 6
                 }}
@@ -186,28 +190,28 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
         {/* Content Body */}
         <div style={{ overflowY: 'auto', paddingRight: 6, display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', flex: 1, marginTop: 'var(--space-3)' }}>
           {/* Workload Hero & Customer Requirement Banner */}
-          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6, flexWrap: 'wrap', gap: 8 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ color: 'var(--accent)' }}>{getWorkloadIcon(workload.iconName, 18)}</span>
-                <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text-primary)' }}>
+                <h3 style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.015em' }}>
                   {workload.title}
                 </h3>
               </div>
-              <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--accent-subtle)', color: 'var(--accent)', fontWeight: 600 }}>
+              <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--accent-subtle)', color: 'var(--accent)', fontWeight: 600, letterSpacing: '0.02em' }}>
                 {workload.badge}
               </span>
             </div>
 
-            <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8, lineHeight: 1.45 }}>
-              <strong>Client Profile:</strong> {workload.customerProfile.clientType} • <strong>Traffic Scale:</strong> {workload.customerProfile.trafficScale}
+            <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginBottom: 8, lineHeight: 1.48 }}>
+              <strong style={{ color: 'var(--text-primary)' }}>Client Profile:</strong> {workload.customerProfile.clientType} • <strong style={{ color: 'var(--text-primary)' }}>Traffic Scale:</strong> {workload.customerProfile.trafficScale}
             </div>
 
-            <div style={{ background: 'var(--bg-surface)', padding: 'var(--space-3)', borderRadius: 8, border: '1px solid var(--separator-subtle)' }}>
+            <div style={{ background: 'var(--bg-surface)', padding: 'var(--space-3)', borderRadius: 'var(--radius-control)', border: '1px solid var(--separator-subtle)' }}>
               <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4 }}>
-                Primary Business Goal:
+                Primary Business Goal
               </div>
-              <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.45 }}>
+              <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.48 }}>
                 {workload.customerProfile.businessNeed}
               </p>
             </div>
@@ -216,59 +220,59 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
           {/* Side-by-Side Solution & Financial Comparison */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: 'var(--space-3)' }}>
             {/* Naive Approach */}
-            <div style={{ background: 'rgba(255, 69, 58, 0.06)', border: '1px solid rgba(255, 69, 58, 0.3)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+            <div style={{ background: 'rgba(255, 69, 58, 0.05)', border: '1px solid rgba(255, 69, 58, 0.25)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--status-danger)', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-danger)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   Naive Conventional Prescription
                 </span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, fontWeight: 700, color: 'var(--status-danger)' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums', fontSize: 15, fontWeight: 700, color: 'var(--status-danger)' }}>
                   ${workload.naiveApproach.monthlyCost.toLocaleString()} / mo
                 </span>
               </div>
 
-              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 6 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 8, letterSpacing: '-0.01em' }}>
                 {workload.naiveApproach.title}
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 'var(--space-3)' }}>
                 {workload.naiveApproach.flaws.map((flaw, idx) => (
-                  <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, fontSize: 12, color: 'var(--text-secondary)' }}>
+                  <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12, color: 'var(--text-secondary)' }}>
                     <AlertTriangle size={13} color="var(--status-danger)" style={{ marginTop: 2, flexShrink: 0 }} />
-                    <span>{flaw}</span>
+                    <span style={{ lineHeight: 1.4 }}>{flaw}</span>
                   </div>
                 ))}
               </div>
 
-              <div style={{ fontSize: 11, color: 'var(--status-danger)', fontWeight: 600, borderTop: '1px solid rgba(255, 69, 58, 0.2)', paddingTop: 6 }}>
+              <div style={{ fontSize: 11, color: 'var(--status-danger)', fontWeight: 600, borderTop: '1px solid rgba(255, 69, 58, 0.2)', paddingTop: 8 }}>
                 ⚠️ Failure Mode: {workload.naiveApproach.failureRisk}
               </div>
             </div>
 
             {/* Well-Architected Solution */}
-            <div style={{ background: 'rgba(48, 209, 88, 0.06)', border: '1px solid rgba(48, 209, 88, 0.3)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+            <div style={{ background: 'rgba(48, 209, 88, 0.05)', border: '1px solid rgba(48, 209, 88, 0.25)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--status-success)', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-success)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   AWS Well-Architected Blueprint
                 </span>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, fontWeight: 700, color: 'var(--status-success)' }}>
+                <span style={{ fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums', fontSize: 15, fontWeight: 700, color: 'var(--status-success)' }}>
                   ${workload.wellArchSolution.monthlyCost.toLocaleString()} / mo ({workload.wellArchSolution.netSavingsPercent}% Savings)
                 </span>
               </div>
 
-              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 6 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 8, letterSpacing: '-0.01em' }}>
                 {workload.wellArchSolution.title}
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginBottom: 'var(--space-3)' }}>
                 {workload.wellArchSolution.architectureHighlights.map((hl, idx) => (
-                  <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, fontSize: 12, color: 'var(--text-secondary)' }}>
+                  <div key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12, color: 'var(--text-secondary)' }}>
                     <Check size={13} color="var(--status-success)" style={{ marginTop: 2, flexShrink: 0 }} />
-                    <span>{hl}</span>
+                    <span style={{ lineHeight: 1.4 }}>{hl}</span>
                   </div>
                 ))}
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--status-success)', fontWeight: 600, borderTop: '1px solid rgba(48, 209, 88, 0.2)', paddingTop: 6 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--status-success)', fontWeight: 600, borderTop: '1px solid rgba(48, 209, 88, 0.2)', paddingTop: 8, fontVariantNumeric: 'tabular-nums' }}>
                 <span>🛡️ SLA: {workload.wellArchSolution.availabilitySLA}</span>
                 <span>RTO: {workload.wellArchSolution.rto}</span>
                 <span>RPO: {workload.wellArchSolution.rpo}</span>
@@ -277,13 +281,13 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
           </div>
 
           {/* Interactive Live Customer Request Simulation */}
-          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-3)', flexWrap: 'wrap', gap: 8 }}>
               <div>
-                <h4 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                <h4 style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   Live Customer Request Propagation Simulation
                 </h4>
-                <p style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
+                <p style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 2 }}>
                   Simulate end-to-end user transactions across each tier: observe the contrast between Naive and Well-Architected execution
                 </p>
               </div>
@@ -293,14 +297,15 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
                   className="btn-action primary"
                   onClick={handleRunSimulation}
                   disabled={isSimulating}
-                  style={{ height: 28, fontSize: 12, gap: 5 }}
+                  style={{ height: 30, fontSize: 12, gap: 6, borderRadius: 'var(--radius-pill)' }}
                 >
                   <Play size={12} />
-                  <span>Run Live Flow Simulation</span>
+                  <span>Run Flow Simulation</span>
                 </button>
                 <button
                   className="btn-action btn-icon"
                   onClick={handleResetSimulation}
+                  style={{ width: 30, height: 30, borderRadius: 'var(--radius-pill)' }}
                   aria-label="Reset simulation"
                 >
                   <RotateCcw size={13} />
@@ -318,18 +323,18 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
                   <div
                     key={idx}
                     style={{
-                      background: isActive ? 'rgba(41, 151, 255, 0.12)' : isPassed ? 'var(--bg-surface)' : 'var(--bg-surface)',
+                      background: isActive ? 'rgba(10, 132, 255, 0.12)' : isPassed ? 'var(--bg-surface)' : 'var(--bg-surface)',
                       border: `1px solid ${isActive ? 'var(--accent)' : isPassed ? 'rgba(48, 209, 88, 0.4)' : 'var(--separator-subtle)'}`,
-                      borderRadius: 8,
+                      borderRadius: 'var(--radius-control)',
                       padding: 'var(--space-3)',
-                      transition: 'all 0.3s ease'
+                      transition: 'all 0.3s var(--ease-spring)'
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4 }}>
                       <span style={{ fontSize: 11, fontWeight: 700, color: isActive ? 'var(--accent)' : 'var(--text-secondary)' }}>
                         {step.stepName}
                       </span>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, padding: '1px 5px', borderRadius: 4, background: 'var(--bg-subtle)', color: 'var(--text-tertiary)' }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums', fontSize: 10, padding: '1px 6px', borderRadius: 'var(--radius-pill)', background: 'var(--bg-subtle)', color: 'var(--text-tertiary)' }}>
                         {step.latency}
                       </span>
                     </div>
@@ -338,11 +343,11 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
                       {step.service}
                     </div>
 
-                    <p style={{ fontSize: 11, color: 'var(--text-secondary)', marginBottom: 6, lineHeight: 1.35 }}>
+                    <p style={{ fontSize: 11, color: 'var(--text-secondary)', marginBottom: 6, lineHeight: 1.4 }}>
                       {step.description}
                     </p>
 
-                    <div style={{ borderTop: '1px solid var(--separator-subtle)', paddingTop: 4, display: 'flex', flexDirection: 'column', gap: 4 }}>
+                    <div style={{ borderTop: '1px solid var(--separator-subtle)', paddingTop: 6, display: 'flex', flexDirection: 'column', gap: 4 }}>
                       <div style={{ fontSize: 10, color: 'var(--status-danger)' }}>
                         <strong>Naive:</strong> {step.naiveBehavior}
                       </div>
@@ -359,22 +364,22 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
           {/* FinOps Cost-Cutting Levers & 6-Pillar Summary */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: 'var(--space-3)' }}>
             {/* Cost Levers */}
-            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 'var(--space-3)' }}>
                 <TrendingDown size={15} color="var(--status-success)" />
-                <h4 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                <h4 style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   FinOps Cost-Cutting Levers (${workload.naiveApproach.annualWaste.toLocaleString()}/yr Saved)
                 </h4>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
                 {workload.costCuttingLevers.map((lever, idx) => (
-                  <div key={idx} style={{ background: 'var(--bg-elevated)', borderRadius: 8, padding: 'var(--space-3)', border: '1px solid var(--separator-subtle)' }}>
+                  <div key={idx} style={{ background: 'var(--bg-elevated)', borderRadius: 'var(--radius-control)', padding: 'var(--space-3)', border: '1px solid var(--separator-subtle)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
                       <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)' }}>{lever.lever}</span>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--status-success)', fontFamily: 'var(--font-mono)' }}>{lever.monthlySavings}</span>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--status-success)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>{lever.monthlySavings}</span>
                     </div>
-                    <p style={{ fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                    <p style={{ fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.45 }}>
                       {lever.description}
                     </p>
                   </div>
@@ -383,21 +388,21 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
             </div>
 
             {/* 6-Pillars Applied */}
-            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 'var(--space-3)' }}>
                 <ShieldCheck size={15} color="var(--accent)" />
-                <h4 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                <h4 style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   AWS Well-Architected 6-Pillars Applied
                 </h4>
               </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
                 {workload.pillarsApplied.map((pillar, idx) => (
-                  <div key={idx} style={{ background: 'var(--bg-elevated)', borderRadius: 8, padding: 'var(--space-3)', border: '1px solid var(--separator-subtle)' }}>
+                  <div key={idx} style={{ background: 'var(--bg-elevated)', borderRadius: 'var(--radius-control)', padding: 'var(--space-3)', border: '1px solid var(--separator-subtle)' }}>
                     <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--accent)', marginBottom: 2 }}>
                       {pillar.pillar} Pillar
                     </div>
-                    <p style={{ fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                    <p style={{ fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.45 }}>
                       {pillar.implementation}
                     </p>
                   </div>

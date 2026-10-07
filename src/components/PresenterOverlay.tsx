@@ -195,26 +195,26 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
         <div className="presenter-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--separator)', padding: '12px 16px', flexWrap: 'wrap', gap: 10 }}>
           {/* Left: Brand, Slide Title & Timer */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255, 255, 255, 0.04)', padding: '3px 8px', borderRadius: 6, border: '1px solid var(--separator-subtle)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255, 255, 255, 0.05)', padding: '4px 10px', borderRadius: 'var(--radius-pill)', border: '1px solid var(--separator)' }}>
               <AwsLogo height={16} width={28} color="#FFFFFF" />
-              <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--accent)', fontWeight: 700 }}>
+              <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--accent)', fontWeight: 700, letterSpacing: '0.04em' }}>
                 SLIDE {currentIndex + 1}/{totalDomains}
               </span>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>
+                <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
                   {currentIndex + 1}. {domain.title}
                 </span>
                 <span style={{ fontSize: 11, color: 'var(--text-tertiary)' }}>
                   ({domain.category})
                 </span>
               </div>
-              <span style={{ fontSize: 10, color: 'var(--text-secondary)', fontWeight: 500 }}>
-                Devarsh Patel &amp; Aman Kumar
+              <span style={{ fontSize: 10.5, color: 'var(--text-secondary)', fontWeight: 500, letterSpacing: '0.02em' }}>
+                Devarsh Patel &amp; Aman Kumar Yadav
               </span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(255, 255, 255, 0.04)', padding: '2px 8px', borderRadius: 4, fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, background: 'rgba(255, 255, 255, 0.05)', padding: '3px 10px', borderRadius: 'var(--radius-pill)', border: '1px solid var(--separator)', fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)', fontVariantNumeric: 'tabular-nums' }}>
               <Clock size={11} color="var(--accent)" />
               <span>{formatTime(elapsedSeconds)}</span>
             </div>
@@ -256,7 +256,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                 className="btn-action"
                 onClick={() => { soundFX.playClick(); setIsGridOpen(true); }}
                 title="Open 15-Slide Overview Grid [G]"
-                style={{ height: 28, fontSize: 11, gap: 5 }}
+                style={{ height: 28, fontSize: 11, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
               >
                 <LayoutGrid size={12} color="var(--accent)" />
                 <span>Slide Grid [G]</span>
@@ -265,11 +265,11 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
 
             {/* Outage Simulation */}
             {isChaosActive ? (
-              <button className="btn-action danger-quiet" onClick={onResetChaos} style={{ height: 28, fontSize: 11, gap: 4 }}>
+              <button className="btn-action danger-quiet" onClick={onResetChaos} style={{ height: 28, fontSize: 11, gap: 4, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
                 <RotateCcw size={12} /> <span>Reset [R]</span>
               </button>
             ) : (
-              <button className="btn-action" onClick={onTriggerChaos} style={{ height: 28, fontSize: 11, gap: 4 }}>
+              <button className="btn-action" onClick={onTriggerChaos} style={{ height: 28, fontSize: 11, gap: 4, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
                 <AlertCircle size={12} color="var(--status-danger)" /> <span>Outage [C]</span>
               </button>
             )}
@@ -280,7 +280,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                 className="btn-action"
                 onClick={onOpenPacketSimulator}
                 title="Launch packet flight latency benchmark [L]"
-                style={{ height: 28, fontSize: 11, gap: 4 }}
+                style={{ height: 28, fontSize: 11, gap: 4, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
               >
                 <Clock size={12} color="var(--accent)" /> <span>Flight [L]</span>
               </button>
@@ -292,7 +292,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                 className="btn-action"
                 onClick={onOpenClientSolutions}
                 title="Explore client workload blueprints and cost cutting [W]"
-                style={{ height: 28, fontSize: 11, gap: 4 }}
+                style={{ height: 28, fontSize: 11, gap: 4, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
               >
                 <Briefcase size={12} color="var(--accent)" /> <span>Clients [W]</span>
               </button>
@@ -304,7 +304,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                 className="btn-action"
                 onClick={onOpenSubtopics}
                 title="Interactive subtopic labs [T]"
-                style={{ height: 28, fontSize: 11, gap: 4 }}
+                style={{ height: 28, fontSize: 11, gap: 4, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
               >
                 <Sliders size={12} color="var(--status-success)" /> <span>Labs [T]</span>
               </button>
@@ -315,7 +315,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
               className="btn-action btn-icon"
               onClick={handlePrintHandouts}
               title="Print / Save Slide Handouts"
-              style={{ height: 28, width: 28 }}
+              style={{ height: 28, width: 28, borderRadius: 'var(--radius-pill)' }}
             >
               <Printer size={13} />
             </button>
@@ -325,7 +325,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
               className="btn-action btn-icon"
               onClick={onPrev}
               disabled={currentIndex === 0}
-              style={{ opacity: currentIndex === 0 ? 0.3 : 1, height: 28, width: 28 }}
+              style={{ opacity: currentIndex === 0 ? 0.3 : 1, height: 28, width: 28, borderRadius: 'var(--radius-pill)' }}
               title="Previous slide [←]"
             >
               <ChevronLeft size={14} />
@@ -334,7 +334,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
               className="btn-action btn-icon"
               onClick={onNext}
               disabled={currentIndex === totalDomains - 1}
-              style={{ opacity: currentIndex === totalDomains - 1 ? 0.3 : 1, height: 28, width: 28 }}
+              style={{ opacity: currentIndex === totalDomains - 1 ? 0.3 : 1, height: 28, width: 28, borderRadius: 'var(--radius-pill)' }}
               title="Next slide [→]"
             >
               <ChevronRight size={14} />
@@ -345,7 +345,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
               className="btn-action btn-icon"
               onClick={() => { soundFX.playClick(); onClose(); }}
               aria-label="Exit presenter mode"
-              style={{ height: 28, width: 28 }}
+              style={{ height: 28, width: 28, borderRadius: 'var(--radius-pill)' }}
               title="Exit Presenter Deck [Esc]"
             >
               <X size={14} />
@@ -376,7 +376,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                     className="btn-action primary"
                     onClick={handleRunSlideSim}
                     disabled={isLiveSimulating}
-                    style={{ height: 28, fontSize: 11, gap: 5 }}
+                    style={{ height: 28, fontSize: 11, gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.25)' }}
                     title="Simulate live client transactions traversing this architecture"
                   >
                     <Play size={11} />
@@ -388,7 +388,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
               {/* Side-by-Side Architectural Canvas */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: 16 }}>
                 {/* Conventional Naive Anti-Pattern */}
-                <div style={{ background: 'rgba(255, 69, 58, 0.03)', border: '1px solid rgba(255, 69, 58, 0.25)', borderRadius: 'var(--radius-inner)', padding: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <div style={{ background: 'rgba(255, 69, 58, 0.03)', border: '1px solid rgba(255, 69, 58, 0.25)', borderRadius: 'var(--radius-inner)', padding: 18, display: 'flex', flexDirection: 'column', gap: 12, boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <AlertCircle size={14} color="var(--status-danger)" />
@@ -396,7 +396,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                         Naive Conventional Anti-Pattern
                       </span>
                     </div>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: 'var(--status-danger)' }}>
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: 'var(--status-danger)', fontVariantNumeric: 'tabular-nums' }}>
                       ${domain.naive.monthlyCostEst.toLocaleString()} / mo
                     </span>
                   </div>
@@ -419,14 +419,14 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                   </div>
 
                   {/* Failure Mode Banner */}
-                  <div style={{ marginTop: 'auto', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 69, 58, 0.2)', padding: '10px 12px', borderRadius: 6 }}>
+                  <div style={{ marginTop: 'auto', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(255, 69, 58, 0.2)', padding: '10px 12px', borderRadius: 'var(--radius-control)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.06)' }}>
                     <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--status-danger)' }}>
                       Production Failure Vulnerability:
                     </div>
                     <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2 }}>
                       {domain.chaos.naiveConsequence.narrative}
                     </div>
-                    <div style={{ display: 'flex', gap: 12, marginTop: 6, fontSize: 10, fontFamily: 'var(--font-mono)' }}>
+                    <div style={{ display: 'flex', gap: 12, marginTop: 6, fontSize: 10, fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                       <span style={{ color: 'var(--status-danger)' }}>Error Rate: {domain.chaos.naiveConsequence.errorRate}</span>
                       <span style={{ color: 'var(--status-danger)' }}>Downtime: {domain.chaos.naiveConsequence.downtime}</span>
                     </div>
@@ -434,7 +434,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                 </div>
 
                 {/* AWS Well-Architected Framework Resolution */}
-                <div style={{ background: 'rgba(48, 209, 88, 0.03)', border: '1px solid rgba(48, 209, 88, 0.25)', borderRadius: 'var(--radius-inner)', padding: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <div style={{ background: 'rgba(48, 209, 88, 0.03)', border: '1px solid rgba(48, 209, 88, 0.25)', borderRadius: 'var(--radius-inner)', padding: 18, display: 'flex', flexDirection: 'column', gap: 12, boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <Sparkles size={14} color="var(--status-success)" />
@@ -443,11 +443,11 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                       </span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: 'var(--status-success)' }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: 'var(--status-success)', fontVariantNumeric: 'tabular-nums' }}>
                         ${domain.wellArch.monthlyCostEst.toLocaleString()} / mo
                       </span>
                       {domain.naive.monthlyCostEst > domain.wellArch.monthlyCostEst && (
-                        <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-success)', background: 'rgba(48, 209, 88, 0.15)', padding: '1px 6px', borderRadius: 4 }}>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-success)', background: 'rgba(48, 209, 88, 0.15)', padding: '2px 8px', borderRadius: 'var(--radius-pill)', fontVariantNumeric: 'tabular-nums' }}>
                           {Math.round(((domain.naive.monthlyCostEst - domain.wellArch.monthlyCostEst) / domain.naive.monthlyCostEst) * 100)}% Saved
                         </span>
                       )}
@@ -472,14 +472,14 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                   </div>
 
                   {/* Resilience Details Banner */}
-                  <div style={{ marginTop: 'auto', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(48, 209, 88, 0.2)', padding: '10px 12px', borderRadius: 6 }}>
+                  <div style={{ marginTop: 'auto', background: 'rgba(0, 0, 0, 0.4)', border: '1px solid rgba(48, 209, 88, 0.2)', padding: '10px 12px', borderRadius: 'var(--radius-control)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.06)' }}>
                     <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--status-success)' }}>
                       Automated Recovery Architecture:
                     </div>
                     <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2 }}>
                       {domain.chaos.wellArchConsequence.narrative}
                     </div>
-                    <div style={{ display: 'flex', gap: 12, marginTop: 6, fontSize: 10, fontFamily: 'var(--font-mono)' }}>
+                    <div style={{ display: 'flex', gap: 12, marginTop: 6, fontSize: 10, fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                       <span style={{ color: 'var(--status-success)' }}>SLA: {domain.wellArch.availabilitySLA}</span>
                       <span style={{ color: 'var(--status-success)' }}>RTO: {domain.wellArch.rto}</span>
                       <span style={{ color: 'var(--status-success)' }}>RPO: {domain.wellArch.rpo}</span>
@@ -498,7 +498,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                     {domain.metrics.map((m, idx) => (
                       <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
                         <span style={{ color: 'var(--text-secondary)' }}>{m.label}</span>
-                        <span style={{ fontFamily: 'var(--font-mono)' }}>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                           <span style={{ color: 'var(--text-tertiary)', textDecoration: 'line-through' }}>{m.naiveValue}</span>
                           {' → '}
                           <span style={{ color: 'var(--status-success)', fontWeight: 600 }}>{m.wellArchValue}</span>
@@ -510,7 +510,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
 
                 {/* Theoretical Anchor Preview */}
                 {theory && (
-                  <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: '12px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: '12px 16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
                     <div>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                         <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
@@ -527,7 +527,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                     <button
                       className="btn-action"
                       onClick={() => { soundFX.playClick(); setSlideMode('theory'); }}
-                      style={{ height: 24, fontSize: 11, alignSelf: 'flex-start', marginTop: 6 }}
+                      style={{ height: 26, fontSize: 11, alignSelf: 'flex-start', marginTop: 6, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
                     >
                       <span>Inspect Full Mathematical Proof →</span>
                     </button>
@@ -757,6 +757,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
               className="btn-action btn-icon"
               onClick={() => setIsGridOpen(false)}
               aria-label="Close slide grid"
+              style={{ width: 32, height: 32, borderRadius: 'var(--radius-pill)' }}
             >
               <X size={16} />
             </button>
@@ -772,20 +773,22 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                   setIsGridOpen(false);
                 }}
                 style={{
-                  background: idx === currentIndex ? 'rgba(0, 113, 227, 0.15)' : 'rgba(255, 255, 255, 0.03)',
+                  background: idx === currentIndex ? 'rgba(0, 113, 227, 0.18)' : 'rgba(255, 255, 255, 0.04)',
                   border: idx === currentIndex ? '1.5px solid var(--accent)' : '1px solid var(--separator)',
-                  borderRadius: 8,
+                  borderRadius: 'var(--radius-control)',
                   padding: 12,
                   textAlign: 'left',
                   cursor: 'pointer',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 6,
-                  transition: 'all 0.15s ease'
+                  boxShadow: idx === currentIndex ? '0 4px 16px rgba(0, 113, 227, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2)' : 'inset 0 1px 0 var(--hairline-top)',
+                  transition: 'all var(--duration-fast) var(--ease-spring)',
+                  userSelect: 'none'
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', fontWeight: 700, color: idx === currentIndex ? 'var(--accent)' : 'var(--text-tertiary)' }}>
+                  <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', fontWeight: 700, color: idx === currentIndex ? 'var(--accent)' : 'var(--text-tertiary)', fontVariantNumeric: 'tabular-nums' }}>
                     SLIDE {idx + 1}
                   </span>
                   <span style={{ fontSize: 10, color: 'var(--text-tertiary)' }}>
@@ -793,7 +796,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                   </span>
                 </div>
                 <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
-                  {d.number}. {d.title}
+                  {idx + 1}. {d.title}
                 </div>
                 <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 'auto', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {d.customerRequirement.clientName}

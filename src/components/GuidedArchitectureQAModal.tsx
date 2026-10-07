@@ -151,29 +151,32 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
       role="dialog" 
       aria-modal="true" 
       aria-label="Architecture Advisor Guided Questions and Answers"
-      style={{ zIndex: 1100, background: 'rgba(0, 0, 0, 0.65)' }}
+      style={{ zIndex: 1100 }}
     >
       <div 
         className="sheet-content" 
         style={{
           width: '960px',
           maxWidth: '96vw',
-          maxHeight: '90vh',
+          maxHeight: '90dvh',
           display: 'flex',
           flexDirection: 'column',
           padding: 0,
-          background: '#14171c',
-          borderRadius: 16,
-          border: '1px solid #22262d',
+          background: 'rgba(24, 24, 28, 0.94)',
+          backdropFilter: 'blur(48px) saturate(200%)',
+          WebkitBackdropFilter: 'blur(48px) saturate(200%)',
+          borderRadius: 'var(--radius-sheet)',
+          border: '1px solid rgba(255, 255, 255, 0.14)',
+          borderTop: '1px solid var(--hairline-top)',
           overflow: 'hidden',
-          boxShadow: '0 24px 80px rgba(0, 0, 0, 0.85)'
+          boxShadow: 'var(--shadow-modal)'
         }}
       >
         {/* Header */}
         <div style={{
           padding: '16px 24px',
-          borderBottom: '1px solid #22262d',
-          background: '#0b0d10',
+          borderBottom: '1px solid var(--separator)',
+          background: 'rgba(255, 255, 255, 0.02)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between'
@@ -182,42 +185,46 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
             <div style={{
               width: 36,
               height: 36,
-              borderRadius: 8,
-              background: 'rgba(255, 153, 0, 0.12)',
-              border: '1px solid rgba(255, 153, 0, 0.3)',
+              borderRadius: 'var(--radius-control)',
+              background: 'rgba(255, 159, 10, 0.12)',
+              border: '1px solid rgba(255, 159, 10, 0.3)',
+              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-              <Compass size={20} color="#FF9900" />
+              <Compass size={20} color="var(--status-warning)" />
             </div>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#f0f3f6' }}>
+                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.015em' }}>
                   Architecture Advisor · Guided Q&amp;A
                 </h3>
                 <span style={{
                   fontSize: 11,
-                  padding: '2px 8px',
-                  borderRadius: 4,
-                  background: 'rgba(255, 153, 0, 0.12)',
-                  color: '#FF9900',
-                  fontWeight: 600
+                  padding: '3px 10px',
+                  borderRadius: 'var(--radius-pill)',
+                  background: 'rgba(255, 159, 10, 0.14)',
+                  color: 'var(--status-warning)',
+                  border: '1px solid rgba(255, 159, 10, 0.3)',
+                  fontWeight: 600,
+                  letterSpacing: '0.02em'
                 }}>
                   Module {activeDomain.number}: {activeDomain.title}
                 </span>
               </div>
-              <p style={{ margin: 0, fontSize: 13, color: '#9da7b3' }}>
+              <p style={{ margin: '2px 0 0 0', fontSize: 13, color: 'var(--text-secondary)' }}>
                 Curated solutions grounded in the 6 Pillars of the AWS Well-Architected Framework
               </p>
             </div>
           </div>
 
           <button 
-            className="btn-action"
+            className="btn-action btn-icon"
             onClick={onClose}
             title="Close [Esc]"
-            style={{ height: 32, width: 32, padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            aria-label="Close Architecture Advisor"
+            style={{ borderRadius: 'var(--radius-pill)' }}
           >
             <X size={16} />
           </button>
@@ -226,8 +233,8 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
         {/* Question Selector Ribbon */}
         <div style={{
           padding: '12px 24px',
-          background: '#0e1116',
-          borderBottom: '1px solid #22262d',
+          background: 'var(--bg-canvas)',
+          borderBottom: '1px solid var(--separator-subtle)',
           display: 'flex',
           gap: 8,
           overflowX: 'auto',
@@ -242,16 +249,18 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
                   soundFX.playClick();
                   setSelectedQuestionId(q.id);
                 }}
+                className="btn-action"
                 style={{
-                  background: isSelected ? 'rgba(255, 153, 0, 0.15)' : 'rgba(255, 255, 255, 0.03)',
-                  border: isSelected ? '1px solid #FF9900' : '1px solid #22262d',
-                  borderRadius: 8,
-                  padding: '8px 14px',
-                  fontSize: 13,
+                  background: isSelected ? 'rgba(255, 159, 10, 0.16)' : 'var(--bg-surface)',
+                  border: isSelected ? '1px solid rgba(255, 159, 10, 0.5)' : '1px solid var(--separator)',
+                  borderRadius: 'var(--radius-pill)',
+                  padding: '0 14px',
+                  height: 32,
+                  fontSize: 12,
                   fontWeight: isSelected ? 600 : 500,
-                  color: isSelected ? '#FF9900' : '#9da7b3',
+                  color: isSelected ? 'var(--status-warning)' : 'var(--text-secondary)',
+                  boxShadow: isSelected ? '0 2px 10px rgba(255, 159, 10, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2)' : 'inset 0 1px 0 var(--hairline-top)',
                   cursor: 'pointer',
-                  transition: 'all 0.15s ease',
                   display: 'flex',
                   alignItems: 'center',
                   gap: 6
@@ -271,22 +280,24 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
           display: 'flex',
           flexDirection: 'column',
           gap: 20,
-          background: '#14171c'
+          background: 'rgba(14, 14, 18, 0.6)'
         }}>
           {/* Question Title Card */}
           <div style={{
-            padding: '16px 20px',
-            borderRadius: 10,
-            background: '#0b0d10',
-            border: '1px solid #22262d'
+            padding: '18px 22px',
+            borderRadius: 'var(--radius-inner)',
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid var(--separator)',
+            borderTop: '1px solid var(--hairline-top)',
+            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)'
           }}>
-            <div style={{ fontSize: 11, textTransform: 'uppercase', color: '#FF9900', fontWeight: 700, marginBottom: 4 }}>
+            <div style={{ fontSize: 11, textTransform: 'uppercase', color: 'var(--status-warning)', fontWeight: 700, letterSpacing: '0.04em', marginBottom: 6 }}>
               {activeQ.category} Pillar Investigation
             </div>
-            <h4 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: '#f0f3f6' }}>
+            <h4 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.015em' }}>
               {activeQ.question}
             </h4>
-            <p style={{ margin: '8px 0 0 0', fontSize: 14, color: '#9da7b3', lineHeight: 1.5 }}>
+            <p style={{ margin: '8px 0 0 0', fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
               {activeQ.summary}
             </p>
           </div>
@@ -296,15 +307,16 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
             {/* Anti-Pattern */}
             <div style={{
               padding: '16px',
-              borderRadius: 10,
-              background: 'rgba(255, 69, 58, 0.05)',
-              border: '1px solid rgba(255, 69, 58, 0.25)'
+              borderRadius: 'var(--radius-inner)',
+              background: 'var(--status-danger-subtle)',
+              border: '1px solid rgba(255, 69, 58, 0.25)',
+              boxShadow: 'inset 0 1px 0 rgba(255, 69, 58, 0.15)'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: '#ff453a', fontWeight: 600, fontSize: 13 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: 'var(--status-danger)', fontWeight: 600, fontSize: 13 }}>
                 <AlertTriangle size={15} />
                 <span>Anti-Pattern (Traditional Setup)</span>
               </div>
-              <p style={{ margin: 0, fontSize: 13, color: '#f0f3f6', lineHeight: 1.5 }}>
+              <p style={{ margin: 0, fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.5 }}>
                 {activeQ.antiPattern}
               </p>
             </div>
@@ -312,15 +324,16 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
             {/* Well-Architected Solution */}
             <div style={{
               padding: '16px',
-              borderRadius: 10,
-              background: 'rgba(48, 209, 88, 0.05)',
-              border: '1px solid rgba(48, 209, 88, 0.25)'
+              borderRadius: 'var(--radius-inner)',
+              background: 'var(--status-success-subtle)',
+              border: '1px solid rgba(48, 209, 88, 0.25)',
+              boxShadow: 'inset 0 1px 0 rgba(48, 209, 88, 0.15)'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: '#30d158', fontWeight: 600, fontSize: 13 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: 'var(--status-success)', fontWeight: 600, fontSize: 13 }}>
                 <CheckCircle2 size={15} />
                 <span>AWS Well-Architected Solution</span>
               </div>
-              <p style={{ margin: 0, fontSize: 13, color: '#f0f3f6', lineHeight: 1.5 }}>
+              <p style={{ margin: 0, fontSize: 13, color: 'var(--text-primary)', lineHeight: 1.5 }}>
                 {activeQ.solution}
               </p>
             </div>
@@ -335,14 +348,16 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
             {activeQ.metrics.map((m, idx) => (
               <div key={idx} style={{
                 padding: '12px 16px',
-                borderRadius: 8,
-                background: '#0b0d10',
-                border: '1px solid #22262d'
+                borderRadius: 'var(--radius-control)',
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid var(--separator)',
+                borderTop: '1px solid var(--hairline-top)',
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
               }}>
-                <div style={{ fontSize: 11, color: '#9da7b3', fontWeight: 600, textTransform: 'uppercase' }}>
+                <div style={{ fontSize: 11, color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   {m.label}
                 </div>
-                <div style={{ fontSize: 15, fontWeight: 700, color: '#f0f3f6', marginTop: 4 }}>
+                <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', marginTop: 4, fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>
                   {m.value}
                 </div>
               </div>
@@ -352,37 +367,37 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
           {/* Terraform IaC Snippet if available */}
           {activeQ.iacSnippet && (
             <div style={{
-              borderRadius: 10,
-              background: '#05070a',
-              border: '1px solid #22262d',
-              overflow: 'hidden'
+              borderRadius: 'var(--radius-inner)',
+              background: 'rgba(0, 0, 0, 0.75)',
+              border: '1px solid var(--separator)',
+              overflow: 'hidden',
+              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.35)'
             }}>
               <div style={{
                 padding: '10px 16px',
-                background: '#0e1116',
-                borderBottom: '1px solid #22262d',
+                background: 'rgba(255, 255, 255, 0.03)',
+                borderBottom: '1px solid var(--separator)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between'
               }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: '#9da7b3', fontFamily: 'monospace' }}>
-                  <Terminal size={14} color="#FF9900" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)' }}>
+                  <Terminal size={14} color="var(--status-warning)" />
                   <span>terraform/main.tf</span>
                 </div>
                 <button
                   onClick={() => handleCopyCode(activeQ.iacSnippet!)}
+                  className="btn-action"
                   style={{
-                    background: 'none',
-                    border: 'none',
-                    color: copiedSnippet ? '#30d158' : '#9da7b3',
-                    fontSize: 12,
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 4
+                    height: 26,
+                    padding: '0 10px',
+                    fontSize: 11,
+                    borderRadius: 'var(--radius-pill)',
+                    boxShadow: 'inset 0 1px 0 var(--hairline-top)',
+                    color: copiedSnippet ? 'var(--status-success)' : 'var(--text-secondary)'
                   }}
                 >
-                  <Copy size={13} />
+                  <Copy size={12} />
                   <span>{copiedSnippet ? 'Copied' : 'Copy'}</span>
                 </button>
               </div>
@@ -390,8 +405,8 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
                 margin: 0,
                 padding: '16px',
                 fontSize: 12,
-                color: '#30d158',
-                fontFamily: "'JetBrains Mono', monospace",
+                color: 'var(--status-success)',
+                fontFamily: 'var(--font-mono)',
                 lineHeight: 1.5,
                 maxHeight: '160px',
                 overflowY: 'auto'
@@ -405,18 +420,19 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
           {activeQ.citations && activeQ.citations.length > 0 && (
             <div style={{
               padding: '14px 18px',
-              borderRadius: 8,
-              background: 'rgba(255, 153, 0, 0.04)',
-              border: '1px solid rgba(255, 153, 0, 0.15)'
+              borderRadius: 'var(--radius-inner)',
+              background: 'rgba(255, 159, 10, 0.05)',
+              border: '1px solid rgba(255, 159, 10, 0.2)',
+              boxShadow: 'inset 0 1px 0 rgba(255, 159, 10, 0.1)'
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: '#FF9900', marginBottom: 6 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: 'var(--status-warning)', marginBottom: 6, letterSpacing: '0.02em' }}>
                 <FileText size={13} />
                 <span>Authoritative AWS Whitepaper Citations</span>
               </div>
               {activeQ.citations.map((c, idx) => (
-                <div key={idx} style={{ fontSize: 12, color: '#9da7b3', marginTop: 4, lineHeight: 1.5 }}>
-                  <strong style={{ color: '#f0f3f6' }}>{c.whitepaper}</strong> ({c.section}): 
-                  <span style={{ fontStyle: 'italic', display: 'block', marginTop: 2, paddingLeft: 8, borderLeft: '2px solid rgba(255,153,0,0.3)' }}>
+                <div key={idx} style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 4, lineHeight: 1.5 }}>
+                  <strong style={{ color: 'var(--text-primary)' }}>{c.whitepaper}</strong> ({c.section}): 
+                  <span style={{ fontStyle: 'italic', display: 'block', marginTop: 2, paddingLeft: 8, borderLeft: '2px solid rgba(255, 159, 10, 0.4)' }}>
                     "{c.verifiedQuote}"
                   </span>
                 </div>
@@ -428,35 +444,34 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
           {activeQ.action && (
             <div style={{
               padding: '16px 20px',
-              borderRadius: 10,
-              background: '#0b0d10',
-              border: '1px solid #22262d',
+              borderRadius: 'var(--radius-inner)',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid var(--separator)',
+              borderTop: '1px solid var(--hairline-top)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               gap: 16
             }}>
               <div>
-                <div style={{ fontSize: 14, fontWeight: 600, color: '#f0f3f6' }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>
                   {activeQ.action.title}
                 </div>
-                <div style={{ fontSize: 12, color: '#9da7b3', marginTop: 2 }}>
-                  Cost impact: <strong style={{ color: '#30d158' }}>{activeQ.action.costDelta}</strong> • Blast radius: {activeQ.action.blastRadius}
+                <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 2 }}>
+                  Cost impact: <strong style={{ color: 'var(--status-success)' }}>{activeQ.action.costDelta}</strong> • Blast radius: {activeQ.action.blastRadius}
                 </div>
               </div>
               <button
-                className="btn-action"
+                className={`btn-action ${appliedAction ? 'primary' : ''}`}
                 onClick={() => handleApplyAction(activeQ.action!)}
                 disabled={appliedAction}
                 style={{
-                  background: appliedAction ? 'rgba(48, 209, 88, 0.2)' : 'rgba(255, 153, 0, 0.15)',
-                  border: appliedAction ? '1px solid #30d158' : '1px solid #FF9900',
-                  color: appliedAction ? '#30d158' : '#FF9900',
+                  height: 34,
+                  padding: '0 18px',
+                  fontSize: 12,
                   fontWeight: 600,
-                  fontSize: 13,
-                  padding: '8px 18px',
-                  borderRadius: 8,
-                  cursor: appliedAction ? 'default' : 'pointer'
+                  borderRadius: 'var(--radius-pill)',
+                  boxShadow: 'inset 0 1px 0 var(--hairline-top)'
                 }}
               >
                 {appliedAction ? 'Applied to Stage ✓' : 'Simulate Remediation'}
@@ -468,13 +483,13 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
         {/* Footer fallback route */}
         <div style={{
           padding: '12px 24px',
-          background: '#0b0d10',
-          borderTop: '1px solid #22262d',
+          background: 'var(--bg-canvas)',
+          borderTop: '1px solid var(--separator)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           fontSize: 12,
-          color: '#9da7b3'
+          color: 'var(--text-secondary)'
         }}>
           <span>Standard manual review also available.</span>
           <button
@@ -482,20 +497,18 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
               onClose();
               onOpen6PillarsFallback();
             }}
+            className="btn-action"
             style={{
-              background: 'none',
+              background: 'transparent',
               border: 'none',
-              color: '#FF9900',
+              color: 'var(--accent)',
               fontSize: 12,
               fontWeight: 500,
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
               gap: 4
             }}
           >
             <span>Explore 6 Pillars Master Audit</span>
-            <ArrowRight size={12} />
+            <ArrowRight size={13} />
           </button>
         </div>
       </div>

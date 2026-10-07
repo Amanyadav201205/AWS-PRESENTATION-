@@ -60,6 +60,7 @@ export const NodeDetailModal: React.FC<NodeModalProps> = ({
               onClose();
             }}
             aria-label="Close modal"
+            style={{ borderRadius: 'var(--radius-pill)' }}
           >
             <X size={15} />
           </button>
@@ -67,30 +68,30 @@ export const NodeDetailModal: React.FC<NodeModalProps> = ({
 
         {/* Status Callout: three honest states (was: every non-SPOF node claimed multi-AZ HA) */}
         {node.isSPOF ? (
-          <div style={{ background: 'var(--status-danger-subtle)', border: '1px solid rgba(255, 69, 58, 0.25)', borderRadius: 'var(--radius-control)', padding: 'var(--space-2) var(--space-3)', fontSize: 'var(--text-xs)', color: 'var(--status-danger)' }}>
+          <div style={{ background: 'var(--status-danger-subtle)', border: '1px solid rgba(255, 69, 58, 0.28)', borderRadius: 'var(--radius-control)', padding: 'var(--space-2) var(--space-3)', fontSize: 'var(--text-xs)', color: 'var(--status-danger)' }}>
             <strong>Single point of failure: </strong> Loss of this node halts application traffic.
           </div>
         ) : isWellArchNode ? (
-          <div style={{ background: 'var(--status-success-subtle)', border: '1px solid rgba(48, 209, 88, 0.25)', borderRadius: 'var(--radius-control)', padding: 'var(--space-2) var(--space-3)', fontSize: 'var(--text-xs)', color: 'var(--status-success)' }}>
+          <div style={{ background: 'var(--status-success-subtle)', border: '1px solid rgba(48, 209, 88, 0.28)', borderRadius: 'var(--radius-control)', padding: 'var(--space-2) var(--space-3)', fontSize: 'var(--text-xs)', color: 'var(--status-success)' }}>
             <strong>Resilient component: </strong> Part of the redundant, multi-AZ design.
           </div>
         ) : (
-          <div style={{ background: 'var(--status-warning-subtle)', border: '1px solid rgba(255, 159, 10, 0.25)', borderRadius: 'var(--radius-control)', padding: 'var(--space-2) var(--space-3)', fontSize: 'var(--text-xs)', color: 'var(--status-warning)' }}>
+          <div style={{ background: 'var(--status-warning-subtle)', border: '1px solid rgba(255, 159, 10, 0.28)', borderRadius: 'var(--radius-control)', padding: 'var(--space-2) var(--space-3)', fontSize: 'var(--text-xs)', color: 'var(--status-warning)' }}>
             <strong>Part of the anti-pattern: </strong> Not a single point of failure on its own, but it depends on the fragile components around it.
           </div>
         )}
 
         {/* Specs & Security */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 'var(--space-3)' }}>
-          <div style={{ background: 'var(--bg-canvas)', border: '1px solid var(--separator-subtle)', borderRadius: 'var(--radius-control)', padding: 'var(--space-3)' }}>
-            <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-secondary)' }}>Component specs</span>
+          <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid var(--separator)', borderTop: '1px solid var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-3)', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)' }}>
+            <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)' }}>Component specs</span>
             <p style={{ fontSize: 12, color: 'var(--text-primary)', marginTop: 4, lineHeight: 1.4 }}>
               {node.configDetails?.specs || node.description || 'Standard cloud instance configuration'}
             </p>
           </div>
 
-          <div style={{ background: 'var(--bg-canvas)', border: '1px solid var(--separator-subtle)', borderRadius: 'var(--radius-control)', padding: 'var(--space-3)' }}>
-            <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-secondary)' }}>Security & isolation</span>
+          <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid var(--separator)', borderTop: '1px solid var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-3)', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)' }}>
+            <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)' }}>Security & isolation</span>
             <p style={{ fontSize: 12, color: 'var(--text-primary)', marginTop: 4, lineHeight: 1.4 }}>
               {node.configDetails?.securityPolicy || 'Default perimeter boundary rules'}
             </p>
@@ -101,12 +102,12 @@ export const NodeDetailModal: React.FC<NodeModalProps> = ({
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-2)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, borderTop: '1px solid var(--separator)', paddingTop: 8 }}>
             <span style={{ color: 'var(--text-secondary)' }}>Cost profile:</span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-primary)' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--text-primary)', fontVariantNumeric: 'tabular-nums' }}>
               {node.configDetails?.costProfile || 'Standard AWS pricing'}
             </span>
           </div>
 
-          <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.4, background: 'var(--bg-subtle)', padding: 'var(--space-2) var(--space-3)', borderRadius: 'var(--radius-control)' }}>
+          <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.45, background: 'rgba(255, 255, 255, 0.04)', border: '1px solid var(--separator)', padding: 'var(--space-2) var(--space-3)', borderRadius: 'var(--radius-control)' }}>
             <strong style={{ color: 'var(--text-primary)' }}>{isWellArchNode ? 'Well-Architected role: ' : 'How the Well-Architected design fixes this: '}</strong>
             {node.configDetails?.wafAdvantage || node.description}
           </div>

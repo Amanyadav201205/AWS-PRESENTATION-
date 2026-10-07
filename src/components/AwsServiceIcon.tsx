@@ -36,7 +36,6 @@ export const AwsServiceIcon: React.FC<AwsServiceIconProps> = ({
 
   if (s.includes('s3') || s.includes('glacier') || s.includes('backup') || s.includes('storage') || s.includes('ebs')) {
     // S3 & Storage Icons
-    const isS3 = s.includes('s3');
     const isEBS = s.includes('ebs');
     const isGlacier = s.includes('glacier') || s.includes('backup');
 
