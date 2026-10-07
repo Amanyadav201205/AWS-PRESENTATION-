@@ -21,15 +21,26 @@ import {
 interface PillarsExplorerModalProps {
   onClose: () => void;
   onNavigateToDomain: (domainId: string) => void;
+  selectedPillarId?: string;
+  onSelectPillarId?: (pillarId: string) => void;
 }
 
 export const PillarsExplorerModal: React.FC<PillarsExplorerModalProps> = ({
   onClose,
-  onNavigateToDomain
+  onNavigateToDomain,
+  selectedPillarId: controlledPillarId,
+  onSelectPillarId
 }) => {
-  const [selectedPillarId, setSelectedPillarId] = useState<string>('Operational Excellence');
+  const [internalPillarId, setInternalPillarId] = useState<string>('Operational Excellence');
+  const activeId = controlledPillarId || internalPillarId;
 
-  const activePillar = pillarDetails.find(p => p.id === selectedPillarId) || pillarDetails[0];
+  const handleSelectPillar = (id: string) => {
+    soundFX.playClick();
+    setInternalPillarId(id);
+    if (onSelectPillarId) onSelectPillarId(id);
+  };
+
+  const activePillar = pillarDetails.find(p => p.id === activeId || p.name === activeId) || pillarDetails[0];
 
   const getPillarIcon = (name: string, size = 16) => {
     switch (name) {
@@ -96,10 +107,7 @@ export const PillarsExplorerModal: React.FC<PillarsExplorerModalProps> = ({
             return (
               <button
                 key={p.id}
-                onClick={() => {
-                  soundFX.playClick();
-                  setSelectedPillarId(p.id);
-                }}
+                onClick={() => handleSelectPillar(p.id)}
                 className="btn-action"
                 style={{
                   height: 34,

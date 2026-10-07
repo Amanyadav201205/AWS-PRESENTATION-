@@ -18,15 +18,26 @@ import { LatexFormula } from './LatexFormula';
 interface TheoreticalFoundationsModalProps {
   onClose: () => void;
   onSelectDomain?: (domainId: string) => void;
+  selectedDomainId?: string;
+  onSelectDomainId?: (domainId: string) => void;
 }
 
 export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalProps> = ({
   onClose,
-  onSelectDomain
+  onSelectDomain,
+  selectedDomainId: controlledDomainId,
+  onSelectDomainId
 }) => {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedDomainId, setSelectedDomainId] = useState<string>('overview-thesis');
+  const [internalDomainId, setInternalDomainId] = useState<string>('overview-thesis');
+  const activeDomainId = controlledDomainId || internalDomainId;
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
+
+  const handleSelectTheoryDomain = (id: string) => {
+    soundFX.playClick();
+    setInternalDomainId(id);
+    if (onSelectDomainId) onSelectDomainId(id);
+  };
 
   const theoriesList = Object.values(theoreticalFoundations);
 
@@ -37,7 +48,7 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
     t.complianceStandard.standard.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const currentTheory = theoreticalFoundations[selectedDomainId] || theoriesList[0];
+  const currentTheory = theoreticalFoundations[activeDomainId] || theoriesList[0];
 
   const handleCopyCitation = (text: string, id: string) => {
     soundFX.playClick();
@@ -115,10 +126,7 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
             {filteredTheories.map(t => (
               <button
                 key={t.domainId}
-                onClick={() => {
-                  soundFX.playClick();
-                  setSelectedDomainId(t.domainId);
-                }}
+                onClick={() => handleSelectTheoryDomain(t.domainId)}
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -127,13 +135,13 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
                   borderRadius: 'var(--radius-control)',
                   textAlign: 'left',
                   cursor: 'pointer',
-                  background: selectedDomainId === t.domainId ? 'var(--accent-subtle)' : 'transparent',
-                  border: selectedDomainId === t.domainId ? '1px solid var(--accent)' : '1px solid transparent',
+                  background: activeDomainId === t.domainId ? 'var(--accent-subtle)' : 'transparent',
+                  border: activeDomainId === t.domainId ? '1px solid var(--accent)' : '1px solid transparent',
                   transition: 'background-color var(--duration-fast) var(--ease-spring), border-color var(--duration-fast) var(--ease-spring)'
                 }}
               >
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: selectedDomainId === t.domainId ? 'var(--accent)' : 'var(--text-tertiary)', fontWeight: 600 }}>
+                  <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: activeDomainId === t.domainId ? 'var(--accent)' : 'var(--text-tertiary)', fontWeight: 600 }}>
                     MODULE {t.domainNumber + 1}
                   </span>
                   <span style={{ fontSize: 10, color: 'var(--text-tertiary)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>

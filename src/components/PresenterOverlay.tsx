@@ -47,7 +47,6 @@ interface PresenterProps {
   isChaosActive: boolean;
   onResetChaos: () => void;
   onOpenPacketSimulator?: () => void;
-  onOpenScriptPrompter?: () => void;
   onOpenClientSolutions?: () => void;
   onOpenSubtopics?: () => void;
   allDomains?: DomainData[];
@@ -72,7 +71,6 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
   isChaosActive,
   onResetChaos,
   onOpenPacketSimulator,
-  onOpenScriptPrompter,
   onOpenClientSolutions,
   onOpenSubtopics,
   allDomains,
@@ -161,8 +159,6 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
         onResetChaos();
       } else if ((e.key === 'l' || e.key === 'L') && onOpenPacketSimulator) {
         onOpenPacketSimulator();
-      } else if ((e.key === 's' || e.key === 'S') && onOpenScriptPrompter) {
-        onOpenScriptPrompter();
       } else if ((e.key === 'w' || e.key === 'W') && onOpenClientSolutions) {
         onOpenClientSolutions();
       } else if ((e.key === 't' || e.key === 'T') && onOpenSubtopics) {
@@ -180,7 +176,6 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
     isChaosActive, 
     isGridOpen,
     onOpenPacketSimulator, 
-    onOpenScriptPrompter,
     onOpenClientSolutions,
     onOpenSubtopics
   ]);

@@ -11,6 +11,8 @@ import {
 
 interface PacketLatencySimulatorProps {
   onClose: () => void;
+  raceTrigger?: number;
+  burstTrigger?: number;
 }
 
 interface HopDetail {
@@ -52,7 +54,11 @@ const hops: HopDetail[] = [
   }
 ];
 
-export const PacketLatencySimulator: React.FC<PacketLatencySimulatorProps> = ({ onClose }) => {
+export const PacketLatencySimulator: React.FC<PacketLatencySimulatorProps> = ({
+  onClose,
+  raceTrigger,
+  burstTrigger
+}) => {
   const [simulationState, setSimulationState] = useState<'idle' | 'running' | 'completed'>('idle');
   const [packetProgress, setPacketProgress] = useState<{ naive: number; wellArch: number }>({ naive: 0, wellArch: 0 });
   const [burstActive, setBurstActive] = useState<boolean>(false);
@@ -125,6 +131,18 @@ export const PacketLatencySimulator: React.FC<PacketLatencySimulatorProps> = ({ 
     setBurstActive(false);
     setBurstPackets([]);
   };
+
+  useEffect(() => {
+    if (raceTrigger && raceTrigger > 0) {
+      handleStartSimulation();
+    }
+  }, [raceTrigger]);
+
+  useEffect(() => {
+    if (burstTrigger && burstTrigger > 0) {
+      handleStartBurst();
+    }
+  }, [burstTrigger]);
 
   useEffect(() => {
     return () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X,
   Database,
@@ -14,12 +14,27 @@ import {
 
 interface SubtopicExplorerModalProps {
   onClose: () => void;
+  activeSubtopic?: SubtopicId;
+  onSelectSubtopic?: (id: SubtopicId) => void;
+  simTrigger?: number;
 }
 
 type SubtopicId = 'rds-proxy' | 'ebs-gp3' | 'caching-patterns' | 'aurora-quorum' | 'sqs-dlq';
 
-export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({ onClose }) => {
-  const [activeSubtopic, setActiveSubtopic] = useState<SubtopicId>('rds-proxy');
+export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({
+  onClose,
+  activeSubtopic: controlledSubtopic,
+  onSelectSubtopic,
+  simTrigger
+}) => {
+  const [internalSubtopic, setInternalSubtopic] = useState<SubtopicId>('rds-proxy');
+  const activeSubtopic = controlledSubtopic || internalSubtopic;
+
+  const handleSelectSubtopic = (id: SubtopicId) => {
+    soundFX.playClick();
+    setInternalSubtopic(id);
+    if (onSelectSubtopic) onSelectSubtopic(id);
+  };
 
   // Subtopic 1: RDS Proxy Simulation State
   const [lambdaConcurrency, setLambdaConcurrency] = useState<number>(200);
@@ -77,6 +92,22 @@ export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({ on
     }, 1000);
   };
 
+  // React to remote simulation trigger
+  useEffect(() => {
+    if (!simTrigger || simTrigger <= 0) return;
+    if (activeSubtopic === 'rds-proxy') {
+      handleRunRdsProxySim();
+    } else if (activeSubtopic === 'aurora-quorum') {
+      setFailedAz(prev => prev === 'none' ? 'az-a' : 'none');
+      soundFX.playChaosAlarm();
+    } else if (activeSubtopic === 'sqs-dlq') {
+      handleRunDlqSim();
+    } else if (activeSubtopic === 'ebs-gp3') {
+      setVolumeSizeGb(prev => prev === 2000 ? 5000 : 2000);
+      soundFX.playClick();
+    }
+  }, [simTrigger]);
+
   return (
     <div className="sheet-overlay" role="dialog" aria-modal="true" aria-label="Architectural Subtopics & Deep-Dive Simulations">
       <div className="presenter-dialog subtopic-sheet" style={{ maxWidth: 960, maxHeight: '92dvh' }}>
@@ -89,7 +120,7 @@ export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({ on
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <h2 style={{ fontSize: 'var(--text-base)', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-                  Architectural Subtopic Labs & Deep-Dive Simulators
+                  Architectural Subtopic Labs &amp; Deep-Dive Simulators
                 </h2>
                 <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--accent-subtle)', color: 'var(--accent)', fontWeight: 600, letterSpacing: '0.02em' }}>
                   Engineering Mechanics
@@ -127,10 +158,7 @@ export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({ on
             return (
               <button
                 key={tab.id}
-                onClick={() => {
-                  soundFX.playClick();
-                  setActiveSubtopic(tab.id as SubtopicId);
-                }}
+                onClick={() => handleSelectSubtopic(tab.id as SubtopicId)}
                 className="btn-action"
                 style={{
                   height: 32,

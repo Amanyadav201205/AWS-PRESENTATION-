@@ -6,14 +6,12 @@ import {
   SkipBack, 
   Clock, 
   Zap, 
-  FileText, 
   ChevronUp, 
   ChevronDown, 
   Briefcase, 
   Sliders, 
   BookOpen,
-  Compass,
-  Smartphone
+  Compass
 } from 'lucide-react';
 import { soundFX } from '../utils/soundEffects';
 
@@ -25,7 +23,6 @@ interface AutoPilotBarProps {
   onTriggerChaos: () => void;
   onResetChaos: () => void;
   isChaosActive: boolean;
-  onOpenScriptPrompter: () => void;
   onOpen6Pillars: () => void;
   onOpenExecutiveReview: () => void;
   onOpenStressLab: () => void;
@@ -34,7 +31,6 @@ interface AutoPilotBarProps {
   onOpenSubtopics: () => void;
   onOpenTheory: () => void;
   onOpenAiCopilot: () => void;
-  onOpenPairingModal?: () => void;
 }
 
 export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
@@ -45,7 +41,6 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
   onTriggerChaos,
   onResetChaos,
   isChaosActive,
-  onOpenScriptPrompter,
   onOpen6Pillars,
   onOpenExecutiveReview,
   onOpenStressLab,
@@ -53,8 +48,7 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
   onOpenClientSolutions,
   onOpenSubtopics,
   onOpenTheory,
-  onOpenAiCopilot,
-  onOpenPairingModal
+  onOpenAiCopilot
 }) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [durationSec, setDurationSec] = useState<number>(30); // 15, 30, or 60s
@@ -268,25 +262,6 @@ export const AutoPilotBar: React.FC<AutoPilotBarProps> = ({
 
             {/* Quick Action Launchers */}
             <div className="autopilot-launchers-group">
-              {onOpenPairingModal && (
-                <button
-                  className="btn-action autopilot-launcher-btn"
-                  onClick={onOpenPairingModal}
-                  title="Connect Devarsh & Aman's smartphones to control presentation [M]"
-                >
-                  <Smartphone size={12} color="var(--accent)" />
-                  <span className="btn-label-desktop">Phone Remote</span>
-                </button>
-              )}
-
-              <button
-                className="btn-action autopilot-launcher-btn"
-                onClick={onOpenScriptPrompter}
-                title="Open speaker script and jury defense questions [S]"
-              >
-                <FileText size={12} color="var(--accent)" />
-                <span className="btn-label-desktop">Script</span>
-              </button>
 
               <button
                 className="btn-action autopilot-launcher-btn"

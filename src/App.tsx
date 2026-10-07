@@ -11,7 +11,6 @@ import { IaCInspector } from './components/IaCInspector';
 import { ChaosBanner } from './components/ChaosBanner';
 import { AutoPilotBar } from './components/AutoPilotBar';
 import { PresenterFooter } from './components/PresenterFooter';
-import { RemoteStatusBadge } from './components/RemoteStatusBadge';
 import { soundFX } from './utils/soundEffects';
 import { useDialogFocusTrap } from './hooks/useDialogFocusTrap';
 import {
@@ -38,7 +37,6 @@ const findDomainIndexFromHash = (raw: string): number => {
 // Code-split all heavy presentation modals via React.lazy() (P0 bundle size fix)
 const GuidedArchitectureQAModal = lazy(() => import('./components/GuidedArchitectureQAModal').then(m => ({ default: m.GuidedArchitectureQAModal })));
 const PresenterOverlay = lazy(() => import('./components/PresenterOverlay').then(m => ({ default: m.PresenterOverlay })));
-const SpeakerScriptPrompter = lazy(() => import('./components/SpeakerScriptPrompter').then(m => ({ default: m.SpeakerScriptPrompter })));
 const PillarsExplorerModal = lazy(() => import('./components/PillarsExplorerModal').then(m => ({ default: m.PillarsExplorerModal })));
 const ExecutiveReviewModal = lazy(() => import('./components/ExecutiveReviewModal').then(m => ({ default: m.ExecutiveReviewModal })));
 const StressLabModal = lazy(() => import('./components/StressLabModal').then(m => ({ default: m.StressLabModal })));
@@ -100,7 +98,6 @@ export function App() {
   const [isWellArchSelected, setIsWellArchSelected] = useState<boolean>(true);
 
   // Presentation & Framework Modals
-  const [isPrompterOpen, setIsPrompterOpen] = useState<boolean>(false);
   const [is6PillarsOpen, setIs6PillarsOpen] = useState<boolean>(false);
   const [isExecutiveReviewOpen, setIsExecutiveReviewOpen] = useState<boolean>(false);
   const [isStressLabOpen, setIsStressLabOpen] = useState<boolean>(false);
@@ -112,13 +109,26 @@ export function App() {
   const [isAiGovernanceOpen, setIsAiGovernanceOpen] = useState<boolean>(false);
   const [isPairingModalOpen, setIsPairingModalOpen] = useState<boolean>(false);
 
+  // Modal sub-states for live interactive remote control from paired phone
+  const [modalPillarId, setModalPillarId] = useState<string>('Operational Excellence');
+  const [modalSubtopicId, setModalSubtopicId] = useState<string>('rds-proxy');
+  const [modalSubtopicSimTrigger, setModalSubtopicSimTrigger] = useState<number>(0);
+  const [modalWorkloadId, setModalWorkloadId] = useState<string>('ecommerce-cart');
+  const [modalWorkloadSimTrigger, setModalWorkloadSimTrigger] = useState<number>(0);
+  const [modalIncidentId, setModalIncidentId] = useState<string>('traffic_spike');
+  const [modalIncidentSimTrigger, setModalIncidentSimTrigger] = useState<number>(0);
+  const [modalExecTier, setModalExecTier] = useState<string>('startup');
+  const [modalTheoryDomainId, setModalTheoryDomainId] = useState<string>('overview-thesis');
+  const [modalLatencySimTrigger, setModalLatencySimTrigger] = useState<number>(0);
+  const [modalLatencyBurstTrigger, setModalLatencyBurstTrigger] = useState<number>(0);
+
   // Storyline stage — controlled from remote (CustomerJourneyCard tabs)
   const [activeStorylineStage, setActiveStorylineStage] = useState<StorylineStage>('requirement');
 
   // Remote presenter sync (stage host)
   const [roomCode] = useState(() => getOrGenerateRoomCode());
   const [remoteSync] = useState(() => new StageHostSync(roomCode));
-  const [remoteConnected, setRemoteConnected] = useState(false);
+  const [_remoteConnected, setRemoteConnected] = useState(false);
   const [remoteDeviceCount, setRemoteDeviceCount] = useState(0);
 
   // HUD toast shown on stage when a phone sends a command
@@ -240,7 +250,6 @@ export function App() {
   };
 
   const closeAllModals = useCallback(() => {
-    setIsPrompterOpen(false);
     setIs6PillarsOpen(false);
     setIsExecutiveReviewOpen(false);
     setIsStressLabOpen(false);
@@ -399,7 +408,7 @@ export function App() {
           closeAllModals();
           // Accept both short keys and legacy keys from SpeakerCompanionRemote
           const modalMap: Record<string, () => void> = {
-            script:          () => setIsPrompterOpen(true),
+            script:          () => showHudToast(spk, 'Presenter Script is active on phone'),
             '6pillars':      () => setIs6PillarsOpen(true),
             executive:       () => setIsExecutiveReviewOpen(true),
             stresslab:       () => setIsStressLabOpen(true),
@@ -448,6 +457,49 @@ export function App() {
           });
           break;
         }
+        case 'INTERACT_MODAL': {
+          const action = cmd.modalAction;
+          const payload = cmd.modalPayload;
+          if (action === 'SET_PILLAR' && payload?.pillarId) {
+            setModalPillarId(payload.pillarId);
+            showHudToast(spk, `Pillar: ${payload.pillarId}`);
+          } else if (action === 'NAVIGATE_TO_DOMAIN' && payload?.domainId) {
+            handleSelectDomain(payload.domainId);
+            closeAllModals();
+            showHudToast(spk, `Domain: ${payload.domainId}`);
+          } else if (action === 'SET_SUBTOPIC' && payload?.subtopicId) {
+            setModalSubtopicId(payload.subtopicId);
+            showHudToast(spk, `Lab: ${payload.subtopicId}`);
+          } else if (action === 'RUN_SUBTOPIC_SIM') {
+            setModalSubtopicSimTrigger(prev => prev + 1);
+            showHudToast(spk, `Running Lab Simulation`);
+          } else if (action === 'SET_WORKLOAD' && payload?.workloadId) {
+            setModalWorkloadId(payload.workloadId);
+            showHudToast(spk, `Workload: ${payload.workloadId}`);
+          } else if (action === 'RUN_WORKLOAD_SIM') {
+            setModalWorkloadSimTrigger(prev => prev + 1);
+            showHudToast(spk, `Running Workload Flow`);
+          } else if (action === 'SET_INCIDENT' && payload?.incidentId) {
+            setModalIncidentId(payload.incidentId);
+            showHudToast(spk, `Incident: ${payload.incidentId}`);
+          } else if (action === 'TRIGGER_INCIDENT_SIM') {
+            setModalIncidentSimTrigger(prev => prev + 1);
+            showHudToast(spk, `Running Incident Stress`);
+          } else if (action === 'SET_TIER' && payload?.tier) {
+            setModalExecTier(payload.tier);
+            showHudToast(spk, `Tier: ${payload.tier}`);
+          } else if (action === 'SET_THEORY' && payload?.domainId) {
+            setModalTheoryDomainId(payload.domainId);
+            showHudToast(spk, `Theory: ${payload.domainId}`);
+          } else if (action === 'START_PACKET_RACE') {
+            setModalLatencySimTrigger(prev => prev + 1);
+            showHudToast(spk, `Packet Flight Launched!`);
+          } else if (action === 'BURST_TEST') {
+            setModalLatencyBurstTrigger(prev => prev + 1);
+            showHudToast(spk, `50-Packet Burst Stress!`);
+          }
+          break;
+        }
       }
     });
     return unsub;
@@ -466,7 +518,6 @@ export function App() {
   useEffect(() => {
     const anyModalOpen =
       selectedNode ? 'node' :
-      isPrompterOpen ? 'script' :
       is6PillarsOpen ? '6pillars' :
       isExecutiveReviewOpen ? 'executive' :
       isStressLabOpen ? 'stresslab' :
@@ -494,6 +545,14 @@ export function App() {
       activeAttack,
       storylineStage: activeStorylineStage,
       activeModal: anyModalOpen,
+      modalSubState: {
+        pillarId: modalPillarId,
+        subtopicId: modalSubtopicId,
+        workloadId: modalWorkloadId,
+        incidentId: modalIncidentId,
+        tier: modalExecTier,
+        theoryDomainId: modalTheoryDomainId,
+      },
       audioEnabled,
       selectedNodeId: selectedNode?.id ?? null,
       selectedNodeName: selectedNode?.name ?? null,
@@ -508,7 +567,8 @@ export function App() {
     slideMode, isSlideGridOpen, userLoad, activeAttack, activeStorylineStage,
     remoteDeviceCount, hudSpeakerName, hudActionNotice, audioEnabled,
     selectedNode,
-    isPrompterOpen, is6PillarsOpen, isExecutiveReviewOpen, isStressLabOpen,
+    modalPillarId, modalSubtopicId, modalWorkloadId, modalIncidentId, modalExecTier, modalTheoryDomainId,
+    is6PillarsOpen, isExecutiveReviewOpen, isStressLabOpen,
     isPacketSimulatorOpen, isClientSolutionsOpen, isSubtopicLabsOpen,
     isTheoryOpen, isAdvisorOpen, isAiGovernanceOpen, isPairingModalOpen,
   ]);
@@ -516,7 +576,7 @@ export function App() {
   // Keyboard navigation when not in presenter mode or modals
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      const anyModalOpen = isPrompterOpen || is6PillarsOpen || isExecutiveReviewOpen || 
+      const anyModalOpen = is6PillarsOpen || isExecutiveReviewOpen || 
         isStressLabOpen || isPacketSimulatorOpen || isClientSolutionsOpen || 
         isSubtopicLabsOpen || isTheoryOpen || isAdvisorOpen || isAiGovernanceOpen || 
         isPairingModalOpen || selectedNode !== null;
@@ -544,7 +604,7 @@ export function App() {
         setDisplayMode('presenter');
       } else if (e.key === 's' || e.key === 'S') {
         soundFX.playClick();
-        setIsPrompterOpen(prev => !prev);
+        setIsPairingModalOpen(prev => !prev);
       } else if (e.key === 'm' || e.key === 'M') {
         soundFX.playClick();
         setIsPairingModalOpen(prev => !prev);
@@ -583,7 +643,6 @@ export function App() {
     handleResetChaos, 
     chaosPhase, 
     selectedNode,
-    isPrompterOpen,
     is6PillarsOpen,
     isExecutiveReviewOpen,
     isStressLabOpen,
@@ -614,7 +673,6 @@ export function App() {
         onResetChaos={handleResetChaos}
         onTogglePresenter={() => setDisplayMode(displayMode === 'presenter' ? 'studio' : 'presenter')}
         isPresenterMode={displayMode === 'presenter'}
-        onOpenScriptPrompter={() => setIsPrompterOpen(true)}
         onOpen6Pillars={() => setIs6PillarsOpen(true)}
         onOpenExecutiveReview={() => setIsExecutiveReviewOpen(true)}
         onOpenStressLab={() => setIsStressLabOpen(true)}
@@ -646,22 +704,7 @@ export function App() {
               <span className="hero-tag" style={{ fontVariantNumeric: 'tabular-nums' }}>
                 Module {currentDomainIndex + 1} of {allDomains.length} • {activeDomain.category}
               </span>
-              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-                <RemoteStatusBadge
-                  roomCode={roomCode}
-                  connectedCount={remoteDeviceCount}
-                  isConnected={remoteConnected}
-                  onOpenModal={() => setIsPairingModalOpen(true)}
-                />
-                <button
-                  className="btn-action"
-                  onClick={() => setIsPrompterOpen(true)}
-                  title="View spoken script and jury Q&A [S]"
-                  style={{ borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
-                >
-                  Speaker Script
-                </button>
-              </div>
+
             </div>
             <h1 id="domain-title" className="hero-title" tabIndex={-1}>{activeDomain.title}</h1>
             <p className="hero-subtitle">{activeDomain.subtitle}</p>
@@ -720,6 +763,7 @@ export function App() {
 
           {/* Analytics Split: 6-Pillar Radar Scorecard + IaC Inspector */}
           <div id="section-radar" />
+          <div id="section-pillars" />
           <div className="analytics-split">
             <PillarRadarChart
               naiveScores={activeDomain.naive.scores}
@@ -749,7 +793,6 @@ export function App() {
         onTriggerChaos={handleTriggerChaos}
         onResetChaos={handleResetChaos}
         isChaosActive={chaosPhase !== 'idle'}
-        onOpenScriptPrompter={() => setIsPrompterOpen(true)}
         onOpen6Pillars={() => setIs6PillarsOpen(true)}
         onOpenExecutiveReview={() => setIsExecutiveReviewOpen(true)}
         onOpenStressLab={() => setIsStressLabOpen(true)}
@@ -758,7 +801,6 @@ export function App() {
         onOpenSubtopics={() => setIsSubtopicLabsOpen(true)}
         onOpenTheory={() => setIsTheoryOpen(true)}
         onOpenAiCopilot={() => setIsAdvisorOpen(true)}
-        onOpenPairingModal={() => setIsPairingModalOpen(true)}
       />
 
       {/* Lazy Modals Wrapped in Suspense */}
@@ -788,7 +830,6 @@ export function App() {
             isChaosActive={chaosPhase !== 'idle'}
             onResetChaos={handleResetChaos}
             onOpenPacketSimulator={() => setIsPacketSimulatorOpen(true)}
-            onOpenScriptPrompter={() => setIsPrompterOpen(true)}
             onOpenClientSolutions={() => setIsClientSolutionsOpen(true)}
             onOpenSubtopics={() => setIsSubtopicLabsOpen(true)}
             allDomains={allDomains}
@@ -801,19 +842,12 @@ export function App() {
           />
         )}
 
-        {/* Speaker Script Prompter */}
-        {isPrompterOpen && (
-          <SpeakerScriptPrompter
-            currentDomainIndex={currentDomainIndex}
-            totalDomains={allDomains.length}
-            onSelectDomainIndex={(idx) => setCurrentDomainIndex(idx)}
-            onClose={() => setIsPrompterOpen(false)}
-          />
-        )}
 
         {/* 6 Pillars Master Explorer */}
         {is6PillarsOpen && (
           <PillarsExplorerModal
+            selectedPillarId={modalPillarId}
+            onSelectPillarId={setModalPillarId}
             onClose={() => setIs6PillarsOpen(false)}
             onNavigateToDomain={(domainId) => handleSelectDomain(domainId)}
           />
@@ -822,6 +856,8 @@ export function App() {
         {/* Executive WAF Review & ROI Calculator */}
         {isExecutiveReviewOpen && (
           <ExecutiveReviewModal
+            selectedTier={modalExecTier as any}
+            onSelectTier={(tier) => setModalExecTier(tier)}
             onClose={() => setIsExecutiveReviewOpen(false)}
           />
         )}
@@ -829,6 +865,9 @@ export function App() {
         {/* Stress & Incident Simulation Lab */}
         {isStressLabOpen && (
           <StressLabModal
+            selectedIncident={modalIncidentId as any}
+            onSelectIncident={(type) => setModalIncidentId(type)}
+            simTrigger={modalIncidentSimTrigger}
             onClose={() => setIsStressLabOpen(false)}
           />
         )}
@@ -836,6 +875,8 @@ export function App() {
         {/* Packet Latency Simulator */}
         {isPacketSimulatorOpen && (
           <PacketLatencySimulator
+            raceTrigger={modalLatencySimTrigger}
+            burstTrigger={modalLatencyBurstTrigger}
             onClose={() => setIsPacketSimulatorOpen(false)}
           />
         )}
@@ -843,6 +884,9 @@ export function App() {
         {/* Client Workload Solutions Explorer */}
         {isClientSolutionsOpen && (
           <ClientSolutionsExplorer
+            selectedWorkloadId={modalWorkloadId}
+            onSelectWorkloadId={setModalWorkloadId}
+            simTrigger={modalWorkloadSimTrigger}
             onClose={() => setIsClientSolutionsOpen(false)}
           />
         )}
@@ -850,6 +894,9 @@ export function App() {
         {/* Subtopic Labs */}
         {isSubtopicLabsOpen && (
           <SubtopicExplorerModal
+            activeSubtopic={modalSubtopicId as any}
+            onSelectSubtopic={(id) => setModalSubtopicId(id)}
+            simTrigger={modalSubtopicSimTrigger}
             onClose={() => setIsSubtopicLabsOpen(false)}
           />
         )}
@@ -857,6 +904,8 @@ export function App() {
         {/* Theoretical Foundations Modal */}
         {isTheoryOpen && (
           <TheoreticalFoundationsModal
+            selectedDomainId={modalTheoryDomainId}
+            onSelectDomainId={setModalTheoryDomainId}
             onClose={() => setIsTheoryOpen(false)}
             onSelectDomain={(domainId) => handleSelectDomain(domainId)}
           />

@@ -14,6 +14,7 @@ export type RemoteScrollTarget =
   | 'metrics'
   | 'iac'
   | 'radar'
+  | 'pillars'
   | 'footer';
 
 export type RemoteCommandType =
@@ -39,6 +40,7 @@ export type RemoteCommandType =
   | 'TRIGGER_ATTACK'
   | 'INSPECT_NODE'
   | 'TOGGLE_AUDIO'
+  | 'INTERACT_MODAL'
   | 'PING'
   | 'PONG';
 
@@ -52,6 +54,8 @@ export interface RemoteCommand {
   targetId?: string;
   label?: string;
   modal?: string;
+  modalAction?: string;
+  modalPayload?: any;
   storylineStage?: StorylineStage;
   slideMode?: 'keynote' | 'dual' | 'theory';
   trafficLoad?: number;
@@ -75,6 +79,14 @@ export interface StageState {
   activeAttack?: string;
   storylineStage?: StorylineStage;
   activeModal: string | null;
+  modalSubState?: {
+    pillarId?: string;
+    subtopicId?: string;
+    workloadId?: string;
+    incidentId?: string;
+    tier?: string;
+    theoryDomainId?: string;
+  };
   audioEnabled?: boolean;
   selectedNodeId?: string | null;
   selectedNodeName?: string | null;

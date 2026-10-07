@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X,
   AlertTriangle,
@@ -11,6 +11,9 @@ import {
 
 interface StressLabModalProps {
   onClose: () => void;
+  selectedIncident?: IncidentType;
+  onSelectIncident?: (type: IncidentType) => void;
+  simTrigger?: number;
 }
 
 type IncidentType = 'traffic_spike' | 'az_failure' | 'ransomware' | 'credential_leak';
@@ -124,16 +127,23 @@ const scenarios: Record<IncidentType, IncidentScenario> = {
   }
 };
 
-export const StressLabModal: React.FC<StressLabModalProps> = ({ onClose }) => {
-  const [selectedIncident, setSelectedIncident] = useState<IncidentType>('traffic_spike');
+export const StressLabModal: React.FC<StressLabModalProps> = ({
+  onClose,
+  selectedIncident: controlledIncident,
+  onSelectIncident,
+  simTrigger
+}) => {
+  const [internalIncident, setInternalIncident] = useState<IncidentType>('traffic_spike');
+  const activeIncident = controlledIncident || internalIncident;
   const [isSimulating, setIsSimulating] = useState<boolean>(true);
 
-  const scenario = scenarios[selectedIncident];
+  const scenario = scenarios[activeIncident];
 
   const handleSelectIncident = (type: IncidentType) => {
     soundFX.playClick();
-    setSelectedIncident(type);
+    setInternalIncident(type);
     setIsSimulating(true);
+    if (onSelectIncident) onSelectIncident(type);
   };
 
   const handleTriggerSim = () => {
@@ -145,6 +155,11 @@ export const StressLabModal: React.FC<StressLabModalProps> = ({ onClose }) => {
     soundFX.playClick();
     setIsSimulating(false);
   };
+
+  useEffect(() => {
+    if (!simTrigger || simTrigger <= 0) return;
+    handleTriggerSim();
+  }, [simTrigger]);
 
   return (
     <div className="sheet-overlay" role="dialog" aria-modal="true" aria-label="Interactive Stress Testing & Blast Radius Lab">
@@ -201,7 +216,7 @@ export const StressLabModal: React.FC<StressLabModalProps> = ({ onClose }) => {
         <div style={{ display: 'flex', gap: 8, overflowX: 'auto', padding: 'var(--space-2) 0', borderBottom: '1px solid var(--separator-subtle)' }}>
           {(Object.keys(scenarios) as IncidentType[]).map(key => {
             const sc = scenarios[key];
-            const isSelected = selectedIncident === key;
+            const isSelected = activeIncident === key;
             return (
               <button
                 key={key}

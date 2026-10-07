@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X,
   ShoppingCart,
@@ -25,15 +25,32 @@ import {
 
 interface ClientSolutionsExplorerProps {
   onClose: () => void;
+  selectedWorkloadId?: string;
+  onSelectWorkloadId?: (id: string) => void;
+  simTrigger?: number;
 }
 
-export const ClientSolutionsExplorer: React.FC<ClientSolutionsExplorerProps> = ({ onClose }) => {
-  const [selectedWorkloadId, setSelectedWorkloadId] = useState<string>('ecommerce-cart');
+export const ClientSolutionsExplorer: React.FC<ClientSolutionsExplorerProps> = ({
+  onClose,
+  selectedWorkloadId: controlledWorkloadId,
+  onSelectWorkloadId,
+  simTrigger
+}) => {
+  const [internalWorkloadId, setInternalWorkloadId] = useState<string>('ecommerce-cart');
+  const activeWorkloadId = controlledWorkloadId || internalWorkloadId;
+
+  const handleSelectWorkload = (id: string) => {
+    soundFX.playClick();
+    setInternalWorkloadId(id);
+    setActiveSimulationStep(-1);
+    if (onSelectWorkloadId) onSelectWorkloadId(id);
+  };
+
   const [activeSimulationStep, setActiveSimulationStep] = useState<number>(-1); // -1 = idle
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
 
-  const workload = clientWorkloads.find(w => w.id === selectedWorkloadId) || clientWorkloads[0];
+  const workload = clientWorkloads.find(w => w.id === activeWorkloadId) || clientWorkloads[0];
 
   const getWorkloadIcon = (name: string, size = 16) => {
     switch (name) {
@@ -66,6 +83,11 @@ export const ClientSolutionsExplorer: React.FC<ClientSolutionsExplorerProps> = (
       }, (index + 1) * stepInterval);
     });
   };
+
+  useEffect(() => {
+    if (!simTrigger || simTrigger <= 0) return;
+    handleRunSimulation();
+  }, [simTrigger]);
 
   const handleResetSimulation = () => {
     soundFX.playClick();
@@ -162,11 +184,7 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
             return (
               <button
                 key={w.id}
-                onClick={() => {
-                  soundFX.playClick();
-                  setSelectedWorkloadId(w.id);
-                  setActiveSimulationStep(-1);
-                }}
+                onClick={() => handleSelectWorkload(w.id)}
                 className="btn-action"
                 style={{
                   height: 32,

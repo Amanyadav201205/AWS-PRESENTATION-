@@ -14,6 +14,8 @@ import {
 
 interface ExecutiveReviewModalProps {
   onClose: () => void;
+  selectedTier?: WorkloadTier;
+  onSelectTier?: (tier: WorkloadTier) => void;
 }
 
 type WorkloadTier = 'startup' | 'midmarket' | 'enterprise';
@@ -66,11 +68,22 @@ const tierMetrics: Record<WorkloadTier, TierData> = {
   }
 };
 
-export const ExecutiveReviewModal: React.FC<ExecutiveReviewModalProps> = ({ onClose }) => {
-  const [selectedTier, setSelectedTier] = useState<WorkloadTier>('startup');
+export const ExecutiveReviewModal: React.FC<ExecutiveReviewModalProps> = ({
+  onClose,
+  selectedTier: controlledTier,
+  onSelectTier
+}) => {
+  const [internalTier, setInternalTier] = useState<WorkloadTier>('startup');
+  const activeTier = controlledTier || internalTier;
   const [copied, setCopied] = useState<boolean>(false);
 
-  const data = tierMetrics[selectedTier];
+  const handleSelectTier = (t: WorkloadTier) => {
+    soundFX.playClick();
+    setInternalTier(t);
+    if (onSelectTier) onSelectTier(t);
+  };
+
+  const data = tierMetrics[activeTier];
   const monthlySavings = data.naiveMonthly - data.wellArchMonthly;
   const annualSavings = monthlySavings * 12;
   const savingsPercent = Math.round((monthlySavings / data.naiveMonthly) * 100);
@@ -156,33 +169,24 @@ Key Optimization Levers:
           </span>
           <div className="segmented-control" style={{ height: 32, padding: 2 }}>
             <button
-              className={`segmented-item ${selectedTier === 'startup' ? 'active' : ''}`}
-              onClick={() => {
-                soundFX.playClick();
-                setSelectedTier('startup');
-              }}
+              className={`segmented-item ${activeTier === 'startup' ? 'active' : ''}`}
+              onClick={() => handleSelectTier('startup')}
               style={{ minHeight: 28, fontSize: 12 }}
             >
               <Rocket size={13} />
               <span>Growth Startup</span>
             </button>
             <button
-              className={`segmented-item ${selectedTier === 'midmarket' ? 'active' : ''}`}
-              onClick={() => {
-                soundFX.playClick();
-                setSelectedTier('midmarket');
-              }}
+              className={`segmented-item ${activeTier === 'midmarket' ? 'active' : ''}`}
+              onClick={() => handleSelectTier('midmarket')}
               style={{ minHeight: 28, fontSize: 12 }}
             >
               <Building size={13} />
               <span>Mid-Market</span>
             </button>
             <button
-              className={`segmented-item ${selectedTier === 'enterprise' ? 'active' : ''}`}
-              onClick={() => {
-                soundFX.playClick();
-                setSelectedTier('enterprise');
-              }}
+              className={`segmented-item ${activeTier === 'enterprise' ? 'active' : ''}`}
+              onClick={() => handleSelectTier('enterprise')}
               style={{ minHeight: 28, fontSize: 12 }}
             >
               <Globe size={13} />

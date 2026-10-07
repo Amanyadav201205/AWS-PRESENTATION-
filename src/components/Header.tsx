@@ -4,7 +4,6 @@ import {
   VolumeX, 
   Presentation,
   AlertCircle,
-  FileText,
   Zap,
   Activity,
   Clock,
@@ -32,7 +31,6 @@ interface HeaderProps {
   onResetChaos: () => void;
   onTogglePresenter: () => void;
   isPresenterMode: boolean;
-  onOpenScriptPrompter: () => void;
   onOpen6Pillars: () => void;
   onOpenExecutiveReview: () => void;
   onOpenStressLab: () => void;
@@ -56,7 +54,6 @@ export const Header: React.FC<HeaderProps> = ({
   onResetChaos,
   onTogglePresenter,
   isPresenterMode,
-  onOpenScriptPrompter,
   onOpen6Pillars,
   onOpenExecutiveReview,
   onOpenStressLab,
@@ -365,20 +362,6 @@ export const Header: React.FC<HeaderProps> = ({
           <span>Guided Q&amp;A</span>
         </button>
 
-        {/* Speaker Script Prompter */}
-        <button
-          className="btn-action pill"
-          onClick={(e) => {
-            e.stopPropagation();
-            soundFX.playClick();
-            onOpenScriptPrompter();
-          }}
-          title="Verbatim presentation script and anticipated jury Q&A [S]"
-        >
-          <FileText size={13} color="var(--accent)" />
-          <span>Script</span>
-        </button>
-
         {/* Phone Remote Pairing Trigger */}
         <button
           className={`btn-action pill ${connectedRemotesCount > 0 ? 'active' : ''}`}
@@ -464,7 +447,6 @@ export const Header: React.FC<HeaderProps> = ({
             {([
               { label: 'Guided Architecture Q&A', icon: <Compass size={16} color="var(--accent)" />, run: onOpenAdvisor },
               { label: connectedRemotesCount > 0 ? `Phone Remote (${connectedRemotesCount} connected)` : 'Phone Remote (Pair Phones)', icon: <Smartphone size={16} color={connectedRemotesCount > 0 ? 'var(--status-healthy)' : 'var(--accent)'} />, run: onOpenPairingModal },
-              { label: 'Speaker Script', icon: <FileText size={16} color="var(--accent)" />, run: onOpenScriptPrompter },
               { label: '6 Pillars Explorer', icon: <Landmark size={16} color="var(--accent)" />, run: onOpen6Pillars },
               { label: 'Executive Review & ROI', icon: <Activity size={16} color="var(--accent)" />, run: onOpenExecutiveReview },
               { label: 'Stress & Incident Lab', icon: <Zap size={16} color="var(--status-warning)" />, run: onOpenStressLab },
