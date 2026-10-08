@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { soundFX } from '../utils/soundEffects';
 import { copyText } from '../utils/clipboard';
+import { getRelayToken } from '../services/presentationRemoteSync';
 
 const LOCAL_HOSTNAMES = ['localhost', '127.0.0.1', '[::1]'];
 
@@ -38,7 +39,8 @@ export const RemotePairingModal: React.FC<RemotePairingModalProps> = ({
   const origin = typeof window !== 'undefined' ? window.location.origin : 'https://wafpresentation.vercel.app';
   // A phone cannot reach "localhost" on this laptop, so a QR code built from it can never work
   const isLocalOnlyOrigin = typeof window !== 'undefined' && LOCAL_HOSTNAMES.includes(window.location.hostname);
-  const remoteUrl = `${origin}/?mode=remote&room=${encodeURIComponent(roomCode)}`;
+  // The session key lets the phone join over the relay; it is the only thing that pairs a phone to this session
+  const remoteUrl = `${origin}/?mode=remote&room=${encodeURIComponent(roomCode)}&k=${getRelayToken()}`;
 
   useEffect(() => {
     let isMounted = true;

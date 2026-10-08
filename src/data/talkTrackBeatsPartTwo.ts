@@ -1,183 +1,128 @@
-import { ARCHITECTURE_SLIDE, INJECT_OUTAGE, PROOF_SLIDE, TRAFFIC_PULSE } from './talkTrackCues';
+import {
+  FAILURE,
+  LOAD_BUSY,
+  LOAD_PEAK,
+  PACKETS_ON,
+  SHOW_BOTH,
+  SHOW_NAIVE,
+  SHOW_WAF
+} from './talkTrackCues';
 import { TalkLineDraft } from './talkTrackTypes';
 
-// Modules 7 to 15 and the closing. Lines keep alternating, so each speaker picks up exactly where the other stops.
+// Modules 7 to 15 (security through the executive conclusion). Same pattern as part one.
 export const talkLinesPartTwo: TalkLineDraft[] = [
   {
     domainIndex: 6,
-    say: 'Security: naive means hardcoded keys; WAF uses IAM roles with temporary credentials.',
-    show: 'Architecture slide: hardcoded keys versus IAM roles and Secrets Manager.',
-    cues: [ARCHITECTURE_SLIDE]
+    say: "Security. The risk: developers commit keys to GitHub, bots inject SQL, and passwords never rotate. The naive app has keys hardcoded, and the database password is in clear text. An attacker injects a query, uses a stolen key, and downloads customer data.",
+    show: "Naive: hardcoded keys, injection and stolen key breach.",
+    cues: [SHOW_NAIVE, FAILURE, PACKETS_ON]
   },
   {
     domainIndex: 6,
-    say: 'An attacker injects SQL and steals a key. WAF blocks the payload; the credentials expire.',
-    show: 'Outage: SQL injection plus stolen key, WAF blocks.',
-    cues: [INJECT_OUTAGE]
-  },
-  {
-    domainIndex: 6,
-    say: 'Envelope encryption: a data key encrypts the data, and KMS encrypts that key.',
-    show: 'Proof slide: envelope encryption formulas.',
-    cues: [PROOF_SLIDE],
-    formula: 'C = E(K_DEK, P)   and   K_enc = E(K_CMK, K_DEK)'
+    say: "The Well-Architected build has no keys in code. An IAM role issues temporary credentials, and Secrets Manager rotates the database password. AWS WAF blocks the injection at the edge with a 403. GuardDuty quarantines the stolen key.",
+    show: "WAF: IAM roles, WAF blocks injection, GuardDuty quarantines.",
+    cues: [SHOW_WAF, FAILURE, PACKETS_ON]
   },
   {
     domainIndex: 7,
-    say: 'Naive monitoring: users report the outage first, and fixes are manual SSH.',
-    show: 'Architecture slide: unmonitored server versus canaries and alarms.',
-    cues: [ARCHITECTURE_SLIDE]
+    say: "Monitoring and self-healing. The bank has two million customers and needs 99.99 percent. The naive server has no monitoring. A bad deployment leaks memory, requests hang for over fifteen seconds, and the first alert is a customer posting on social media.",
+    show: "Naive: unmonitored server, memory leak, silent outage.",
+    cues: [SHOW_NAIVE, FAILURE, PACKETS_ON]
   },
   {
     domainIndex: 7,
-    say: 'A memory leak hangs the API. Canaries catch it in seconds; self-healing restarts it.',
-    show: 'Outage: memory leak, canary alarm fires, self-heal runs.',
-    cues: [INJECT_OUTAGE]
-  },
-  {
-    domainIndex: 7,
-    say: 'Parallel redundancy: three zones at 99.9 percent each give nine nines.',
-    show: 'Proof slide: parallel availability formula.',
-    cues: [PROOF_SLIDE],
-    formula: 'A = 1 − ∏ᵢ(1 − Aᵢ) = 1 − (0.001)³ = 0.999999999'
+    say: "The Well-Architected build runs a synthetic canary on checkout, and a composite alarm fires only when the pattern is real. EventBridge triggers a Lambda that recycles the tasks, and X-Ray shows where the time went. The service heals in about 38 seconds, before anyone is paged.",
+    show: "WAF: canary, composite alarm, self-healing in 38 seconds.",
+    cues: [SHOW_WAF, FAILURE, PACKETS_ON]
   },
   {
     domainIndex: 8,
-    say: 'Naive infrastructure is clicked together in the console. WAF is declared in Git.',
-    show: 'Architecture slide: console clicking versus GitOps pipeline.',
-    cues: [ARCHITECTURE_SLIDE]
+    say: "Automation. At two in the morning an engineer opens port 22 to the whole internet in the console to debug, then forgets. Nothing records the change, so nobody knows the door is open. This is ClickOps, and it is how drift starts.",
+    show: "Naive: console change opens port 22, nothing records it.",
+    cues: [SHOW_NAIVE, FAILURE, PACKETS_ON]
   },
   {
     domainIndex: 8,
-    say: 'A rogue engineer opens port 22 by hand. Config flags it; Systems Manager reverts it.',
-    show: 'Outage: rogue port-22 change, drift detected and reverted.',
-    cues: [INJECT_OUTAGE]
-  },
-  {
-    domainIndex: 8,
-    say: 'Declarative convergence: the pipeline keeps pushing live state toward the Git state.',
-    show: 'Proof slide: convergence to the desired state.',
-    cues: [PROOF_SLIDE],
-    formula: 'lim (t→∞) Δ(S_desired, S_actual) = 0'
+    say: "The Well-Architected build keeps every change in Git and builds it through pipelines. AWS Config flags the open port within 30 seconds, and a Systems Manager runbook removes the rule and alerts the security team. The same code rebuilds production and disaster recovery.",
+    show: "WAF: AWS Config reverts the rule in 42 seconds.",
+    cues: [SHOW_WAF, FAILURE, PACKETS_ON]
   },
   {
     domainIndex: 9,
-    say: 'Naive: every visitor hits the origin. WAF: CloudFront and ElastiCache absorb traffic.',
-    show: 'Architecture slide: direct origin versus CloudFront and Redis.',
-    cues: [ARCHITECTURE_SLIDE]
+    say: "Caching. The customer serves ten million viewers worldwide with sub-20-millisecond latency. The naive build sends every request to one origin and its database. A national advertisement airs, 50,000 requests a second arrive, and the origin collapses.",
+    show: "Naive: origin collapses under 50,000 requests a second.",
+    cues: [SHOW_NAIVE, LOAD_PEAK, FAILURE]
   },
   {
     domainIndex: 9,
-    say: 'A TV advert drives 50,000 requests a second. The edge takes them, not the database.',
-    show: 'Outage: 50k requests per second flash sale, edge absorbs it.',
-    cues: [INJECT_OUTAGE]
-  },
-  {
-    domainIndex: 9,
-    say: 'With 95 percent hits, average latency falls from 80 to under 6 milliseconds.',
-    show: 'Proof slide: effective latency formula.',
-    cues: [PROOF_SLIDE],
-    formula: 'T_eff = H · T_cache + (1 − H) · T_origin = 0.95 × 2 + 0.05 × 80 = 5.9 ms'
+    say: "CloudFront runs across more than 600 edge locations, so most requests are answered there and never reach the origin. Misses go to Redis. In the simulation, about 96 percent of requests stay at the edge, and database CPU stays near 14 percent.",
+    show: "WAF: CloudFront and Redis absorb the spike.",
+    cues: [SHOW_WAF, LOAD_PEAK, FAILURE, PACKETS_ON]
   },
   {
     domainIndex: 10,
-    say: 'Naive checkout waits on every third party. WAF queues the order and replies.',
-    show: 'Architecture slide: blocking HTTP chain versus SQS-buffered checkout.',
-    cues: [ARCHITECTURE_SLIDE]
+    say: "Decoupling. Black Friday brings 100,000 orders an hour. The naive checkout calls the payment and email vendors synchronously and holds the shopper's connection open. The email vendor goes dark worldwide, every checkout thread waits, and checkout fails for everyone.",
+    show: "Naive: synchronous checkout, email vendor down, threads starve.",
+    cues: [SHOW_NAIVE, LOAD_BUSY, FAILURE, PACKETS_ON]
   },
   {
     domainIndex: 10,
-    say: 'The email vendor fails during 20,000 orders. Naive checkout crashes; WAF queues everything.',
-    show: 'Outage: email vendor down during 20,000 orders, SQS buffers.',
-    cues: [INJECT_OUTAGE]
-  },
-  {
-    domainIndex: 10,
-    say: 'A synchronous chain multiplies failure: five 99 percent services give 95 percent.',
-    show: 'Proof slide: chain availability formula.',
-    cues: [PROOF_SLIDE],
-    formula: 'A_chain = ∏ᵢ Aᵢ   →   0.99⁵ = 0.951'
+    say: "The Well-Architected build puts each order into an SQS queue and confirms it in under 90 milliseconds. SNS fans the work out, and workers retry with backoff. When the vendor returns, the backlog drains in three minutes, with no lost orders.",
+    show: "WAF: SQS and SNS keep checkout up, backlog drains.",
+    cues: [SHOW_WAF, LOAD_BUSY, FAILURE, PACKETS_ON]
   },
   {
     domainIndex: 11,
-    say: 'Naive runs two VMs all day, patched by hand. WAF uses API Gateway, Lambda, DynamoDB.',
-    show: 'Architecture slide: always-on VMs versus serverless stack.',
-    cues: [ARCHITECTURE_SLIDE]
+    say: "Serverless. The mobile backend is nearly idle overnight, then explodes at rush hour. The naive build uses two monolith VMs that need manual patching and take eight to fifteen minutes to boot. A jump from zero to forty thousand calls freezes them.",
+    show: "Naive: VMs freeze at forty thousand calls.",
+    cues: [SHOW_NAIVE, LOAD_PEAK, FAILURE]
   },
   {
     domainIndex: 11,
-    say: 'Traffic jumps from zero to forty thousand calls. Lambda scales at once; VMs lag.',
-    show: 'Outage: zero to 40k invocations, Lambda scales, VMs lag.',
-    cues: [INJECT_OUTAGE]
-  },
-  {
-    domainIndex: 11,
-    say: 'Little’s Law: concurrency equals arrival rate times time in system, so idle costs nothing.',
-    show: 'Proof slide: Little’s Law and pay-per-use cost.',
-    cues: [PROOF_SLIDE],
-    formula: 'L = λ · W   (concurrency = arrival rate × time in system)   Cost = Σₖ RAMₖ × Timeₖ'
+    say: "The Well-Architected build uses API Gateway, Lambda on ARM64, Step Functions, and DynamoDB on demand. Nothing needs patching, and nothing runs or bills while idle. Lambda scales to thousands of concurrent executions in milliseconds, and all forty thousand calls complete.",
+    show: "WAF: API Gateway and Lambda scale with no servers.",
+    cues: [SHOW_WAF, LOAD_PEAK, FAILURE, PACKETS_ON]
   },
   {
     domainIndex: 12,
-    say: 'Data pipelines: naive runs nightly dumps that lock production; WAF streams into S3.',
-    show: 'Architecture slide: cron dump versus streaming lake and Athena.',
-    cues: [ARCHITECTURE_SLIDE]
+    say: "Data pipelines. 500 million events a day, with dashboards under a minute. The naive build dumps production to a local CSV, and a pandas script reads it. A campaign surge and a malformed update arrive together, and the script runs out of memory.",
+    show: "Naive: cron dump to CSV, pandas runs out of memory.",
+    cues: [SHOW_NAIVE, LOAD_BUSY, FAILURE]
   },
   {
     domainIndex: 12,
-    say: 'Event volume jumps a hundred times, with malformed records. Production stays untouched.',
-    show: 'Outage: 100x payload surge with malformed records.',
-    cues: [INJECT_OUTAGE]
-  },
-  {
-    domainIndex: 12,
-    say: 'Parquet reads only needed columns; in our model that cuts query cost about 85 percent.',
-    show: 'Proof slide: pipeline latency decomposition.',
-    cues: [PROOF_SLIDE],
-    formula: 'T_pipeline = T_ingest + T_transform + T_load   (columnar Parquet cuts bytes scanned)'
+    say: "The Well-Architected build streams events through Kinesis Firehose, which scales with volume. Glue transforms them serverlessly into an S3 data lake. Malformed records go to a quarantine bucket, and the stream keeps moving. Athena queries the lake with SQL.",
+    show: "WAF: Firehose, Glue, S3 lake, quarantine for bad records.",
+    cues: [SHOW_WAF, LOAD_PEAK, FAILURE, PACKETS_ON]
   },
   {
     domainIndex: 13,
-    say: 'Disaster recovery: naive has one region and an untested snapshot. WAF has a second region.',
-    show: 'Architecture slide: single region versus two-region DR.',
-    cues: [ARCHITECTURE_SLIDE]
+    say: "Disaster recovery. The bank needs recovery under one minute and data loss under one second, even if a whole region fails. The naive build keeps everything in us-east-1, with an untested snapshot beside it. When the region goes dark, a manual runbook takes days.",
+    show: "Naive: single region, untested snapshot, region blackout.",
+    cues: [SHOW_NAIVE, FAILURE, PACKETS_ON]
   },
   {
     domainIndex: 13,
-    say: 'A regional blackout hits us-east-1. WAF shifts traffic in under a minute.',
-    show: 'Outage: us-east-1 blackout, traffic fails over.',
-    cues: [INJECT_OUTAGE]
-  },
-  {
-    domainIndex: 13,
-    say: 'Lower recovery time and data loss cost more. Pick the DR tier you can afford.',
-    show: 'Proof slide: RTO and RPO cost trade-off.',
-    cues: [PROOF_SLIDE],
-    formula: 'Lower RTO and RPO ⇒ higher standby cost   (Backup 1x, Pilot Light ~2.5x, Warm Standby ~4x, Active-Active ~7x)'
+    say: "The Well-Architected build runs a second region, eu-west-1, with Aurora Global Database replicating continuously. Route 53 Application Recovery Controller shifts traffic away from us-east-1, and Aurora promotes the secondary cluster. Traffic moves in about 36 seconds, with no transactions lost.",
+    show: "WAF: Route 53 ARC and Aurora Global shift to eu-west-1.",
+    cues: [SHOW_WAF, FAILURE, PACKETS_ON]
   },
   {
     domainIndex: 14,
-    say: 'Across fifteen domains, the health score rises from 22 to 96.',
-    show: 'Keynote: review health score and cost metrics.',
-    cues: [ARCHITECTURE_SLIDE]
+    say: "Executive conclusion. Here is the same surge and the same failure, side by side. The naive design carries a technical debt backlog and an uncontained blast radius. The Well-Architected design has organizational guardrails, pipelines for every change, and telemetry that heals itself.",
+    show: "Both builds side by side under the same surge.",
+    cues: [SHOW_BOTH, LOAD_PEAK, FAILURE, PACKETS_ON]
   },
   {
     domainIndex: 14,
-    say: 'Annual spend falls from 53,400 to 21,840 dollars. Downtime exposure drops to zero.',
-    show: 'Live traffic pulse on the WAF architecture.',
-    cues: [TRAFFIC_PULSE]
+    say: "Across all six pillars the pattern repeats. The naive design fails under load, and one mistake can cause a breach. The Well-Architected design stays up, recovers on its own, and keeps cost and carbon under control.",
+    show: "WAF: the full picture, six pillars held.",
+    cues: [SHOW_WAF, LOAD_PEAK, PACKETS_ON]
   },
   {
     domainIndex: 14,
-    say: 'So the framework turns fragile deployments into resilient, cost-efficient systems.',
-    show: 'Proof slide: fitness formula for the health score.',
-    cues: [PROOF_SLIDE],
-    formula: 'Fitness(A) = Σⱼ wⱼ · PillarScoreⱼ   (weighted across the six pillars)'
-  },
-  {
-    domainIndex: 14,
-    say: 'Thank you for listening.',
-    show: 'Keynote closing slide.',
-    cues: [ARCHITECTURE_SLIDE]
+    say: "Thank you. Each of these fifteen simulations can be replayed from the laptop, and we are happy to take questions.",
+    show: "Both builds side by side.",
+    cues: [SHOW_BOTH]
   }
 ];

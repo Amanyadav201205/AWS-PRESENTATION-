@@ -3,6 +3,8 @@ import { RefreshCw } from 'lucide-react';
 
 interface StageLinkBannerProps {
   isLinked: boolean;
+  /** False when this phone was opened without the QR code's session key, so it can never link. */
+  hasPairingKey: boolean;
   onReconnect: () => void;
 }
 
@@ -10,7 +12,7 @@ interface StageLinkBannerProps {
  * Shown on the phone whenever it is not linked to the main screen. Without it, taps are dropped
  * silently and the presenter cannot tell that the stage never heard them.
  */
-export const StageLinkBanner: React.FC<StageLinkBannerProps> = ({ isLinked, onReconnect }) => {
+export const StageLinkBanner: React.FC<StageLinkBannerProps> = ({ isLinked, hasPairingKey, onReconnect }) => {
   if (isLinked) return null;
 
   return (
@@ -32,9 +34,13 @@ export const StageLinkBanner: React.FC<StageLinkBannerProps> = ({ isLinked, onRe
       }}
     >
       <span>
-        <strong>Not linked to the stage.</strong> Taps will not reach the main screen until it reconnects.
+        {hasPairingKey ? (
+          <><strong>Not linked to the stage.</strong> Waiting for the laptop. Check it is open and online.</>
+        ) : (
+          <><strong>This phone has no pairing key.</strong> Scan the QR code on the laptop again.</>
+        )}
       </span>
-      <button
+      {hasPairingKey && <button
         type="button"
         onClick={onReconnect}
         style={{
@@ -55,7 +61,7 @@ export const StageLinkBanner: React.FC<StageLinkBannerProps> = ({ isLinked, onRe
       >
         <RefreshCw size={14} aria-hidden="true" />
         Reconnect
-      </button>
+      </button>}
     </div>
   );
 };

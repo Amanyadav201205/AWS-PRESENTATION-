@@ -1,0 +1,60 @@
+/* Big-screen simulation view: the diagram and nothing else. */
+.diagram-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 4vw;
+  overflow: hidden;
+}
+
+.diagram-only-screen {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 4vw;
+  align-items: stretch;
+}
+
+.diagram-only-screen.view-naive-only,
+.diagram-only-screen.view-well-arch-only {
+  grid-template-columns: minmax(0, 1100px);
+  justify-content: center;
+}
+
+.diagram-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 1.5vh;
+  min-width: 0;
+  height: 100%;
+}
+
+/* Scale the diagram up so it reads from the back of the room. */
+.diagram-only-screen .diagram-column {
+  zoom: 1.1;
+}
+.diagram-only-screen.view-naive-only .diagram-column,
+.diagram-only-screen.view-well-arch-only .diagram-column {
+  zoom: 1.25;
+}
+.diagram-path-connector {
+  display: block;
+  width: 200px;
+  height: 46px;
+  margin: 0 auto;
+}
+
+/* The diagram rows carry no panel chrome: nodes and packet lanes only. */
+.diagram-only-screen .architecture-tier-block {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}

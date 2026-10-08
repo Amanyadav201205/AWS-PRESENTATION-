@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { allDomains } from '../data';
 import { talkTrackBeats } from '../data/talkTrackBeats';
 import { TalkSpeaker } from '../data/talkTrackTypes';
-import { estimateBeatSeconds, estimateSecondsForLines, estimateTalkSeconds, formatClock, TALK_LIMIT_SECONDS } from '../data/talkTrackTiming';
+import { estimateBeatSeconds, estimateSecondsForLines, estimateTalkSeconds, formatClock, TALK_MAX_SECONDS } from '../data/talkTrackTiming';
 
 export type SendLine = (index: number) => boolean;
+export type SendStep = (step: number) => boolean;
+
+// After a tap the button waits for the laptop to confirm the new line, so a double tap cannot skip a line
+const TAP_CONFIRM_TIMEOUT_MS = 2000;
 
 interface TalkTrackPanelProps {
   isLinked: boolean;
@@ -13,6 +17,7 @@ interface TalkTrackPanelProps {
   stageLineIndex: number | undefined;
   elapsedSeconds: number;
   sendLine: SendLine;
+  sendStep: SendStep;
   onHaptic: () => void;
 }
 
@@ -81,8 +86,15 @@ const statusLine = (sendStatus: SendStatus, isLinked: boolean): string => {
   return '';
 };
 
-export const TalkTrackPanel: React.FC<TalkTrackPanelProps> = ({ isLinked, stageLineIndex: stageLine, elapsedSeconds, sendLine, onHaptic }) => {
+export const TalkTrackPanel: React.FC<TalkTrackPanelProps> = ({ isLinked, stageLineIndex: stageLine, elapsedSeconds, sendLine, sendStep, onHaptic }) => {
   const [sendStatus, setSendStatus] = useState<SendStatus>('idle');
+  const [awaitingConfirm, setAwaitingConfirm] = useState<boolean>(false);
+  useEffect(() => setAwaitingConfirm(false), [stageLine]);
+  useEffect(() => {
+    if (!awaitingConfirm) return;
+    const timer = window.setTimeout(() => setAwaitingConfirm(false), TAP_CONFIRM_TIMEOUT_MS);
+    return () => window.clearTimeout(timer);
+  }, [awaitingConfirm]);
   // Until the laptop has reported its line, show the opening and send nothing: a tap now could move the stage
   const isSynced = stageLine !== undefined;
   const stageLineIndex = stageLine ?? -1;
@@ -91,11 +103,17 @@ export const TalkTrackPanel: React.FC<TalkTrackPanelProps> = ({ isLinked, stageL
   const plannedSoFar = estimateSecondsForLines(stageLineIndex + 1);
   const plannedTotal = estimateTalkSeconds();
   const progressPercent = ((stageLineIndex + 1) / talkTrackBeats.length) * 100;
-  const canAdvance = isLinked && isSynced && stageLineIndex < LAST_INDEX;
+  const canAdvance = isLinked && isSynced && stageLineIndex < LAST_INDEX && !awaitingConfirm;
 
   const send = (index: number) => {
     onHaptic();
     setSendStatus(sendLine(index) ? 'sent' : 'failed');
+  };
+
+  const advance = () => {
+    onHaptic();
+    setAwaitingConfirm(true);
+    setSendStatus(sendStep(1) ? 'sent' : 'failed');
   };
 
   const handleRestart = () => {
@@ -118,7 +136,7 @@ export const TalkTrackPanel: React.FC<TalkTrackPanelProps> = ({ isLinked, stageL
         </div>
         <div style={statCell}>
           <span style={statNumeral}>{formatClock(elapsedSeconds)}</span>
-          <span style={statCaption}>of {formatClock(TALK_LIMIT_SECONDS)} max</span>
+          <span style={statCaption}>of {formatClock(TALK_MAX_SECONDS)} max</span>
         </div>
       </div>
 
@@ -172,7 +190,7 @@ export const TalkTrackPanel: React.FC<TalkTrackPanelProps> = ({ isLinked, stageL
       <button
         type="button"
         className="talk-track-cta"
-        onClick={() => send(stageLineIndex + 1)}
+        onClick={advance}
         disabled={!canAdvance}
         style={{
           minHeight: 72,

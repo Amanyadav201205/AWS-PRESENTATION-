@@ -31,6 +31,10 @@ import {
 } from '../utils/soundEffects';
 
 interface DualStageProps {
+  /** Diagram only: nodes, packet flow and failure states, with no controls, labels or telemetry. */
+  diagramOnly?: boolean;
+  /** Overrides the packet stream (used by the talk track). Omit it to use the on-screen toggle. */
+  packetFlowOn?: boolean;
   naive: ArchitectureSpec;
   wellArch: ArchitectureSpec;
   viewMode: ViewMode;
@@ -47,6 +51,8 @@ interface DualStageProps {
 export type AttackScenario = 'none' | 'az-outage' | 'ransomware' | 'ddos' | 'bill-shock';
 
 export const DualArchitectureStage: React.FC<DualStageProps> = ({
+  diagramOnly = false,
+  packetFlowOn,
   naive,
   wellArch,
   viewMode,
@@ -59,7 +65,8 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
   externalAttack,
   onAttackChange
 }) => {
-  const [trafficActive, setTrafficActive] = useState<boolean>(true);
+  const [trafficActiveState, setTrafficActive] = useState<boolean>(true);
+  const trafficActive = packetFlowOn ?? trafficActiveState;
   const [trafficSpeed, setTrafficSpeed] = useState<number>(1);
   const [internalUserLoad, setInternalUserLoad] = useState<number>(2500);
   const userLoad = externalUserLoad !== undefined ? externalUserLoad : internalUserLoad;
@@ -76,7 +83,8 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
     setInternalActiveAttack(att);
   };
 
-  const [showSubnetBoundaries, setShowSubnetBoundaries] = useState<boolean>(true);
+  const [showSubnetBoundariesState, setShowSubnetBoundaries] = useState<boolean>(true);
+  const showSubnetBoundaries = !diagramOnly && showSubnetBoundariesState;
   
   const isChaos = chaosPhase !== 'idle' || activeAttack === 'az-outage';
   const isHighLoad = userLoad >= 20000;
@@ -188,7 +196,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
                 <animate attributeName="cy" from="0" to="34" dur={animDuration(1.4)} repeatCount="indefinite" />
               </circle>
             )}
-            {isDropping && (
+            {isDropping && !diagramOnly && (
               <text x="215" y="20" fill="#FF453A" fontSize="10" fontFamily="var(--font-mono)" fontWeight="700">
                 {isChaos ? 'DROP (0%)' : 'CONGESTED'}
               </text>
@@ -219,9 +227,11 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             </>
           )}
 
-          <text x="212" y="20" fill="#30D158" fontSize="10" fontFamily="var(--font-mono)" fontWeight="600">
-            {tierCode === 'ingress' ? 'TLS 1.3 · VPC BACKBONE' : 'PRIVATE BACKBONE'}
-          </text>
+          {!diagramOnly && (
+            <text x="212" y="20" fill="#30D158" fontSize="10" fontFamily="var(--font-mono)" fontWeight="600">
+              {tierCode === 'ingress' ? 'TLS 1.3 · VPC BACKBONE' : 'PRIVATE BACKBONE'}
+            </text>
+          )}
         </svg>
       </div>
     );
@@ -332,6 +342,40 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
       </div>
     );
   };
+
+  if (diagramOnly) {
+    // Each node is its own row, in the order a request travels, with a packet lane between neighbours
+    const renderPathConnector = (isWellArch: boolean, key: string) => {
+      const isFailingPath = isWellArch ? false : isChaos || isHighLoad || activeAttack !== 'none';
+      const stroke = isWellArch ? '#30D158' : isFailingPath ? '#FF453A' : '#FF9F0A';
+      return (
+        <svg key={key} className="diagram-path-connector" width="100%" height="46" viewBox="0 0 200 46" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <line x1="100" y1="0" x2="100" y2="46" stroke={stroke} strokeWidth={isFailingPath ? 3 : 2} strokeDasharray={isFailingPath ? '5 4' : undefined} opacity={0.85} />
+          {trafficActive && !(isChaos && !isWellArch) && (
+            <circle cx="100" cy="6" r="4" fill={stroke}>
+              <animate attributeName="cy" from="2" to="44" dur={animDuration(isWellArch ? 0.9 : 1.2)} repeatCount="indefinite" />
+            </circle>
+          )}
+        </svg>
+      );
+    };
+    const renderPath = (nodes: ArchitectureNode[], isWellArch: boolean) => (
+      <div className="diagram-column tier-stack-container">
+        {nodes.map((node, idx) => (
+          <React.Fragment key={node.id}>
+            {renderTierGroup({ title: node.name, nodes: [node], tierCode: node.id }, isWellArch)}
+            {idx < nodes.length - 1 && renderPathConnector(isWellArch, `${node.id}-link`)}
+          </React.Fragment>
+        ))}
+      </div>
+    );
+    return (
+      <div className={`diagram-only-screen view-${viewMode}`}>
+        {(viewMode === 'split' || viewMode === 'naive-only') && renderPath(naive.nodes, false)}
+        {(viewMode === 'split' || viewMode === 'well-arch-only') && renderPath(wellArch.nodes, true)}
+      </div>
+    );
+  }
 
   return (
     <div className="stage-master-container" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>

@@ -25,13 +25,11 @@ import {
   RemoteCommand,
 } from './services/presentationRemoteSync';
 import { StorylineStage } from './types';
-import { StageRemoteHUDToast } from './components/StageRemoteHUDToast';
-import { StageTalkPill } from './components/StageTalkPill';
 import { talkTrackBeats } from './data/talkTrackBeats';
 import { TALK_SETTLE_MS } from './data/talkTrackTiming';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { readStageTalkIndex, writeStageTalkIndex } from './utils/stageTalkStorage';
-import type { SlideViewMode } from './components/PresenterOverlay';
+type SlideViewMode = 'keynote' | 'dual' | 'theory';
 import type { AttackScenario } from './components/DualArchitectureStage';
 
 // Lazy-load controller and presenter overlay — phone controller uses SpeakerCompanionRemote
@@ -48,7 +46,6 @@ const findDomainIndexFromHash = (raw: string): number => {
 
 // Code-split all heavy presentation modals via React.lazy() (P0 bundle size fix)
 const GuidedArchitectureQAModal = lazy(() => import('./components/GuidedArchitectureQAModal').then(m => ({ default: m.GuidedArchitectureQAModal })));
-const PresenterOverlay = lazy(() => import('./components/PresenterOverlay').then(m => ({ default: m.PresenterOverlay })));
 const PillarsExplorerModal = lazy(() => import('./components/PillarsExplorerModal').then(m => ({ default: m.PillarsExplorerModal })));
 const ExecutiveReviewModal = lazy(() => import('./components/ExecutiveReviewModal').then(m => ({ default: m.ExecutiveReviewModal })));
 const StressLabModal = lazy(() => import('./components/StressLabModal').then(m => ({ default: m.StressLabModal })));
@@ -94,7 +91,6 @@ export function App() {
   // Presentation Deck remote sync states
   const [slideMode, setSlideMode] = useState<SlideViewMode>('keynote');
   const [isSlideGridOpen, setIsSlideGridOpen] = useState<boolean>(false);
-  const [slideSimTrigger, setSlideSimTrigger] = useState<number>(0);
 
   // Simulation traffic and attack scenario remote sync states
   const [userLoad, setUserLoad] = useState<number>(2500);
@@ -149,7 +145,7 @@ export function App() {
   // HUD toast shown on stage when a phone sends a command
   const [hudSpeakerName, setHudSpeakerName] = useState<string | null>(null);
   const [hudActionNotice, setHudActionNotice] = useState<string | null>(null);
-  const [hudVisible, setHudVisible] = useState(false);
+  const [, setHudVisible] = useState(false);
   const hudTimerRef = useRef<number | null>(null);
 
   const showHudToast = useCallback((speaker: string | undefined, action: string) => {
@@ -348,7 +344,6 @@ export function App() {
           }
           break;
         case 'RUN_SLIDE_SIM':
-          setSlideSimTrigger(prev => prev + 1);
           showHudToast(spk, 'Triggered Live Traffic Pulse on Slide');
           break;
         case 'TOGGLE_SLIDE_GRID':
@@ -430,8 +425,15 @@ export function App() {
           }
           break;
         }
+        case 'SET_PACKET_FLOW':
+          setPacketFlowOn(cmd.packetFlow !== false);
+          break;
         case 'TALK_SET_LINE':
           applyTalkLine(cmd.index ?? talkIndexRef.current);
+          break;
+        case 'TALK_STEP':
+          // Relative to the stage's own line, so a phone that is a line behind cannot move the talk backwards
+          applyTalkLine(talkIndexRef.current + (cmd.index ?? 1));
           break;
         case 'IDENTIFY_SPEAKER':
           if (cmd.speakerName) showHudToast(cmd.speakerName, 'is presenting');
@@ -542,6 +544,7 @@ export function App() {
 
   // Talk track. The stage owns the current line, so laptop keys and phones always show the same line.
   const [talkIndex, setTalkIndex] = useState<number>(() => readStageTalkIndex(talkTrackBeats.length));
+  const [packetFlowOn, setPacketFlowOn] = useState<boolean>(true);
   const talkIndexRef = useRef<number>(talkIndex);
   const talkSettleUntilRef = useRef<number>(0);
   const stageDomainRef = useRef<number>(currentDomainIndex);
@@ -937,30 +940,23 @@ export function App() {
 
         {/* Presenter Mode Deck */}
         {displayMode === 'presenter' && (
-          <PresenterOverlay
-            domain={activeDomain}
-            currentIndex={currentDomainIndex}
-            totalDomains={allDomains.length}
-            onNext={handleNextDomain}
-            onPrev={handlePrevDomain}
-            onClose={() => {
-              soundFX.playClick();
-              setDisplayMode('studio');
-            }}
-            onTriggerChaos={handleTriggerChaos}
-            isChaosActive={chaosPhase !== 'idle'}
-            onResetChaos={handleResetChaos}
-            onOpenPacketSimulator={() => setIsPacketSimulatorOpen(true)}
-            onOpenClientSolutions={() => setIsClientSolutionsOpen(true)}
-            onOpenSubtopics={() => setIsSubtopicLabsOpen(true)}
-            allDomains={allDomains}
-            onSelectIndex={(idx) => setCurrentDomainIndex(idx)}
-            slideMode={slideMode}
-            onSlideModeChange={setSlideMode}
-            isGridOpen={isSlideGridOpen}
-            onToggleGrid={(val) => setIsSlideGridOpen(typeof val === 'boolean' ? val : !isSlideGridOpen)}
-            slideSimTrigger={slideSimTrigger}
-          />
+          <div className="diagram-screen" aria-label={`Simulation diagram: ${activeDomain.title}`}>
+            <DualArchitectureStage
+              diagramOnly
+              packetFlowOn={packetFlowOn}
+              naive={activeDomain.naive}
+              wellArch={activeDomain.wellArch}
+              viewMode={viewMode}
+              setViewMode={setViewMode}
+              chaosPhase={chaosPhase}
+              affectedNodeIds={activeDomain.chaos.affectedNodeIds}
+              onSelectNode={() => { /* the big screen never opens panels */ }}
+              externalUserLoad={userLoad}
+              onUserLoadChange={setUserLoad}
+              externalAttack={activeAttack}
+              onAttackChange={setActiveAttack}
+            />
+          </div>
         )}
 
 
@@ -1074,13 +1070,7 @@ export function App() {
       </Suspense>
 
       {/* Stage HUD toast — shows when phone sends a command */}
-      <StageRemoteHUDToast
-        speakerName={hudSpeakerName}
-        actionNotice={hudActionNotice}
-        isVisible={hudVisible}
-      />
 
-      <StageTalkPill index={talkIndex} total={talkTrackBeats.length} />
     </div>
   );
 }

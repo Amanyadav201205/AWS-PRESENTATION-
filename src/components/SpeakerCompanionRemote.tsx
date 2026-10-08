@@ -1115,7 +1115,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         </div>
       </div>
 
-      <StageLinkBanner isLinked={isConnected} onReconnect={() => syncRef.current?.reconnectNow()} />
+      <StageLinkBanner isLinked={isConnected} hasPairingKey={new URLSearchParams(window.location.search).has('k')} onReconnect={() => syncRef.current?.reconnectNow()} />
 
       {/* Tab Nav for Script Views */}
       <div style={{
@@ -1217,6 +1217,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             stageLineIndex={stageState.talkIndex}
             elapsedSeconds={timerSeconds}
             sendLine={(index) => sendRawCommand({ type: 'TALK_SET_LINE', index }, { haptic: false })}
+            sendStep={(step) => sendRawCommand({ type: 'TALK_STEP', index: step }, { haptic: false })}
             onHaptic={() => triggerHaptic(30)}
           />
         )}
