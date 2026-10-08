@@ -278,7 +278,7 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
               </div>
             </div>
 
-            {/* Compliance Framework & Jury Defense */}
+            {/* Compliance Framework */}
             <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 10, boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <ShieldCheck size={13} color="var(--accent)" />
@@ -293,17 +293,6 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
                 {theory.complianceStandard.requirement}
               </p>
 
-              <div style={{ borderTop: '1px solid var(--separator-subtle)', paddingTop: 8 }}>
-                <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--status-warning)' }}>
-                  Anticipated Academic Jury Question:
-                </span>
-                <p style={{ fontSize: 12, color: 'var(--text-primary)', fontWeight: 500, marginTop: 2 }}>
-                  "{theory.defenseQnA[0].examinerQuestion}"
-                </p>
-                <p style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 4, lineHeight: 1.4, background: 'rgba(0, 0, 0, 0.5)', padding: '8px 10px', borderRadius: 'var(--radius-control)', border: '1px solid var(--separator-subtle)' }}>
-                  <strong style={{ color: 'var(--status-success)' }}>Airtight Defense:</strong> {theory.defenseQnA[0].defenseAnswer}
-                </p>
-              </div>
             </div>
           </div>
         );

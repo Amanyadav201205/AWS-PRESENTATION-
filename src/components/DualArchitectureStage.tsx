@@ -270,6 +270,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             return (
               <div
                 key={node.id}
+                data-node-id={node.id}
                 className={`apple-node ${node.isSPOF ? 'spof' : ''} ${isFailed ? 'node-failed' : ''} ${isOverloaded ? 'node-overloaded' : ''} ${isHealedWellArch ? 'node-resilient-pulse' : ''} ${isDynamicScaled ? 'dynamic-scaled-node' : ''}`}
                 onClick={() => {
                   soundFX.playClick();

@@ -11,6 +11,7 @@ import {
 import {
   soundFX
 } from '../utils/soundEffects';
+import { copyText } from '../utils/clipboard';
 
 interface ExecutiveReviewModalProps {
   onClose: () => void;
@@ -109,7 +110,7 @@ Key Optimization Levers:
 - Storage: ${data.storageSavings}
 - Database: ${data.dbSavings}`;
 
-    navigator.clipboard.writeText(text);
+    copyText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };

@@ -12,6 +12,7 @@ import {
   Users
 } from 'lucide-react';
 import { soundFX } from '../utils/soundEffects';
+import { copyText } from '../utils/clipboard';
 
 const LOCAL_HOSTNAMES = ['localhost', '127.0.0.1', '[::1]'];
 
@@ -62,7 +63,7 @@ export const RemotePairingModal: React.FC<RemotePairingModalProps> = ({
 
   const handleCopyLink = () => {
     soundFX.playClick();
-    navigator.clipboard.writeText(remoteUrl);
+    copyText(remoteUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };

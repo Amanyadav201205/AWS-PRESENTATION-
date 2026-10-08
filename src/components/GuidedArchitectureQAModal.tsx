@@ -20,6 +20,7 @@ import {
 import {
   soundFX
 } from '../utils/soundEffects';
+import { copyText } from '../utils/clipboard';
 
 interface GuidedArchitectureQAModalProps {
   activeDomain: DomainData;
@@ -130,7 +131,7 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
   const activeQ = questions.find(q => q.id === selectedQuestionId) || questions[0];
 
   const handleCopyCode = (code: string) => {
-    navigator.clipboard.writeText(code);
+    copyText(code);
     setCopiedSnippet(true);
     soundFX.playClick();
     setTimeout(() => setCopiedSnippet(false), 2000);

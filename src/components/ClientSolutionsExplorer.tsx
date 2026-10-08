@@ -22,6 +22,7 @@ import {
 import {
   soundFX
 } from '../utils/soundEffects';
+import { copyText } from '../utils/clipboard';
 
 interface ClientSolutionsExplorerProps {
   onClose: () => void;
@@ -123,7 +124,7 @@ ${workload.costCuttingLevers.map(l => `- ${l.lever} (${l.monthlySavings}): ${l.d
 PILLAR IMPLEMENTATION HIGHLIGHTS:
 ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\n')}`;
 
-    navigator.clipboard.writeText(proposalText);
+    copyText(proposalText);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };

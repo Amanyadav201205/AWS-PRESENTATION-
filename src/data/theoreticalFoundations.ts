@@ -29,10 +29,6 @@ export interface TheoryReference {
     controlId: string;
     requirement: string;
   };
-  defenseQnA: {
-    examinerQuestion: string;
-    defenseAnswer: string;
-  }[];
 }
 
 export const theoreticalFoundations: Record<string, TheoryReference> = {
@@ -66,12 +62,6 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'CC6.1 - System Boundaries & Architecture',
       requirement: 'The entity implements logical boundaries and formal architectural reviews to protect sensitive infrastructure from systemic collapse.'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'Why should an enterprise invest in the AWS Well-Architected Review instead of relying purely on DevOps engineers’ experience?',
-        defenseAnswer: 'Experience is anecdotal and prone to cognitive bias, whereas the Well-Architected Framework represents empirical lessons derived from millions of workloads over 18 years. It surfaces High Risk Issues (HRIs) before they manifest as outages and ties technical metrics directly to business continuity and cloud financial ROI.'
-      }
-    ]
   },
 
   'storage-layer': {
@@ -104,12 +94,6 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'CP-9 - Information System Backup',
       requirement: 'Conduct automated incremental backups with continuous cryptographic hash validation and cross-facility geographic redundancy.'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'How can you justify moving from a self-hosted GlusterFS/NFS cluster on EC2 to S3 and EFS, given that EC2 EBS volumes feel more directly controllable?',
-        defenseAnswer: 'Self-hosted NFS clusters introduce single points of failure, manual disk array rebuilds, and EBS volume re-striping overhead with durability limited to 99.8-99.9% per drive. S3 and EFS manage 11 9’s durability, continuous checksum scrubs, and automated multi-AZ replication out-of-the-box, dropping management TCO by 74%.'
-      }
-    ]
   },
 
   'compute-layer': {
@@ -142,12 +126,6 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'A1.2 - Capacity and Availability Management',
       requirement: 'Capacity requirements are monitored and dynamically scaled to prevent service denial and maintain performance SLAs.'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'Why should we prefer AWS Graviton processors over traditional x86 for web tier compute?',
-        defenseAnswer: 'AWS Graviton (Arm Neoverse) instances offer dedicated single-threaded cores without hyperthreading resource contention, resulting in 40% better price-performance, lower energy consumption (Sustainability Pillar), and predictable P99 latency.'
-      }
-    ]
   },
 
   'database-layer': {
@@ -180,12 +158,6 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'Req 3.4 & Req 10.2 - Database Protection & Audit Trails',
       requirement: 'All cardholder database storage must be encrypted at rest with hardware HSM-managed keys and all administrative transactions logged immutably.'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'How does Aurora storage handle a complete data center / AZ outage without losing write transactions?',
-        defenseAnswer: 'Aurora replicates writes to 6 storage nodes across 3 AZs. A write is acknowledged as committed as soon as 4 of the 6 nodes acknowledge it. If one entire AZ loses power (2 nodes offline), 4 nodes remain online, fulfilling the write quorum with zero data loss (RPO = 0).'
-      }
-    ]
   },
 
   'networking-environment': {
@@ -193,13 +165,13 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
     domainNumber: 4,
     domainTitle: 'Networking Environment',
     lawOrTheorem: {
-      name: 'Saltzer & Schroeder’s Principle of Least Privilege & Compartmentalization',
+      name: 'Saltzer & Schroeder’s Compartmentalization & Defense in Depth',
       founder: 'Jerome Saltzer & Michael Schroeder',
       year: '1975',
       formalStatement: 'Every program and every privileged user of the system should operate using the least amount of privilege necessary to complete the job. Compartmentalize trust zones so that breach of one cannot compromise the whole.',
       architecturalApplication: 'Multi-tier VPC topologies enforce this by isolating databases in private, non-routable subnets with NAT Gateways for egress only and no ingress internet routes.',
-      mathematicalFormula: 'P(\\text{breach}) = 1 - \\prod_{k=1}^m (1 - p_k)',
-      formulaExplanation: 'Where defense-in-depth across m independent network boundaries (Security Groups, NACLs, Private Subnets) reduces composite attack probability.'
+      mathematicalFormula: 'P(\\text{breach}) = \\prod_{k=1}^m p_k',
+      formulaExplanation: 'Where p_k is the chance an attacker bypasses layer k (Security Groups, NACLs, Private Subnets) and the layers fail independently. The attacker must beat every layer, so with three layers at 10% each the breach chance is 0.1%.'
     },
     awsWhitepaper: {
       title: 'Building a Modular and Scalable Virtual Private Cloud (VPC) Architecture',
@@ -218,12 +190,6 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'Zero Trust Architecture (ZTA)',
       requirement: 'No network implicitly carries trust based solely on physical or IP perimeter location; per-packet verification and microsegmentation are required.'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'Why use both Network ACLs and Security Groups when Security Groups already act as host firewalls?',
-        defenseAnswer: 'Security Groups are stateful and operate at the hypervisor Elastic Network Interface (ENI) level. Network ACLs are stateless and operate at the subnet boundary. NACLs provide an outer blast-radius boundary capable of hard-blocking malicious CIDR blocks and DDoS IP sources before packets even touch compute ENIs.'
-      }
-    ]
   },
 
   'connecting-networks': {
@@ -231,7 +197,7 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
     domainNumber: 5,
     domainTitle: 'Connecting Networks',
     lawOrTheorem: {
-      name: 'Metcalfe’s Law of Network Complexity vs Hub-and-Spoke Simplification',
+      name: 'Complete-Graph Edge Count: Full-Mesh Peering vs Hub-and-Spoke',
       founder: 'Robert Metcalfe',
       year: '1980',
       formalStatement: 'The number of peer-to-peer connections in an n-node mesh network grows quadratically as n(n - 1) / 2, leading to exponential routing table bloat and failure overhead.',
@@ -256,16 +222,10 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'Sec 4.1 - Monitoring and Gateway Transit Inspections',
       requirement: 'Centralized egress firewalls and routing hubs must be established to monitor all east-west and north-south corporate communications.'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'When would you select AWS PrivateLink instead of VPC Peering or Transit Gateway?',
-        defenseAnswer: 'Use AWS PrivateLink when connecting microservices across different AWS accounts or to SaaS vendors without sharing IP address spaces (preventing overlapping CIDR conflicts) and keeping all traffic strictly inside the Amazon private backbone over NLB endpoints.'
-      }
-    ]
   },
 
-  'security-access': {
-    domainId: 'security-access',
+  'securing-applications': {
+    domainId: 'securing-applications',
     domainNumber: 6,
     domainTitle: 'Securing Applications & Data Access',
     lawOrTheorem: {
@@ -275,7 +235,7 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       formalStatement: 'A cryptographic system should be secure even if everything about the system, except the key, is public knowledge ("The enemy knows the system").',
       architecturalApplication: 'Hardcoding credentials in source code or environment variables violates this principle. AWS Secrets Manager with AWS KMS envelope encryption protects secrets with automated key rotation and hardware HSM root-of-trust.',
       mathematicalFormula: 'C = E(K_{\\text{DEK}}, P) \\quad \\text{and} \\quad K_{\\text{enc}} = E(K_{\\text{CMK}}, K_{\\text{DEK}})',
-      formulaExplanation: 'Envelope Encryption: Data P is encrypted by Data Encryption Key (DEK). The DEK is encrypted under AWS KMS Customer Master Key (CMK) inside a FIPS 140-3 Level 3 HSM.'
+      formulaExplanation: 'Envelope Encryption: Data P is encrypted by Data Encryption Key (DEK). The DEK is encrypted under AWS KMS Customer Master Key (CMK) inside FIPS-validated hardware security modules.'
     },
     awsWhitepaper: {
       title: 'AWS Security Pillar - Well-Architected Framework',
@@ -294,12 +254,6 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'AC-6 - Least Privilege & SC-13 Cryptographic Protection',
       requirement: 'Employ cryptographic mechanisms with automated lifecycle rotation and attribute-based access control (ABAC).'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'How does Envelope Encryption prevent AWS operators from reading our database files?',
-        defenseAnswer: 'The Customer Master Key (CMK) never leaves the physical AWS KMS Hardware Security Module (HSM). The plaintext Data Key is generated in memory, used to encrypt data blocks, and immediately wiped from RAM. AWS staff have no physical or cryptographic access to decrypt the plaintext DEK without explicit IAM/KMS policy grants.'
-      }
-    ]
   },
 
   'monitoring-elasticity': {
@@ -332,12 +286,6 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'A.12.1.3 - Capacity Management & Monitoring',
       requirement: 'The use of resources shall be monitored, tuned, and projections made of future capacity requirements to ensure the required system performance.'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'What is the danger of setting Auto Scaling policies based solely on raw CPU utilization?',
-        defenseAnswer: 'CPU is a lagging metric. An I/O-bound or connection-pool-blocked application can experience cascading request timeouts while CPU stays at 15%. Well-Architected systems scale on target tracking metrics such as ALB RequestCountPerTarget or SQS ApproximateNumberOfMessagesVisible.'
-      }
-    ]
   },
 
   'automating-architecture': {
@@ -370,12 +318,6 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'CC8.1 - Change Management & Version Control',
       requirement: 'All changes to infrastructure components must be authorized, tested, and tracked in immutable source control logs.'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'Why is manual configuration in the AWS Management Console considered an architectural defect in enterprise cloud governance?',
-        defenseAnswer: 'Manual console changes introduce undocumented configuration drift, cannot be rolled back deterministically, cannot be audited in peer review, and bypass automated security linting tools such as cfn-nag and tfsec.'
-      }
-    ]
   },
 
   'caching-content': {
@@ -408,12 +350,6 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'Req 3.2 - Sensitive Authentication Data Storage',
       requirement: 'Ensure in-memory caching tiers (Redis/Memcached) do not inadvertently persist unencrypted CVV or primary account numbers in volatile memory dumps.'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'How do you prevent cache inconsistency between Amazon ElastiCache Redis and Amazon Aurora MySQL?',
-        defenseAnswer: 'Adopt the Cache-Aside pattern combined with Write-Through updates and strict short Time-To-Live (TTL) policies. In event-driven architectures, emit Change Data Capture (CDC) events via AWS Database Migration Service or Debezium to invalidate cache keys asynchronously.'
-      }
-    ]
   },
 
   'decoupled-architecture': {
@@ -446,12 +382,6 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'SC-5 - Denial of Service Protection',
       requirement: 'The information system protects against or limits the effects of denial of service attacks by employing queuing and rate limiting mechanisms.'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'What is the role of a Dead Letter Queue (DLQ) in an enterprise SQS consumer architecture?',
-        defenseAnswer: 'A DLQ isolates "poison pill" messages—malformed requests that consistently cause consumer code crashes—after a preconfigured number of retries (`maxReceiveCount`). This unblocks the main FIFO/standard queue while alerting operators via CloudWatch to inspect the failed payload without stopping system throughput.'
-      }
-    ]
   },
 
   'serverless-microservices': {
@@ -484,16 +414,10 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'CC6.6 - Boundary Protection and Serverless Run-time Isolation',
       requirement: 'Compute workloads run inside hardened, ephemeral micro-VM execution boundaries (such as AWS Firecracker) with per-function IAM role isolation.'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'How does AWS Lambda ensure tenant isolation when running multiple functions on shared physical server hardware?',
-        defenseAnswer: 'AWS Lambda utilizes the open-source Firecracker microVM engine built on Linux KVM. Each function execution environment runs in an isolated, lightweight virtual machine with dedicated cgroups, chroot jails, and seccomp filters, preventing side-channel attacks and noisy-neighbor cross-contamination.'
-      }
-    ]
   },
 
-  'datapipelines': {
-    domainId: 'datapipelines',
+  'data-pipelines': {
+    domainId: 'data-pipelines',
     domainNumber: 12,
     domainTitle: 'Data Pipelines',
     lawOrTheorem: {
@@ -522,26 +446,20 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'Right to Be Forgotten & PHI Audit Records',
       requirement: 'Data pipelines must provide cryptographic pseudonymization and automated lifecycle deletion policies for sensitive personal data records.'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'Why convert raw JSON logs to Apache Parquet before querying with Amazon Athena?',
-        defenseAnswer: 'Amazon Athena charges $5.00 per terabyte of data scanned. Apache Parquet is a columnar storage format with snappy compression. By querying only the requested columns and leveraging dictionary encoding, scan volumes drop by 80% to 90%, speeding up queries by 5x while reducing costs by 90%.'
-      }
-    ]
   },
 
-  'disasterrecovery': {
-    domainId: 'disasterrecovery',
+  'disaster-recovery': {
+    domainId: 'disaster-recovery',
     domainNumber: 13,
     domainTitle: 'Disaster Recovery (DR) Planning & Management',
     lawOrTheorem: {
-      name: 'The RTO/RPO Cost-Tradeoff Curve & Murphy’s Law',
-      founder: 'Disaster Recovery Engineering Principles',
-      year: '1970',
+      name: 'The RTO/RPO Cost Trade-off (Qualitative Heuristic)',
+      founder: 'AWS Well-Architected Reliability Pillar',
+      year: '2021',
       formalStatement: 'Anything that can go wrong will go wrong. The cost of disaster recovery increases asymptotically as RTO (Recovery Time Objective) and RPO (Recovery Point Objective) approach zero.',
       architecturalApplication: 'The AWS Well-Architected Framework categorizes DR into 4 distinct strategies (Backup & Restore, Pilot Light, Warm Standby, Multi-Region Active-Active), letting businesses align engineering spend directly with downtime cost impact.',
-      mathematicalFormula: '\\text{Cost}(\\text{DR}) \\propto \\frac{1}{\\text{RTO} \\times \\text{RPO}}',
-      formulaExplanation: 'Active-Active Multi-Region drives RTO/RPO down to near zero seconds, but doubles cloud compute cost. Pilot Light provides sub-10 minute recovery at only a fraction of duplicate spend.'
+      mathematicalFormula: '\\text{Lower RTO and RPO} \\Rightarrow \\text{Higher Standby Cost}',
+      formulaExplanation: 'A trade-off, not a fitted equation. Backup & Restore (24h RTO) costs 1x; Pilot Light (2h RTO, 10 min RPO) about 2.5x; Warm Standby (10 min RTO) about 4x; Multi-Region Active-Active (under 30s RTO) about 7x in this model.'
     },
     awsWhitepaper: {
       title: 'Disaster Recovery of Workloads on AWS: Recovery in the Cloud',
@@ -560,16 +478,10 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'Contingency Planning (CP) & Business Continuity',
       requirement: 'Maintain documented and validated disaster recovery capabilities with measurable RTO and RPO metrics tested semi-annually.'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'Why not run Multi-Region Active-Active for all enterprise applications?',
-        defenseAnswer: 'Multi-Region Active-Active introduces distributed database cross-region write latency (bounded by the speed of light in fiber optics: ~70ms between us-east-1 and eu-west-1), distributed transaction conflict resolution complexity, and doubles continuous infrastructure spend. For 90% of business workloads, Pilot Light or Warm Standby provides an optimal balance of sub-15 minute RTO at 20% the cost.'
-      }
-    ]
   },
 
-  'conclusion-verdict': {
-    domainId: 'conclusion-verdict',
+  'executive-conclusion': {
+    domainId: 'executive-conclusion',
     domainNumber: 14,
     domainTitle: 'Executive Conclusion & Architectural Verdict',
     lawOrTheorem: {
@@ -598,11 +510,5 @@ export const theoreticalFoundations: Record<string, TheoryReference> = {
       controlId: 'Annual Executive Review & Architecture Re-certification',
       requirement: 'Formal architectural re-evaluations must occur annually or upon major topology revisions.'
     },
-    defenseQnA: [
-      {
-        examinerQuestion: 'In one sentence, what is the core thesis of your architectural defense today?',
-        defenseAnswer: 'Conventional cloud architectures incur hidden, compounding operational debt and single points of failure by treating AWS like a legacy data center, whereas the AWS Well-Architected Framework replaces fragility with automated elasticity, zero-trust security, distributed redundancy, and proven mathematical resilience.'
-      }
-    ]
   }
 };

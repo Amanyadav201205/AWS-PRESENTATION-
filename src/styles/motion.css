@@ -1,0 +1,184 @@
+/* Motion system. Every effect here is turned off for users who ask for reduced motion (see the end of this file). */
+
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --motion-reveal: 760ms;
+}
+
+/* Scroll reveal: cards start hidden only when JavaScript has marked them for reveal. */
+.js-reveal {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0) scale(0.985);
+  transition:
+    opacity var(--motion-reveal) var(--ease-out-expo),
+    transform var(--motion-reveal) var(--ease-out-expo);
+  will-change: opacity, transform;
+}
+.js-reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Talk track: each word of the line rises in turn, so the eye lands on the new line at once. */
+.talk-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translate3d(0, 0.35em, 0);
+  animation: talk-word-in 560ms var(--ease-out-expo) forwards;
+  animation-delay: calc(var(--i, 0) * 38ms);
+}
+@keyframes talk-word-in {
+  to { opacity: 1; transform: none; }
+}
+
+/* Numbers and the stage pill pop when they change. The element is re-keyed on change to replay this. */
+.num-pop,
+.talk-pill-pop {
+  animation: num-pop 420ms var(--ease-spring);
+}
+@keyframes num-pop {
+  from { opacity: 0.25; transform: translate3d(0, 0.3em, 0) scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Focus card: a slow rotating light border, and a cursor-following sheen. */
+@property --talk-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+.talk-focus {
+  position: relative;
+  isolation: isolate;
+}
+.talk-focus::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  padding: 1px;
+  border-radius: inherit;
+  background: conic-gradient(from var(--talk-angle), rgba(10, 132, 255, 0), rgba(10, 132, 255, 0.75), rgba(191, 90, 242, 0.6), rgba(10, 132, 255, 0));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: talk-border-spin 7s linear infinite;
+}
+@keyframes talk-border-spin {
+  to { --talk-angle: 360deg; }
+}
+
+.talk-spot {
+  position: relative;
+  overflow: hidden;
+}
+.talk-spot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.09), transparent 62%);
+  opacity: 0;
+  transition: opacity 280ms ease;
+  pointer-events: none;
+}
+.talk-spot:hover::after {
+  opacity: 1;
+}
+
+/* Ambient light behind the stage. Fixed, very soft, and it never takes pointer events. */
+.stage-ambient {
+  position: fixed;
+  inset: -15%;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 34% at 18% 22%, rgba(10, 132, 255, 0.13), transparent 70%),
+    radial-gradient(34% 30% at 82% 74%, rgba(191, 90, 242, 0.11), transparent 70%);
+  filter: blur(36px);
+  animation: ambient-drift 26s ease-in-out infinite alternate;
+}
+@keyframes ambient-drift {
+  to { transform: translate3d(3%, -2%, 0) scale(1.06); }
+}
+
+/* Primary buttons: a light sweep on hover and a small press. */
+.talk-track-cta {
+  position: relative;
+  overflow: hidden;
+  transition: transform 140ms var(--ease-out-expo), filter 140ms ease, box-shadow 220ms ease;
+}
+.talk-track-cta::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-18deg);
+  pointer-events: none;
+}
+.talk-track-cta:not(:disabled):hover::after {
+  animation: cta-sweep 900ms var(--ease-out-expo);
+}
+@keyframes cta-sweep {
+  to { left: 130%; }
+}
+.talk-track-cta:not(:disabled):active {
+  transform: scale(0.98);
+}
+
+/* Keyboard focus is always visible. */
+:focus-visible {
+  outline: 2px solid var(--accent, #0a84ff);
+  outline-offset: 2px;
+}
+
+/* Phone-width polish: section tabs scroll sideways instead of wrapping, and content clears the floating dock. */
+@media (max-width: 720px) {
+  .segmented-control {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .segmented-control::-webkit-scrollbar {
+    display: none;
+  }
+  .segmented-control .segmented-item {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .app-content {
+    padding-bottom: 104px;
+  }
+  .talk-pill-host {
+    bottom: 116px;
+  }
+}
+
+/* Reduced motion: keep content and state, drop movement. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+  .js-reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .talk-word {
+    opacity: 1;
+    transform: none;
+  }
+  .stage-ambient {
+    animation: none;
+  }
+}

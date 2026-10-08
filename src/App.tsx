@@ -22,9 +22,15 @@ import { useDialogFocusTrap } from './hooks/useDialogFocusTrap';
 import {
   getStageHostSync,
   getOrGenerateRoomCode,
+  RemoteCommand,
 } from './services/presentationRemoteSync';
 import { StorylineStage } from './types';
 import { StageRemoteHUDToast } from './components/StageRemoteHUDToast';
+import { StageTalkPill } from './components/StageTalkPill';
+import { talkTrackBeats } from './data/talkTrackBeats';
+import { TALK_SETTLE_MS } from './data/talkTrackTiming';
+import { useScrollReveal } from './hooks/useScrollReveal';
+import { readStageTalkIndex, writeStageTalkIndex } from './utils/stageTalkStorage';
 import type { SlideViewMode } from './components/PresenterOverlay';
 import type { AttackScenario } from './components/DualArchitectureStage';
 
@@ -272,9 +278,13 @@ export function App() {
     setSelectedNode(null);
   }, []);
 
-  // Incoming remote commands from phones
+  // Incoming remote commands from phones. The subscription is made once and calls whichever handler
+  // is current, so a command never runs against the module or view captured when it was subscribed.
+  const remoteCommandHandlerRef = useRef<(cmd: RemoteCommand) => void>(() => {});
+  useEffect(() => remoteSync.onCommand((cmd) => remoteCommandHandlerRef.current(cmd)), [remoteSync]);
+
   useEffect(() => {
-    const unsub = remoteSync.onCommand((cmd) => {
+    remoteCommandHandlerRef.current = (cmd) => {
       const spk = cmd.speakerName;
       switch (cmd.type) {
         case 'NEXT_MODULE':
@@ -408,7 +418,7 @@ export function App() {
                        document.querySelector(`[data-testid="${cmd.targetId}"]`);
           }
           if (!targetEl && cmd.label) {
-            const searchPool = Array.from(document.querySelectorAll('.arch-node, .node-card, .metric-card, .journey-stage-step, .pillar-card, .pillar-mini-badge, .badge'));
+            const searchPool = Array.from(document.querySelectorAll('[data-node-id], .metric-card, .journey-stage-step, .pillar-card, .pillar-mini-badge, .badge'));
             targetEl = (searchPool.find(el => el.textContent?.toLowerCase().includes(cmd.label!.toLowerCase())) as HTMLElement) || null;
           }
           if (targetEl) {
@@ -420,6 +430,9 @@ export function App() {
           }
           break;
         }
+        case 'TALK_SET_LINE':
+          applyTalkLine(cmd.index ?? talkIndexRef.current);
+          break;
         case 'IDENTIFY_SPEAKER':
           if (cmd.speakerName) showHudToast(cmd.speakerName, 'is presenting');
           break;
@@ -524,9 +537,69 @@ export function App() {
           break;
         }
       }
-    });
-    return unsub;
+    };
   }, [remoteSync, currentDomainIndex, activeDomain, contentZoom, handleTriggerChaos, handleResetChaos, closeAllModals, showHudToast]);
+
+  // Talk track. The stage owns the current line, so laptop keys and phones always show the same line.
+  const [talkIndex, setTalkIndex] = useState<number>(() => readStageTalkIndex(talkTrackBeats.length));
+  const talkIndexRef = useRef<number>(talkIndex);
+  const talkSettleUntilRef = useRef<number>(0);
+  const stageDomainRef = useRef<number>(currentDomainIndex);
+  stageDomainRef.current = currentDomainIndex;
+
+  const applyTalkLine = useCallback((requestedIndex: number) => {
+    // A module change needs time to settle; a press during that window is ignored, not queued.
+    if (Date.now() < talkSettleUntilRef.current) return;
+    const index = Math.min(Math.max(requestedIndex, -1), talkTrackBeats.length - 1);
+    talkIndexRef.current = index;
+    setTalkIndex(index);
+    writeStageTalkIndex(index);
+    if (index < 0) return;
+
+    const beat = talkTrackBeats[index];
+    const playCues = () => {
+      beat.cues.forEach((cue) => {
+        remoteCommandHandlerRef.current({ ...cue, speakerName: 'Talk track', timestamp: Date.now() });
+      });
+    };
+    if (beat.domainIndex === stageDomainRef.current) {
+      playCues();
+      return;
+    }
+    talkSettleUntilRef.current = Date.now() + TALK_SETTLE_MS;
+    setCurrentDomainIndex(beat.domainIndex);
+    window.setTimeout(playCues, TALK_SETTLE_MS);
+  }, []);
+
+  // A reloaded laptop tab resumes the line it was on, and replays that line's screen once the page has settled
+  useEffect(() => {
+    const resumeIndex = talkIndexRef.current;
+    if (resumeIndex < 0) return;
+    const timer = window.setTimeout(() => applyTalkLine(resumeIndex), TALK_SETTLE_MS * 2);
+    return () => window.clearTimeout(timer);
+  }, [applyTalkLine]);
+
+  // Cards reveal as they scroll in; re-scan when the module changes
+  useScrollReveal(mainRef, currentDomainIndex);
+
+  // Laptop keys: Space or Page Down for the next line, B or Page Up for the line before.
+  useEffect(() => {
+    const handleTalkKey = (event: KeyboardEvent) => {
+      if (event.repeat || event.altKey || event.ctrlKey || event.metaKey) return;
+      const target = event.target;
+      if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement) return;
+      // The presentation deck is itself a dialog, so only other dialogs block the keys
+      if (document.querySelector('[aria-modal="true"]:not(.presenter-overlay)')) return;
+      const key = event.key.toLowerCase();
+      const step = key === ' ' || key === 'pagedown' || key === 'n' ? 1 : key === 'pageup' || key === 'b' ? -1 : 0;
+      if (step === 0) return;
+      event.preventDefault();
+      if (target instanceof HTMLElement) target.blur();
+      applyTalkLine(talkIndexRef.current + step);
+    };
+    window.addEventListener('keydown', handleTalkKey);
+    return () => window.removeEventListener('keydown', handleTalkKey);
+  }, [applyTalkLine]);
 
   // Track the main scroll container so phones can show how far through the page the stage is
   useEffect(() => {
@@ -606,12 +679,13 @@ export function App() {
       latestActionNotice: hudActionNotice,
       contentScrollPercent,
       contentZoom,
+      talkIndex,
     });
   }, [
     remoteSync, currentDomainIndex, viewMode, chaosPhase, displayMode,
     slideMode, isSlideGridOpen, userLoad, activeAttack, activeStorylineStage,
     remoteDeviceCount, hudSpeakerName, hudActionNotice, audioEnabled,
-    contentScrollPercent, contentZoom,
+    contentScrollPercent, contentZoom, talkIndex,
     selectedNode,
     modalPillarId, modalSubtopicId, modalWorkloadId, modalIncidentId, modalExecTier, modalTheoryDomainId,
     is6PillarsOpen, isExecutiveReviewOpen, isStressLabOpen,
@@ -742,7 +816,8 @@ export function App() {
         />
 
         {/* Main Content Area with bottom padding for minimized dock */}
-        <main className="app-content" ref={mainRef} id="main-content" style={{ zoom: contentZoom / 100 }}>
+        <div className="stage-ambient" aria-hidden="true" />
+      <main className="app-content" ref={mainRef} id="main-content" style={{ zoom: contentZoom / 100 }}>
           <div id="section-hero" />
           {/* Domain Hero - Derived 1-based Module Index (P0 Fix 1.2) */}
           <section className="domain-hero" aria-labelledby="domain-title">
@@ -1004,6 +1079,8 @@ export function App() {
         actionNotice={hudActionNotice}
         isVisible={hudVisible}
       />
+
+      <StageTalkPill index={talkIndex} total={talkTrackBeats.length} />
     </div>
   );
 }

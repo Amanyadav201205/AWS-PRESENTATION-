@@ -100,7 +100,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'sparkles',
       badge: 'Spotlight',
       color: 'var(--accent)',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 's3-bucket', label: 'S3 Object Lock Bucket' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-s3', label: 'S3 Intelligent-Tiering Bucket' })
     },
     {
       id: 'st-spotlight-ebs',
@@ -109,7 +109,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'database',
       badge: 'Spotlight',
       color: '#5ac8fa',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'ebs-gp3', label: 'EBS gp3 Volume' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-ebs', label: 'EBS gp3 (Right-sized 250GB)' })
     },
     {
       id: 'st-subtopic-ebs',
@@ -167,7 +167,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'sparkles',
       badge: 'Spotlight',
       color: 'var(--accent)',
-      getCommand: (pId, pName) => ({ type: 'SPOTLIGHT', targetId: pId || 'asg-group', label: pName || 'Auto Scaling Group' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-asg-1', label: 'ASG Node (AZ-1a)' })
     },
     {
       id: 'cp-stresslab',
@@ -207,7 +207,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'database',
       badge: 'Spotlight',
       color: 'var(--accent)',
-      getCommand: (pId, pName) => ({ type: 'SPOTLIGHT', targetId: pId || 'aurora-cluster', label: pName || 'Aurora Multi-AZ Cluster' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-aurora-writer', label: 'Aurora Writer Node (AZ-1a)' })
     },
     {
       id: 'db-spotlight-proxy',
@@ -216,7 +216,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'sparkles',
       badge: 'Spotlight',
       color: '#5ac8fa',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'rds-proxy', label: 'Amazon RDS Proxy' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-apps', label: 'App Services Pool' })
     },
     {
       id: 'db-quorum-lab',
@@ -238,7 +238,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'shield',
       badge: 'Spotlight',
       color: 'var(--accent)',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'vpc-isolated-db', label: 'Isolated Database Subnet' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-sub-iso', label: 'Isolated Subnet (Aurora DB)' })
     },
     {
       id: 'net-spotlight-endpoints',
@@ -247,7 +247,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'sparkles',
       badge: 'Spotlight',
       color: '#30d158',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'vpc-endpoint-s3', label: 'Gateway VPC Endpoint' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-sub-priv', label: 'Private Subnet (App ECS/EC2)' })
     },
     {
       id: 'net-latency-sim',
@@ -278,7 +278,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'compass',
       badge: 'Spotlight',
       color: 'var(--accent)',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'tgw-hub', label: 'AWS Transit Gateway' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-tgw', label: 'AWS Transit Gateway (TGW)' })
     },
     {
       id: 'cn-spotlight-dx',
@@ -287,7 +287,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'sparkles',
       badge: 'Spotlight',
       color: '#5ac8fa',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'direct-connect', label: 'AWS Direct Connect Link' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-dx', label: 'AWS Direct Connect (10 Gbps)' })
     },
     {
       id: 'cn-ddos',
@@ -318,7 +318,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'shield',
       badge: 'Spotlight',
       color: 'var(--accent)',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'iam-role', label: 'IAM Roles & STS' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-iam-role', label: 'IAM Role (Least Privilege STS)' })
     },
     {
       id: 'sec-spotlight-kms',
@@ -327,7 +327,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'lock',
       badge: 'Spotlight',
       color: '#30d158',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'secrets-manager', label: 'Secrets Manager & KMS' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-sec-mgr', label: 'AWS Secrets Manager' })
     },
     {
       id: 'sec-6pillars',
@@ -358,7 +358,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'sparkles',
       badge: 'Spotlight',
       color: 'var(--accent)',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'cloudwatch', label: 'CloudWatch Synthetics' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-synthetic', label: 'CloudWatch Synthetics Canary' })
     },
     {
       id: 'mon-scroll-metrics',
@@ -407,7 +407,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'shield',
       badge: 'Spotlight',
       color: 'var(--accent)',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'systems-manager', label: 'AWS Systems Manager' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-ssm-auto', label: 'SSM Remediation Playbook' })
     },
     {
       id: 'ops-spotlight-cicd',
@@ -416,7 +416,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'compass',
       badge: 'Spotlight',
       color: '#5ac8fa',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'codepipeline', label: 'AWS CodePipeline' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-cicd-pipeline', label: 'AWS CodePipeline / CI Runner' })
     },
     {
       id: 'ops-advisor',
@@ -447,7 +447,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'database',
       badge: 'Spotlight',
       color: '#30d158',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'elasticache', label: 'ElastiCache Redis Cluster' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-redis', label: 'Amazon ElastiCache (Redis Cluster)' })
     },
     {
       id: 'perf-latency-sim',
@@ -465,7 +465,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'sparkles',
       badge: 'Spotlight',
       color: 'var(--accent)',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'cloudfront', label: 'CloudFront Edge Anycast' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-cloudfront', label: 'Amazon CloudFront CDN (600+ PoPs)' })
     }
   ],
 
@@ -505,7 +505,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'sparkles',
       badge: 'Spotlight',
       color: '#5ac8fa',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'sqs', label: 'SQS FIFO Queue' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-sqs-orders', label: 'Amazon SQS (Orders Queue + DLQ)' })
     }
   ],
 
@@ -518,7 +518,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'sparkles',
       badge: 'Spotlight',
       color: 'var(--accent)',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'lambda', label: 'AWS Lambda & EventBridge' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-lambda-exec', label: 'Order Processing Lambda' })
     },
     {
       id: 'srv-spotlight-sfn',
@@ -527,7 +527,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'compass',
       badge: 'Spotlight',
       color: '#bf5af2',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'step-functions', label: 'AWS Step Functions' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-step-fn', label: 'AWS Step Functions' })
     },
     {
       id: 'srv-pulse',
@@ -552,13 +552,13 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
   // 12: AI/ML & Advanced Data Pipelines
   12: [
     {
-      id: 'ai-spotlight-sagemaker',
-      label: '🤖 Spotlight SageMaker Inference Endpoint',
-      description: 'Autoscaling multi-model real-time endpoint',
+      id: 'dp-spotlight-glue',
+      label: '🧩 Spotlight AWS Glue Serverless ETL',
+      description: 'Serverless Parquet conversion, no cluster to manage',
       icon: 'sparkles',
       badge: 'Spotlight',
       color: 'var(--accent)',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'sagemaker', label: 'Amazon SageMaker Endpoint' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-glue-etl', label: 'AWS Glue Serverless ETL' })
     },
     {
       id: 'ai-governance',
@@ -570,13 +570,13 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       getCommand: () => ({ type: 'OPEN_MODAL', modal: 'governance', label: 'AI Governance Inspector' })
     },
     {
-      id: 'ai-spotlight-bedrock',
-      label: '🧠 Spotlight Amazon Bedrock Guardrails',
-      description: 'Managed generative AI safety & vector search',
+      id: 'dp-spotlight-athena',
+      label: '🔎 Spotlight Amazon Athena Query',
+      description: 'Serverless SQL over S3 with Parquet pushdown',
       icon: 'database',
       badge: 'Spotlight',
       color: '#bf5af2',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'bedrock', label: 'Amazon Bedrock Guardrails' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-athena', label: 'Amazon Athena (Presto SQL)' })
     },
     {
       id: 'ai-advisor',
@@ -607,7 +607,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       icon: 'compass',
       badge: 'Spotlight',
       color: 'var(--accent)',
-      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'route53', label: 'Route 53 ARC Controller' })
+      getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-r53-arc', label: 'Amazon Route 53 ARC' })
     },
     {
       id: 'dr-heal',
@@ -643,7 +643,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
     {
       id: 'cap-metrics',
       label: '📈 Focus Verified FinOps 59% Savings',
-      description: 'Present final quantitative audit to the jury',
+      description: 'Present final quantitative audit',
       icon: 'dollar',
       badge: 'FinOps',
       color: '#30d158',
@@ -661,7 +661,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
     {
       id: 'cap-6pillars',
       label: '🏛️ Launch 6 Pillars Master Explorer',
-      description: 'Holistic framework reference for evaluator review',
+      description: 'Holistic framework reference for review',
       icon: 'sparkles',
       badge: 'Deep Dive',
       color: 'var(--accent)',
@@ -670,7 +670,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
     {
       id: 'cap-footer',
       label: '✍️ Presenter Sign-Off Footer ("Devarsh & Aman")',
-      description: 'Scroll directly to Author Credits & Evaluator Sign-off',
+      description: 'Scroll directly to Author Credits & Sign-off',
       icon: 'compass',
       badge: 'SLA Proof',
       color: 'var(--accent)',

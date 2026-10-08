@@ -725,7 +725,7 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                 </div>
               </div>
 
-              {/* Card 3: Compliance Frameworks & Jury Defense Q&A */}
+              {/* Card 3: Compliance Frameworks */}
               <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <ShieldCheck size={14} color="var(--accent)" />
@@ -740,17 +740,6 @@ export const PresenterOverlay: React.FC<PresenterProps> = ({
                   {theory.complianceStandard.requirement}
                 </p>
 
-                <div style={{ borderTop: '1px solid var(--separator-subtle)', paddingTop: 12 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-warning)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
-                    Anticipated Jury Defense Question:
-                  </span>
-                  <p style={{ fontSize: 13, color: 'var(--text-primary)', fontWeight: 600, marginTop: 4 }}>
-                    "{theory.defenseQnA[0].examinerQuestion}"
-                  </p>
-                  <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 6, lineHeight: 1.45, background: 'rgba(0, 0, 0, 0.5)', padding: 10, borderRadius: 6, border: '1px solid var(--separator-subtle)' }}>
-                    <strong style={{ color: 'var(--status-success)' }}>Airtight Defense Answer:</strong> {theory.defenseQnA[0].defenseAnswer}
-                  </div>
-                </div>
               </div>
             </div>
           )}

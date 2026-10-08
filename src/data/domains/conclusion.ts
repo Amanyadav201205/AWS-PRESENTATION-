@@ -8,7 +8,7 @@ export const conclusionDomain: DomainData = {
   category: 'Executive Verdict',
   pillars: ['Operational Excellence', 'Security', 'Reliability', 'Performance Efficiency', 'Cost Optimization', 'Sustainability'],
   customerRequirement: {
-    clientName: 'Board of Directors & Executive Architecture Review Jury',
+    clientName: 'Board of Directors & Executive Architecture Review',
     businessGoal: 'Deliver definitive architectural verification confirming that all 15 syllabus domains comply with AWS Well-Architected Framework guidelines, with certified risk mitigation and FinOps ROI.',
     challenges: [
       'Validating that critical High-Risk Issues (HRIs) have been completely remediated',

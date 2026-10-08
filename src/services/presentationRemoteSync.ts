@@ -47,7 +47,8 @@ export type RemoteCommandType =
   | 'SCROLL_SECTION_STEP'
   | 'ZOOM_CONTENT'
   | 'PING'
-  | 'PONG';
+  | 'PONG'
+  | 'TALK_SET_LINE';
 
 export type ContentScrollDirection = 'up' | 'down';
 export type ContentSectionDirection = 'prev' | 'next';
@@ -118,6 +119,8 @@ export interface StageState {
   contentScrollPercent?: number;
   /** Current content zoom of the main site, in percent (100 = normal) */
   contentZoom?: number;
+  /** Line of the talk track now on the big screen. -1 means the talk has not started. */
+  talkIndex?: number;
 }
 
 export type CommandHandler = (cmd: RemoteCommand) => void;
@@ -154,6 +157,8 @@ const PHONE_CONNECT_TIMEOUT_MS = 12000;
 const PHONE_HEARTBEAT_MS = 5000;
 // Phones sleep or change networks silently. No traffic from the stage for this long means the link is dead.
 const PHONE_SILENCE_TIMEOUT_MS = 15000;
+// The stage re-sends its state this often, so a phone that joins late, reloads, or misses a message catches up.
+const STAGE_STATE_RESEND_MS = 2000;
 
 /**
  * PeerJS options shared by stage and phones. STUN works on the same network and most home
@@ -185,11 +190,28 @@ export class StageHostSync {
   private connectionListeners: Set<ConnectionStatusHandler> = new Set();
   private retryTimer: number | null = null;
   private isDestroyed = false;
+  private lastState: StageState | null = null;
+  private resendTimer: number | null = null;
 
   constructor(roomCode: string) {
     this.roomCode = roomCode;
     this.initBroadcastChannel();
     this.initPeerHost();
+    this.resendTimer = window.setInterval(() => this.resendState(), STAGE_STATE_RESEND_MS);
+  }
+
+  private stateMessage(state: StageState) {
+    return { _isWafState: true, state: { ...state, connectedDevicesCount: this.connections.size } };
+  }
+
+  private resendState() {
+    if (this.isDestroyed || !this.lastState) return;
+    const message = this.stateMessage(this.lastState);
+    this.connections.forEach((conn) => {
+      if (conn.open) {
+        try { conn.send(message); } catch { /* the next resend will try again */ }
+      }
+    });
   }
 
   private initBroadcastChannel() {
@@ -230,6 +252,10 @@ export class StageHostSync {
     const markLinked = () => {
       this.connections.set(conn.peer, conn);
       this.notifyConnectionStatus(this.isSignallingOpen(), this.connections.size);
+      // A phone that has just joined needs the current state right away, not at the next change
+      if (this.lastState) {
+        try { conn.send(this.stateMessage(this.lastState)); } catch { /* the periodic resend covers it */ }
+      }
     };
     const markUnlinked = () => {
       this.connections.delete(conn.peer);
@@ -311,13 +337,8 @@ export class StageHostSync {
 
   public broadcastState(state: StageState) {
     if (this.isDestroyed) return;
-    const payload = {
-      _isWafState: true,
-      state: {
-        ...state,
-        connectedDevicesCount: this.connections.size
-      }
-    };
+    this.lastState = state;
+    const payload = this.stateMessage(state);
 
     // Broadcast across local channel
     if (this.broadcastChannel) {
@@ -386,6 +407,7 @@ export class StageHostSync {
   public destroy() {
     this.isDestroyed = true;
     this.clearRetryTimer();
+    if (this.resendTimer !== null) window.clearInterval(this.resendTimer);
     this.recentCommandSignatures.clear();
     this.commandListeners.clear();
     this.connectionListeners.clear();
@@ -626,7 +648,7 @@ export class PhoneCompanionSync {
   }
 
   /** Returns true when the command left over the live link. False means the stage did not receive it. */
-  public sendCommand(cmd: RemoteCommandInput): boolean {
+  public sendCommand(cmd: RemoteCommandInput, options: { haptic?: boolean } = {}): boolean {
     const fullCmd: RemoteCommand = {
       ...cmd,
       speaker: this.speaker,
@@ -634,8 +656,9 @@ export class PhoneCompanionSync {
       timestamp: cmd.timestamp || Date.now()
     };
 
-    // Continuous input (touch drag, slider) must not buzz on every frame
-    if (!cmd.isContinuous && typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    // Continuous input (touch drag, slider) must not buzz on every frame; a multi-command sequence buzzes once
+    const shouldBuzz = options.haptic !== false && !cmd.isContinuous;
+    if (shouldBuzz && typeof navigator !== 'undefined' && 'vibrate' in navigator) {
       try {
         navigator.vibrate(25);
       } catch {

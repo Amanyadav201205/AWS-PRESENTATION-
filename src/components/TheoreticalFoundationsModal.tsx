@@ -14,6 +14,7 @@ import {
   soundFX
 } from '../utils/soundEffects';
 import { LatexFormula } from './LatexFormula';
+import { copyText } from '../utils/clipboard';
 
 interface TheoreticalFoundationsModalProps {
   onClose: () => void;
@@ -52,7 +53,7 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
 
   const handleCopyCitation = (text: string, id: string) => {
     soundFX.playClick();
-    navigator.clipboard.writeText(text);
+    copyText(text);
     setCopiedCode(id);
     setTimeout(() => setCopiedCode(null), 2000);
   };
@@ -72,7 +73,7 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
                   Theoretical Foundations & AWS Literature Compendium
                 </h2>
                 <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', padding: '2px 8px', borderRadius: 'var(--radius-pill)', background: 'var(--accent-subtle)', color: 'var(--accent)', fontWeight: 600, letterSpacing: '0.02em' }}>
-                  Academic Defense
+                  Academic Basis
                 </span>
               </div>
               <p style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 2 }}>
@@ -276,7 +277,7 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
               </div>
             </div>
 
-            {/* Compliance Standards & Jury Defense Q&A */}
+            {/* Compliance Standards */}
             <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <ShieldCheck size={16} color="var(--accent)" />
@@ -291,17 +292,6 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
                 {currentTheory.complianceStandard.requirement}
               </p>
 
-              <div style={{ borderTop: '1px solid var(--separator-subtle)', paddingTop: 12 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-warning)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                  Jury Oral Defense Question & Rigorous Response
-                </span>
-                <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', marginTop: 4 }}>
-                  "{currentTheory.defenseQnA[0].examinerQuestion}"
-                </p>
-                <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 6, lineHeight: 1.48, background: 'var(--bg-canvas)', padding: '12px 14px', borderRadius: 'var(--radius-control)', border: '1px solid var(--separator-subtle)' }}>
-                  <strong style={{ color: 'var(--status-success)' }}>Airtight Architect Defense:</strong> {currentTheory.defenseQnA[0].defenseAnswer}
-                </div>
-              </div>
             </div>
           </div>
         </div>

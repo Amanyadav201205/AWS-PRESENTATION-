@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Copy, Check, Terminal } from 'lucide-react';
 import { ArchitectureSpec } from '../types';
+import { copyText } from '../utils/clipboard';
 
 interface IaCProps {
   naiveIaC: ArchitectureSpec['iacSnippet'];
@@ -14,7 +15,7 @@ export const IaCInspector: React.FC<IaCProps> = ({ naiveIaC, wellArchIaC }) => {
   const snippet = activeTab === 'well-arch' ? wellArchIaC : naiveIaC;
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(snippet.code);
+    copyText(snippet.code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
