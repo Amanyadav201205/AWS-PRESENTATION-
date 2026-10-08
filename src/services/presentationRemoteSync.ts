@@ -41,8 +41,17 @@ export type RemoteCommandType =
   | 'INSPECT_NODE'
   | 'TOGGLE_AUDIO'
   | 'INTERACT_MODAL'
+  | 'SCROLL_BY'
+  | 'SCROLL_PAGE'
+  | 'SCROLL_EDGE'
+  | 'SCROLL_SECTION_STEP'
+  | 'ZOOM_CONTENT'
   | 'PING'
   | 'PONG';
+
+export type ContentScrollDirection = 'up' | 'down';
+export type ContentSectionDirection = 'prev' | 'next';
+export type ContentZoomAction = 'in' | 'out' | 'reset' | 'set';
 
 export interface RemoteCommand {
   type: RemoteCommandType;
@@ -61,8 +70,18 @@ export interface RemoteCommand {
   trafficLoad?: number;
   attackScenario?: string;
   isWellArch?: boolean;
+  scrollDelta?: number;
+  scrollDirection?: ContentScrollDirection;
+  scrollEdge?: 'top' | 'bottom';
+  sectionDirection?: ContentSectionDirection;
+  zoomAction?: ContentZoomAction;
+  zoomLevel?: number;
+  /** High-frequency input (touch drag, slider, pinch). Applied silently: no HUD toast, no haptic. */
+  isContinuous?: boolean;
   timestamp: number;
 }
+
+export type RemoteCommandInput = Omit<RemoteCommand, 'timestamp'> & { timestamp?: number };
 
 export interface StageState {
   currentDomainIndex: number;
@@ -95,6 +114,10 @@ export interface StageState {
   spotlightTarget: string | null;
   latestSpeakerName: string | null;
   latestActionNotice: string | null;
+  /** 0–100 position of the main site's scroll container, reported back to phones */
+  contentScrollPercent?: number;
+  /** Current content zoom of the main site, in percent (100 = normal) */
+  contentZoom?: number;
 }
 
 export type CommandHandler = (cmd: RemoteCommand) => void;
@@ -124,6 +147,32 @@ export const getOrGenerateRoomCode = (): string => {
 // Format clean peer ID from room code
 const formatHostPeerId = (roomCode: string) => `waf-host-${roomCode.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
 
+const STUN_SERVERS = ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'];
+const PEER_RETRY_DELAY_MS = 3000;
+const PHONE_RECONNECT_DELAY_MS = 3000;
+const PHONE_CONNECT_TIMEOUT_MS = 12000;
+const PHONE_HEARTBEAT_MS = 5000;
+// Phones sleep or change networks silently. No traffic from the stage for this long means the link is dead.
+const PHONE_SILENCE_TIMEOUT_MS = 15000;
+
+/**
+ * PeerJS options shared by stage and phones. STUN works on the same network and most home
+ * connections. Phones on cellular data or venue Wi-Fi with client isolation need a TURN relay,
+ * configured through VITE_TURN_URL / VITE_TURN_USERNAME / VITE_TURN_CREDENTIAL at build time.
+ */
+const buildPeerOptions = () => {
+  const iceServers: RTCIceServer[] = STUN_SERVERS.map((urls) => ({ urls }));
+  const turnUrl = import.meta.env.VITE_TURN_URL;
+  if (turnUrl) {
+    iceServers.push({
+      urls: turnUrl,
+      username: import.meta.env.VITE_TURN_USERNAME,
+      credential: import.meta.env.VITE_TURN_CREDENTIAL,
+    });
+  }
+  return { debug: 0, config: { iceServers } };
+};
+
 /**
  * Stage Host Synchronization Service (Runs on the Main Display/Laptop)
  */
@@ -134,6 +183,7 @@ export class StageHostSync {
   private roomCode: string;
   private commandListeners: Set<CommandHandler> = new Set();
   private connectionListeners: Set<ConnectionStatusHandler> = new Set();
+  private retryTimer: number | null = null;
   private isDestroyed = false;
 
   constructor(roomCode: string) {
@@ -158,63 +208,96 @@ export class StageHostSync {
   }
 
   private initPeerHost() {
+    if (this.isDestroyed) return;
+    this.clearRetryTimer();
     const hostId = formatHostPeerId(this.roomCode);
     try {
-      this.peer = new Peer(hostId, {
-        debug: 0,
-        config: {
-          iceServers: [
-            { urls: 'stun:stun.l.google.com:19302' },
-            { urls: 'stun:stun1.l.google.com:19302' }
-          ]
-        }
-      });
+      const peer = new Peer(hostId, buildPeerOptions());
+      this.peer = peer;
 
-      this.peer.on('open', () => {
-        if (this.isDestroyed) return;
-        this.notifyConnectionStatus(true, this.connections.size);
-      });
-
-      this.peer.on('connection', (conn) => {
-        conn.on('open', () => {
-          this.connections.set(conn.peer, conn);
-          this.notifyConnectionStatus(true, this.connections.size);
-        });
-
-        conn.on('data', (data: unknown) => {
-          if (data && typeof data === 'object' && 'type' in data) {
-            this.handleIncomingCommand(data as RemoteCommand);
-          }
-        });
-
-        conn.on('close', () => {
-          this.connections.delete(conn.peer);
-          this.notifyConnectionStatus(true, this.connections.size);
-        });
-
-        conn.on('error', () => {
-          this.connections.delete(conn.peer);
-          this.notifyConnectionStatus(true, this.connections.size);
-        });
-      });
-
-      this.peer.on('error', (err) => {
-        // If host ID is already taken, peer handles retry or local broadcast
-        if (err.type === 'unavailable-id') {
-          // Connected in another tab
-        }
-        this.notifyConnectionStatus(this.connections.size > 0, this.connections.size, err.message);
-      });
+      peer.on('open', () => this.notifyConnectionStatus(true, this.connections.size));
+      peer.on('connection', (conn) => this.registerConnection(conn));
+      // Signalling server dropped us (Wi-Fi blip, laptop sleep). Phones already linked stay linked.
+      peer.on('disconnected', () => this.scheduleRecovery('Stage lost its signalling link'));
+      peer.on('error', (err) => this.scheduleRecovery(err.message));
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'PeerJS init failed';
-      this.notifyConnectionStatus(false, 0, msg);
+      this.scheduleRecovery(msg);
+    }
+  }
+
+  private registerConnection(conn: DataConnection) {
+    const markLinked = () => {
+      this.connections.set(conn.peer, conn);
+      this.notifyConnectionStatus(this.isSignallingOpen(), this.connections.size);
+    };
+    const markUnlinked = () => {
+      this.connections.delete(conn.peer);
+      this.notifyConnectionStatus(this.isSignallingOpen(), this.connections.size);
+    };
+
+    // An incoming connection can already be open by the time the event fires
+    if (conn.open) markLinked();
+    else conn.on('open', markLinked);
+
+    conn.on('data', (data: unknown) => {
+      if (data && typeof data === 'object' && 'type' in data) {
+        this.handleIncomingCommand(data as RemoteCommand);
+      }
+    });
+    conn.on('close', markUnlinked);
+    conn.on('error', markUnlinked);
+  }
+
+  private isSignallingOpen(): boolean {
+    return this.peer !== null && this.peer.open;
+  }
+
+  private scheduleRecovery(reason: string) {
+    this.notifyConnectionStatus(false, this.connections.size, reason);
+    this.clearRetryTimer();
+    if (this.isDestroyed) return;
+    this.retryTimer = window.setTimeout(() => {
+      this.retryTimer = null;
+      this.recoverRegistration();
+    }, PEER_RETRY_DELAY_MS);
+  }
+
+  private recoverRegistration() {
+    if (this.isDestroyed) return;
+    const peer = this.peer;
+    // Keep the same ID and the open phone links when the signalling socket can simply be re-opened
+    if (peer && !peer.destroyed && peer.disconnected) {
+      try {
+        peer.reconnect();
+        return;
+      } catch {
+        // Fall through: rebuild the peer from scratch
+      }
+    }
+    // Old registration is still held on the server (e.g. host reloaded): release it and claim the ID again
+    this.destroyPeer();
+    this.initPeerHost();
+  }
+
+  private destroyPeer() {
+    if (this.peer) {
+      try { this.peer.destroy(); } catch { /* already gone */ }
+      this.peer = null;
+    }
+  }
+
+  private clearRetryTimer() {
+    if (this.retryTimer !== null) {
+      window.clearTimeout(this.retryTimer);
+      this.retryTimer = null;
     }
   }
 
   private recentCommandSignatures: Set<string> = new Set();
 
   private handleIncomingCommand(cmd: RemoteCommand) {
-    const signature = `${cmd.type}-${cmd.timestamp}-${cmd.speaker || ''}-${cmd.target || ''}-${cmd.modal || ''}`;
+    const signature = `${cmd.type}-${cmd.timestamp}-${cmd.speaker || ''}-${cmd.target || ''}-${cmd.modal || ''}-${cmd.scrollDelta ?? ''}-${cmd.zoomLevel ?? ''}`;
     if (this.recentCommandSignatures.has(signature)) return;
     this.recentCommandSignatures.add(signature);
     setTimeout(() => this.recentCommandSignatures.delete(signature), 2000);
@@ -302,15 +385,13 @@ export class StageHostSync {
 
   public destroy() {
     this.isDestroyed = true;
+    this.clearRetryTimer();
     this.recentCommandSignatures.clear();
     this.commandListeners.clear();
     this.connectionListeners.clear();
     this.connections.forEach(conn => conn.close());
     this.connections.clear();
-    if (this.peer) {
-      this.peer.destroy();
-      this.peer = null;
-    }
+    this.destroyPeer();
     if (this.broadcastChannel) {
       this.broadcastChannel.close();
       this.broadcastChannel = null;
@@ -318,18 +399,36 @@ export class StageHostSync {
   }
 }
 
+let activeStageHost: StageHostSync | null = null;
+
+/**
+ * Returns the one stage host for this page. React StrictMode runs state initialisers twice in
+ * development; creating two hosts would register the same peer ID twice and strand one of them.
+ */
+export const getStageHostSync = (roomCode: string): StageHostSync => {
+  if (!activeStageHost || activeStageHost.getRoomCode() !== roomCode) {
+    activeStageHost?.destroy();
+    activeStageHost = new StageHostSync(roomCode);
+  }
+  return activeStageHost;
+};
+
 /**
  * Mobile Phone Companion Synchronization Client (Runs on Presenter Smartphones)
  */
 export class PhoneCompanionSync {
   private peer: Peer | null = null;
   private connection: DataConnection | null = null;
+  // The link being established. Only this one may become `connection`, so stale attempts cannot revive
+  private attempt: DataConnection | null = null;
   private broadcastChannel: BroadcastChannel | null = null;
   private roomCode: string;
   private stateListeners: Set<StateChangeHandler> = new Set();
   private connectionListeners: Set<ConnectionStatusHandler> = new Set();
   private reconnectTimer: number | null = null;
-  private pingInterval: number | null = null;
+  private connectTimer: number | null = null;
+  private heartbeatTimer: number | null = null;
+  private lastStageMessageAt = 0;
   private isDestroyed = false;
   private speaker: RemoteSpeaker = 'devarsh';
 
@@ -380,56 +479,16 @@ export class PhoneCompanionSync {
 
   private connectToHost() {
     if (this.isDestroyed) return;
-    const hostId = formatHostPeerId(this.roomCode);
-
     try {
-      this.peer = new Peer({
-        debug: 0,
-        config: {
-          iceServers: [
-            { urls: 'stun:stun.l.google.com:19302' },
-            { urls: 'stun:stun1.l.google.com:19302' }
-          ]
-        }
+      const peer = new Peer(buildPeerOptions());
+      this.peer = peer;
+
+      peer.on('open', () => this.attemptLink());
+      // Signalling dropped while no link is up: rebuild on our own schedule
+      peer.on('disconnected', () => {
+        if (!this.connection) this.scheduleReconnect();
       });
-
-      this.peer.on('open', () => {
-        if (this.isDestroyed || !this.peer) return;
-        const conn = this.peer.connect(hostId, {
-          reliable: true
-        });
-
-        conn.on('open', () => {
-          this.connection = conn;
-          this.notifyConnectionStatus(true, 1);
-          // Greet stage with speaker identity
-          this.setSpeaker(this.speaker);
-          this.startHeartbeat();
-        });
-
-        conn.on('data', (data: unknown) => {
-          if (data && typeof data === 'object') {
-            const msg = data as { _isWafState?: boolean; state?: StageState };
-            if (msg._isWafState && msg.state) {
-              this.stateListeners.forEach(listener => listener(msg.state!));
-            }
-          }
-        });
-
-        conn.on('close', () => {
-          this.connection = null;
-          this.notifyConnectionStatus(false, 0);
-          this.scheduleReconnect();
-        });
-
-        conn.on('error', () => {
-          this.connection = null;
-          this.notifyConnectionStatus(false, 0);
-          this.scheduleReconnect();
-        });
-      });
-
-      this.peer.on('error', (err) => {
+      peer.on('error', (err) => {
         this.notifyConnectionStatus(false, 0, err.message);
         this.scheduleReconnect();
       });
@@ -440,30 +499,134 @@ export class PhoneCompanionSync {
     }
   }
 
-  private startHeartbeat() {
-    if (this.pingInterval) window.clearInterval(this.pingInterval);
-    this.pingInterval = window.setInterval(() => {
-      if (this.connection && this.connection.open) {
-        this.connection.send({ type: 'PING', timestamp: Date.now() });
+  private attemptLink() {
+    if (this.isDestroyed || !this.peer) return;
+    const conn = this.peer.connect(formatHostPeerId(this.roomCode), { reliable: true });
+    this.attempt = conn;
+    this.armConnectTimeout(conn);
+
+    conn.on('open', () => this.promoteLink(conn));
+    conn.on('data', (data: unknown) => this.handleStageData(data));
+    conn.on('close', () => this.handleLinkLost(conn));
+    conn.on('error', () => this.handleLinkLost(conn));
+  }
+
+  private promoteLink(conn: DataConnection) {
+    if (conn !== this.attempt) {
+      conn.close();
+      return;
+    }
+    this.clearConnectTimer();
+    this.connection = conn;
+    this.lastStageMessageAt = Date.now();
+    this.notifyConnectionStatus(true, 1);
+    // Greet stage with speaker identity
+    this.setSpeaker(this.speaker);
+    this.startHeartbeat();
+  }
+
+  private handleStageData(data: unknown) {
+    // Any traffic (state, PONG) proves the stage is still there
+    this.lastStageMessageAt = Date.now();
+    if (data && typeof data === 'object') {
+      const msg = data as { _isWafState?: boolean; state?: StageState };
+      if (msg._isWafState && msg.state) {
+        this.stateListeners.forEach(listener => listener(msg.state!));
       }
-    }, 15000);
+    }
+  }
+
+  private handleLinkLost(conn: DataConnection) {
+    if (conn !== this.attempt || this.isDestroyed) return;
+    this.attempt = null;
+    this.connection = null;
+    this.clearConnectTimer();
+    this.stopHeartbeat();
+    this.notifyConnectionStatus(false, 0);
+    this.scheduleReconnect();
+  }
+
+  // A link that never opens (blocked WebRTC path) would otherwise wait forever
+  private armConnectTimeout(conn: DataConnection) {
+    this.clearConnectTimer();
+    this.connectTimer = window.setTimeout(() => {
+      this.connectTimer = null;
+      if (conn.open) return;
+      conn.close();
+      this.handleLinkLost(conn);
+    }, PHONE_CONNECT_TIMEOUT_MS);
+  }
+
+  private startHeartbeat() {
+    this.stopHeartbeat();
+    this.heartbeatTimer = window.setInterval(() => this.heartbeatTick(), PHONE_HEARTBEAT_MS);
+  }
+
+  private heartbeatTick() {
+    const conn = this.connection;
+    if (!conn || !conn.open) return;
+    if (Date.now() - this.lastStageMessageAt > PHONE_SILENCE_TIMEOUT_MS) {
+      // Timers pause while a phone sleeps. After wake-up the link is usually dead even if the browser has not reported it.
+      this.handleLinkLost(conn);
+      conn.close();
+      return;
+    }
+    conn.send({ type: 'PING', timestamp: Date.now() });
+  }
+
+  private stopHeartbeat() {
+    if (this.heartbeatTimer !== null) {
+      window.clearInterval(this.heartbeatTimer);
+      this.heartbeatTimer = null;
+    }
+  }
+
+  private clearConnectTimer() {
+    if (this.connectTimer !== null) {
+      window.clearTimeout(this.connectTimer);
+      this.connectTimer = null;
+    }
+  }
+
+  private clearReconnectTimer() {
+    if (this.reconnectTimer !== null) {
+      window.clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
+    }
   }
 
   private scheduleReconnect() {
-    if (this.isDestroyed || this.reconnectTimer) return;
+    if (this.isDestroyed || this.reconnectTimer !== null) return;
     this.reconnectTimer = window.setTimeout(() => {
       this.reconnectTimer = null;
-      if (!this.connection || !this.connection.open) {
-        if (this.peer) {
-          try { this.peer.destroy(); } catch { /* ignore */ }
-          this.peer = null;
-        }
-        this.connectToHost();
-      }
-    }, 3000);
+      if (!this.connection) this.rebuildPeer();
+    }, PHONE_RECONNECT_DELAY_MS);
   }
 
-  public sendCommand(cmd: Omit<RemoteCommand, 'timestamp'> & { timestamp?: number }) {
+  private rebuildPeer() {
+    this.attempt = null;
+    this.clearConnectTimer();
+    if (this.peer) {
+      try { this.peer.destroy(); } catch { /* already gone */ }
+      this.peer = null;
+    }
+    this.connectToHost();
+  }
+
+  /** Drops the current link and dials the stage again right away (used by the "Reconnect" button). */
+  public reconnectNow() {
+    if (this.isDestroyed) return;
+    this.clearReconnectTimer();
+    const stale = this.connection ?? this.attempt;
+    this.connection = null;
+    this.attempt = null;
+    this.stopHeartbeat();
+    stale?.close();
+    this.rebuildPeer();
+  }
+
+  /** Returns true when the command left over the live link. False means the stage did not receive it. */
+  public sendCommand(cmd: RemoteCommandInput): boolean {
     const fullCmd: RemoteCommand = {
       ...cmd,
       speaker: this.speaker,
@@ -471,8 +634,8 @@ export class PhoneCompanionSync {
       timestamp: cmd.timestamp || Date.now()
     };
 
-    // Trigger local haptic feedback on mobile
-    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    // Continuous input (touch drag, slider) must not buzz on every frame
+    if (!cmd.isContinuous && typeof navigator !== 'undefined' && 'vibrate' in navigator) {
       try {
         navigator.vibrate(25);
       } catch {
@@ -489,13 +652,13 @@ export class PhoneCompanionSync {
       }
     }
 
-    // Send to Stage WebRTC Host
-    if (this.connection && this.connection.open) {
-      try {
-        this.connection.send(fullCmd);
-      } catch {
-        // Ignore
-      }
+    const conn = this.connection;
+    if (!conn || !conn.open) return false;
+    try {
+      conn.send(fullCmd);
+      return true;
+    } catch {
+      return false;
     }
   }
 
@@ -516,14 +679,15 @@ export class PhoneCompanionSync {
 
   public destroy() {
     this.isDestroyed = true;
-    if (this.pingInterval) window.clearInterval(this.pingInterval);
-    if (this.reconnectTimer) window.clearTimeout(this.reconnectTimer);
+    this.clearReconnectTimer();
+    this.clearConnectTimer();
+    this.stopHeartbeat();
     this.stateListeners.clear();
     this.connectionListeners.clear();
-    if (this.connection) {
-      this.connection.close();
-      this.connection = null;
-    }
+    const stale = this.connection ?? this.attempt;
+    this.connection = null;
+    this.attempt = null;
+    stale?.close();
     if (this.peer) {
       this.peer.destroy();
       this.peer = null;

@@ -13,9 +13,12 @@ import {
 } from 'lucide-react';
 import { soundFX } from '../utils/soundEffects';
 
+const LOCAL_HOSTNAMES = ['localhost', '127.0.0.1', '[::1]'];
+
 interface RemotePairingModalProps {
   roomCode: string;
   connectedCount: number;
+  isStageOnline: boolean;
   latestSpeakerName: string | null;
   onClose: () => void;
 }
@@ -23,6 +26,7 @@ interface RemotePairingModalProps {
 export const RemotePairingModal: React.FC<RemotePairingModalProps> = ({
   roomCode,
   connectedCount,
+  isStageOnline,
   latestSpeakerName,
   onClose
 }) => {
@@ -31,6 +35,8 @@ export const RemotePairingModal: React.FC<RemotePairingModalProps> = ({
 
   // Construct absolute URL for the phone to open
   const origin = typeof window !== 'undefined' ? window.location.origin : 'https://wafpresentation.vercel.app';
+  // A phone cannot reach "localhost" on this laptop, so a QR code built from it can never work
+  const isLocalOnlyOrigin = typeof window !== 'undefined' && LOCAL_HOSTNAMES.includes(window.location.hostname);
   const remoteUrl = `${origin}/?mode=remote&room=${encodeURIComponent(roomCode)}`;
 
   useEffect(() => {
@@ -97,6 +103,18 @@ export const RemotePairingModal: React.FC<RemotePairingModalProps> = ({
 
         {/* Content Body */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', padding: 'var(--space-3) 0' }}>
+          {isLocalOnlyOrigin && (
+            <div role="alert" style={{ padding: '10px 14px', borderRadius: 'var(--radius-md)', background: 'rgba(255, 69, 58, 0.1)', border: '1px solid rgba(255, 69, 58, 0.35)', fontSize: 12, lineHeight: 1.5 }}>
+              <strong>Phones cannot open this link.</strong> This page is running on localhost. Start the dev server with <code>npm run dev -- --host</code>, open the Network address it prints, then scan again. Or use the deployed site.
+            </div>
+          )}
+
+          {!isStageOnline && (
+            <div role="status" aria-live="polite" style={{ padding: '10px 14px', borderRadius: 'var(--radius-md)', background: 'rgba(255, 153, 0, 0.08)', border: '1px solid rgba(255, 153, 0, 0.3)', fontSize: 12, lineHeight: 1.5 }}>
+              <strong>Stage link offline.</strong> Reconnecting to the phone network. Phones cannot control this screen until it reconnects.
+            </div>
+          )}
+
           {/* Status banner */}
           <div style={{
             display: 'flex',

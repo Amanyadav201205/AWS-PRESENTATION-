@@ -12,9 +12,15 @@ import { ChaosBanner } from './components/ChaosBanner';
 import { AutoPilotBar } from './components/AutoPilotBar';
 import { PresenterFooter } from './components/PresenterFooter';
 import { soundFX } from './utils/soundEffects';
+import {
+  CONTENT_ZOOM_DEFAULT,
+  getScrollPercent,
+  resolveContentZoom,
+  runContentScrollCommand,
+} from './utils/contentScrollControl';
 import { useDialogFocusTrap } from './hooks/useDialogFocusTrap';
 import {
-  StageHostSync,
+  getStageHostSync,
   getOrGenerateRoomCode,
 } from './services/presentationRemoteSync';
 import { StorylineStage } from './types';
@@ -87,6 +93,9 @@ export function App() {
   // Simulation traffic and attack scenario remote sync states
   const [userLoad, setUserLoad] = useState<number>(2500);
   const [activeAttack, setActiveAttack] = useState<AttackScenario>('none');
+  // Main site scroll position and zoom, driven by the phone scroll pad
+  const [contentZoom, setContentZoom] = useState<number>(CONTENT_ZOOM_DEFAULT);
+  const [contentScrollPercent, setContentScrollPercent] = useState<number>(0);
   
   // Audited requirement 1.19: Sound effects default to muted
   const [audioEnabled, setAudioEnabled] = useState<boolean>(false);
@@ -127,8 +136,8 @@ export function App() {
 
   // Remote presenter sync (stage host)
   const [roomCode] = useState(() => getOrGenerateRoomCode());
-  const [remoteSync] = useState(() => new StageHostSync(roomCode));
-  const [_remoteConnected, setRemoteConnected] = useState(false);
+  const [remoteSync] = useState(() => getStageHostSync(roomCode));
+  const [isStageOnline, setIsStageOnline] = useState(false);
   const [remoteDeviceCount, setRemoteDeviceCount] = useState(0);
 
   // HUD toast shown on stage when a phone sends a command
@@ -372,6 +381,20 @@ export function App() {
             showHudToast(spk, `Focused on ${cmd.target.toUpperCase()}`);
           }
           break;
+        case 'SCROLL_BY':
+        case 'SCROLL_PAGE':
+        case 'SCROLL_EDGE':
+        case 'SCROLL_SECTION_STEP': {
+          const label = mainRef.current ? runContentScrollCommand(cmd, mainRef.current) : null;
+          if (label) showHudToast(spk, label);
+          break;
+        }
+        case 'ZOOM_CONTENT': {
+          const nextZoom = resolveContentZoom(cmd, contentZoom);
+          setContentZoom(nextZoom);
+          if (!cmd.isContinuous) showHudToast(spk, `Content zoom ${nextZoom}%`);
+          break;
+        }
         case 'SPOTLIGHT': {
           if (cmd.label) showHudToast(spk, `Laser Spotlight: ${cmd.label}`);
           // Clear any active spotlights
@@ -503,12 +526,32 @@ export function App() {
       }
     });
     return unsub;
-  }, [remoteSync, currentDomainIndex, activeDomain, handleTriggerChaos, handleResetChaos, closeAllModals, showHudToast]);
+  }, [remoteSync, currentDomainIndex, activeDomain, contentZoom, handleTriggerChaos, handleResetChaos, closeAllModals, showHudToast]);
+
+  // Track the main scroll container so phones can show how far through the page the stage is
+  useEffect(() => {
+    const main = mainRef.current;
+    if (!main) return;
+    let frame: number | null = null;
+    const syncPercent = () => {
+      frame = null;
+      setContentScrollPercent(getScrollPercent(main));
+    };
+    const handleScroll = () => {
+      if (frame === null) frame = requestAnimationFrame(syncPercent);
+    };
+    main.addEventListener('scroll', handleScroll, { passive: true });
+    syncPercent();
+    return () => {
+      main.removeEventListener('scroll', handleScroll);
+      if (frame !== null) cancelAnimationFrame(frame);
+    };
+  }, []);
 
   // Listen to connection state changes
   useEffect(() => {
     const unsub = remoteSync.onConnectionStatus((connected, count) => {
-      setRemoteConnected(connected);
+      setIsStageOnline(connected);
       setRemoteDeviceCount(count);
     });
     return unsub;
@@ -561,11 +604,14 @@ export function App() {
       spotlightTarget: null,
       latestSpeakerName: hudSpeakerName,
       latestActionNotice: hudActionNotice,
+      contentScrollPercent,
+      contentZoom,
     });
   }, [
     remoteSync, currentDomainIndex, viewMode, chaosPhase, displayMode,
     slideMode, isSlideGridOpen, userLoad, activeAttack, activeStorylineStage,
     remoteDeviceCount, hudSpeakerName, hudActionNotice, audioEnabled,
+    contentScrollPercent, contentZoom,
     selectedNode,
     modalPillarId, modalSubtopicId, modalWorkloadId, modalIncidentId, modalExecTier, modalTheoryDomainId,
     is6PillarsOpen, isExecutiveReviewOpen, isStressLabOpen,
@@ -696,7 +742,7 @@ export function App() {
         />
 
         {/* Main Content Area with bottom padding for minimized dock */}
-        <main className="app-content" ref={mainRef} id="main-content">
+        <main className="app-content" ref={mainRef} id="main-content" style={{ zoom: contentZoom / 100 }}>
           <div id="section-hero" />
           {/* Domain Hero - Derived 1-based Module Index (P0 Fix 1.2) */}
           <section className="domain-hero" aria-labelledby="domain-title">
@@ -945,6 +991,7 @@ export function App() {
           <RemotePairingModal
             roomCode={roomCode}
             connectedCount={remoteDeviceCount}
+            isStageOnline={isStageOnline}
             latestSpeakerName={hudSpeakerName}
             onClose={() => setIsPairingModalOpen(false)}
           />

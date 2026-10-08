@@ -113,6 +113,21 @@ The platform is continuously deployed to **Vercel** with global edge CDN distrib
 
 ---
 
+## 📱 Phone Remote: Connection Requirements
+
+Phones pair with the stage through a QR code and a WebRTC link (PeerJS). The stage must stay reachable for signalling and the phones must reach the stage directly:
+
+* **Open the stage on a reachable address.** The QR code uses the page you are on. `localhost` cannot be opened from a phone, so run `npm run dev -- --host` and open the Network address it prints, or use the deployed site.
+* **Same network or a relay.** Direct links work on the same Wi-Fi and most home connections. Cellular phones and networks with client isolation need a TURN relay. Set these at build time (for example in `.env.local`):
+
+| Variable | Example | Purpose |
+|---|---|---|
+| `VITE_TURN_URL` | `turn:turn.example.com:3478` | TURN relay address |
+| `VITE_TURN_USERNAME` | `presenter` | TURN username |
+| `VITE_TURN_CREDENTIAL` | `secret` | TURN credential |
+
+* **Automatic recovery.** The stage re-registers after a Wi-Fi drop or laptop sleep. Phones show a "Not linked" banner with a Reconnect button while they are not linked, and reconnect on their own after screen lock or a network change.
+
 ## 🛠️ Technology Stack
 
 * **Framework**: React 19 + TypeScript

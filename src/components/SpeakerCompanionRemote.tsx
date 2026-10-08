@@ -52,6 +52,8 @@ import {
   RemoteScrollTarget
 } from '../services/presentationRemoteSync';
 import { soundFX } from '../utils/soundEffects';
+import { ScrollZoomPad } from './ScrollZoomPad';
+import { StageLinkBanner } from './StageLinkBanner';
 
 interface SpeakerCompanionRemoteProps {
   initialRoomCode: string;
@@ -68,7 +70,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
   const [isEditingRoom, setIsEditingRoom] = useState<boolean>(false);
   const [tempRoomInput, setTempRoomInput] = useState<string>(initialRoomCode);
   const [speaker, setSpeaker] = useState<RemoteSpeaker>(initialSpeaker);
-  const [activeTab, setActiveTab] = useState<'script' | 'actions' | 'qa' | 'deck'>('script');
+  const [activeTab, setActiveTab] = useState<'script' | 'actions' | 'qa' | 'deck' | 'scroll'>('script');
   const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xl'>('large');
   const [scriptViewStyle, setScriptViewStyle] = useState<'cues' | 'continuous'>('cues');
   const [keynoteSpeechType, setKeynoteSpeechType] = useState<'module' | 'intro' | 'outro'>('module');
@@ -102,7 +104,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
     connectedDevicesCount: 1,
     spotlightTarget: null,
     latestSpeakerName: null,
-    latestActionNotice: null
+    latestActionNotice: null,
+    contentScrollPercent: 0,
+    contentZoom: 100
   });
 
   // Presentation elapsed timer
@@ -1177,6 +1181,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         </div>
       </div>
 
+      <StageLinkBanner isLinked={isConnected} onReconnect={() => syncRef.current?.reconnectNow()} />
+
       {/* Tab Nav for Script Views */}
       <div style={{
         display: 'flex',
@@ -1257,10 +1263,35 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         >
           📊 Keynote Thesis &amp; Outro
         </button>
+
+        <button
+          onClick={() => { triggerHaptic(); setActiveTab('scroll'); }}
+          style={{
+            padding: '6px 12px',
+            borderRadius: 16,
+            fontSize: 12,
+            fontWeight: 600,
+            border: 'none',
+            cursor: 'pointer',
+            background: activeTab === 'scroll' ? '#ffffff' : 'rgba(255,255,255,0.06)',
+            color: activeTab === 'scroll' ? '#000000' : '#86868b',
+            whiteSpace: 'nowrap',
+            flexShrink: 0
+          }}
+        >
+          🖐 Scroll &amp; Zoom
+        </button>
       </div>
 
       {/* Main Body Content Scroll Area */}
       <div ref={scrollContainerRef} style={{ flex: 1, padding: '16px', overflowY: 'auto', paddingBottom: 320 }}>
+        {activeTab === 'scroll' && (
+          <ScrollZoomPad
+            scrollPercent={stageState.contentScrollPercent ?? 0}
+            zoomLevel={stageState.contentZoom ?? 100}
+            onCommand={(cmd) => syncRef.current?.sendCommand(cmd)}
+          />
+        )}
         {/* ========================================================================= */}
         {/* TAB 1: SPOKEN TELEPROMPTER WITH INLINE STAGE ACTIONS                      */}
         {/* ========================================================================= */}

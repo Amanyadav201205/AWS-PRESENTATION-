@@ -3830,3 +3830,144 @@ pre {
 
 
 
+
+/* Phone scroll & zoom pad: drives the main site's scroll container and zoom */
+.scroll-pad {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: #f5f5f7;
+}
+
+.scroll-pad-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scroll-pad-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.scroll-pad-progress-fill {
+  height: 100%;
+  background: #30d158;
+  transition: width 0.15s linear;
+}
+
+.scroll-pad-readout {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #aeaeb2;
+  font-variant-numeric: tabular-nums;
+}
+
+.scroll-pad-surface {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 220px;
+  border-radius: 18px;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.04);
+  color: #aeaeb2;
+  font-size: 13px;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.scroll-pad-segmented,
+.scroll-pad-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.scroll-pad-grid--two {
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 8px;
+}
+
+.scroll-pad-grid--four {
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 8px;
+}
+
+.scroll-pad-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.scroll-pad-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8e8e93;
+  margin-bottom: 8px;
+}
+
+.scroll-pad-btn,
+.scroll-pad-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f5f7;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.scroll-pad-btn:focus-visible,
+.scroll-pad-chip:focus-visible,
+.scroll-pad-slider:focus-visible {
+  outline: 3px solid #0a84ff;
+  outline-offset: 2px;
+}
+
+.scroll-pad-btn:active,
+.scroll-pad-chip:active {
+  transform: scale(0.97);
+}
+
+.scroll-pad-chip[aria-pressed="true"] {
+  background: #ffffff;
+  color: #000000;
+}
+
+.scroll-pad-btn--icon {
+  min-width: 44px;
+  padding: 8px;
+}
+
+.scroll-pad-zoom-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.scroll-pad-slider {
+  flex: 1;
+  min-height: 44px;
+  accent-color: #30d158;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-pad-progress-fill {
+    transition: none;
+  }
+}
