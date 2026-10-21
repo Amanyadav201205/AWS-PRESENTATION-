@@ -2,7 +2,7 @@ import type PptxGenJS from 'pptxgenjs';
 import type { ArchitectureSpec } from '../types';
 import { PPTX_COLORS, PPTX_FONT } from './deckPptxTheme';
 
-const NODE_HEIGHT_MAX = 0.62;
+const NODE_HEIGHT_MAX = 0.7;
 const NODE_GAP = 0.28;
 
 interface DiagramBox {
@@ -44,7 +44,7 @@ export const addArchitectureDiagram = (
       w: box.w - 0.24,
       h: box.h,
       fontFace: PPTX_FONT,
-      fontSize: 12,
+      fontSize: 14,
       bold: true,
       color: PPTX_COLORS.ink,
       valign: 'middle',

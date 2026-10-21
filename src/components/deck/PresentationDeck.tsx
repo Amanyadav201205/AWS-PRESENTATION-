@@ -14,12 +14,12 @@ interface PresentationDeckProps {
   onExit: () => void;
   onExportPptx: () => void;
   isExporting: boolean;
-  renderDiagram: () => ReactNode;
+  isFailing: boolean;
 }
 
-const renderSlide = (slide: DeckSlide, renderDiagram: () => ReactNode): ReactNode => {
+const renderSlide = (slide: DeckSlide, isFailing: boolean): ReactNode => {
   if (slide.kind === 'module-theory') return <DeckModuleTheorySlide slide={slide} />;
-  if (slide.kind === 'comparison') return <DeckComparisonSlide slide={slide} renderDiagram={renderDiagram} />;
+  if (slide.kind === 'comparison') return <DeckComparisonSlide slide={slide} isFailing={isFailing} />;
   return <DeckTextSlide slide={slide} />;
 };
 
@@ -30,7 +30,7 @@ export const PresentationDeck: React.FC<PresentationDeckProps> = ({
   onExit,
   onExportPptx,
   isExporting,
-  renderDiagram
+  isFailing
 }) => {
   const safeIndex = Math.min(Math.max(slideIndex, 0), DECK_SLIDE_COUNT - 1);
   const slide = deckSlides[safeIndex];
@@ -52,7 +52,7 @@ export const PresentationDeck: React.FC<PresentationDeckProps> = ({
 
       <main className="deck-stage-wrap">
         <section className="deck-slide" aria-live="polite" aria-label={`Slide ${safeIndex + 1} of ${DECK_SLIDE_COUNT}`}>
-          {renderSlide(slide, renderDiagram)}
+          {renderSlide(slide, isFailing)}
         </section>
       </main>
 

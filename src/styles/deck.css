@@ -163,34 +163,9 @@
   font-size: clamp(18px, 2.8cqi, 36px);
 }
 
-.deck-comparison-labels {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4cqi;
-}
-
-.deck-label {
-  font-size: clamp(11px, 1.4cqi, 16px);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  padding-bottom: 0.3em;
-  border-bottom: 2px solid var(--separator);
-}
-
-.deck-label-naive {
-  color: var(--status-danger);
-  border-color: var(--status-danger);
-}
-
-.deck-label-waf {
-  color: var(--status-success);
-  border-color: var(--status-success);
-}
-
 .deck-diagram {
-  flex: 1;
-  min-height: 0;
+  flex: 1 1 0;
+  min-height: 240px;
   position: relative;
   overflow: hidden;
 }
@@ -201,21 +176,6 @@
   gap: 4cqi;
 }
 
-/* Each module's two builds must fit on one slide, so the columns are scaled to the comparison area. */
-.deck-diagram .diagram-only-screen .diagram-column {
-  zoom: 0.58;
-}
-
-.deck-comparison-summary {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4cqi;
-  font-size: clamp(11px, 1.5cqi, 17px);
-  font-weight: 600;
-  color: var(--text-secondary);
-  padding-top: 0.5em;
-  border-top: 1px solid var(--separator-subtle);
-}
 
 @media (max-width: 720px) {
   .deck-topbar,
@@ -235,10 +195,7 @@
     grid-template-columns: 1fr;
   }
   .deck-comparison-labels,
-  .deck-comparison-summary {
-    grid-template-columns: 1fr;
-  }
-  /* On a phone the naive build sits above the Well-Architected build, and the slide scrolls */
+    /* On a phone the naive build sits above the Well-Architected build, and the slide scrolls */
   .deck-slide {
     overflow-y: auto;
   }
@@ -249,13 +206,6 @@
   .deck-diagram .diagram-only-screen {
     grid-template-columns: minmax(0, 1fr);
     gap: 24px;
-  }
-  .deck-diagram .diagram-only-screen .diagram-column {
-    zoom: 0.5;
-    max-width: 100%;
-  }
-  .deck-diagram .diagram-only-screen .diagram-column * {
-    max-width: 100%;
   }
   .deck-slide {
     overflow-x: hidden;
@@ -355,4 +305,161 @@
 
 .deck-comparison .deck-table {
   flex: none;
+}
+
+/* Flow diagrams: each build is a column of large cards, joined by arrows in the order a request travels. */
+.deck-flow-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 3cqi;
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.deck-flow-column {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+}
+
+.deck-flow-label {
+  font-size: clamp(12px, 1.6cqi, 22px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: 0.35em;
+  margin-bottom: 0.5em;
+  border-bottom: 3px solid currentColor;
+}
+
+.deck-flow-naive .deck-flow-label {
+  color: var(--status-danger);
+}
+
+.deck-flow-resilient .deck-flow-label {
+  color: var(--status-success);
+}
+
+.deck-flow {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 1 0;
+  min-height: 0;
+  padding: 0;
+}
+
+.deck-flow-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.1em;
+  padding: 0.35em 0.8em;
+  border-radius: var(--radius-control);
+  border: 2px solid var(--separator);
+  background: var(--bg-surface);
+  min-width: 0;
+}
+
+.deck-flow-naive .deck-flow-node {
+  border-color: #e7b0ad;
+  background: #f8e9e8;
+}
+
+.deck-flow-resilient .deck-flow-node {
+  border-color: #a9d3b5;
+  background: #e8f4ec;
+}
+
+.deck-flow-name {
+  font-size: clamp(13px, 1.6cqi, 24px);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.deck-flow-service {
+  font-size: clamp(11px, 1.2cqi, 17px);
+  line-height: 1.25;
+  color: var(--text-secondary);
+}
+
+.deck-flow-tags {
+  position: absolute;
+  top: 0.5em;
+  right: 0.7em;
+  display: flex;
+  gap: 0.3em;
+}
+
+.deck-flow-tag {
+  font-size: clamp(10px, 1.2cqi, 15px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.12em 0.5em;
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface-solid);
+  border: 1px solid var(--separator);
+  color: var(--text-secondary);
+}
+
+.deck-flow-naive .deck-flow-tag:not(.deck-flow-tag-status) {
+  border-color: var(--status-danger);
+  color: var(--status-danger);
+}
+
+.deck-flow-tag-status {
+  background: var(--status-danger);
+  border-color: var(--status-danger);
+  color: #ffffff;
+}
+
+.deck-flow-resilient .deck-flow-tag-status {
+  background: var(--status-success);
+  border-color: var(--status-success);
+}
+
+.deck-flow-node.is-affected {
+  box-shadow: 0 0 0 2px var(--status-danger);
+}
+
+.deck-comparison .deck-table {
+  flex: none;
+}
+
+@media (max-width: 720px) {
+  .deck-flow-pair {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The comparison fills the slide: header on top, flows in the middle, measures underneath. */
+.deck-comparison {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Cards are spaced by a fixed gap, which holds the arrows, and share the column height. */
+.deck-flow {
+  gap: 1.4cqi;
+}
+
+.deck-flow-node {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.deck-flow-node + .deck-flow-node::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: calc(-1.4cqi);
+  height: 1.4cqi;
+  border-left: 2px solid var(--text-tertiary);
 }

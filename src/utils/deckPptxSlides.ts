@@ -110,8 +110,8 @@ export const addComparisonSlide = (pptx: PptxGenJS, deckSlide: DeckSlide): void 
     { x: PPTX_MARGIN, label: 'Naive build', color: PPTX_COLORS.danger, spec: domain.naive, resilient: false },
     { x: PPTX_MARGIN + columnWidth + COLUMN_GAP, label: 'Well-Architected build', color: PPTX_COLORS.success, spec: domain.wellArch, resilient: true }
   ];
-  const diagramTop = 2.25;
-  const diagramBottom = 5.25;
+  const diagramTop = 2.05;
+  const diagramBottom = 5.6;
   columns.forEach((column) => {
     slide.addText(column.label.toUpperCase(), {
       x: column.x, y: diagramTop - 0.1 - 0.2, w: columnWidth, h: 0.3,
