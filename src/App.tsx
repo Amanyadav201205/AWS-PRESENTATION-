@@ -968,7 +968,23 @@ export function App() {
             onExit={() => setDisplayMode('studio')}
             onExportPptx={handleExportPptx}
             isExporting={isExportingPptx}
-            isFailing={chaosPhase !== 'idle'}
+            renderDiagram={() => (
+              <DualArchitectureStage
+                diagramOnly
+                packetFlowOn={packetFlowOn}
+                naive={activeDomain.naive}
+                wellArch={activeDomain.wellArch}
+                viewMode="split"
+                setViewMode={setViewMode}
+                chaosPhase={chaosPhase}
+                affectedNodeIds={activeDomain.chaos.affectedNodeIds}
+                onSelectNode={() => { /* the big screen never opens panels */ }}
+                externalUserLoad={userLoad}
+                onUserLoadChange={setUserLoad}
+                externalAttack={activeAttack}
+                onAttackChange={setActiveAttack}
+              />
+            )}
           />
         )}
 

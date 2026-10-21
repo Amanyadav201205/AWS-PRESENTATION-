@@ -110,7 +110,7 @@ export const theorySlides: DeckSlide[] = [
     domainIndex: 0,
     lines: [
       {
-        say: 'Every comparison screen has the same layout. The left column is the naive build: single servers, flat networks, manual steps. The right column is the Well-Architected build. The lanes between boxes are packets. Green means healthy traffic and red means a failing path. We run the same surge and the same failure through both, so the difference you see is the architecture, not the luck of the moment.'
+        say: 'Every comparison screen is the same live simulation. The left column is the naive build: single servers, flat networks, manual steps, with SPOF tags on the single points. The right column is the Well-Architected build, with HA tags and availability zones. Packets move down the connectors. At peak load and during the failure, red cards shake on the naive side and green cards pulse on the Well-Architected side, and the measures underneath show the result.'
       }
     ]
   }

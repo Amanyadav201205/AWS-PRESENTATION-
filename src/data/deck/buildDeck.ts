@@ -17,11 +17,10 @@ const componentTable = (index: number): DeckTable => ({
 const measuresTable = (index: number): DeckTable => {
   const { naive, wellArch } = allDomains[index];
   return {
-    headers: ['Measure', 'Naive build', 'Well-Architected build'],
+    headers: ['Build', 'Availability', 'Recovery time', 'Monthly cost'],
     rows: [
-      ['Availability', extractPercent(naive.availabilitySLA), extractPercent(wellArch.availabilitySLA)],
-      ['Recovery time', naive.rto, wellArch.rto],
-      ['Monthly cloud cost', `$${naive.monthlyCostEst.toLocaleString('en-US')}`, `$${wellArch.monthlyCostEst.toLocaleString('en-US')}`]
+      ['Naive build', extractPercent(naive.availabilitySLA), naive.rto, `$${naive.monthlyCostEst.toLocaleString('en-US')}`],
+      ['Well-Architected', extractPercent(wellArch.availabilitySLA), wellArch.rto, `$${wellArch.monthlyCostEst.toLocaleString('en-US')}`]
     ]
   };
 };
@@ -55,8 +54,9 @@ const buildModuleSlides = (index: number): DeckSlide[] => {
     tables: [measuresTable(index)],
     domainIndex: index,
     lines: [
-      { say: script.naive, cues: [SHOW_BOTH, LOAD_NORMAL, RECOVER, PACKETS_ON] },
-      { say: script.resilient, cues: [LOAD_PEAK, FAILURE, PACKETS_ON] }
+      { say: script.leftRest, cues: [SHOW_BOTH, LOAD_NORMAL, RECOVER, PACKETS_ON] },
+      { say: script.rightRest, cues: [SHOW_BOTH, LOAD_NORMAL, RECOVER, PACKETS_ON] },
+      { say: script.underFailure, cues: [LOAD_PEAK, FAILURE, PACKETS_ON] }
     ]
   };
 

@@ -7,7 +7,7 @@ export const SPEECH_WORDS_PER_SECOND = 2.4;
 export const TAP_SECONDS = 0.5;
 /** The talk is planned to run at least fifteen minutes, with a ceiling for the timer. */
 export const TALK_MIN_SECONDS = 15 * 60;
-export const TALK_MAX_SECONDS = 22 * 60;
+export const TALK_MAX_SECONDS = 30 * 60;
 /** Time the stage needs after a module change before it can take screen cues. */
 export const TALK_SETTLE_MS = 350;
 

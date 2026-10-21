@@ -89,10 +89,12 @@ export const readingTable: DeckTable = {
   rows: [
     ['Left column: naive build', 'Single servers, flat networks, manual steps'],
     ['Right column: Well-Architected build', 'Redundancy across zones, isolation, automation'],
-    ['Red lane', 'A packet on a failing or blocked path'],
-    ['Green lane', 'Healthy traffic on the resilient path'],
-    ['SPOF tag', 'A single point of failure in the naive design'],
-    ['HA tag', 'A component built for high availability']
+    ['Card with a SPOF tag', 'A single point of failure in the naive build'],
+    ['Card with an HA tag or AZ pill', 'Built for high availability, and the zone it sits in'],
+    ['Red card that shakes', 'Failed, or overloaded at peak load (naive build)'],
+    ['Green card that pulses', 'Recovering or rerouted (Well-Architected build)'],
+    ['Amber or green connector with packets', 'Healthy traffic moving down the path'],
+    ['Red dashed connector', 'A failing or overloaded path; its packets stop']
   ]
 };
 

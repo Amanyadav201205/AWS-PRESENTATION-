@@ -1,6 +1,6 @@
 # WAF Presentation: Speaker Script and Slide Guide
 
-About 3,014 spoken words in 55 lines across 38 slides: about **21:23 minutes** at a steady pace (144 words per minute). Devarsh and Aman alternate line by line.
+About 3,854 spoken words in 70 lines across 38 slides: about **27:21 minutes** at a steady pace (144 words per minute). Devarsh and Aman alternate line by line.
 
 The deck is in the site (`?present=1`) and can be downloaded as a PowerPoint file from the presentation screen. Each PowerPoint slide carries its script in the speaker notes.
 
@@ -140,12 +140,14 @@ Open a given line directly with `?present=1&line=N`, where N starts at 0.
 |---|---|
 | Left column: naive build | Single servers, flat networks, manual steps |
 | Right column: Well-Architected build | Redundancy across zones, isolation, automation |
-| Red lane | A packet on a failing or blocked path |
-| Green lane | Healthy traffic on the resilient path |
-| SPOF tag | A single point of failure in the naive design |
-| HA tag | A component built for high availability |
+| Card with a SPOF tag | A single point of failure in the naive build |
+| Card with an HA tag or AZ pill | Built for high availability, and the zone it sits in |
+| Red card that shakes | Failed, or overloaded at peak load (naive build) |
+| Green card that pulses | Recovering or rerouted (Well-Architected build) |
+| Amber or green connector with packets | Healthy traffic moving down the path |
+| Red dashed connector | A failing or overloaded path; its packets stop |
 
-**8. Aman:** Every comparison screen has the same layout. The left column is the naive build: single servers, flat networks, manual steps. The right column is the Well-Architected build. The lanes between boxes are packets. Green means healthy traffic and red means a failing path. We run the same surge and the same failure through both, so the difference you see is the architecture, not the luck of the moment.
+**8. Aman:** Every comparison screen is the same live simulation. The left column is the naive build: single servers, flat networks, manual steps, with SPOF tags on the single points. The right column is the Well-Architected build, with HA tags and availability zones. Packets move down the connectors. At peak load and during the failure, red cards shake on the naive side and green cards pulse on the Well-Architected side, and the measures underneath show the result.
 
 ### Slide 8: Architecture Overview
 
@@ -173,15 +175,16 @@ On screen:
 
 > Failure injected: Cascading Availability Zone Outage & Traffic Surge
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | 98.5% | 99.99% |
-| Recovery time | 4 - 8 Hours | Typically < 30s (Aurora failover) |
-| Monthly cloud cost | $4,450 | $1,820 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | 98.5% | 4 - 8 Hours | $4,450 |
+| Well-Architected | 99.99% | Typically < 30s (Aurora failover) | $1,820 |
 
-**10. Aman:** On the left is the overview build: one application server and one primary database, both single points of failure, plus a flat bucket. Under the peak surge and the zone failure the stack goes dark. Its stated availability is 98.5 percent, with a recovery of four to eight hours.
+**10. Aman:** On the left is the naive build at normal load. Four cards run top to bottom: internet clients, one App Server, one Primary Database and a flat S3 bucket. The App Server and the Primary Database carry SPOF tags. Packets move down the connectors toward a single path.
 
-**11. Devarsh:** On the right is the same surge and the same failure. CloudFront and the web application firewall sit at the edge, a load balancer spans three zones, and Aurora keeps a standby. The failed zone leaves rotation within seconds. The design states 99.99 percent availability, failover in under thirty seconds, and monthly cloud spend down from four thousand four hundred and fifty dollars to eighteen hundred and twenty.
+**11. Devarsh:** On the right is the Well-Architected build at the same load: six cards from global clients through CloudFront with AWS WAF, the Application Load Balancer, the Auto-Scaling compute pool, Aurora Multi-AZ and the regional S3 store. Each card carries an HA tag, and the green connectors show healthy traffic on every hop.
+
+**12. Aman:** Now we push to one hundred thousand users and inject the regional outage. On the left, the App Server and the Primary Database shake and turn red, their connectors turn red and dashed, and the packets stop, so the stack goes dark. On the right, the compute and database cards pulse green as they recover, and the traffic stays on the healthy path. The strip below shows availability at 98.5 percent on the left and 99.99 on the right.
 
 ### Slide 10: Storage Layer
 
@@ -201,7 +204,7 @@ On screen:
 | Deletion protection | Flat bucket with no versioning | S3 Object Lock in compliance mode: every delete returns 403 |
 | Recovery points | None that cannot be changed | AWS Backup vault with immutable recovery points |
 
-**12. Aman:** The theory here is Reed-Solomon erasure coding, published by Irving Reed and Gustave Solomon in 1960. Split data into k pieces, add parity pieces, and you can rebuild the original from any k of the n. That is how S3 claims eleven nines of durability without keeping three full copies of every disk. The math gives the chance of losing data as a binomial tail. Spread enough independent shards across zones and that chance becomes vanishingly small.
+**13. Devarsh:** The theory here is Reed-Solomon erasure coding, published by Irving Reed and Gustave Solomon in 1960. Split data into k pieces, add parity pieces, and you can rebuild the original from any k of the n. That is how S3 claims eleven nines of durability without keeping three full copies of every disk. The math gives the chance of losing data as a binomial tail. Spread enough independent shards across zones and that chance becomes vanishingly small.
 
 ### Slide 11: Amazon S3 Tiering, Object Lock, & EBS gp3 Optimization vs. Un-versioned Flat EBS
 
@@ -209,15 +212,16 @@ On screen:
 
 > Failure injected: Ransomware Extortion & Accidental Object Deletion
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | 99.5% | 99.99% |
-| Recovery time | 48 Hours | 15 Minutes |
-| Monthly cloud cost | $420 | $118 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | 99.5% | 48 Hours | $420 |
+| Well-Architected | 99.99% | 15 Minutes | $118 |
 
-**13. Devarsh:** Storage on the left. Fifty terabytes of medical scans, kept for seven years, sit on one three-terabyte gp2 disk, where speed is tied to size, in a flat bucket with no versioning. A compromised developer key runs a recursive delete, and the scans are gone.
+**14. Aman:** On the left, the naive storage build at normal load. Three cards: a monolithic App Server, one 3 TB gp2 volume and a public, flat S3 bucket. The App Server and the volume carry SPOF tags, so losing either one takes the scans offline. Packets flow down the connectors.
 
-**14. Aman:** On the right: gp3 volumes sized for the workload, an S3 bucket with Object Lock in compliance mode, and Glacier Deep Archive for old scans. Every delete now returns a 403, even for the root user, and AWS Backup keeps immutable recovery points. Monthly storage spend falls from four hundred and twenty dollars to one hundred and eighteen.
+**15. Devarsh:** On the right, the Well-Architected storage layout: five cards. The app instance pool, a right-sized gp3 volume, S3 Intelligent-Tiering, Glacier Deep Archive for old scans and an AWS Backup vault. Each card carries an HA tag, and the green connectors show data moving from hot to cold tiers.
+
+**16. Aman:** Now the ransomware wiper runs at peak load. On the left, the public bucket and the 3 TB volume shake and turn red as the data is deleted, and the packets stop. On the right, the storage cards pulse green: Object Lock rejects every delete and AWS Backup keeps the immutable recovery points. The strip shows the monthly bill, 420 dollars on the left and 118 on the right.
 
 ### Slide 12: Compute Layer
 
@@ -237,7 +241,7 @@ On screen:
 | Zone failure | Out-of-memory crash, full outage | Node unhealthy in about 10 s; replacements in under 75 s |
 | Capacity model | Static size running 24/7 for the peak | On-Demand base plus Spot; $584 to $168 a month |
 
-**15. Devarsh:** Our theory is Amdahl's law, from Gene Amdahl in 1967, with Gustafson's later view of scaled workloads. The speedup from more processors is capped by the serial fraction of the work. A monolith keeps a large serial part, so buying a bigger machine hits a wall. Horizontal scaling wins because stateless instances split the parallel part across many machines. Elasticity then matches supply to demand, instead of buying for one peak a year.
+**17. Devarsh:** Our theory is Amdahl's law, from Gene Amdahl in 1967, with Gustafson's later view of scaled workloads. The speedup from more processors is capped by the serial fraction of the work. A monolith keeps a large serial part, so buying a bigger machine hits a wall. Horizontal scaling wins because stateless instances split the parallel part across many machines. Elasticity then matches supply to demand, instead of buying for one peak a year.
 
 ### Slide 13: Auto Scaling, Graviton3 ARM, & Mixed Spot Fleets vs. Static Single-AZ Monolith
 
@@ -245,15 +249,16 @@ On screen:
 
 > Failure injected: 10x Flash Sale Traffic Surge & AZ-1a Hard Failure
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | 99.0% | 99.99% |
-| Recovery time | 4 Hours | < 60 Seconds |
-| Monthly cloud cost | $584 | $168 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | 99.0% | 4 Hours | $584 |
+| Well-Architected | 99.99% | < 60 Seconds | $168 |
 
-**16. Aman:** Compute on the left. One oversized monolith in one zone, running around the clock. Five thousand shoppers at baseline and fifty thousand in a flash sale. At ten times normal traffic it runs out of memory, the kernel stops the service, and the whole system goes down.
+**18. Aman:** On the left, the naive compute build at normal load. Web traffic enters one Monolith EC2 instance, an m5.4xlarge, with local app storage behind it. Both carry SPOF tags. Packets run down a single path, and the monolith is the only thing serving them.
 
-**17. Devarsh:** On the right, an Auto Scaling group of Graviton instances spans three zones behind a load balancer. When zone a fails, its node is marked unhealthy within about ten seconds, traffic shifts to zones b and c, and replacements launch in under seventy-five seconds. Monthly compute falls from five hundred and eighty-four dollars to one hundred and sixty-eight.
+**19. Devarsh:** On the right, the Well-Architected compute layout. The load balancer fans out to three Auto Scaling nodes, one in each zone, one of them a Spot worker. Each node shows its AZ pill and an HA tag, and green connectors show the traffic spread across all three zones.
+
+**20. Aman:** Now the flash sale hits: one hundred thousand users. On the left, the monolith overloads, shakes and turns red, its connector turns red and dashed, and the packets stop, so the system goes down. On the right, the zone a node fails and pulses green as the load balancer routes around it, while replacement instances launch. The strip shows the bill falling from 584 to 168 dollars a month.
 
 ### Slide 14: Database Layer
 
@@ -273,7 +278,7 @@ On screen:
 | Failover | Rebuild by hand, hours of downtime | Replica promoted; endpoint moves in under 30 s |
 | Durability | One disk, up to 24 hours of lost commits | Six copies across three zones; writes need 4 of 6 |
 
-**18. Aman:** The theory for databases is the CAP theorem from Eric Brewer in 2000, and its extension PACELC from Daniel Abadi in 2012. During a partition you trade availability against consistency. Otherwise you trade latency against consistency. Aurora resolves this with a quorum of six copies across three zones. Writes need four of the six and reads need three, so every read overlaps the latest committed write.
+**21. Devarsh:** The theory for databases is the CAP theorem from Eric Brewer in 2000, and its extension PACELC from Daniel Abadi in 2012. During a partition you trade availability against consistency. Otherwise you trade latency against consistency. Aurora resolves this with a quorum of six copies across three zones. Writes need four of the six and reads need three, so every read overlaps the latest committed write.
 
 ### Slide 15: Amazon Aurora Multi-AZ with Auto-scaling Replicas vs. Self-Managed EC2 MySQL
 
@@ -281,15 +286,16 @@ On screen:
 
 > Failure injected: Primary Database Node Kernel Panic & Hardware Crash
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | 99.0% | 99.99% |
-| Recovery time | 4 - 6 Hours | < 30 Seconds |
-| Monthly cloud cost | $290 | $340 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | 99.0% | 4 - 6 Hours | $290 |
+| Well-Architected | 99.99% | < 30 Seconds | $340 |
 
-**19. Devarsh:** Database on the left. Self-managed MySQL on one virtual machine, backed up by a cron script. Nightly dumps lock the tables and checkouts time out. When the primary machine kernel-panics there is no replica, so the database is down for hours and up to a day of commits is lost.
+**22. Aman:** On the left, the naive database build at normal load. The app servers feed one self-managed MySQL host on EC2, with a local backup script beside it. Both carry SPOF tags. Every packet queues behind the same single host.
 
-**20. Aman:** On the right, an Aurora cluster: the writer in zone a, read replicas in zones b and c, and storage replicated six ways. If the writer dies, a replica is promoted and the cluster endpoint moves in under thirty seconds, with no committed transaction lost. Continuous backups allow point-in-time recovery to the second.
+**23. Devarsh:** On the right, the Aurora cluster: a writer node in zone a, read replicas in zones b and c, and the distributed storage engine underneath. Each node shows its AZ pill and an HA tag, and the green connectors show the path from the app pool through the cluster.
+
+**24. Aman:** Now the writer node crashes at peak load. On the left, the MySQL host goes red and shakes, the packets stop, and there is no replica to take over, so recovery means hours of manual work. On the right, the Aurora writer pulses green as the cluster promotes a read replica in zone b. The strip shows recovery in under 30 seconds on the right, against four to six hours on the left.
 
 ### Slide 16: Networking Environment
 
@@ -309,7 +315,7 @@ On screen:
 | Access rules | Open ports, shared credentials | Security groups reference other security groups by ID |
 | Visibility | No flow logs | VPC Flow Logs capture every connection for audit |
 
-**21. Devarsh:** Our theory is the Saltzer and Schroeder principle of least privilege and compartmentalization, from 1975. Split the system into trust zones so that a breach in one cannot compromise the others. If three independent layers each stop ten percent of attacks, the attacker must beat all three, which is one chance in a thousand. The database sits in a subnet with no route to the internet at all.
+**25. Devarsh:** Our theory is the Saltzer and Schroeder principle of least privilege and compartmentalization, from 1975. Split the system into trust zones so that a breach in one cannot compromise the others. If three independent layers each stop ten percent of attacks, the attacker must beat all three, which is one chance in a thousand. The database sits in a subnet with no route to the internet at all.
 
 ### Slide 17: 3-Tier Multi-AZ VPC with Private/Isolated Subnets vs. Flat Public Default VPC
 
@@ -317,15 +323,16 @@ On screen:
 
 > Failure injected: Automated Shodan Port Scan & Brute Force Botnet Assault
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | 98.5% | 99.99% |
-| Recovery time | Manual Incident Triage | N/A (Immune to Direct Ingress) |
-| Monthly cloud cost | $45 | $145 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | 98.5% | Manual Incident Triage | $45 |
+| Well-Architected | 99.99% | N/A (Immune to Direct Ingress) | $145 |
 
-**22. Aman:** Networking on the left. A default VPC with every server on a public address, and MySQL listening on port 3306 to the whole internet. A botnet scanner finds the port within hours, runs a dictionary attack, and dumps the database.
+**26. Aman:** On the left, the naive network. A port scanner and botnet sit at the top, then the default flat VPC, then the public MySQL database. The database carries a SPOF tag and a 0.0.0.0/0 port 3306 tag, so anyone on the internet can reach it.
 
-**23. Devarsh:** On the right, three tiers across three zones: public for the load balancer and NAT, private for the application, and isolated for the database. The database has no public address and no route to the internet gateway. The scanner cannot even locate it, so its packets are dropped at the edge. VPC flow logs record every connection for audit.
+**27. Devarsh:** On the right, five tiers: external traffic, the internet gateway, the public subnet with the load balancer and NAT gateway, the private application subnet, and the isolated subnet holding Aurora. Only the top two cards face the internet, and the isolated subnet has no route to the gateway.
+
+**28. Aman:** Now the scanner and botnet attack the network. On the left, the public MySQL card shakes and turns red, its connector turns red and dashed, and the scanner reaches the database through the open port. On the right, the attack stops at the top of the chain, and the isolated subnet pulses green because nothing outside can reach it. The strip shows the same gap in availability: 98.5 percent against 99.99.
 
 ### Slide 18: Connecting Networks
 
@@ -345,7 +352,7 @@ On screen:
 | Link failure | Tunnel drops; manual recovery | BGP fails over in a few seconds |
 | Egress | Direct and unfiltered | Central inspection with AWS Network Firewall |
 
-**24. Aman:** The theory is the count of connections in a full mesh. With N networks, peering every pair takes N times N minus one over two links. Twenty VPCs means one hundred and ninety peering links, each with routes kept by hand. A hub such as Transit Gateway needs one attachment per network. That moves the cost from quadratic to linear, and it gives transitive routing for free.
+**29. Devarsh:** The theory is the count of connections in a full mesh. With N networks, peering every pair takes N times N minus one over two links. Twenty VPCs means one hundred and ninety peering links, each with routes kept by hand. A hub such as Transit Gateway needs one attachment per network. That moves the cost from quadratic to linear, and it gives transitive routing for free.
 
 ### Slide 19: AWS Transit Gateway Hub-and-Spoke with Direct Connect & VPN Failover vs. O(N²) Peering Mesh
 
@@ -353,15 +360,16 @@ On screen:
 
 > Failure injected: Primary Direct Connect Fiber Cut & Carrier Outage
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | 98.0% | 99.99% |
-| Recovery time | 3 Hours | < 5 Seconds (BGP Keepalive) |
-| Monthly cloud cost | $210 | $420 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | 98.0% | 3 Hours | $210 |
+| Well-Architected | 99.99% | < 5 Seconds (BGP Keepalive) | $420 |
 
-**25. Devarsh:** Connectivity on the left: a mesh of VPC peering links, and one IPsec VPN over the public internet as the only path to headquarters. Every new account needs routes on every other account. When the tunnel drops, engineering, accounting and logistics lose the cloud.
+**30. Aman:** On the left, the naive connectivity: corporate HQ at the top, then one IPsec VPN over the internet tagged SPOF, then three VPCs wired by peering. Every packet from headquarters funnels through that single VPN.
 
-**26. Aman:** On the right, a Transit Gateway hub with spokes for production, staging and data. Direct Connect carries the main link, and a backup VPN with BGP takes over in a few seconds when the fiber is cut. All internet egress passes through a central inspection firewall.
+**31. Devarsh:** On the right, the Well-Architected connectivity: headquarters, a 10 gigabit Direct Connect circuit and a backup VPN running BGP, into a Transit Gateway hub. Egress passes a central firewall, and the spoke VPCs hang off the hub. Green connectors show the hub carrying the traffic.
+
+**32. Aman:** Now the primary Direct Connect fibre is cut. On the left, the single IPsec VPN shakes and turns red, its connector goes red and dashed, and the packets stop, so engineering, accounting and logistics lose the cloud. On the right, the Direct Connect card pulses green as BGP moves traffic to the backup VPN within seconds. The strip shows 98.0 percent on the left and 99.99 on the right.
 
 ### Slide 20: Securing Applications & Data Access
 
@@ -381,7 +389,7 @@ On screen:
 | Web attacks | No WAF; SQL injection reaches the database | AWS WAF managed rules block SQL injection with a 403 |
 | Encryption | Unmanaged keys | KMS customer managed keys with envelope encryption |
 
-**27. Devarsh:** Kerckhoffs's principle, stated in 1883, and Shannon's maxim from 1949 say the same thing: assume the enemy knows the system, so only the key is secret. Hardcoded credentials break that rule at the root. The fix is short-lived identity from IAM roles, secrets in Secrets Manager rotated every thirty days, and envelope encryption under a KMS customer managed key.
+**33. Devarsh:** Kerckhoffs's principle, stated in 1883, and Shannon's maxim from 1949 say the same thing: assume the enemy knows the system, so only the key is secret. Hardcoded credentials break that rule at the root. The fix is short-lived identity from IAM roles, secrets in Secrets Manager rotated every thirty days, and envelope encryption under a KMS customer managed key.
 
 ### Slide 21: IAM Roles (STS), AWS Secrets Manager, KMS CMK, & AWS WAF vs. Root Keys & Hardcoded Secrets
 
@@ -389,15 +397,16 @@ On screen:
 
 > Failure injected: SQL Injection Attack & Stolen Access Key Exploit
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | Security Compromised | 99.99% |
-| Recovery time | Forensic Investigation Days | Instant Threat Neutralization |
-| Monthly cloud cost | $0 | $68 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | Security Compromised | Forensic Investigation Days | $0 |
+| Well-Architected | 99.99% | Instant Threat Neutralization | $68 |
 
-**28. Aman:** Security on the left. Permanent access keys committed to a repository, a root-level account used by the application, and a database password in clear text. One SQL injection exposes five hundred thousand card records, and the stolen key starts GPU instances for crypto mining the same night.
+**34. Aman:** On the left, the naive security build. The malicious attacker sits at the top, then an app with hardcoded keys and a database with a cleartext password, both tagged SPOF. Nothing stands between the attacker and the database.
 
-**29. Devarsh:** On the right, IAM roles issue temporary credentials that expire after an hour. Secrets Manager rotates the database password every thirty days with no downtime. The web application firewall blocks SQL injection with a 403 at the edge, and GuardDuty flags the anomalous API calls. Monthly security spend is sixty-eight dollars.
+**35. Devarsh:** On the right, the Well-Architected security layout. The WAF with OWASP managed rules sits at the edge, then an IAM role with least-privilege temporary credentials, Secrets Manager, the KMS customer managed key and GuardDuty. Every card carries an HA tag, and each request passes the WAF first.
+
+**36. Aman:** Now the SQL injection and the stolen key arrive together. On the left, the app with hardcoded keys shakes and turns red, its connector goes red and dashed, and the packets reach the database. On the right, the WAF blocks the injection with a 403 at the edge, and GuardDuty flags the anomalous calls, and their cards pulse green. The strip sets the two builds side by side.
 
 ### Slide 22: Monitoring, Elasticity & High Availability
 
@@ -417,7 +426,7 @@ On screen:
 | Tracing | Log grep over SSH | AWS X-Ray traces the slow query to the millisecond |
 | Remediation | Manual SSH, 2 to 4 hours | EventBridge and Lambda recycle the task in about 45 s |
 
-**30. Aman:** This module's theory is the availability rule for parallel systems. Availability in series multiplies. Availability in parallel is one minus the product of the failure probabilities. Three independent zones at 99.9 percent each give one minus one in a billion, which is nine nines for the compute tier. Redundancy only pays if failures are detected quickly, so health checks and monitoring belong in the calculation.
+**37. Devarsh:** This module's theory is the availability rule for parallel systems. Availability in series multiplies. Availability in parallel is one minus the product of the failure probabilities. Three independent zones at 99.9 percent each give one minus one in a billion, which is nine nines for the compute tier. Redundancy only pays if failures are detected quickly, so health checks and monitoring belong in the calculation.
 
 ### Slide 23: CloudWatch Synthetics, Composite Alarms, & EventBridge Self-Healing vs. Silent Failures
 
@@ -425,15 +434,16 @@ On screen:
 
 > Failure injected: Silent Memory Leak Causing Cascading API Hangs
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | 97.5% | 99.99% |
-| Recovery time | 2 - 4 Hours | < 45 Seconds (Autonomous) |
-| Monthly cloud cost | $0 | $54 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | 97.5% | 2 - 4 Hours | $0 |
+| Well-Architected | 99.99% | < 45 Seconds (Autonomous) | $54 |
 
-**31. Devarsh:** Monitoring on the left: an unmonitored instance, a manual SSH session running tail -f, and customers reporting the outage on social media. Basic CPU looks normal while checkouts hang, and the team spends hours guessing which instance is stuck.
+**38. Aman:** On the left, the naive monitoring build. An unmonitored EC2 instance tagged SPOF, then angry customers on Twitter, then a manual SSH terminal. Packets reach the instance, and nothing watches it.
 
-**32. Aman:** On the right: CloudWatch Synthetics canaries that exercise the real checkout path, composite alarms that need several signals before paging anyone, and X-Ray tracing. When a canary fails, EventBridge starts a Lambda that recycles the unhealthy tasks. Detection takes under fifteen seconds and remediation about forty-five.
+**39. Devarsh:** On the right, the Well-Architected monitoring chain: a Synthetics canary, composite alarms, X-Ray tracing, an EventBridge rule and a self-healing Lambda. Green connectors show the signal travelling from the canary to the Lambda that recovers the task.
+
+**40. Aman:** Now a silent memory leak builds at peak load. On the left, the unmonitored instance shakes and turns red, and the packets stop while customers find the outage first. On the right, the composite alarm and the self-healing Lambda pulse green as the canary catches the checkout timeout and the task is recycled. The strip shows recovery going from two to four hours down to under 45 seconds.
 
 ### Slide 24: Automating the Architecture
 
@@ -453,7 +463,7 @@ On screen:
 | Drift | Silent and continuous | AWS Config flags drift; Systems Manager remediates it |
 | Rebuild a region | 3 to 5 days of guesswork | About 15 minutes with one pipeline run |
 
-**33. Devarsh:** Conway's law, from Melvin Conway in 1968, says a system mirrors the communication structure of the organization that builds it. Declarative infrastructure counters the drift that follows. Describe the desired state in code, keep it in version control, and let a pipeline converge the real environment to it. The gap between desired and actual state shrinks to zero, because nothing changes outside the pipeline.
+**41. Devarsh:** Conway's law, from Melvin Conway in 1968, says a system mirrors the communication structure of the organization that builds it. Declarative infrastructure counters the drift that follows. Describe the desired state in code, keep it in version control, and let a pipeline converge the real environment to it. The gap between desired and actual state shrinks to zero, because nothing changes outside the pipeline.
 
 ### Slide 25: 100% Terraform/CDK GitOps with Drift Detection vs. Manual "ClickOps" Console Changes
 
@@ -461,15 +471,16 @@ On screen:
 
 > Failure injected: Rogue Engineer Manually Opens Port 22 in Console
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | Human Error Prone | 99.99% |
-| Recovery time | Days to Reconstruct | < 15 Minutes (Full Region Rebuild) |
-| Monthly cloud cost | $0 | $28 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | Human Error Prone | Days to Reconstruct | $0 |
+| Well-Architected | 99.99% | < 15 Minutes (Full Region Rebuild) | $28 |
 
-**34. Aman:** Automation on the left is ClickOps. Engineers change the console by hand, leave undocumented ports open, and staging never matches production. Port 22 stays open to the world for weeks, and rebuilding the environment after a disaster takes days of guesswork.
+**42. Aman:** On the left, the naive automation build. A developer works in the console, the production VPC and a drifted security group follow, both tagged SPOF. Hand-made changes go straight to production with no record.
 
-**35. Devarsh:** On the right, every VPC, route and policy is Terraform or CDK code, reviewed in a pull request and scanned by Checkov before deployment. AWS Config flags a non-compliant security group within a minute, and Systems Manager removes the rule automatically. A full production region can be rebuilt in about fifteen minutes.
+**43. Devarsh:** On the right, the Well-Architected automation chain. A Git pull request feeds the CI runner, which builds an immutable multi-AZ VPC. The AWS Config drift detector and the Systems Manager playbook sit at the end. Green connectors show every change passing through the pipeline.
+
+**44. Aman:** Now someone opens port 22 to the world from the console. On the left, the drifted security group shakes and turns red, and nothing reports it. On the right, AWS Config flags the rule and the Systems Manager playbook pulses green as it removes the open rule automatically. The strip shows recovery: days to reconstruct on the left, under 15 minutes on the right.
 
 ### Slide 26: Caching Content
 
@@ -489,7 +500,7 @@ On screen:
 | Database CPU | About 96%, near collapse | About 11%, with headroom for spikes |
 | Global p95 latency | About 850 ms | About 18 ms from the nearest edge location |
 
-**36. Aman:** The theory here is Zipf's law and the 80-20 rule that Pareto observed. A small slice of the content draws most of the reads. Caching that slice at the edge and in memory changes the average latency. The effective time is the hit ratio times the cache time, plus the miss ratio times the origin time. At a 95 percent hit ratio, a two-millisecond cache and an eighty-millisecond origin give about six milliseconds.
+**45. Devarsh:** The theory here is Zipf's law and the 80-20 rule that Pareto observed. A small slice of the content draws most of the reads. Caching that slice at the edge and in memory changes the average latency. The effective time is the hit ratio times the cache time, plus the miss ratio times the origin time. At a 95 percent hit ratio, a two-millisecond cache and an eighty-millisecond origin give about six milliseconds.
 
 ### Slide 27: CloudFront Edge Caching & ElastiCache Redis vs. Direct Origin & Database Overload
 
@@ -497,15 +508,16 @@ On screen:
 
 > Failure injected: 50,000 Req/s Flash Sale Traffic Spike
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | 98.5% | 99.99% |
-| Recovery time | 45 Minutes | Instant (Edge Shielded) |
-| Monthly cloud cost | $490 | $165 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | 98.5% | 45 Minutes | $490 |
+| Well-Architected | 99.99% | Instant (Edge Shielded) | $165 |
 
-**37. Devarsh:** Caching on the left. Every image, stylesheet and repeated query goes straight to the origin. Global viewers wait on long routes, and the database runs near ninety-six percent CPU. At the flash-sale spike the connection pool runs dry within seconds.
+**46. Aman:** On the left, the naive caching build. Global visitors go straight to an uncached origin server, then to the primary SQL database. Both carry SPOF tags, and every image and repeated query lands on them.
 
-**38. Aman:** On the right, CloudFront serves most static requests from more than six hundred edge locations and absorbs about ninety-six percent of them. ElastiCache Redis answers hot queries from memory. Database CPU falls to about eleven percent, and the p95 latency drops from around 850 milliseconds to about 18.
+**47. Devarsh:** On the right, the Well-Architected caching chain: the CloudFront CDN with more than 600 edge locations, the private S3 origin, ElastiCache Redis, the application microservices and the protected Aurora database. Each card takes load off the next, and the green connectors show it.
+
+**48. Aman:** Now the flash sale hits the cache layer at 50,000 requests a second. On the left, the origin server and the SQL database shake and turn red, the packets stop, and the connection pool runs dry. On the right, CloudFront and ElastiCache pulse green as they absorb the spike, and the database behind them stays in service. The strip shows the monthly bill: 490 dollars on the left, 165 on the right.
 
 ### Slide 28: Building Decoupled Architecture
 
@@ -525,7 +537,7 @@ On screen:
 | Failed messages | Lost with the request | Dead-letter queue with a CloudWatch alarm |
 | New consumers | Edit the checkout code | SNS fan-out to fraud, audit or any new service |
 
-**39. Devarsh:** The theory is that a synchronous chain multiplies availability. Five services at 99 percent each, called in a blocking chain, give about 95 percent. The two generals problem adds a warning: over an unreliable link you can never be certain the other side received a message, so you need retries and idempotent handlers. A queue breaks the chain. The producer hands off the message and moves on, and each consumer runs at its own availability.
+**49. Devarsh:** The theory is that a synchronous chain multiplies availability. Five services at 99 percent each, called in a blocking chain, give about 95 percent. The two generals problem adds a warning: over an unreliable link you can never be certain the other side received a message, so you need retries and idempotent handlers. A queue breaks the chain. The producer hands off the message and moves on, and each consumer runs at its own availability.
 
 ### Slide 29: Amazon SQS FIFO, SNS Fan-Out, & Dead-Letter Queues (DLQ) vs. Blocking Synchronous HTTP Chains
 
@@ -533,15 +545,16 @@ On screen:
 
 > Failure injected: Downstream Email Vendor Down & 20,000 Black Friday Orders
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | 97.0% | 99.99% |
-| Recovery time | Manual Reconciliation | Zero (Buffer Absorbs Outages) |
-| Monthly cloud cost | $320 | $42 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | 97.0% | Manual Reconciliation | $320 |
+| Well-Architected | 99.99% | Zero (Buffer Absorbs Outages) | $42 |
 
-**40. Aman:** Decoupling on the left: a blocking chain. Checkout waits for the payment gateway, then inventory, then the email vendor. When the email vendor stalls, every web worker waits on a socket timeout and checkout crashes. Each order takes around three thousand eight hundred milliseconds.
+**50. Aman:** On the left, the naive checkout. The customer goes to a monolithic web server, then the payment gateway, then the third-party email vendor. All three carry SPOF tags, so one slow step holds up the whole checkout.
 
-**41. Devarsh:** On the right, checkout returns in about eighty-five milliseconds after writing to Amazon SQS. Workers pull messages at their own pace. If the email vendor is down, messages wait in the queue for up to fourteen days, and any message that keeps failing moves to a dead-letter queue with an alarm.
+**51. Devarsh:** On the right, the Well-Architected checkout. The shopper goes to a fast ingestion API, then the Amazon SQS orders queue with its dead-letter queue, then SNS fans out to the payment worker and the notification worker. Green connectors show the order handed to the queue.
+
+**52. Aman:** Now the email vendor goes down during 20,000 Black Friday orders. On the left, the email vendor and the monolithic web server shake and turn red, the packets stop, and checkout fails. On the right, the orders queue and the notification worker pulse green. Shoppers still get confirmation, the backlog waits in SQS, and the dead-letter queue catches anything that keeps failing.
 
 ### Slide 30: Serverless Architecture & Microservices
 
@@ -561,7 +574,7 @@ On screen:
 | Scale-out | 8 to 15 minutes to boot AMIs | Under half a second to thousands of concurrent calls |
 | Operations | Weekly OS patch windows | No servers, no AMIs, no SSH bastions |
 
-**42. Aman:** The theory here is Little's law, from John Little in 1961. The average number of items in a system equals the arrival rate multiplied by the average time each item spends inside. If capacity follows arrivals instead of a fixed fleet, idle cost goes to zero. At three in the morning the arrival rate is close to zero, so the bill is close to zero too.
+**53. Devarsh:** The theory here is Little's law, from John Little in 1961. The average number of items in a system equals the arrival rate multiplied by the average time each item spends inside. If capacity follows arrivals instead of a fixed fleet, idle cost goes to zero. At three in the morning the arrival rate is close to zero, so the bill is close to zero too.
 
 ### Slide 31: API Gateway, Lambda ARM64, Step Functions, & DynamoDB vs. Stateful VM Monolith
 
@@ -569,15 +582,16 @@ On screen:
 
 > Failure injected: Instant 0 to 40,000 Invocations Surge
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | 99.0% | 99.99% |
-| Recovery time | 15 Minutes (AMI Boot Time) | < 1 Second (Stateless Re-invocation) |
-| Monthly cloud cost | $460 | $38 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | 99.0% | 15 Minutes (AMI Boot Time) | $460 |
+| Well-Architected | 99.99% | < 1 Second (Stateless Re-invocation) | $38 |
 
-**43. Devarsh:** Serverless on the left: stateful virtual machines, paid for around the clock. At three in the morning they cost about eighteen dollars a day. New instances take roughly twelve minutes to boot, install packages and join the load balancer, so the viral moment is wasted. Patching happens in a weekly window.
+**54. Aman:** On the left, the naive serverless build. Two monolith virtual machines, one in zone a and one in zone b, both tagged SPOF, and a manual OS patching window. Both VMs are paid for around the clock.
 
-**44. Aman:** On the right: API Gateway, Lambda on Graviton, Step Functions and DynamoDB on demand. Idle compute cost is zero. Scaling from nothing to ten thousand requests per second takes under half a second, and there are no operating systems to patch.
+**55. Devarsh:** On the right, the Well-Architected serverless chain: API Gateway, the ARM64 auth Lambda, Step Functions, the order-processing Lambda and DynamoDB on demand. The cards are services rather than servers, and green connectors show each request passing through them.
+
+**56. Aman:** Now a burst of 40,000 invocations hits. On the left, both virtual machines shake and turn red, the packets stop, and new instances take minutes to boot. On the right, API Gateway, the Lambdas and DynamoDB pulse green as they scale out at once, and the request keeps flowing. The strip shows recovery time: 15 minutes for AMI boot on the left, under a second on the right.
 
 ### Slide 32: Data Pipelines
 
@@ -597,7 +611,7 @@ On screen:
 | Storage | Raw CSV on local disk | S3 data lake with columnar Parquet |
 | Query | Reports 24 hours behind; full raw scans cost more | Athena reads only needed Parquet columns; about 85% lower cost |
 
-**45. Devarsh:** The theory is the split between the Lambda architecture, proposed by Nathan Marz around 2011, and the Kappa architecture, proposed by Jay Kreps in 2014. Lambda runs a batch layer and a speed layer side by side. Kappa unifies them into one stream. AWS favors the streaming side for freshness, and columnar Parquet on S3 for cost, because a query reads only the columns it needs.
+**57. Devarsh:** The theory is the split between the Lambda architecture, proposed by Nathan Marz around 2011, and the Kappa architecture, proposed by Jay Kreps in 2014. Lambda runs a batch layer and a speed layer side by side. Kappa unifies them into one stream. AWS favors the streaming side for freshness, and columnar Parquet on S3 for cost, because a query reads only the columns it needs.
 
 ### Slide 33: Kinesis Streaming, AWS Glue Serverless ETL, S3 Lake & Athena vs. Cron EC2 Bash Dumps
 
@@ -605,15 +619,16 @@ On screen:
 
 > Failure injected: 100x Payload Explosion & Corrupted Data Ingestion
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | 85.0% | 99.99% |
-| Recovery time | Manual Python Script Rerun | < 60 Seconds Delivery |
-| Monthly cloud cost | $310 | $64 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | 85.0% | Manual Python Script Rerun | $310 |
+| Well-Architected | 99.99% | < 60 Seconds Delivery | $64 |
 
-**46. Aman:** Data pipelines on the left: a nightly cron job on one EC2 instance. It runs mysqldump against the production database and writes to local disk, and a Python script runs out of memory on large files. Executives see numbers that are a day old.
+**58. Aman:** On the left, the naive data pipeline. The production relational database, a cron worker on EC2 and a local CSV on disk, all tagged SPOF. The nightly job reads the live database, so it competes with customers for the same tables.
 
-**47. Devarsh:** On the right, events stream through Kinesis Data Firehose into an S3 data lake. Glue converts them to Parquet, and Athena queries them in place. Data is available for analysis in under a minute, production databases are untouched, and scanning Parquet cuts query cost by around 85 percent.
+**59. Devarsh:** On the right, the Well-Architected data pipeline. Live event producers feed Kinesis Firehose, Glue converts the stream, the S3 data lake stores it, and Athena queries it in place. The production database is not on this path at all.
+
+**60. Aman:** Now a 100x payload spike arrives with corrupted records. On the left, the cron worker runs out of memory, the local disk shakes and turns red, the packets stop, and the dashboards show stale zeros. On the right, Kinesis Firehose and Glue pulse green, route the bad records to a quarantine bucket, and Athena keeps answering queries. The strip shows a manual rerun on the left and delivery in under 60 seconds on the right.
 
 ### Slide 34: Disaster Recovery (DR) Planning & Management
 
@@ -633,7 +648,7 @@ On screen:
 | Data loss | Up to 2 weeks of commits | Aurora Global Database replicates in under a second |
 | Testing | Never tested | Automated game-day drills run continuously |
 
-**48. Aman:** The theory is the cost of recovery. As RTO and RPO approach zero, the cost of standby capacity rises. AWS describes four strategies: backup and restore, pilot light, warm standby, and multi-region active-active. In our model, backup and restore costs one unit with a twenty-four hour RTO. Active-active costs about seven units and recovers in under thirty seconds. Pick the strategy that matches the cost of downtime.
+**61. Devarsh:** The theory is the cost of recovery. As RTO and RPO approach zero, the cost of standby capacity rises. AWS describes four strategies: backup and restore, pilot light, warm standby, and multi-region active-active. In our model, backup and restore costs one unit with a twenty-four hour RTO. Active-active costs about seven units and recovers in under thirty seconds. Pick the strategy that matches the cost of downtime.
 
 ### Slide 35: 4 AWS DR Strategies (Backup/Restore -> Pilot Light -> Warm Standby -> Multi-Region Active-Active) vs. "Backup & Hope"
 
@@ -641,15 +656,16 @@ On screen:
 
 > Failure injected: Catastrophic AWS Primary Region (`us-east-1`) Blackout
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | 95.0% | 99.999% |
-| Recovery time | 3 to 5 Days | < 45 Seconds (Route 53 Shift) |
-| Monthly cloud cost | $180 | $520 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | 95.0% | 3 to 5 Days | $180 |
+| Well-Architected | 99.999% | < 45 Seconds (Route 53 Shift) | $520 |
 
-**49. Devarsh:** Disaster recovery on the left is backup and hope. Snapshots live in the same region as production. If us-east-1 goes dark, everything is trapped there. The runbook has never been tested, recovery takes three to five days, and up to two weeks of commits are lost.
+**62. Aman:** On the left, the naive disaster recovery. The primary region us-east-1, an untested snapshot in the same region, and the panicked ops team, with SPOF tags on the region and the snapshot. Everything sits in one region.
 
-**50. Aman:** On the right, active-active across us-east-1 and eu-west-1. Aurora Global Database replicates in under a second, Route 53 Application Recovery Controller shifts traffic in under a minute, and drills run continuously. The design costs about five hundred and twenty dollars a month, and it is rehearsed.
+**63. Devarsh:** On the right, the Well-Architected disaster recovery. Route 53 Application Recovery Controller at the top, the primary region, a secondary region in eu-west-1, the Aurora Global Database and cross-region S3 replication. Green connectors show traffic and data running to both regions.
+
+**64. Aman:** Now the whole us-east-1 region goes dark. On the left, the primary region and the untested snapshot shake and turn red, the packets stop, and the ops team rebuilds by hand. On the right, the primary region card pulses green as Route 53 ARC shifts traffic to eu-west-1 and Aurora promotes the secondary cluster. The strip shows recovery: three to five days on the left, under a minute on the right.
 
 ### Slide 36: Executive Conclusion & Architectural Verdict
 
@@ -669,7 +685,7 @@ On screen:
 | Annual spend | $53,400 a year | $21,840 a year |
 | Governance | Failing audit, unmitigated risk | AWS Organizations, guardrails and GitOps pipelines |
 
-**51. Devarsh:** The last theory is evolutionary architecture, set out by Neal Ford, Rebecca Parsons and Patrick Kua in 2017. An architecture is guided, incremental change, protected by fitness functions that check its qualities after every change. The six pillars act as those fitness checks. A Well-Architected review scores the system across them, and the score is a weighted sum of the pillars.
+**65. Devarsh:** The last theory is evolutionary architecture, set out by Neal Ford, Rebecca Parsons and Patrick Kua in 2017. An architecture is guided, incremental change, protected by fitness functions that check its qualities after every change. The six pillars act as those fitness checks. A Well-Architected review scores the system across them, and the score is a weighted sum of the pillars.
 
 ### Slide 37: The 15-Domain Transformation Matrix, 10 Golden Rules, & Architecture Sign-Off
 
@@ -677,15 +693,16 @@ On screen:
 
 > Failure injected: Enterprise Audit Validation & Resiliency Certification
 
-| Measure | Naive build | Well-Architected build |
-|---|---|---|
-| Availability | 98.5% | 99.99% |
-| Recovery time | 48+ Hours | < 30 Seconds |
-| Monthly cloud cost | $4,450 | $1,820 |
+| Build | Availability | Recovery time | Monthly cost |
+|---|---|---|---|
+| Naive build | 98.5% | 48+ Hours | $4,450 |
+| Well-Architected | 99.99% | < 30 Seconds | $1,820 |
 
-**52. Aman:** The verdict on the left is an unmitigated risk profile. Ninety-eight point five percent availability, unplanned downtime, a backlog of technical debt, and a blast radius nobody has contained. Annual infrastructure spend is fifty-three thousand four hundred dollars, and an audit would fail.
+**66. Aman:** On the left, the naive verdict. The technical debt backlog and the uncontained blast radius, both tagged SPOF. Two cards, no guardrails, and the packets run into both.
 
-**53. Devarsh:** On the right, the certified workload: 99.99 percent availability, failover under thirty seconds, zero high-risk issues, and annual spend of twenty-one thousand eight hundred and forty dollars. Organizational guardrails, policy as code and GitOps pipelines keep it that way, and it scores 96 out of 100 in review.
+**67. Devarsh:** On the right, the Well-Architected governance: AWS Organizations with service control policies, the GitOps CI/CD pipelines, and proactive telemetry with auto-healing. Every card carries an HA tag, and the green connectors show the governance path.
+
+**68. Aman:** Now the unannounced audit stress test. On the left, the backlog and the blast radius shake and turn red, the packets stop, and the audit finds unencrypted data and public credentials. On the right, the governance and pipeline cards pulse green as Config and Security Hub report compliance and the telemetry heals the disruption. The final slide sums up the change.
 
 ### Slide 38: What changed across the fifteen domains
 
@@ -701,10 +718,10 @@ On screen:
 | High-risk issues | 3 | 0 | All remediated |
 | Recovery time | hours | under 30 seconds | Hours to seconds |
 
-**54. Aman:** To close the scorecard. Availability moves from 98.5 to 99.99 percent. Monthly cloud spend moves from four thousand four hundred and fifty dollars to eighteen hundred and twenty dollars, a reduction of 59 percent. Three high-risk issues go to zero, and recovery time drops from hours to under thirty seconds.
+**69. Devarsh:** To close the scorecard. Availability moves from 98.5 to 99.99 percent. Monthly cloud spend moves from four thousand four hundred and fifty dollars to eighteen hundred and twenty dollars, a reduction of 59 percent. Three high-risk issues go to zero, and recovery time drops from hours to under thirty seconds.
 
-**55. Devarsh:** That is the Well-Architected argument. Start from the failure you cannot accept, name the pillar it touches, then build the smallest design that survives it. Thank you. We will take questions now.
+**70. Aman:** That is the Well-Architected argument. Start from the failure you cannot accept, name the pillar it touches, then build the smallest design that survives it. Thank you. We will take questions now.
 
 ---
 
-Word count: 3014. Planned time: 21:23.
+Word count: 3854. Planned time: 27:21.
