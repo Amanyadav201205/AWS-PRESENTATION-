@@ -9,7 +9,9 @@ export const PPTX_COLORS = {
   border: 'D2D2D7',
   surface: 'FFFFFF',
   tintDanger: 'FBEAEA',
-  tintSuccess: 'E8F4EC'
+  tintSuccess: 'E8F4EC',
+  tintAccent: 'E5F0FA',
+  surfaceMuted: 'F2F2F5'
 } as const;
 
 export const PPTX_FONT = 'Arial';

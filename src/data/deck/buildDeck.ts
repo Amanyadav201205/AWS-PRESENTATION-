@@ -1,11 +1,30 @@
 import { allDomains } from '../index';
 import { theoreticalFoundations } from '../theoreticalFoundations';
 import { FAILURE, LOAD_NORMAL, LOAD_PEAK, PACKETS_ON, RECOVER, SHOW_BOTH } from '../talkTrackCues';
-import { DeckSlide } from './deckTypes';
+import { DeckSlide, DeckTable } from './deckTypes';
 import { moduleScripts } from './moduleScripts';
+import { moduleTables } from './moduleTables';
+import { extractPercent } from './theoryTables';
 import { agendaSlide, closingSlide, theorySlides, titleSlide } from './theorySlides';
 
 const MODULE_COUNT = allDomains.length;
+
+const componentTable = (index: number): DeckTable => ({
+  headers: ['Component', 'Naive build', 'Well-Architected build'],
+  rows: moduleTables[index]
+});
+
+const measuresTable = (index: number): DeckTable => {
+  const { naive, wellArch } = allDomains[index];
+  return {
+    headers: ['Measure', 'Naive build', 'Well-Architected build'],
+    rows: [
+      ['Availability', extractPercent(naive.availabilitySLA), extractPercent(wellArch.availabilitySLA)],
+      ['Recovery time', naive.rto, wellArch.rto],
+      ['Monthly cloud cost', `$${naive.monthlyCostEst.toLocaleString('en-US')}`, `$${wellArch.monthlyCostEst.toLocaleString('en-US')}`]
+    ]
+  };
+};
 
 const buildModuleSlides = (index: number): DeckSlide[] => {
   const domain = allDomains[index];
@@ -19,10 +38,9 @@ const buildModuleSlides = (index: number): DeckSlide[] => {
     kind: 'module-theory',
     eyebrow: `${moduleLabel} · Theory`,
     title: domain.title,
+    banner: law ? `Theory: ${law.name} · ${law.founder} (${law.year})` : undefined,
     points: [...script.points],
-    source: law ? `${law.name} · ${law.founder} (${law.year})` : undefined,
-    formula: law?.mathematicalFormula,
-    formulaText: law?.formulaExplanation,
+    tables: [componentTable(index)],
     domainIndex: index,
     lines: [{ say: script.theory }]
   };
@@ -32,10 +50,9 @@ const buildModuleSlides = (index: number): DeckSlide[] => {
     kind: 'comparison',
     eyebrow: `${moduleLabel} · Naive (left) vs Well-Architected (right)`,
     title: domain.subtitle,
-    points: [
-      `Naive: ${domain.naive.availabilitySLA}, recovery ${domain.naive.rto}`,
-      `Well-Architected: ${domain.wellArch.availabilitySLA}, recovery ${domain.wellArch.rto}`
-    ],
+    banner: `Failure injected: ${domain.chaos.title}`,
+    points: [],
+    tables: [measuresTable(index)],
     domainIndex: index,
     lines: [
       { say: script.naive, cues: [SHOW_BOTH, LOAD_NORMAL, RECOVER, PACKETS_ON] },

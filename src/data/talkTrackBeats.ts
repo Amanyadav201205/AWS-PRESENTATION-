@@ -6,7 +6,7 @@ import { TalkBeat, TalkSpeaker } from './talkTrackTypes';
 const SPEAKER_BY_POSITION: TalkSpeaker[] = ['devarsh', 'aman'];
 
 const describeSlide = (slide: DeckSlide): string => {
-  if (slide.kind === 'module-theory') return `Theory slide: ${slide.source ?? slide.title}`;
+  if (slide.kind === 'module-theory') return `Theory slide: ${slide.banner ?? slide.title}`;
   if (slide.kind === 'comparison') return `Naive (left) vs Well-Architected (right): ${slide.title}`;
   return `${slide.title}`;
 };

@@ -17,7 +17,7 @@ export const moduleScripts: ModuleScript[] = [
       'Every unpartitioned dependency lowers the whole',
       'Answer: modular, independently testable parts'
     ],
-    theory: 'Our first theory is Gall\'s law, from John Gall in 1977. A complex system that works evolved from a simple system that worked, and a big design drawn from scratch rarely survives contact with production. The formula shows why. Reliability multiplies down the chain, so every unpartitioned dependency lowers the total. The Framework answers with modular parts that can be tested one at a time.',
+    theory: 'Our first theory is Gall\'s law, from John Gall in 1977. A complex system that works evolved from a simple system that worked, and a big design drawn from scratch rarely survives contact with production. The arithmetic shows why. Reliability multiplies down the chain, so every unpartitioned dependency lowers the total. The Framework answers with modular parts that can be tested one at a time.',
     naive: 'On the left is the overview build: one application server and one primary database, both single points of failure, plus a flat bucket. Under the peak surge and the zone failure the stack goes dark. Its stated availability is 98.5 percent, with a recovery of four to eight hours.',
     resilient: 'On the right is the same surge and the same failure. CloudFront and the web application firewall sit at the edge, a load balancer spans three zones, and Aurora keeps a standby. The failed zone leaves rotation within seconds. The design states 99.99 percent availability, failover in under thirty seconds, and monthly cloud spend down from four thousand four hundred and fifty dollars to eighteen hundred and twenty.'
   },
@@ -27,7 +27,7 @@ export const moduleScripts: ModuleScript[] = [
       'Rebuild from any k of the n pieces, so losing n minus k is survivable',
       'Eleven nines of durability without tripling every disk'
     ],
-    theory: 'The theory here is Reed-Solomon erasure coding, published by Irving Reed and Gustave Solomon in 1960. Split data into k pieces, add parity pieces, and you can rebuild the original from any k of the n. That is how S3 claims eleven nines of durability without keeping three full copies of every disk. The formula gives the chance of losing data as a binomial tail. Spread enough independent shards across zones and that chance becomes vanishingly small.',
+    theory: 'The theory here is Reed-Solomon erasure coding, published by Irving Reed and Gustave Solomon in 1960. Split data into k pieces, add parity pieces, and you can rebuild the original from any k of the n. That is how S3 claims eleven nines of durability without keeping three full copies of every disk. The math gives the chance of losing data as a binomial tail. Spread enough independent shards across zones and that chance becomes vanishingly small.',
     naive: 'Storage on the left. Fifty terabytes of medical scans, kept for seven years, sit on one three-terabyte gp2 disk, where speed is tied to size, in a flat bucket with no versioning. A compromised developer key runs a recursive delete, and the scans are gone.',
     resilient: 'On the right: gp3 volumes sized for the workload, an S3 bucket with Object Lock in compliance mode, and Glacier Deep Archive for old scans. Every delete now returns a 403, even for the root user, and AWS Backup keeps immutable recovery points. Monthly storage spend falls from four hundred and twenty dollars to one hundred and eighteen.'
   },
@@ -87,7 +87,7 @@ export const moduleScripts: ModuleScript[] = [
       'Redundancy pays only when failures are detected fast',
       'Health checks are part of the availability maths'
     ],
-    theory: 'This module\'s theory is the availability formula for parallel systems. Availability in series multiplies. Availability in parallel is one minus the product of the failure probabilities. Three independent zones at 99.9 percent each give one minus one in a billion, which is nine nines for the compute tier. Redundancy only pays if failures are detected quickly, so health checks and monitoring belong in the calculation.',
+    theory: 'This module\'s theory is the availability rule for parallel systems. Availability in series multiplies. Availability in parallel is one minus the product of the failure probabilities. Three independent zones at 99.9 percent each give one minus one in a billion, which is nine nines for the compute tier. Redundancy only pays if failures are detected quickly, so health checks and monitoring belong in the calculation.',
     naive: 'Monitoring on the left: an unmonitored instance, a manual SSH session running tail -f, and customers reporting the outage on social media. Basic CPU looks normal while checkouts hang, and the team spends hours guessing which instance is stuck.',
     resilient: 'On the right: CloudWatch Synthetics canaries that exercise the real checkout path, composite alarms that need several signals before paging anyone, and X-Ray tracing. When a canary fails, EventBridge starts a Lambda that recycles the unhealthy tasks. Detection takes under fifteen seconds and remediation about forty-five.'
   },

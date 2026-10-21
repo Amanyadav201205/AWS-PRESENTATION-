@@ -1,12 +1,15 @@
 import { DeckSlide } from './deckTypes';
+import { agendaTable, blastRadiusTable, keyNumbersTable, ninesTable, pillarTable, readingTable, recoveryTable, redundancyTable, scorecardTable, spofTable } from './theoryTables';
 import { ENTER_DECK, RECOVER, SHOW_BOTH } from '../talkTrackCues';
 
 export const titleSlide: DeckSlide = {
   id: 'title',
   kind: 'title',
   eyebrow: 'AWS Well-Architected Framework',
+  banner: 'Two presenters · fifteen modules · about 21 minutes',
+  tables: [keyNumbersTable],
   title: 'Naive builds versus resilient builds',
-  points: ['Devarsh Patel and Aman Kumar', 'Fifteen modules, each with theory and a side-by-side simulation'],
+  points: [],
   domainIndex: 0,
   lines: [
     {
@@ -23,12 +26,10 @@ export const agendaSlide: DeckSlide = {
   id: 'agenda',
   kind: 'agenda',
   eyebrow: 'Agenda',
+  banner: 'Every comparison uses the same traffic and the same failure',
+  tables: [agendaTable],
   title: 'Core theory, then fifteen modules',
-  points: [
-    'Core theory: pillars, single points of failure, availability math, blast radius',
-    'Modules 1 to 15: storage through disaster recovery, then the scorecard',
-    'Every comparison uses the same traffic and the same failure'
-  ],
+  points: [],
   domainIndex: 0,
   lines: [
     {
@@ -42,15 +43,10 @@ export const theorySlides: DeckSlide[] = [
     id: 'theory-pillars',
     kind: 'theory',
     eyebrow: 'Core theory · 1 of 5',
+    banner: 'Every module maps to at least one of these pillars',
+    tables: [pillarTable],
     title: 'Six pillars, one design',
-    points: [
-      'Operational excellence: run and improve systems through code',
-      'Security: protect data, systems and assets in depth',
-      'Reliability: recover from failure and meet demand',
-      'Performance efficiency: use resources that match demand',
-      'Cost optimization: pay only for what delivers value',
-      'Sustainability: use the least energy the workload needs'
-    ],
+    points: [],
     domainIndex: 0,
     lines: [
       {
@@ -62,14 +58,10 @@ export const theorySlides: DeckSlide[] = [
     id: 'theory-spof',
     kind: 'theory',
     eyebrow: 'Core theory · 2 of 5',
+    banner: 'Test: if this part disappears now, does a customer notice?',
+    tables: [spofTable],
     title: 'Single point of failure',
-    points: [
-      'A single point of failure is any part whose loss stops the workload',
-      'Test: if this part disappears now, does a customer notice?',
-      'In a serial chain, availabilities multiply and the total falls'
-    ],
-    formula: 'A_{\\text{chain}} = \\prod_{i=1}^{M} A_i \\quad \\Rightarrow \\quad 0.99^5 \\approx 0.951',
-    formulaText: 'Availability of a serial chain is the product of each part. Five parts at 99 percent give about 95.1 percent.',
+    points: [],
     domainIndex: 0,
     lines: [
       {
@@ -81,18 +73,14 @@ export const theorySlides: DeckSlide[] = [
     id: 'theory-nines',
     kind: 'theory',
     eyebrow: 'Core theory · 3 of 5',
+    banner: 'Two independent zones at 99.9% each are down together once in a million',
+    tables: [ninesTable, redundancyTable],
     title: 'The arithmetic of availability',
-    points: [
-      '99.9% allows about 8 hours 45 minutes of downtime a year',
-      '99.99% allows about 53 minutes; 99.999% about 5 minutes',
-      'Two independent zones at 99.9% each reach 99.9999% together'
-    ],
-    formula: 'A_{\\text{parallel}} = 1 - \\prod_{i=1}^{N} (1 - A_i) \\quad \\Rightarrow \\quad 1 - (0.001)^2 = 0.999999',
-    formulaText: 'Parallel availability is one minus the product of each part failing. Two zones at 99.9 percent give 99.9999 percent.',
+    points: [],
     domainIndex: 0,
     lines: [
       {
-        say: 'Availability is measured in nines. Ninety-nine point nine percent allows about eight hours and forty-five minutes of downtime a year. Ninety-nine point nine nine allows about fifty-three minutes. For redundant parts the rule flips. If two independent zones are each up 99.9 percent of the time, both are down together only one time in a million, so the pair reaches 99.9999 percent. That formula drives every redundancy decision in this talk.'
+        say: 'Availability is measured in nines. Ninety-nine point nine percent allows about eight hours and forty-five minutes of downtime a year. Ninety-nine point nine nine allows about fifty-three minutes. For redundant parts the rule flips. If two independent zones are each up 99.9 percent of the time, both are down together only one time in a million, so the pair reaches 99.9999 percent. That arithmetic drives every redundancy decision in this talk.'
       }
     ]
   },
@@ -100,13 +88,10 @@ export const theorySlides: DeckSlide[] = [
     id: 'theory-blast-radius',
     kind: 'theory',
     eyebrow: 'Core theory · 4 of 5',
+    banner: 'Blast radius is how much breaks when one failure domain breaks',
+    tables: [blastRadiusTable, recoveryTable],
     title: 'Blast radius, RTO and RPO',
-    points: [
-      'Blast radius: how much breaks when one failure domain breaks',
-      'Failure domains: instance, availability zone, region',
-      'RTO: how long the business can be down',
-      'RPO: how much data the business can lose'
-    ],
+    points: [],
     domainIndex: 0,
     lines: [
       {
@@ -118,13 +103,10 @@ export const theorySlides: DeckSlide[] = [
     id: 'theory-reading',
     kind: 'theory',
     eyebrow: 'Core theory · 5 of 5',
+    banner: 'Left and right run the same traffic and the same failure',
+    tables: [readingTable],
     title: 'How to read each comparison',
-    points: [
-      'Left: the naive build, single servers and flat networks',
-      'Right: the Well-Architected build, with redundancy and isolation',
-      'Lanes show packets: green is healthy, red is a failing path',
-      'Same traffic and same failure on both sides'
-    ],
+    points: [],
     domainIndex: 0,
     lines: [
       {
@@ -138,13 +120,10 @@ export const closingSlide: DeckSlide = {
   id: 'closing',
   kind: 'closing',
   eyebrow: 'Scorecard',
+  banner: 'Start from the failure you cannot accept, then build the smallest design that survives it',
+  tables: [scorecardTable],
   title: 'What changed across the fifteen domains',
-  points: [
-    'Availability: 98.5% to 99.99%',
-    'Monthly cloud spend: $4,450 to $1,820 (59.1% lower)',
-    'High-risk issues: 3 to 0',
-    'Recovery time: hours to under 30 seconds'
-  ],
+  points: [],
   domainIndex: 14,
   lines: [
     {

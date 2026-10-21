@@ -151,47 +151,7 @@
   background: var(--accent);
 }
 
-.deck-formula-card {
-  margin-top: auto;
-  padding: 1em 1.2em;
-  border: 1px solid var(--separator);
-  border-radius: var(--radius-inner);
-  background: var(--bg-surface);
-  overflow-x: auto;
-}
-
-.deck-formula-note {
-  margin-top: 0.6em;
-  font-size: clamp(12px, 1.5cqi, 18px);
-  color: var(--text-secondary);
-  line-height: 1.4;
-}
-
-.deck-module-theory {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  gap: 4cqi;
-  height: 100%;
-  align-items: start;
-}
-
-.deck-module-theory-text {
-  display: flex;
-  flex-direction: column;
-  gap: 0.9em;
-}
-
-.deck-module-theory .deck-formula-card {
-  margin-top: 0.8em;
-}
-
-.deck-source {
-  font-size: clamp(12px, 1.6cqi, 18px);
-  color: var(--text-tertiary);
-  font-weight: 500;
-}
-
-.deck-comparison {
+.deck-module-theory .deck-comparison {
   display: flex;
   flex-direction: column;
   gap: 0.6em;
@@ -243,7 +203,7 @@
 
 /* Each module's two builds must fit on one slide, so the columns are scaled to the comparison area. */
 .deck-diagram .diagram-only-screen .diagram-column {
-  zoom: 0.66;
+  zoom: 0.58;
 }
 
 .deck-comparison-summary {
@@ -271,7 +231,7 @@
     aspect-ratio: auto;
     min-height: 62dvh;
   }
-  .deck-module-theory {
+  .deck-module-theory .deck-points-row {
     grid-template-columns: 1fr;
   }
   .deck-comparison-labels,
@@ -300,4 +260,99 @@
   .deck-slide {
     overflow-x: hidden;
   }
+}
+
+/* Banners: one highlighted sentence per slide, in a flat tint with a rule on the left. */
+.deck-banner {
+  align-self: flex-start;
+  max-width: 100%;
+  padding: 0.5em 0.9em;
+  border-left: 4px solid var(--accent);
+  background: var(--accent-subtle);
+  color: var(--text-primary);
+  font-size: clamp(13px, 1.8cqi, 22px);
+  font-weight: 600;
+  line-height: 1.35;
+  border-radius: 0 var(--radius-control) var(--radius-control) 0;
+}
+
+.deck-banner-alert {
+  border-left-color: var(--status-danger);
+  background: var(--status-danger-subtle);
+}
+
+/* Tables: real grids with a header row and a row label column, in hairlines. */
+.deck-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: clamp(11px, 1.5cqi, 19px);
+  line-height: 1.3;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+}
+
+.deck-table th,
+.deck-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.38em 0.6em;
+  border-bottom: 1px solid var(--separator-subtle);
+}
+
+.deck-table thead th {
+  font-weight: 700;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--separator);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.82em;
+}
+
+.deck-table tbody th {
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.deck-table td {
+  color: var(--text-secondary);
+}
+
+.deck-table-caption {
+  caption-side: top;
+  text-align: left;
+  font-weight: 700;
+  margin-bottom: 0.4em;
+}
+
+.deck-module-theory .deck-points-row {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  font-size: clamp(12px, 1.6cqi, 19px);
+}
+
+.deck-comparison .deck-table {
+  font-size: clamp(10px, 1.25cqi, 15px);
+}
+
+.deck-comparison .deck-table th,
+.deck-comparison .deck-table td {
+  padding: 0.12em 0.5em;
+}
+
+.deck-comparison-head .deck-banner {
+  margin-top: 0.3em;
+  font-size: clamp(12px, 1.5cqi, 18px);
+  padding: 0.35em 0.8em;
+}
+
+.deck-comparison-head .deck-title {
+  font-size: clamp(16px, 2.3cqi, 30px);
+}
+
+.deck-comparison-head .deck-eyebrow {
+  margin-bottom: 0.2em;
+}
+
+.deck-comparison .deck-table {
+  flex: none;
 }
