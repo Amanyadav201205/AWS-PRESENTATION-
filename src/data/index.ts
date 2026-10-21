@@ -36,37 +36,37 @@ export const allDomains: DomainData[] = [
 export const allPillars: { name: PillarType; color: string; icon: string; description: string }[] = [
   {
     name: 'Operational Excellence',
-    color: '#3B82F6',
+    color: '#0066cc',
     icon: 'Activity',
     description: 'Run and monitor systems to deliver business value and continually improve processes and procedures.'
   },
   {
     name: 'Security',
-    color: '#EF4444',
+    color: '#c9302c',
     icon: 'Shield',
     description: 'Protect information, systems, and assets while delivering business value through risk assessments and mitigation.'
   },
   {
     name: 'Reliability',
-    color: '#10B981',
+    color: '#1e7e34',
     icon: 'RefreshCw',
     description: 'Ensure a workload performs its intended function correctly and consistently when it’s expected to.'
   },
   {
     name: 'Performance Efficiency',
-    color: '#F59E0B',
+    color: '#9a5b00',
     icon: 'Zap',
     description: 'Use computing resources efficiently to meet requirements and maintain that efficiency as demand changes.'
   },
   {
     name: 'Cost Optimization',
-    color: '#8B5CF6',
+    color: '#6b3fd6',
     icon: 'DollarSign',
     description: 'Avoid unnecessary costs and understand where money is spent to optimize workloads over time.'
   },
   {
     name: 'Sustainability',
-    color: '#14B8A6',
+    color: '#0f766e',
     icon: 'Leaf',
     description: 'Minimize environmental impacts of running cloud workloads through right-sizing and serverless adoption.'
   }

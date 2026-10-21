@@ -66,7 +66,7 @@ An enterprise-grade, Apple-standard interactive presentation and real-time cloud
 * **Subtopic Deep-Dive Labs (`Hotkey: T`)**: RDS Proxy, EBS gp3 IOPS, Aurora Quorum, and S3 Lifecycle simulators.
 * **Theoretical Foundations Compendium (`Hotkey: K`)**: Academic citations including CAP Theorem, PACELC, Gall's Law, and Amdahl's Law.
 * **Executive Review & ROI Calculator**: Comprehensive HRI audit scoring and multi-year savings forecasting.
-* **Keynote Presentation Deck (`Hotkey: P`)**: Full-screen presenter deck with teleprompter, speaker notes (`Hotkey: S`), and grid navigator (`Hotkey: G`).
+* **Presentation Deck (`Hotkey: P`)**: A light, 16:9 slide deck of 38 slides. It covers the core theory (six pillars, single points of failure, availability arithmetic, blast radius, RTO/RPO), then each of the 15 modules with a theory slide and a comparison slide. The naive and Well-Architected diagrams sit side by side on one screen. Speaker scripts run about 21 minutes. Each line is in the phone remote, and the deck can be downloaded as a PowerPoint file with the scripts in the speaker notes.
 
 ---
 
@@ -75,7 +75,7 @@ An enterprise-grade, Apple-standard interactive presentation and real-time cloud
 | Shortcut | Action |
 |---|---|
 | <kbd>→</kbd> / <kbd>←</kbd> | Navigate Next / Previous Module (1 to 15) |
-| <kbd>P</kbd> | Launch Fullscreen Keynote Presentation Deck |
+| <kbd>P</kbd> | Open the light presentation deck |
 | <kbd>A</kbd> | Open Grounded AWS AI Architect Copilot |
 | <kbd>G</kbd> | Open 12-Pillar AI Governance & Launch-Readiness Inspector |
 | <kbd>L</kbd> | Open Packet Latency & Flight Benchmark Simulator |
@@ -85,7 +85,11 @@ An enterprise-grade, Apple-standard interactive presentation and real-time cloud
 | <kbd>S</kbd> | Toggle Speaker Script & Defense Prompter |
 | <kbd>C</kbd> | Trigger Multi-AZ Chaos Outage |
 | <kbd>R</kbd> | Reset Chaos Outage to Nominal State |
-| <kbd>Esc</kbd> | Dismiss any open modal or return to Studio view |
+| <kbd>Esc</kbd> | Dismiss any open modal, or leave the deck for Studio view |
+
+### Deep links
+
+* `?present=1` opens the deck. `?present=1&line=N` opens it on spoken line N (counting from 0).
 
 ---
 
@@ -132,7 +136,7 @@ Phones pair with the stage through a QR code and a WebRTC link (PeerJS). The sta
 
 * **Framework**: React 19 + TypeScript
 * **Build Tool**: Vite 8 (Ultra-fast HMR and bundle compilation)
-* **Styling**: Vanilla CSS with custom Apple-grade OLED design system and glassmorphism tokens
+* **Styling**: Vanilla CSS with a light design system: flat white surfaces, hairline borders, no gradients, glows or blur
 * **Icons**: Official Amazon Web Services SVG icon library + Lucide React
 * **Audio**: Native Web Audio API procedural sound synthesizer (Click, Alert, Chime)
 * **Automated QA**: Puppeteer end-to-end verification test suite

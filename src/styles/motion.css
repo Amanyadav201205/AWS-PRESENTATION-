@@ -9,7 +9,7 @@
 /* Scroll reveal: cards start hidden only when JavaScript has marked them for reveal. */
 .js-reveal {
   opacity: 0;
-  transform: translate3d(0, 28px, 0) scale(0.985);
+  transform: translate3d(0, 28px, 0);
   transition:
     opacity var(--motion-reveal) var(--ease-out-expo),
     transform var(--motion-reveal) var(--ease-out-expo);
@@ -20,7 +20,7 @@
   transform: none;
 }
 
-/* Talk track: each word of the line rises in turn, so the eye lands on the new line at once. */
+/* Talk track: each word of the line fades in in turn, so the eye lands on the new line at once. */
 .talk-word {
   display: inline-block;
   opacity: 0;
@@ -32,108 +32,19 @@
   to { opacity: 1; transform: none; }
 }
 
-/* Numbers and the stage pill pop when they change. The element is re-keyed on change to replay this. */
+/* Numbers and the stage pill fade when they change. The element is re-keyed on change to replay this. */
 .num-pop,
 .talk-pill-pop {
-  animation: num-pop 420ms var(--ease-spring);
+  animation: num-pop 320ms var(--ease-out-expo);
 }
 @keyframes num-pop {
-  from { opacity: 0.25; transform: translate3d(0, 0.3em, 0) scale(0.94); }
-  to { opacity: 1; transform: none; }
-}
-
-/* Focus card: a slow rotating light border, and a cursor-following sheen. */
-@property --talk-angle {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 0deg;
-}
-.talk-focus {
-  position: relative;
-  isolation: isolate;
-}
-.talk-focus::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  padding: 1px;
-  border-radius: inherit;
-  background: conic-gradient(from var(--talk-angle), rgba(10, 132, 255, 0), rgba(10, 132, 255, 0.75), rgba(191, 90, 242, 0.6), rgba(10, 132, 255, 0));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  animation: talk-border-spin 7s linear infinite;
-}
-@keyframes talk-border-spin {
-  to { --talk-angle: 360deg; }
-}
-
-.talk-spot {
-  position: relative;
-  overflow: hidden;
-}
-.talk-spot::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.09), transparent 62%);
-  opacity: 0;
-  transition: opacity 280ms ease;
-  pointer-events: none;
-}
-.talk-spot:hover::after {
-  opacity: 1;
-}
-
-/* Ambient light behind the stage. Fixed, very soft, and it never takes pointer events. */
-.stage-ambient {
-  position: fixed;
-  inset: -15%;
-  z-index: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(38% 34% at 18% 22%, rgba(10, 132, 255, 0.13), transparent 70%),
-    radial-gradient(34% 30% at 82% 74%, rgba(191, 90, 242, 0.11), transparent 70%);
-  filter: blur(36px);
-  animation: ambient-drift 26s ease-in-out infinite alternate;
-}
-@keyframes ambient-drift {
-  to { transform: translate3d(3%, -2%, 0) scale(1.06); }
-}
-
-/* Primary buttons: a light sweep on hover and a small press. */
-.talk-track-cta {
-  position: relative;
-  overflow: hidden;
-  transition: transform 140ms var(--ease-out-expo), filter 140ms ease, box-shadow 220ms ease;
-}
-.talk-track-cta::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -60%;
-  width: 40%;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-  transform: skewX(-18deg);
-  pointer-events: none;
-}
-.talk-track-cta:not(:disabled):hover::after {
-  animation: cta-sweep 900ms var(--ease-out-expo);
-}
-@keyframes cta-sweep {
-  to { left: 130%; }
-}
-.talk-track-cta:not(:disabled):active {
-  transform: scale(0.98);
+  from { opacity: 0.25; }
+  to { opacity: 1; }
 }
 
 /* Keyboard focus is always visible. */
 :focus-visible {
-  outline: 2px solid var(--accent, #0a84ff);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -177,8 +88,5 @@
   .talk-word {
     opacity: 1;
     transform: none;
-  }
-  .stage-ambient {
-    animation: none;
   }
 }

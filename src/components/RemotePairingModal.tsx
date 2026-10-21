@@ -136,7 +136,7 @@ export const RemotePairingModal: React.FC<RemotePairingModalProps> = ({
                 </span>
                 {latestSpeakerName && (
                   <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>
-                    Last active: <strong style={{ color: '#fff' }}>{latestSpeakerName}</strong>
+                    Last active: <strong style={{ color: 'var(--text-primary)' }}>{latestSpeakerName}</strong>
                   </div>
                 )}
               </div>
@@ -154,11 +154,11 @@ export const RemotePairingModal: React.FC<RemotePairingModalProps> = ({
           <div style={{ display: 'flex', gap: 'var(--space-4)', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
             {/* QR Box */}
             <div style={{
-              background: '#0b0d10',
+              background: 'var(--bg-surface-solid)',
               padding: 12,
               borderRadius: 'var(--radius-lg)',
               border: '1px solid var(--separator-strong)',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+              boxShadow: 'var(--shadow-glass)',
               textAlign: 'center'
             }}>
               {qrDataUrl ? (
@@ -238,7 +238,7 @@ export const RemotePairingModal: React.FC<RemotePairingModalProps> = ({
 
               {/* Presenter Split Info */}
               <div style={{
-                background: 'rgba(255, 255, 255, 0.03)',
+                background: 'rgba(15, 23, 42, 0.023)',
                 borderRadius: 'var(--radius-md)',
                 padding: '10px 12px',
                 border: '1px solid var(--separator-subtle)',

@@ -1,0 +1,303 @@
+/* Light presentation deck. A 16:9 slide scales to fill the screen, and everything is printed in ink on white. */
+
+.deck-root {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+.deck-topbar,
+.deck-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-6);
+  border-bottom: 1px solid var(--separator-subtle);
+  flex-wrap: wrap;
+}
+
+.deck-footer {
+  border-top: 1px solid var(--separator-subtle);
+  border-bottom: none;
+}
+
+.deck-brand {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.deck-topbar-actions,
+.deck-nav {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.deck-button {
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: var(--radius-control);
+  border: 1px solid var(--separator);
+  background: var(--bg-surface-solid);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.deck-button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.deck-button-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+.deck-stage-wrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  overflow: hidden;
+}
+
+/* The slide keeps 16:9 and grows to the largest size that fits the window. */
+.deck-slide {
+  width: min(100%, calc((100dvh - 150px) * 16 / 9));
+  aspect-ratio: 16 / 9;
+  background: var(--bg-surface-solid);
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-inner);
+  padding: clamp(20px, 4vw, 56px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  container-type: inline-size;
+}
+
+.deck-eyebrow {
+  font-size: clamp(12px, 1.3cqi, 16px);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-tertiary);
+  margin-bottom: 0.6em;
+}
+
+.deck-title {
+  font-size: clamp(22px, 3.6cqi, 46px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  color: var(--text-primary);
+}
+
+.deck-title-hero {
+  font-size: clamp(30px, 6cqi, 84px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--text-primary);
+  max-width: 18ch;
+  margin-top: auto;
+}
+
+.deck-text-slide {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9em;
+  height: 100%;
+}
+
+.deck-kind-title .deck-points {
+  margin-top: 0.4em;
+}
+
+.deck-points {
+  list-style: none;
+  display: grid;
+  gap: 0.7em;
+  font-size: clamp(14px, 2cqi, 26px);
+  line-height: 1.35;
+  color: var(--text-secondary);
+  padding: 0;
+}
+
+.deck-points li {
+  padding-left: 1.1em;
+  position: relative;
+}
+
+.deck-points li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 0.4em;
+  height: 0.4em;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.deck-formula-card {
+  margin-top: auto;
+  padding: 1em 1.2em;
+  border: 1px solid var(--separator);
+  border-radius: var(--radius-inner);
+  background: var(--bg-surface);
+  overflow-x: auto;
+}
+
+.deck-formula-note {
+  margin-top: 0.6em;
+  font-size: clamp(12px, 1.5cqi, 18px);
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.deck-module-theory {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 4cqi;
+  height: 100%;
+  align-items: start;
+}
+
+.deck-module-theory-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9em;
+}
+
+.deck-module-theory .deck-formula-card {
+  margin-top: 0.8em;
+}
+
+.deck-source {
+  font-size: clamp(12px, 1.6cqi, 18px);
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
+
+.deck-comparison {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+  height: 100%;
+  min-height: 0;
+}
+
+.deck-comparison-head .deck-title {
+  font-size: clamp(18px, 2.8cqi, 36px);
+}
+
+.deck-comparison-labels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4cqi;
+}
+
+.deck-label {
+  font-size: clamp(11px, 1.4cqi, 16px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding-bottom: 0.3em;
+  border-bottom: 2px solid var(--separator);
+}
+
+.deck-label-naive {
+  color: var(--status-danger);
+  border-color: var(--status-danger);
+}
+
+.deck-label-waf {
+  color: var(--status-success);
+  border-color: var(--status-success);
+}
+
+.deck-diagram {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.deck-diagram .diagram-only-screen {
+  height: 100%;
+  width: 100%;
+  gap: 4cqi;
+}
+
+/* Each module's two builds must fit on one slide, so the columns are scaled to the comparison area. */
+.deck-diagram .diagram-only-screen .diagram-column {
+  zoom: 0.66;
+}
+
+.deck-comparison-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4cqi;
+  font-size: clamp(11px, 1.5cqi, 17px);
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding-top: 0.5em;
+  border-top: 1px solid var(--separator-subtle);
+}
+
+@media (max-width: 720px) {
+  .deck-topbar,
+  .deck-footer {
+    padding: var(--space-2) var(--space-3);
+  }
+  .deck-stage-wrap {
+    padding: var(--space-2);
+    align-items: flex-start;
+  }
+  .deck-slide {
+    width: 100%;
+    aspect-ratio: auto;
+    min-height: 62dvh;
+  }
+  .deck-module-theory {
+    grid-template-columns: 1fr;
+  }
+  .deck-comparison-labels,
+  .deck-comparison-summary {
+    grid-template-columns: 1fr;
+  }
+  /* On a phone the naive build sits above the Well-Architected build, and the slide scrolls */
+  .deck-slide {
+    overflow-y: auto;
+  }
+  .deck-diagram {
+    overflow: visible;
+    min-height: 120vh;
+  }
+  .deck-diagram .diagram-only-screen {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .deck-diagram .diagram-only-screen .diagram-column {
+    zoom: 0.5;
+    max-width: 100%;
+  }
+  .deck-diagram .diagram-only-screen .diagram-column * {
+    max-width: 100%;
+  }
+  .deck-slide {
+    overflow-x: hidden;
+  }
+}

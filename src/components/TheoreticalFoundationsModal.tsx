@@ -93,7 +93,7 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
         </div>
 
         {/* Search Bar */}
-        <div style={{ padding: '12px 24px', borderBottom: '1px solid var(--separator-subtle)', background: 'rgba(255, 255, 255, 0.02)', display: 'flex', gap: 10, alignItems: 'center' }}>
+        <div style={{ padding: '12px 24px', borderBottom: '1px solid var(--separator-subtle)', background: 'rgba(15, 23, 42, 0.022)', display: 'flex', gap: 10, alignItems: 'center' }}>
           <Search size={14} color="var(--text-tertiary)" />
           <input
             type="text"
@@ -204,7 +204,7 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
             </div>
 
             {/* Formal Statement & Mathematical Formulation */}
-            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                 Formal Statement & Principle
               </div>
@@ -213,7 +213,7 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
               </p>
 
               {currentTheory.lawOrTheorem.mathematicalFormula && (
-                <div style={{ background: '#000000', border: '1px solid var(--separator-subtle)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)', borderRadius: 'var(--radius-control)', padding: '16px 18px' }}>
+                <div style={{ background: 'var(--bg-canvas)', border: '1px solid var(--separator-subtle)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-control)', padding: '16px 18px' }}>
                   <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.04em', color: 'var(--text-tertiary)', marginBottom: 6 }}>
                     Rigorous Mathematical Formulation
                   </div>
@@ -241,7 +241,7 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
 
             {/* Official AWS Whitepaper & Amazon Builders' Library */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 14 }}>
-              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
                 <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-success)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   Official AWS Whitepaper
                 </span>
@@ -261,7 +261,7 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
                 </p>
               </div>
 
-              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
                 <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   Amazon Builders' Library Publication
                 </span>
@@ -278,7 +278,7 @@ export const TheoreticalFoundationsModal: React.FC<TheoreticalFoundationsModalPr
             </div>
 
             {/* Compliance Standards */}
-            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 18, display: 'flex', flexDirection: 'column', gap: 12 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <ShieldCheck size={16} color="var(--accent)" />
                 <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)' }}>

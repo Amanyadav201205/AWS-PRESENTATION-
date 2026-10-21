@@ -29,7 +29,7 @@ export const pillarDetails: PillarDetail[] = [
     name: 'Operational Excellence',
     tagline: 'Run workloads effectively, understand operations, and continuously improve processes.',
     officialDefinition: 'The Operational Excellence pillar focuses on executing and monitoring systems, continually improving processes and procedures, and delivering business value.',
-    color: '#3B82F6',
+    color: '#0066cc',
     iconName: 'Activity',
     designPrinciples: [
       {
@@ -87,7 +87,7 @@ export const pillarDetails: PillarDetail[] = [
     name: 'Security',
     tagline: 'Protect information, systems, and assets through defense in depth and automated guardrails.',
     officialDefinition: 'The Security pillar focuses on protecting data, systems, and assets while taking advantage of cloud technologies to improve your security posture.',
-    color: '#EF4444',
+    color: '#c9302c',
     iconName: 'Shield',
     designPrinciples: [
       {
@@ -149,7 +149,7 @@ export const pillarDetails: PillarDetail[] = [
     name: 'Reliability',
     tagline: 'Recover from disruptions, dynamically adapt to demand, and mitigate failure blast radiuses.',
     officialDefinition: 'The Reliability pillar ensures that a workload performs its intended function correctly and consistently when expected to, and quickly recovers from failures.',
-    color: '#10B981',
+    color: '#1e7e34',
     iconName: 'RefreshCw',
     designPrinciples: [
       {
@@ -207,7 +207,7 @@ export const pillarDetails: PillarDetail[] = [
     name: 'Performance Efficiency',
     tagline: 'Use computing resources efficiently to meet requirements and maintain efficiency as demand evolves.',
     officialDefinition: 'The Performance Efficiency pillar focuses on using computing resources efficiently to meet system requirements, and maintaining that efficiency as demand changes and technologies evolve.',
-    color: '#F59E0B',
+    color: '#9a5b00',
     iconName: 'Zap',
     designPrinciples: [
       {
@@ -265,7 +265,7 @@ export const pillarDetails: PillarDetail[] = [
     name: 'Cost Optimization',
     tagline: 'Avoid unnecessary costs, understand spending trends, and scale costs proportionally to business value.',
     officialDefinition: 'The Cost Optimization pillar focuses on avoiding unnecessary costs, analyzing and attributing spend, and picking the most cost-effective resources at the right scale.',
-    color: '#8B5CF6',
+    color: '#6b3fd6',
     iconName: 'DollarSign',
     designPrinciples: [
       {
@@ -323,7 +323,7 @@ export const pillarDetails: PillarDetail[] = [
     name: 'Sustainability',
     tagline: 'Minimize environmental impact, maximize resource utilization, and eliminate idle energy waste.',
     officialDefinition: 'The Sustainability pillar focuses on minimizing environmental impacts of running cloud workloads through right-sizing, modern silicon, and serverless adoption.',
-    color: '#14B8A6',
+    color: '#0f766e',
     iconName: 'Leaf',
     designPrinciples: [
       {

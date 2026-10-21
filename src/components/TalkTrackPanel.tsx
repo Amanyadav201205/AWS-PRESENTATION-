@@ -25,17 +25,17 @@ type SendStatus = 'idle' | 'sent' | 'failed';
 
 const LAST_INDEX = talkTrackBeats.length - 1;
 const SPEAKER_NAMES: Record<TalkSpeaker, string> = { devarsh: 'Devarsh', aman: 'Aman' };
-const SPEAKER_COLORS: Record<TalkSpeaker, string> = { devarsh: '#64d2ff', aman: '#ffd60a' };
+const SPEAKER_COLORS: Record<TalkSpeaker, string> = { devarsh: '#0066cc', aman: '#8a6d00' };
 
 const COLORS = {
-  surface: '#1c1c1e',
-  text: '#f5f5f7',
-  textSecondary: '#aeaeb2',
-  success: '#30d158',
-  warning: '#ffd60a',
-  danger: '#ff6961',
-  accent: '#0a84ff',
-  signal: '#ff9f0a'
+  surface: 'var(--bg-surface-solid)',
+  text: 'var(--text-primary)',
+  textSecondary: 'var(--text-tertiary)',
+  success: 'var(--status-success)',
+  warning: 'var(--status-warning)',
+  danger: 'var(--status-danger)',
+  accent: 'var(--accent)',
+  signal: 'var(--aws-orange-ink)'
 } as const;
 
 // Reduced-motion users get no transitions. Inline styles cannot express media queries, so this is injected once.
@@ -62,7 +62,7 @@ const segmentButton = (enabled: boolean, isFirst: boolean, isLast: boolean): Rea
   flex: 1,
   minHeight: 48,
   border: 'none',
-  borderRight: isLast ? 'none' : '1px solid rgba(255,255,255,0.08)',
+  borderRight: isLast ? 'none' : '1px solid rgba(15, 23, 42, 0.080)',
   borderRadius: isFirst ? '14px 0 0 14px' : isLast ? '0 14px 14px 0' : 0,
   background: COLORS.surface,
   color: enabled ? COLORS.text : COLORS.textSecondary,
@@ -140,8 +140,8 @@ export const TalkTrackPanel: React.FC<TalkTrackPanelProps> = ({ isLinked, stageL
         </div>
       </div>
 
-      <div aria-hidden="true" style={{ height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.1)', overflow: 'hidden' }}>
-        <div style={{ height: '100%', width: `${progressPercent}%`, background: `linear-gradient(90deg, ${COLORS.success}, #64d2ff)`, transition: 'width 200ms ease' }} />
+      <div aria-hidden="true" style={{ height: 4, borderRadius: 2, background: 'rgba(15, 23, 42, 0.030)', overflow: 'hidden' }}>
+        <div style={{ height: '100%', width: `${progressPercent}%`, background: COLORS.success, transition: 'width 200ms ease' }} />
       </div>
 
       {statusLine(sendStatus, isLinked) && (
@@ -180,11 +180,6 @@ export const TalkTrackPanel: React.FC<TalkTrackPanelProps> = ({ isLinked, stageL
           {stageLineIndex < 0 ? 'Big screen will show' : 'On the big screen'}
         </span>
         <p style={{ fontSize: 16, color: COLORS.text, margin: 0, lineHeight: 1.4 }}>{focusBeat.show}</p>
-        {focusBeat.formula && (
-          <code style={{ fontSize: 14, color: COLORS.warning, background: 'rgba(0,0,0,0.4)', borderRadius: 10, padding: '8px 10px', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
-            {focusBeat.formula}
-          </code>
-        )}
       </div>
 
       <button
@@ -200,9 +195,9 @@ export const TalkTrackPanel: React.FC<TalkTrackPanelProps> = ({ isLinked, stageL
           fontWeight: 700,
           letterSpacing: '-0.01em',
           cursor: canAdvance ? 'pointer' : 'default',
-          color: canAdvance ? '#ffffff' : COLORS.textSecondary,
-          background: canAdvance ? `linear-gradient(135deg, ${COLORS.accent}, #5e5ce6)` : '#2c2c2e',
-          boxShadow: canAdvance ? '0 10px 30px rgba(0,0,0,0.45)' : 'none'
+          color: canAdvance ? 'var(--text-primary)' : COLORS.textSecondary,
+          background: canAdvance ? COLORS.accent : 'var(--separator)',
+          boxShadow: canAdvance ? '0 10px 30px rgba(15, 23, 42, 0.06)' : 'none'
         }}
       >
         {primaryLabel(stageLine, isLinked)}{canAdvance ? ' →' : ''}
@@ -225,7 +220,7 @@ export const TalkTrackPanel: React.FC<TalkTrackPanelProps> = ({ isLinked, stageL
           <span style={{ fontSize: 12, color: COLORS.textSecondary }}>
             Up next · {SPEAKER_NAMES[talkTrackBeats[stageLineIndex + 1].speaker]}
           </span>
-          <span style={{ fontSize: 14, color: '#d1d1d6', lineHeight: 1.45 }}>{talkTrackBeats[stageLineIndex + 1].say}</span>
+          <span style={{ fontSize: 14, color: '#d2d2d7', lineHeight: 1.45 }}>{talkTrackBeats[stageLineIndex + 1].say}</span>
         </div>
       )}
 

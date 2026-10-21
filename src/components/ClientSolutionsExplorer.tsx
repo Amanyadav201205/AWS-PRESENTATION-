@@ -209,7 +209,7 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
         {/* Content Body */}
         <div style={{ overflowY: 'auto', paddingRight: 6, display: 'flex', flexDirection: 'column', gap: 'var(--space-4)', flex: 1, marginTop: 'var(--space-3)' }}>
           {/* Workload Hero & Customer Requirement Banner */}
-          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6, flexWrap: 'wrap', gap: 8 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ color: 'var(--accent)' }}>{getWorkloadIcon(workload.iconName, 18)}</span>
@@ -239,7 +239,7 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
           {/* Side-by-Side Solution & Financial Comparison */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))', gap: 'var(--space-3)' }}>
             {/* Naive Approach */}
-            <div style={{ background: 'rgba(255, 69, 58, 0.05)', border: '1px solid rgba(255, 69, 58, 0.25)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+            <div style={{ background: 'rgba(255, 69, 58, 0.05)', border: '1px solid rgba(255, 69, 58, 0.25)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
                 <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-danger)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   Naive Conventional Prescription
@@ -268,7 +268,7 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
             </div>
 
             {/* Well-Architected Solution */}
-            <div style={{ background: 'rgba(48, 209, 88, 0.05)', border: '1px solid rgba(48, 209, 88, 0.25)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+            <div style={{ background: 'rgba(48, 209, 88, 0.05)', border: '1px solid rgba(48, 209, 88, 0.25)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
                 <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-success)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   AWS Well-Architected Blueprint
@@ -300,7 +300,7 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
           </div>
 
           {/* Interactive Live Customer Request Simulation */}
-          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+          <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-3)', flexWrap: 'wrap', gap: 8 }}>
               <div>
                 <h4 style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
@@ -383,7 +383,7 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
           {/* FinOps Cost-Cutting Levers & 6-Pillar Summary */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))', gap: 'var(--space-3)' }}>
             {/* Cost Levers */}
-            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 'var(--space-3)' }}>
                 <TrendingDown size={15} color="var(--status-success)" />
                 <h4 style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
@@ -407,7 +407,7 @@ ${workload.pillarsApplied.map(p => `- ${p.pillar}: ${p.implementation}`).join('\
             </div>
 
             {/* 6-Pillars Applied */}
-            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+            <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 'var(--space-3)' }}>
                 <ShieldCheck size={15} color="var(--accent)" />
                 <h4 style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>

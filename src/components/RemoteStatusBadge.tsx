@@ -25,7 +25,7 @@ export const RemoteStatusBadge: React.FC<RemoteStatusBadgeProps> = ({
     QRCode.toDataURL(controllerUrl, {
       width: 200,
       margin: 2,
-      color: { dark: '#ffffff', light: '#000000' },
+      color: { dark: '#ffffff', light: 'var(--text-primary)' },
     }).then(setQrDataUrl).catch(() => {});
   }, [showQr, controllerUrl]);
 

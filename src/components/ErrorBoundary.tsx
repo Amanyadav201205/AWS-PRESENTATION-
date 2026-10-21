@@ -44,14 +44,14 @@ export class ErrorBoundary extends Component<Props, State> {
         }}>
           <div style={{
             maxWidth: '540px',
-            background: 'rgba(24, 24, 28, 0.92)',
-            backdropFilter: 'blur(40px) saturate(190%)',
-            WebkitBackdropFilter: 'blur(40px) saturate(190%)',
-            border: '1px solid rgba(255, 255, 255, 0.14)',
+            background: 'var(--bg-surface-solid)',
+
+
+            border: '1px solid rgba(15, 23, 42, 0.110)',
             borderTop: '1px solid var(--hairline-top)',
             borderRadius: 'var(--radius-sheet)',
             padding: '36px',
-            boxShadow: 'var(--shadow-modal)'
+            boxShadow: 'var(--shadow-glass)'
           }}>
             <div style={{
               width: 52,
@@ -75,7 +75,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </p>
             {this.state.error && (
               <pre style={{
-                background: 'rgba(0, 0, 0, 0.75)',
+                background: 'var(--bg-surface-solid)',
                 border: '1px solid var(--separator)',
                 borderRadius: 'var(--radius-control)',
                 padding: '14px',

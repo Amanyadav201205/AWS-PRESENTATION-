@@ -241,7 +241,7 @@ export const PacketLatencySimulator: React.FC<PacketLatencySimulatorProps> = ({
           {/* Side-by-Side Physical Packet Wire Animation */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'var(--space-3)' }}>
             {/* Pipeline 1: Bad Architecture Track */}
-            <div style={{ background: 'rgba(255, 69, 58, 0.05)', border: '1px solid rgba(255, 69, 58, 0.25)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+            <div style={{ background: 'rgba(255, 69, 58, 0.05)', border: '1px solid rgba(255, 69, 58, 0.25)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-3)', flexWrap: 'wrap', gap: 8 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-danger)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
@@ -259,7 +259,7 @@ export const PacketLatencySimulator: React.FC<PacketLatencySimulatorProps> = ({
               </div>
 
               {/* Physical Wire & Packet Animation */}
-              <div style={{ position: 'relative', height: 48, background: 'rgba(0, 0, 0, 0.55)', backdropFilter: 'blur(12px)', borderRadius: 'var(--radius-control)', border: '1px solid var(--separator)', display: 'flex', alignItems: 'center', padding: '0 16px' }}>
+              <div style={{ position: 'relative', height: 48, background: 'var(--bg-surface-solid)', borderRadius: 'var(--radius-control)', border: '1px solid var(--separator)', display: 'flex', alignItems: 'center', padding: '0 16px' }}>
                 {/* 4 Hops Markers */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', position: 'relative', zIndex: 2 }}>
                   <div style={{ fontSize: 10, color: 'var(--text-tertiary)', fontVariantNumeric: 'tabular-nums' }}>Client (0ms)</div>
@@ -301,7 +301,7 @@ export const PacketLatencySimulator: React.FC<PacketLatencySimulatorProps> = ({
                         height: 14,
                         borderRadius: '50%',
                         background: 'var(--status-danger)',
-                        boxShadow: '0 0 12px var(--status-danger)',
+                        boxShadow: 'var(--shadow-glass)',
                         zIndex: 5
                       }}
                     />
@@ -318,7 +318,7 @@ export const PacketLatencySimulator: React.FC<PacketLatencySimulatorProps> = ({
             </div>
 
             {/* Pipeline 2: Well-Architected Track */}
-            <div style={{ background: 'rgba(48, 209, 88, 0.05)', border: '1px solid rgba(48, 209, 88, 0.25)', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+            <div style={{ background: 'rgba(48, 209, 88, 0.05)', border: '1px solid rgba(48, 209, 88, 0.25)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-3)', flexWrap: 'wrap', gap: 8 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--status-success)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
@@ -336,7 +336,7 @@ export const PacketLatencySimulator: React.FC<PacketLatencySimulatorProps> = ({
               </div>
 
               {/* Physical Wire & Packet Animation */}
-              <div style={{ position: 'relative', height: 48, background: 'rgba(0, 0, 0, 0.55)', backdropFilter: 'blur(12px)', borderRadius: 'var(--radius-control)', border: '1px solid var(--separator)', display: 'flex', alignItems: 'center', padding: '0 16px' }}>
+              <div style={{ position: 'relative', height: 48, background: 'var(--bg-surface-solid)', borderRadius: 'var(--radius-control)', border: '1px solid var(--separator)', display: 'flex', alignItems: 'center', padding: '0 16px' }}>
                 {/* 4 Hops Markers */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', position: 'relative', zIndex: 2 }}>
                   <div style={{ fontSize: 10, color: 'var(--text-tertiary)', fontVariantNumeric: 'tabular-nums' }}>Client (0ms)</div>
@@ -378,7 +378,7 @@ export const PacketLatencySimulator: React.FC<PacketLatencySimulatorProps> = ({
                         height: 14,
                         borderRadius: '50%',
                         background: 'var(--status-success)',
-                        boxShadow: '0 0 12px var(--status-success)',
+                        boxShadow: 'var(--shadow-glass)',
                         zIndex: 5
                       }}
                     />
@@ -397,7 +397,7 @@ export const PacketLatencySimulator: React.FC<PacketLatencySimulatorProps> = ({
 
           {/* Burst Traffic Packet Loss Matrix (Active on Burst Test) */}
           {burstActive && (
-            <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+            <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-3)' }}>
                 <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   20x Concurrent Traffic Burst Telemetry
@@ -434,7 +434,7 @@ export const PacketLatencySimulator: React.FC<PacketLatencySimulatorProps> = ({
           )}
 
           {/* Step-by-Step Hop-by-Hop Breakdown Table */}
-          <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+          <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
             <h4 style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 'var(--space-3)' }}>
               Hop-by-Hop Architecture Latency Breakdown
             </h4>

@@ -33,7 +33,7 @@ export const DRStrategyExplorer: React.FC = () => {
               style={{
                 background: isActive ? 'var(--accent-subtle)' : 'var(--bg-canvas)',
                 border: `1px solid ${isActive ? 'var(--accent)' : 'var(--separator)'}`,
-                boxShadow: isActive ? '0 2px 12px rgba(41, 151, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2)' : 'inset 0 1px 0 var(--hairline-top)',
+                boxShadow: isActive ? '0 2px 12px rgba(41, 151, 255, 0.25), inset 0 1px 0 rgba(15, 23, 42, 0.040)' : 'inset 0 1px 0 var(--hairline-top)',
                 borderRadius: 'var(--radius-control)',
                 padding: 'var(--space-3)',
                 cursor: 'pointer',

@@ -5,9 +5,9 @@ import { TalkBeat } from './talkTrackTypes';
 export const SPEECH_WORDS_PER_SECOND = 2.4;
 /** Allowance for the pause before each line. */
 export const TAP_SECONDS = 0.5;
-/** The talk is planned to run between eight and ten minutes. */
-export const TALK_MIN_SECONDS = 8 * 60;
-export const TALK_MAX_SECONDS = 10 * 60;
+/** The talk is planned to run at least fifteen minutes, with a ceiling for the timer. */
+export const TALK_MIN_SECONDS = 15 * 60;
+export const TALK_MAX_SECONDS = 22 * 60;
 /** Time the stage needs after a module change before it can take screen cues. */
 export const TALK_SETTLE_MS = 350;
 

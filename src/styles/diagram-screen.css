@@ -1,16 +1,4 @@
-/* Big-screen simulation view: the diagram and nothing else. */
-.diagram-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 900;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4vh 4vw;
-  overflow: hidden;
-}
-
+/* Comparison diagrams: the naive and Well-Architected builds side by side, one screen per module. */
 .diagram-only-screen {
   width: 100%;
   height: 100%;
@@ -35,14 +23,7 @@
   height: 100%;
 }
 
-/* Scale the diagram up so it reads from the back of the room. */
-.diagram-only-screen .diagram-column {
-  zoom: 1.1;
-}
-.diagram-only-screen.view-naive-only .diagram-column,
-.diagram-only-screen.view-well-arch-only .diagram-column {
-  zoom: 1.25;
-}
+/* The deck slide already sets the scale, so the diagram columns are not zoomed again. */
 .diagram-path-connector {
   display: block;
   width: 200px;

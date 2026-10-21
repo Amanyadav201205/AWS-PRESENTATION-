@@ -83,14 +83,14 @@ export const NodeDetailModal: React.FC<NodeModalProps> = ({
 
         {/* Specs & Security */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 'var(--space-3)' }}>
-          <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid var(--separator)', borderTop: '1px solid var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-3)', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)' }}>
+          <div style={{ background: 'rgba(15, 23, 42, 0.024)', border: '1px solid var(--separator)', borderTop: '1px solid var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-3)', boxShadow: 'var(--shadow-glass)' }}>
             <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)' }}>Component specs</span>
             <p style={{ fontSize: 12, color: 'var(--text-primary)', marginTop: 4, lineHeight: 1.4 }}>
               {node.configDetails?.specs || node.description || 'Standard cloud instance configuration'}
             </p>
           </div>
 
-          <div style={{ background: 'rgba(255, 255, 255, 0.04)', border: '1px solid var(--separator)', borderTop: '1px solid var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-3)', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)' }}>
+          <div style={{ background: 'rgba(15, 23, 42, 0.024)', border: '1px solid var(--separator)', borderTop: '1px solid var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-3)', boxShadow: 'var(--shadow-glass)' }}>
             <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)' }}>Security & isolation</span>
             <p style={{ fontSize: 12, color: 'var(--text-primary)', marginTop: 4, lineHeight: 1.4 }}>
               {node.configDetails?.securityPolicy || 'Default perimeter boundary rules'}
@@ -107,7 +107,7 @@ export const NodeDetailModal: React.FC<NodeModalProps> = ({
             </span>
           </div>
 
-          <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.45, background: 'rgba(255, 255, 255, 0.04)', border: '1px solid var(--separator)', padding: 'var(--space-2) var(--space-3)', borderRadius: 'var(--radius-control)' }}>
+          <div style={{ fontSize: 12, color: 'var(--text-secondary)', lineHeight: 1.45, background: 'rgba(15, 23, 42, 0.024)', border: '1px solid var(--separator)', padding: 'var(--space-2) var(--space-3)', borderRadius: 'var(--radius-control)' }}>
             <strong style={{ color: 'var(--text-primary)' }}>{isWellArchNode ? 'Well-Architected role: ' : 'How the Well-Architected design fixes this: '}</strong>
             {node.configDetails?.wafAdvantage || node.description}
           </div>

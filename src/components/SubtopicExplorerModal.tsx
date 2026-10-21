@@ -184,7 +184,7 @@ export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({
           {/* Subtopic 1: RDS Proxy Multiplexing */}
           {activeSubtopic === 'rds-proxy' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
                 <h3 style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4, letterSpacing: '-0.015em' }}>
                   Subtopic 1: Relational Database Connection Starvation & Amazon RDS Proxy
                 </h3>
@@ -194,7 +194,7 @@ export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({
               </div>
 
               {/* Interactive Concurrency Slider */}
-              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-3)' }}>
                   <label style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
                     Concurrent Lambda Invocations: <span style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>{lambdaConcurrency} concurrent tasks</span>
@@ -257,7 +257,7 @@ export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({
           {/* Subtopic 2: EBS gp2 vs gp3 Slider */}
           {activeSubtopic === 'ebs-gp3' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
                 <h3 style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4, letterSpacing: '-0.015em' }}>
                   Subtopic 2: EBS gp2 vs gp3 Decoupling & IOPS Economics
                 </h3>
@@ -267,7 +267,7 @@ export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({
               </div>
 
               {/* Sliders */}
-              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 'var(--space-4)', marginBottom: 'var(--space-3)' }}>
                   <div>
                     <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', display: 'block', marginBottom: 6 }}>
@@ -341,7 +341,7 @@ export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({
           {/* Subtopic 3: Caching Simulator */}
           {activeSubtopic === 'caching-patterns' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
                 <h3 style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4, letterSpacing: '-0.015em' }}>
                   Subtopic 3: Multi-Layer Caching (CloudFront Edge + ElastiCache Redis)
                 </h3>
@@ -350,7 +350,7 @@ export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({
                 </p>
               </div>
 
-              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12, fontSize: 13, flexWrap: 'wrap', gap: 8 }}>
                   <span>Incoming Request Stream: <strong>1,000 req/sec</strong></span>
                   <span style={{ color: 'var(--status-success)', fontWeight: 600 }}>Edge Cache Hit Ratio: 92%</span>
@@ -382,7 +382,7 @@ export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({
           {/* Subtopic 4: Aurora Quorum Storage */}
           {activeSubtopic === 'aurora-quorum' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
                 <h3 style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4, letterSpacing: '-0.015em' }}>
                   Subtopic 4: Amazon Aurora 6-Way Storage Quorum & Peer Self-Repair
                 </h3>
@@ -391,7 +391,7 @@ export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({
                 </p>
               </div>
 
-              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-3)', flexWrap: 'wrap', gap: 8 }}>
                   <span style={{ fontSize: 13, fontWeight: 600 }}>Simulate Availability Zone Power Cut:</span>
                   <button 
@@ -444,7 +444,7 @@ export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({
           {/* Subtopic 5: SQS DLQ */}
           {activeSubtopic === 'sqs-dlq' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
-              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+              <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
                 <h3 style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4, letterSpacing: '-0.015em' }}>
                   Subtopic 5: Amazon SQS Dead Letter Queue (DLQ) & Exponential Backoff
                 </h3>
@@ -453,7 +453,7 @@ export const SubtopicExplorerModal: React.FC<SubtopicExplorerModalProps> = ({
                 </p>
               </div>
 
-              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'inset 0 1px 0 var(--hairline-top)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
+              <div style={{ background: 'var(--bg-surface)', border: '1px solid var(--separator)', boxShadow: 'var(--shadow-glass)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-3)', flexWrap: 'wrap', gap: 8 }}>
                   <span style={{ fontSize: 13, fontWeight: 600 }}>Poison Pill Message Delivery Test:</span>
                   <button 

@@ -25,10 +25,11 @@ import {
   RemoteCommand,
 } from './services/presentationRemoteSync';
 import { StorylineStage } from './types';
-import { talkTrackBeats } from './data/talkTrackBeats';
+import { slideIndexForLine, talkTrackBeats } from './data/talkTrackBeats';
 import { TALK_SETTLE_MS } from './data/talkTrackTiming';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { readStageTalkIndex, writeStageTalkIndex } from './utils/stageTalkStorage';
+import { PresentationDeck } from './components/deck/PresentationDeck';
 type SlideViewMode = 'keynote' | 'dual' | 'theory';
 import type { AttackScenario } from './components/DualArchitectureStage';
 
@@ -69,7 +70,7 @@ export function App() {
   if (isRemoteView) {
     const effectiveRoom = (urlRoom || urlParams.get('remote') || getOrGenerateRoomCode()).toUpperCase();
     return (
-      <Suspense fallback={<div style={{ background: '#000', minHeight: '100dvh' }} />}>
+      <Suspense fallback={<div style={{ background: 'var(--bg-canvas)', minHeight: '100dvh' }} />}>
         <SpeakerCompanionRemote
           initialRoomCode={effectiveRoom}
           initialSpeaker={urlSpeaker ?? 'devarsh'}
@@ -86,7 +87,8 @@ export function App() {
 
   const [currentDomainIndex, setCurrentDomainIndex] = useState<number>(getInitialIndexFromHash);
   const [viewMode, setViewMode] = useState<ViewMode>('split');
-  const [displayMode, setDisplayMode] = useState<AppDisplayMode>('studio');
+  // ?present=1 opens the deck; ?line=N opens it on a given spoken line (deep link for rehearsal and review)
+  const [displayMode, setDisplayMode] = useState<AppDisplayMode>(() => (urlParams.get('present') === '1' ? 'presenter' : 'studio'));
 
   // Presentation Deck remote sync states
   const [slideMode, setSlideMode] = useState<SlideViewMode>('keynote');
@@ -543,8 +545,27 @@ export function App() {
   }, [remoteSync, currentDomainIndex, activeDomain, contentZoom, handleTriggerChaos, handleResetChaos, closeAllModals, showHudToast]);
 
   // Talk track. The stage owns the current line, so laptop keys and phones always show the same line.
-  const [talkIndex, setTalkIndex] = useState<number>(() => readStageTalkIndex(talkTrackBeats.length));
+  const [talkIndex, setTalkIndex] = useState<number>(() => {
+    const requestedLine = Number(urlParams.get('line'));
+    const isValidLine = Number.isInteger(requestedLine) && requestedLine >= 0 && requestedLine < talkTrackBeats.length;
+    return isValidLine ? requestedLine : readStageTalkIndex(talkTrackBeats.length);
+  });
   const [packetFlowOn, setPacketFlowOn] = useState<boolean>(true);
+  const [isExportingPptx, setIsExportingPptx] = useState<boolean>(false);
+
+  // The PowerPoint builder is loaded on first use, so the presentation itself stays light
+  const handleExportPptx = useCallback(async () => {
+    setIsExportingPptx(true);
+    try {
+      const { exportDeckPptx } = await import('./utils/exportDeckPptx');
+      await exportDeckPptx();
+    } catch (error) {
+      console.error('PowerPoint export failed', error);
+      showHudToast(undefined, 'PowerPoint export failed. Try again.');
+    } finally {
+      setIsExportingPptx(false);
+    }
+  }, [showHudToast]);
   const talkIndexRef = useRef<number>(talkIndex);
   const talkSettleUntilRef = useRef<number>(0);
   const stageDomainRef = useRef<number>(currentDomainIndex);
@@ -940,23 +961,31 @@ export function App() {
 
         {/* Presenter Mode Deck */}
         {displayMode === 'presenter' && (
-          <div className="diagram-screen" aria-label={`Simulation diagram: ${activeDomain.title}`}>
-            <DualArchitectureStage
-              diagramOnly
-              packetFlowOn={packetFlowOn}
-              naive={activeDomain.naive}
-              wellArch={activeDomain.wellArch}
-              viewMode={viewMode}
-              setViewMode={setViewMode}
-              chaosPhase={chaosPhase}
-              affectedNodeIds={activeDomain.chaos.affectedNodeIds}
-              onSelectNode={() => { /* the big screen never opens panels */ }}
-              externalUserLoad={userLoad}
-              onUserLoadChange={setUserLoad}
-              externalAttack={activeAttack}
-              onAttackChange={setActiveAttack}
-            />
-          </div>
+          <PresentationDeck
+            lineIndex={talkIndex}
+            slideIndex={slideIndexForLine(talkIndex)}
+            onStep={(step) => applyTalkLine(talkIndexRef.current + step)}
+            onExit={() => setDisplayMode('studio')}
+            onExportPptx={handleExportPptx}
+            isExporting={isExportingPptx}
+            renderDiagram={() => (
+              <DualArchitectureStage
+                diagramOnly
+                packetFlowOn={packetFlowOn}
+                naive={activeDomain.naive}
+                wellArch={activeDomain.wellArch}
+                viewMode="split"
+                setViewMode={setViewMode}
+                chaosPhase={chaosPhase}
+                affectedNodeIds={activeDomain.chaos.affectedNodeIds}
+                onSelectNode={() => { /* the big screen never opens panels */ }}
+                externalUserLoad={userLoad}
+                onUserLoadChange={setUserLoad}
+                externalAttack={activeAttack}
+                onAttackChange={setActiveAttack}
+              />
+            )}
+          />
         )}
 
 

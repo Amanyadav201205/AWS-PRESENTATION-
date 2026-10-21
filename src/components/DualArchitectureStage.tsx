@@ -187,17 +187,17 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
           <svg width="100%" height="34" viewBox="0 0 400 34" className="conduit-svg" preserveAspectRatio="none">
             <line 
               x1="200" y1="0" x2="200" y2="34" 
-              stroke={isDropping ? '#FF453A' : '#FF9F0A'} 
+              stroke={isDropping ? '#c9302c' : '#9a5b00'} 
               strokeWidth={isDropping ? 3.5 : 2} 
               strokeDasharray={isDropping ? '4 3' : '2 2'} 
             />
             {trafficActive && !isChaos && (
-              <circle cx="200" cy="17" r={isHighLoad ? 3 : 2.5} fill="#FF9F0A">
+              <circle cx="200" cy="17" r={isHighLoad ? 3 : 2.5} fill="#9a5b00">
                 <animate attributeName="cy" from="0" to="34" dur={animDuration(1.4)} repeatCount="indefinite" />
               </circle>
             )}
             {isDropping && !diagramOnly && (
-              <text x="215" y="20" fill="#FF453A" fontSize="10" fontFamily="var(--font-mono)" fontWeight="700">
+              <text x="215" y="20" fill="#c9302c" fontSize="10" fontFamily="var(--font-mono)" fontWeight="700">
                 {isChaos ? 'DROP (0%)' : 'CONGESTED'}
               </text>
             )}
@@ -215,20 +215,20 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
 
           {trafficActive && (
             <>
-              <circle cx="120" cy="17" r="2.5" fill="#30D158">
+              <circle cx="120" cy="17" r="2.5" fill="#1e7e34">
                 <animate attributeName="cy" from="0" to="34" dur={animDuration(0.9)} repeatCount="indefinite" />
               </circle>
-              <circle cx="200" cy="17" r="2.5" fill="#30D158">
+              <circle cx="200" cy="17" r="2.5" fill="#1e7e34">
                 <animate attributeName="cy" from="0" to="34" dur={animDuration(0.7)} repeatCount="indefinite" />
               </circle>
-              <circle cx="280" cy="17" r="2.5" fill="#30D158">
+              <circle cx="280" cy="17" r="2.5" fill="#1e7e34">
                 <animate attributeName="cy" from="0" to="34" dur={animDuration(1.1)} repeatCount="indefinite" />
               </circle>
             </>
           )}
 
           {!diagramOnly && (
-            <text x="212" y="20" fill="#30D158" fontSize="10" fontFamily="var(--font-mono)" fontWeight="600">
+            <text x="212" y="20" fill="#1e7e34" fontSize="10" fontFamily="var(--font-mono)" fontWeight="600">
               {tierCode === 'ingress' ? 'TLS 1.3 · VPC BACKBONE' : 'PRIVATE BACKBONE'}
             </text>
           )}
@@ -261,7 +261,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               <span className="tier-pill-label">{tierGroup.title}</span>
               {isWellArch && (
                 <span className="tier-secure-badge">
-                  <ShieldCheck size={10} color="#30D158" /> Multi-AZ Active
+                  <ShieldCheck size={10} color="#1e7e34" /> Multi-AZ Active
                 </span>
               )}
             </div>
@@ -317,7 +317,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
                 {isExposedDb && (
                   <span 
                     className="node-spof-badge" 
-                    style={{ background: 'rgba(255, 69, 58, 0.22)', color: '#FF453A', borderColor: 'rgba(255, 69, 58, 0.45)' }}
+                    style={{ background: 'rgba(255, 69, 58, 0.22)', color: 'var(--status-danger)', borderColor: 'rgba(255, 69, 58, 0.45)' }}
                     title="Security Group allows direct 0.0.0.0/0 ingress on port 3306"
                   >
                     0.0.0.0/0 :3306
@@ -326,7 +326,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
 
                 {/* Dynamic Auto-Scaled Tag */}
                 {isDynamicScaled && (
-                  <span className="node-ha-badge" style={{ background: 'rgba(48, 209, 88, 0.25)', color: '#30D158' }}>
+                  <span className="node-ha-badge" style={{ background: 'rgba(48, 209, 88, 0.25)', color: 'var(--status-success)' }}>
                     +AUTO-SCALED
                   </span>
                 )}
@@ -347,7 +347,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
     // Each node is its own row, in the order a request travels, with a packet lane between neighbours
     const renderPathConnector = (isWellArch: boolean, key: string) => {
       const isFailingPath = isWellArch ? false : isChaos || isHighLoad || activeAttack !== 'none';
-      const stroke = isWellArch ? '#30D158' : isFailingPath ? '#FF453A' : '#FF9F0A';
+      const stroke = isWellArch ? '#1e7e34' : isFailingPath ? '#c9302c' : '#9a5b00';
       return (
         <svg key={key} className="diagram-path-connector" width="100%" height="46" viewBox="0 0 200 46" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
           <line x1="100" y1="0" x2="100" y2="46" stroke={stroke} strokeWidth={isFailingPath ? 3 : 2} strokeDasharray={isFailingPath ? '5 4' : undefined} opacity={0.85} />
@@ -385,7 +385,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
         <div className="sandbox-top-row">
           <div className="sandbox-label-group">
             <span className="sandbox-title">
-              <Activity size={14} color="#2997FF" /> Live Traffic Load Simulator
+              <Activity size={14} color="#0066cc" /> Live Traffic Load Simulator
             </span>
             <span className="stage-live-indicator">
               <span className="pulse-circle" /> Simulated
@@ -442,7 +442,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
         {/* Bottom Row: Chaos Disaster Scenarios */}
         <div className="disaster-attacks-row">
           <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.4px', display: 'flex', alignItems: 'center', gap: 5 }}>
-            <Flame size={12} color="#FF453A" /> Inject Disaster Event:
+            <Flame size={12} color="#c9302c" /> Inject Disaster Event:
           </span>
 
           <button
@@ -479,7 +479,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             className={`disaster-attack-btn ${activeAttack === 'bill-shock' ? 'active' : ''}`}
             onClick={() => triggerAttack('bill-shock')}
             title="Simulate runaway over-provisioned cloud bill shock"
-            style={{ color: '#FF9F0A', borderColor: 'rgba(255, 159, 10, 0.3)', background: 'rgba(255, 159, 10, 0.08)', minHeight: 32 }}
+            style={{ color: 'var(--status-warning)', borderColor: 'rgba(255, 159, 10, 0.3)', background: 'rgba(255, 159, 10, 0.08)', minHeight: 32 }}
           >
             <DollarSign size={12} />
             <span>FinOps Bill Shock</span>
@@ -489,7 +489,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             <button
               className="btn-action"
               onClick={() => { soundFX.playHealChime(); setActiveAttack('none'); }}
-              style={{ fontSize: 11, minHeight: 32, marginLeft: 'auto', gap: 4, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
+              style={{ fontSize: 11, minHeight: 32, marginLeft: 'auto', gap: 4, borderRadius: 'var(--radius-pill)', boxShadow: 'var(--shadow-glass)' }}
             >
               <RefreshCw size={11} /> Reset Attack State
             </button>
@@ -513,7 +513,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               soundFX.playClick();
               setTrafficActive(!trafficActive);
             }}
-            style={{ minHeight: 32, fontSize: 11, padding: '0 12px', gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
+            style={{ minHeight: 32, fontSize: 11, padding: '0 12px', gap: 5, borderRadius: 'var(--radius-pill)', boxShadow: 'var(--shadow-glass)' }}
             title="Toggle live packet stream simulation"
           >
             {trafficActive ? <Pause size={11} /> : <Play size={11} />}
@@ -552,7 +552,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
               soundFX.playClick();
               setShowSubnetBoundaries(!showSubnetBoundaries);
             }}
-            style={{ minHeight: 32, fontSize: 11, padding: '0 12px', borderRadius: 'var(--radius-pill)', boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}
+            style={{ minHeight: 32, fontSize: 11, padding: '0 12px', borderRadius: 'var(--radius-pill)', boxShadow: 'var(--shadow-glass)' }}
             title="Show / hide VPC Subnet isolation boundaries"
           >
             <Layers size={11} />
@@ -758,7 +758,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
             {/* Dynamic Auto-Scale & Resilience Banner */}
             {(isHighLoad || activeAttack !== 'none') && (
               <div className="live-autoscale-banner">
-                <ShieldCheck size={12} color="#30D158" />
+                <ShieldCheck size={12} color="#1e7e34" />
                 <span>
                   {activeAttack === 'ransomware' ? 'PROTECTED: S3 Object Lock (WORM) rejected DELETE! AWS Backup continuous recovery ready.'
                     : activeAttack === 'az-outage' ? 'RESILIENT: Target group health-check rerouted 100% of traffic to healthy AZ in 220ms!'

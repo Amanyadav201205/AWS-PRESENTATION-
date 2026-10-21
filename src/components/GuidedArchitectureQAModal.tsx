@@ -163,21 +163,21 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
           display: 'flex',
           flexDirection: 'column',
           padding: 0,
-          background: 'rgba(24, 24, 28, 0.94)',
-          backdropFilter: 'blur(48px) saturate(200%)',
-          WebkitBackdropFilter: 'blur(48px) saturate(200%)',
+          background: 'var(--bg-surface-solid)',
+
+
           borderRadius: 'var(--radius-sheet)',
-          border: '1px solid rgba(255, 255, 255, 0.14)',
+          border: '1px solid rgba(15, 23, 42, 0.110)',
           borderTop: '1px solid var(--hairline-top)',
           overflow: 'hidden',
-          boxShadow: 'var(--shadow-modal)'
+          boxShadow: 'var(--shadow-glass)'
         }}
       >
         {/* Header */}
         <div style={{
           padding: '16px 24px',
           borderBottom: '1px solid var(--separator)',
-          background: 'rgba(255, 255, 255, 0.02)',
+          background: 'rgba(15, 23, 42, 0.022)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between'
@@ -189,7 +189,7 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
               borderRadius: 'var(--radius-control)',
               background: 'rgba(255, 159, 10, 0.12)',
               border: '1px solid rgba(255, 159, 10, 0.3)',
-              boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+              boxShadow: 'var(--shadow-glass)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -260,7 +260,7 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
                   fontSize: 12,
                   fontWeight: isSelected ? 600 : 500,
                   color: isSelected ? 'var(--status-warning)' : 'var(--text-secondary)',
-                  boxShadow: isSelected ? '0 2px 10px rgba(255, 159, 10, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2)' : 'inset 0 1px 0 var(--hairline-top)',
+                  boxShadow: isSelected ? '0 2px 10px rgba(255, 159, 10, 0.25), inset 0 1px 0 rgba(15, 23, 42, 0.040)' : 'inset 0 1px 0 var(--hairline-top)',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
@@ -281,16 +281,16 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
           display: 'flex',
           flexDirection: 'column',
           gap: 20,
-          background: 'rgba(14, 14, 18, 0.6)'
+          background: 'var(--bg-surface-solid)'
         }}>
           {/* Question Title Card */}
           <div style={{
             padding: '18px 22px',
             borderRadius: 'var(--radius-inner)',
-            background: 'rgba(255, 255, 255, 0.04)',
+            background: 'rgba(15, 23, 42, 0.024)',
             border: '1px solid var(--separator)',
             borderTop: '1px solid var(--hairline-top)',
-            boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)'
+            boxShadow: 'var(--shadow-glass)'
           }}>
             <div style={{ fontSize: 11, textTransform: 'uppercase', color: 'var(--status-warning)', fontWeight: 700, letterSpacing: '0.04em', marginBottom: 6 }}>
               {activeQ.category} Pillar Investigation
@@ -311,7 +311,7 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
               borderRadius: 'var(--radius-inner)',
               background: 'var(--status-danger-subtle)',
               border: '1px solid rgba(255, 69, 58, 0.25)',
-              boxShadow: 'inset 0 1px 0 rgba(255, 69, 58, 0.15)'
+              boxShadow: 'var(--shadow-glass)'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: 'var(--status-danger)', fontWeight: 600, fontSize: 13 }}>
                 <AlertTriangle size={15} />
@@ -328,7 +328,7 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
               borderRadius: 'var(--radius-inner)',
               background: 'var(--status-success-subtle)',
               border: '1px solid rgba(48, 209, 88, 0.25)',
-              boxShadow: 'inset 0 1px 0 rgba(48, 209, 88, 0.15)'
+              boxShadow: 'var(--shadow-glass)'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8, color: 'var(--status-success)', fontWeight: 600, fontSize: 13 }}>
                 <CheckCircle2 size={15} />
@@ -350,10 +350,10 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
               <div key={idx} style={{
                 padding: '12px 16px',
                 borderRadius: 'var(--radius-control)',
-                background: 'rgba(255, 255, 255, 0.04)',
+                background: 'rgba(15, 23, 42, 0.024)',
                 border: '1px solid var(--separator)',
                 borderTop: '1px solid var(--hairline-top)',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
+                boxShadow: 'var(--shadow-glass)'
               }}>
                 <div style={{ fontSize: 11, color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   {m.label}
@@ -369,14 +369,14 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
           {activeQ.iacSnippet && (
             <div style={{
               borderRadius: 'var(--radius-inner)',
-              background: 'rgba(0, 0, 0, 0.75)',
+              background: 'var(--bg-surface-solid)',
               border: '1px solid var(--separator)',
               overflow: 'hidden',
-              boxShadow: '0 4px 16px rgba(0, 0, 0, 0.35)'
+              boxShadow: 'var(--shadow-glass)'
             }}>
               <div style={{
                 padding: '10px 16px',
-                background: 'rgba(255, 255, 255, 0.03)',
+                background: 'rgba(15, 23, 42, 0.023)',
                 borderBottom: '1px solid var(--separator)',
                 display: 'flex',
                 alignItems: 'center',
@@ -394,7 +394,7 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
                     padding: '0 10px',
                     fontSize: 11,
                     borderRadius: 'var(--radius-pill)',
-                    boxShadow: 'inset 0 1px 0 var(--hairline-top)',
+                    boxShadow: 'var(--shadow-glass)',
                     color: copiedSnippet ? 'var(--status-success)' : 'var(--text-secondary)'
                   }}
                 >
@@ -424,7 +424,7 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
               borderRadius: 'var(--radius-inner)',
               background: 'rgba(255, 159, 10, 0.05)',
               border: '1px solid rgba(255, 159, 10, 0.2)',
-              boxShadow: 'inset 0 1px 0 rgba(255, 159, 10, 0.1)'
+              boxShadow: 'var(--shadow-glass)'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: 'var(--status-warning)', marginBottom: 6, letterSpacing: '0.02em' }}>
                 <FileText size={13} />
@@ -446,7 +446,7 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
             <div style={{
               padding: '16px 20px',
               borderRadius: 'var(--radius-inner)',
-              background: 'rgba(255, 255, 255, 0.04)',
+              background: 'rgba(15, 23, 42, 0.024)',
               border: '1px solid var(--separator)',
               borderTop: '1px solid var(--hairline-top)',
               display: 'flex',
@@ -472,7 +472,7 @@ export const GuidedArchitectureQAModal: React.FC<GuidedArchitectureQAModalProps>
                   fontSize: 12,
                   fontWeight: 600,
                   borderRadius: 'var(--radius-pill)',
-                  boxShadow: 'inset 0 1px 0 var(--hairline-top)'
+                  boxShadow: 'var(--shadow-glass)'
                 }}
               >
                 {appliedAction ? 'Applied to Stage ✓' : 'Simulate Remediation'}

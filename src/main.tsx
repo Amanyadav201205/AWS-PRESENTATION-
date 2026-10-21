@@ -4,6 +4,7 @@ import 'katex/dist/katex.min.css'
 import './index.css'
 import './styles/motion.css'
 import './styles/diagram-screen.css'
+import './styles/deck.css'
 import App from './App'
 import { ErrorBoundary } from './components/ErrorBoundary'
 

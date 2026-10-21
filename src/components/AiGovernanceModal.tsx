@@ -71,14 +71,14 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           display: 'flex',
           flexDirection: 'column',
           padding: 0,
-          background: 'rgba(22, 22, 26, 0.94)',
-          backdropFilter: 'blur(48px) saturate(200%)',
-          WebkitBackdropFilter: 'blur(48px) saturate(200%)',
+          background: 'var(--bg-surface-solid)',
+
+
           borderRadius: 'var(--radius-sheet)',
-          border: '1px solid rgba(255, 255, 255, 0.14)',
+          border: '1px solid rgba(15, 23, 42, 0.110)',
           borderTop: '1px solid var(--hairline-top)',
           overflow: 'hidden',
-          boxShadow: 'var(--shadow-modal)'
+          boxShadow: 'var(--shadow-glass)'
         }}
       >
         {/* Modal Header */}
@@ -86,7 +86,7 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           style={{
             padding: '16px 24px',
             borderBottom: '1px solid var(--separator)',
-            background: 'rgba(255, 255, 255, 0.02)',
+            background: 'rgba(15, 23, 42, 0.022)',
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'space-between',
@@ -102,7 +102,7 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
                 borderRadius: 'var(--radius-control)',
                 background: 'rgba(48, 209, 88, 0.14)',
                 border: '1px solid rgba(48, 209, 88, 0.35)',
-                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+                boxShadow: 'var(--shadow-glass)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center'
@@ -146,8 +146,8 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
                 gap: 6,
                 padding: '4px 12px',
                 borderRadius: 'var(--radius-pill)',
-                background: 'rgba(255, 255, 255, 0.06)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                background: 'rgba(15, 23, 42, 0.026)',
+                border: '1px solid rgba(15, 23, 42, 0.090)',
                 fontSize: 12,
                 fontFamily: 'var(--font-mono)',
                 fontVariantNumeric: 'tabular-nums'
@@ -177,7 +177,7 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
             alignItems: 'center',
             gap: 4,
             padding: '8px 16px',
-            background: 'rgba(255, 255, 255, 0.02)',
+            background: 'rgba(15, 23, 42, 0.022)',
             borderBottom: '1px solid var(--separator)',
             overflowX: 'auto',
             whiteSpace: 'nowrap'
@@ -192,7 +192,7 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
                 setActiveTab(t.id);
               }}
               style={{
-                background: activeTab === t.id ? 'rgba(48, 209, 88, 0.18)' : 'rgba(255, 255, 255, 0.04)',
+                background: activeTab === t.id ? 'rgba(48, 209, 88, 0.18)' : 'rgba(15, 23, 42, 0.024)',
                 color: activeTab === t.id ? 'var(--status-success)' : 'var(--text-secondary)',
                 borderColor: activeTab === t.id ? 'rgba(48, 209, 88, 0.4)' : 'transparent',
                 borderRadius: 'var(--radius-control)',
@@ -215,7 +215,7 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
             flex: 1,
             overflowY: 'auto',
             padding: '24px 32px',
-            color: '#FFFFFF',
+            color: 'var(--text-primary)',
             fontSize: 13,
             lineHeight: 1.6
           }}
@@ -223,32 +223,32 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           {/* Tab 0: AI Definition & Taxonomy */}
           {activeTab === 0 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <h4 style={{ margin: 0, fontSize: 18, color: '#00E676' }}>1. Decide What "AI-Made" Means</h4>
+              <h4 style={{ margin: 0, fontSize: 18, color: '#1e7e34' }}>1. Decide What "AI-Made" Means</h4>
               <p style={{ color: 'var(--text-secondary)' }}>
                 Clarify the precise architectural role of artificial intelligence within the application before writing code. Avoid generic buzzwords.
               </p>
               
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }}>
-                <div style={{ padding: 16, borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div style={{ fontWeight: 700, color: '#00B0FF', marginBottom: 4 }}>A. AI-Assisted Website Creation</div>
+                <div style={{ padding: 16, borderRadius: 10, background: 'rgba(15, 23, 42, 0.023)', border: '1px solid rgba(15, 23, 42, 0.080)' }}>
+                  <div style={{ fontWeight: 700, color: '#0066cc', marginBottom: 4 }}>A. AI-Assisted Website Creation</div>
                   <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
                     AI produces code, design tokens, copy, or test suites during development. The production runtime is 100% deterministic, ultra-fast, and contains zero live model dependencies.
                   </div>
                 </div>
                 <div style={{ padding: 16, borderRadius: 10, background: 'rgba(255,153,0,0.05)', border: '1px solid rgba(255,153,0,0.2)' }}>
-                  <div style={{ fontWeight: 700, color: '#FF9900', marginBottom: 4 }}>B. AI-Powered Website (Active in Our App)</div>
+                  <div style={{ fontWeight: 700, color: 'var(--aws-orange-ink)', marginBottom: 4 }}>B. AI-Powered Website (Active in Our App)</div>
                   <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
                     Visitors interact with an intelligent Copilot for search, comparative trade-offs, and RAG knowledge retrieval grounded in official AWS WAF whitepapers.
                   </div>
                 </div>
-                <div style={{ padding: 16, borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div style={{ fontWeight: 700, color: '#AB47BC', marginBottom: 4 }}>C. AI-Personalized Website</div>
+                <div style={{ padding: 16, borderRadius: 10, background: 'rgba(15, 23, 42, 0.023)', border: '1px solid rgba(15, 23, 42, 0.080)' }}>
+                  <div style={{ fontWeight: 700, color: '#7a3fb8', marginBottom: 4 }}>C. AI-Personalized Website</div>
                   <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
                     Adapts navigation or recommendations based on declared user role (Enterprise Architect, CFO, DevOps). Must offer explicit opt-outs and avoid sensitive inferences.
                   </div>
                 </div>
                 <div style={{ padding: 16, borderRadius: 10, background: 'rgba(0,230,118,0.05)', border: '1px solid rgba(0,230,118,0.2)' }}>
-                  <div style={{ fontWeight: 700, color: '#00E676', marginBottom: 4 }}>D. Supervised AI Agent Website (Active in Our App)</div>
+                  <div style={{ fontWeight: 700, color: '#1e7e34', marginBottom: 4 }}>D. Supervised AI Agent Website (Active in Our App)</div>
                   <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
                     AI proposes system-altering actions (e.g. ASG autoscaling, WAF deployment). Mandates strict least-privilege permissions, previews, two-phase human confirmations, and rollback paths.
                   </div>
@@ -260,29 +260,29 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           {/* Tab 1: Product-First Value & Goals */}
           {activeTab === 1 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <h4 style={{ margin: 0, fontSize: 18, color: '#00E676' }}>2. Start With the Product, Not the Model</h4>
+              <h4 style={{ margin: 0, fontSize: 18, color: '#1e7e34' }}>2. Start With the Product, Not the Model</h4>
               
               <div style={{ padding: 18, borderRadius: 10, background: 'rgba(0, 113, 227, 0.1)', border: '1px solid rgba(0, 113, 227, 0.3)' }}>
-                <div style={{ fontSize: 11, textTransform: 'uppercase', color: '#00B0FF', fontWeight: 700, marginBottom: 4 }}>
+                <div style={{ fontSize: 11, textTransform: 'uppercase', color: '#0066cc', fontWeight: 700, marginBottom: 4 }}>
                   One-Sentence Value Proposition:
                 </div>
-                <div style={{ fontSize: 15, fontWeight: 600, color: '#FFFFFF', fontStyle: 'italic' }}>
+                <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)', fontStyle: 'italic' }}>
                   "Help cloud architects and engineering leaders eliminate high-risk infrastructure failure modes, optimize AWS monthly expenditure, and execute verified Well-Architected remediations with traceable whitepaper citations and human confirmation."
                 </div>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
-                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(15, 23, 42, 0.023)', border: '1px solid rgba(15, 23, 42, 0.070)' }}>
                   <div style={{ fontSize: 11, color: 'var(--text-tertiary)', fontWeight: 700 }}>TARGET AUDIENCE</div>
-                  <div style={{ fontSize: 13, color: '#FFFFFF', marginTop: 4 }}>Cloud Solutions Architects, CTOs, DevOps Leads, FinOps Directors</div>
+                  <div style={{ fontSize: 13, color: 'var(--text-primary)', marginTop: 4 }}>Cloud Solutions Architects, CTOs, DevOps Leads, FinOps Directors</div>
                 </div>
-                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(15, 23, 42, 0.023)', border: '1px solid rgba(15, 23, 42, 0.070)' }}>
                   <div style={{ fontSize: 11, color: 'var(--text-tertiary)', fontWeight: 700 }}>CORE USER TASK</div>
-                  <div style={{ fontSize: 13, color: '#FFFFFF', marginTop: 4 }}>Audit fragile topologies, eliminate single points of failure, calculate ROI</div>
+                  <div style={{ fontSize: 13, color: 'var(--text-primary)', marginTop: 4 }}>Audit fragile topologies, eliminate single points of failure, calculate ROI</div>
                 </div>
-                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(15, 23, 42, 0.023)', border: '1px solid rgba(15, 23, 42, 0.070)' }}>
                   <div style={{ fontSize: 11, color: 'var(--text-tertiary)', fontWeight: 700 }}>NON-AI FALLBACK PATH</div>
-                  <div style={{ fontSize: 13, color: '#FFFFFF', marginTop: 4 }}>Full manual navigation of all 15 domains, 6 Pillars Explorer, and Hotkey Deck</div>
+                  <div style={{ fontSize: 13, color: 'var(--text-primary)', marginTop: 4 }}>Full manual navigation of all 15 domains, 6 Pillars Explorer, and Hotkey Deck</div>
                 </div>
               </div>
             </div>
@@ -291,14 +291,14 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           {/* Tab 2: Foundations & WCAG 2.2 AA */}
           {activeTab === 2 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <h4 style={{ margin: 0, fontSize: 18, color: '#00E676' }}>3. Website Foundations (Non-Negotiables)</h4>
+              <h4 style={{ margin: 0, fontSize: 18, color: '#1e7e34' }}>3. Website Foundations (Non-Negotiables)</h4>
               <p style={{ color: 'var(--text-secondary)' }}>
                 AI never replaces core engineering excellence. An enterprise site must adhere strictly to information architecture, responsive performance, and WCAG accessibility.
               </p>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }}>
-                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div style={{ fontWeight: 700, color: '#FFFFFF', marginBottom: 4 }}>♿ WCAG 2.2 AA Accessibility Compliance</div>
+                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(15, 23, 42, 0.023)', border: '1px solid rgba(15, 23, 42, 0.080)' }}>
+                  <div style={{ fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>♿ WCAG 2.2 AA Accessibility Compliance</div>
                   <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12, color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: 4 }}>
                     <li>Semantic landmark structure: <code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;footer&gt;</code></li>
                     <li>Full keyboard traversal (<kbd>Tab</kbd>, <kbd>Esc</kbd>, <kbd>Enter</kbd>, <kbd>P</kbd>, <kbd>A</kbd>, <kbd>L</kbd>)</li>
@@ -306,8 +306,8 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
                     <li>Strict contrast ratios exceeding 4.5:1 against pitch black background</li>
                   </ul>
                 </div>
-                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div style={{ fontWeight: 700, color: '#FFFFFF', marginBottom: 4 }}>⚡ Performance &amp; Core Web Vitals</div>
+                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(15, 23, 42, 0.023)', border: '1px solid rgba(15, 23, 42, 0.080)' }}>
+                  <div style={{ fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>⚡ Performance &amp; Core Web Vitals</div>
                   <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12, color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: 4 }}>
                     <li>Sub-second initial page render (zero bulky external runtime scripts)</li>
                     <li>Zero cumulative layout shift (CLS = 0) with fixed modal geometries</li>
@@ -322,14 +322,14 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           {/* Tab 3: Feature Matrix */}
           {activeTab === 3 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <h4 style={{ margin: 0, fontSize: 18, color: '#00E676' }}>4. AI Feature Selection: Solving Real Tasks</h4>
+              <h4 style={{ margin: 0, fontSize: 18, color: '#1e7e34' }}>4. AI Feature Selection: Solving Real Tasks</h4>
               <p style={{ color: 'var(--text-secondary)' }}>
                 Do not add a chat widget just because it is easy. Choose features solely where AI measurably accelerates user completion.
               </p>
 
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                 <thead>
-                  <tr style={{ background: 'rgba(255,255,255,0.06)', textAlign: 'left' }}>
+                  <tr style={{ background: 'rgba(15, 23, 42, 0.026)', textAlign: 'left' }}>
                     <th style={{ padding: '8px 12px' }}>AI Feature</th>
                     <th style={{ padding: '8px 12px' }}>Good Fit Scenario</th>
                     <th style={{ padding: '8px 12px' }}>Key Design Requirement</th>
@@ -337,29 +337,29 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
                   </tr>
                 </thead>
                 <tbody>
-                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                  <tr style={{ borderBottom: '1px solid rgba(15, 23, 42, 0.070)' }}>
                     <td style={{ padding: '8px 12px', fontWeight: 600 }}>RAG Architectural Search</td>
                     <td style={{ padding: '8px 12px' }}>Find compliance rules across 100+ AWS whitepapers</td>
                     <td style={{ padding: '8px 12px' }}>Show verified quotes, section names, and external docs</td>
-                    <td style={{ padding: '8px 12px', color: '#00E676' }}>Active (Copilot)</td>
+                    <td style={{ padding: '8px 12px', color: '#1e7e34' }}>Active (Copilot)</td>
                   </tr>
-                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                  <tr style={{ borderBottom: '1px solid rgba(15, 23, 42, 0.070)' }}>
                     <td style={{ padding: '8px 12px', fontWeight: 600 }}>Contextual Recommendations</td>
                     <td style={{ padding: '8px 12px' }}>Compare anti-pattern vs 6 Pillars solutions</td>
                     <td style={{ padding: '8px 12px' }}>Explain why an architecture is recommended with ROI</td>
-                    <td style={{ padding: '8px 12px', color: '#00E676' }}>Active (Stage &amp; Review)</td>
+                    <td style={{ padding: '8px 12px', color: '#1e7e34' }}>Active (Stage &amp; Review)</td>
                   </tr>
-                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                  <tr style={{ borderBottom: '1px solid rgba(15, 23, 42, 0.070)' }}>
                     <td style={{ padding: '8px 12px', fontWeight: 600 }}>IaC Code Synthesis</td>
                     <td style={{ padding: '8px 12px' }}>Generate Terraform/HCL remediation snippets</td>
                     <td style={{ padding: '8px 12px' }}>Syntax highlighting, copy controls, rollback notes</td>
-                    <td style={{ padding: '8px 12px', color: '#00E676' }}>Active (IaC Inspector)</td>
+                    <td style={{ padding: '8px 12px', color: '#1e7e34' }}>Active (IaC Inspector)</td>
                   </tr>
-                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                  <tr style={{ borderBottom: '1px solid rgba(15, 23, 42, 0.070)' }}>
                     <td style={{ padding: '8px 12px', fontWeight: 600 }}>Supervised Agent Actions</td>
                     <td style={{ padding: '8px 12px' }}>Execute simulated multi-step infrastructure fixes</td>
                     <td style={{ padding: '8px 12px' }}>Two-phase confirmation modal, blast radius, undo</td>
-                    <td style={{ padding: '8px 12px', color: '#00E676' }}>Active (Copilot)</td>
+                    <td style={{ padding: '8px 12px', color: '#1e7e34' }}>Active (Copilot)</td>
                   </tr>
                 </tbody>
               </table>
@@ -369,11 +369,11 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           {/* Tab 4: UI Lifecycle & Confirmations */}
           {activeTab === 4 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <h4 style={{ margin: 0, fontSize: 18, color: '#00E676' }}>5. AI Interface &amp; Interaction Design</h4>
+              <h4 style={{ margin: 0, fontSize: 18, color: '#1e7e34' }}>5. AI Interface &amp; Interaction Design</h4>
               
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }}>
-                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div style={{ fontWeight: 700, color: '#FF9900', marginBottom: 4 }}>Full Interaction Lifecycle</div>
+                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(15, 23, 42, 0.023)', border: '1px solid rgba(15, 23, 42, 0.080)' }}>
+                  <div style={{ fontWeight: 700, color: 'var(--aws-orange-ink)', marginBottom: 4 }}>Full Interaction Lifecycle</div>
                   <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12, color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: 4 }}>
                     <li><strong>Initial/Ready</strong>: Context-aware suggested prompt pills</li>
                     <li><strong>Submitting</strong>: Instant submission feedback, no silent delay</li>
@@ -383,7 +383,7 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
                   </ul>
                 </div>
                 <div style={{ padding: 14, borderRadius: 8, background: 'rgba(0,230,118,0.05)', border: '1px solid rgba(0,230,118,0.2)' }}>
-                  <div style={{ fontWeight: 700, color: '#00E676', marginBottom: 4 }}>Two-Phase Human Confirmation</div>
+                  <div style={{ fontWeight: 700, color: '#1e7e34', marginBottom: 4 }}>Two-Phase Human Confirmation</div>
                   <p style={{ margin: 0, fontSize: 12, color: 'var(--text-secondary)' }}>
                     For any simulated action with real consequences (changing database topologies, provisioning ASG fleets, applying S3 Object Lock):
                   </p>
@@ -401,10 +401,10 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           {/* Tab 5: Technical Architecture & RAG */}
           {activeTab === 5 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <h4 style={{ margin: 0, fontSize: 18, color: '#00E676' }}>6. Technical Architecture &amp; RAG Pipeline</h4>
+              <h4 style={{ margin: 0, fontSize: 18, color: '#1e7e34' }}>6. Technical Architecture &amp; RAG Pipeline</h4>
               
-              <div style={{ padding: 16, borderRadius: 10, background: '#050508', border: '1px solid rgba(255,255,255,0.08)', fontFamily: 'monospace', fontSize: 11 }}>
-                <div style={{ color: '#00E676', fontWeight: 700 }}>[ENTERPRISE RAG ORCHESTRATION PIPELINE]</div>
+              <div style={{ padding: 16, borderRadius: 10, background: 'var(--bg-surface-solid)', border: '1px solid rgba(15, 23, 42, 0.080)', fontFamily: 'monospace', fontSize: 11 }}>
+                <div style={{ color: '#1e7e34', fontWeight: 700 }}>[ENTERPRISE RAG ORCHESTRATION PIPELINE]</div>
                 <div style={{ color: 'var(--text-secondary)', marginTop: 8 }}>
                   1. USER QUERY ──► Input Sanitization &amp; Prompt Injection Guardrail<br/>
                   &nbsp;&nbsp;&nbsp;&nbsp;│<br/>
@@ -427,17 +427,17 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           {/* Tab 6: Privacy, Security & Injection */}
           {activeTab === 6 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <h4 style={{ margin: 0, fontSize: 18, color: '#00E676' }}>7. Privacy, Security &amp; Injection Defense</h4>
+              <h4 style={{ margin: 0, fontSize: 18, color: '#1e7e34' }}>7. Privacy, Security &amp; Injection Defense</h4>
               
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14 }}>
                 <div style={{ padding: 14, borderRadius: 8, background: 'rgba(255,59,48,0.05)', border: '1px solid rgba(255,59,48,0.2)' }}>
-                  <div style={{ fontWeight: 700, color: '#FF5252', marginBottom: 4 }}>Prompt Injection Mitigation</div>
+                  <div style={{ fontWeight: 700, color: '#c9302c', marginBottom: 4 }}>Prompt Injection Mitigation</div>
                   <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
                     Automated regex and token heuristics intercept attempts to override system prompts, extract administrative credentials, or inject destructive commands. Deflections cite SEC-01 least-privilege standards.
                   </div>
                 </div>
                 <div style={{ padding: 14, borderRadius: 8, background: 'rgba(0,230,118,0.05)', border: '1px solid rgba(0,230,118,0.2)' }}>
-                  <div style={{ fontWeight: 700, color: '#00E676', marginBottom: 4 }}>Zero-Credential Exposure</div>
+                  <div style={{ fontWeight: 700, color: '#1e7e34', marginBottom: 4 }}>Zero-Credential Exposure</div>
                   <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>
                     Never embed private AWS API keys or paid third-party model secrets in client-side bundles. All deterministic logic runs safely in client sandbox with zero data leakage.
                   </div>
@@ -449,34 +449,34 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           {/* Tab 7: Failure Modes & Fixes */}
           {activeTab === 7 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <h4 style={{ margin: 0, fontSize: 18, color: '#00E676' }}>8. Common Failure Modes &amp; Practical Fixes</h4>
+              <h4 style={{ margin: 0, fontSize: 18, color: '#1e7e34' }}>8. Common Failure Modes &amp; Practical Fixes</h4>
               
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
                 <thead>
-                  <tr style={{ background: 'rgba(255,255,255,0.06)', textAlign: 'left' }}>
+                  <tr style={{ background: 'rgba(15, 23, 42, 0.026)', textAlign: 'left' }}>
                     <th style={{ padding: '8px 12px' }}>Failure Mode</th>
                     <th style={{ padding: '8px 12px' }}>Root Cause</th>
                     <th style={{ padding: '8px 12px' }}>Engineered Mitigation</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                    <td style={{ padding: '8px 12px', color: '#FF5252' }}>AI feature is a gimmick</td>
+                  <tr style={{ borderBottom: '1px solid rgba(15, 23, 42, 0.070)' }}>
+                    <td style={{ padding: '8px 12px', color: '#c9302c' }}>AI feature is a gimmick</td>
                     <td style={{ padding: '8px 12px' }}>Unconnected to user task</td>
                     <td style={{ padding: '8px 12px' }}>Directly tied to WAF anti-pattern remediation &amp; FinOps ROI</td>
                   </tr>
-                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                    <td style={{ padding: '8px 12px', color: '#FF5252' }}>Confident wrong answers</td>
+                  <tr style={{ borderBottom: '1px solid rgba(15, 23, 42, 0.070)' }}>
+                    <td style={{ padding: '8px 12px', color: '#c9302c' }}>Confident wrong answers</td>
                     <td style={{ padding: '8px 12px' }}>Treated as oracle without grounding</td>
                     <td style={{ padding: '8px 12px' }}>RAG grounding with verified whitepaper section citations</td>
                   </tr>
-                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                    <td style={{ padding: '8px 12px', color: '#FF5252' }}>Users don't know what to ask</td>
+                  <tr style={{ borderBottom: '1px solid rgba(15, 23, 42, 0.070)' }}>
+                    <td style={{ padding: '8px 12px', color: '#c9302c' }}>Users don't know what to ask</td>
                     <td style={{ padding: '8px 12px' }}>Empty prompt box gives zero clues</td>
                     <td style={{ padding: '8px 12px' }}>Domain-aware starter pills based on active module</td>
                   </tr>
-                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                    <td style={{ padding: '8px 12px', color: '#FF5252' }}>AI executes wrong action</td>
+                  <tr style={{ borderBottom: '1px solid rgba(15, 23, 42, 0.070)' }}>
+                    <td style={{ padding: '8px 12px', color: '#c9302c' }}>AI executes wrong action</td>
                     <td style={{ padding: '8px 12px' }}>Unrestricted tool permissions</td>
                     <td style={{ padding: '8px 12px' }}>Two-phase modal confirmation with blast radius &amp; undo</td>
                   </tr>
@@ -488,26 +488,26 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           {/* Tab 8: Testing & Red Teaming */}
           {activeTab === 8 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <h4 style={{ margin: 0, fontSize: 18, color: '#00E676' }}>9. Testing, Red-Teaming &amp; Evaluation</h4>
+              <h4 style={{ margin: 0, fontSize: 18, color: '#1e7e34' }}>9. Testing, Red-Teaming &amp; Evaluation</h4>
               <p style={{ color: 'var(--text-secondary)' }}>
                 Rigorous multi-layer test suite verifying the website as a complete, accessible, resilient product.
               </p>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
-                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <div style={{ fontWeight: 700, color: '#00B0FF' }}>Cross-Browser &amp; Viewport</div>
+                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(15, 23, 42, 0.023)', border: '1px solid rgba(15, 23, 42, 0.070)' }}>
+                  <div style={{ fontWeight: 700, color: '#0066cc' }}>Cross-Browser &amp; Viewport</div>
                   <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 4 }}>
                     Automated Puppeteer testing on 1440x960, tablet, and mobile with 0 console errors.
                   </div>
                 </div>
-                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <div style={{ fontWeight: 700, color: '#00E676' }}>Red-Teaming Security</div>
+                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(15, 23, 42, 0.023)', border: '1px solid rgba(15, 23, 42, 0.070)' }}>
+                  <div style={{ fontWeight: 700, color: '#1e7e34' }}>Red-Teaming Security</div>
                   <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 4 }}>
                     Adversarial prompts and jailbreak strings actively intercepted by input guardrails.
                   </div>
                 </div>
-                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                  <div style={{ fontWeight: 700, color: '#FF9900' }}>Citation Traceability</div>
+                <div style={{ padding: 14, borderRadius: 8, background: 'rgba(15, 23, 42, 0.023)', border: '1px solid rgba(15, 23, 42, 0.070)' }}>
+                  <div style={{ fontWeight: 700, color: 'var(--aws-orange-ink)' }}>Citation Traceability</div>
                   <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 4 }}>
                     100% of generated responses trace to official AWS documentation IDs.
                   </div>
@@ -519,26 +519,26 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           {/* Tab 9: Telemetry & Analytics */}
           {activeTab === 9 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <h4 style={{ margin: 0, fontSize: 18, color: '#00E676' }}>10. Telemetry, Analytics &amp; Continuous Improvement</h4>
+              <h4 style={{ margin: 0, fontSize: 18, color: '#1e7e34' }}>10. Telemetry, Analytics &amp; Continuous Improvement</h4>
               <p style={{ color: 'var(--text-secondary)' }}>
                 Privacy-preserving operational metrics to optimize task completion without tracking sensitive user identities.
               </p>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
-                <div style={{ padding: 12, borderRadius: 8, background: 'rgba(255,255,255,0.03)', textAlign: 'center' }}>
-                  <div style={{ fontSize: 18, fontWeight: 700, color: '#00E676' }}>98.4%</div>
+                <div style={{ padding: 12, borderRadius: 8, background: 'rgba(15, 23, 42, 0.023)', textAlign: 'center' }}>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: '#1e7e34' }}>98.4%</div>
                   <div style={{ fontSize: 10, color: 'var(--text-tertiary)', marginTop: 2 }}>Task Completion</div>
                 </div>
-                <div style={{ padding: 12, borderRadius: 8, background: 'rgba(255,255,255,0.03)', textAlign: 'center' }}>
-                  <div style={{ fontSize: 18, fontWeight: 700, color: '#00B0FF' }}>&lt; 28ms</div>
+                <div style={{ padding: 12, borderRadius: 8, background: 'rgba(15, 23, 42, 0.023)', textAlign: 'center' }}>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: '#0066cc' }}>&lt; 28ms</div>
                   <div style={{ fontSize: 10, color: 'var(--text-tertiary)', marginTop: 2 }}>Inference Latency</div>
                 </div>
-                <div style={{ padding: 12, borderRadius: 8, background: 'rgba(255,255,255,0.03)', textAlign: 'center' }}>
-                  <div style={{ fontSize: 18, fontWeight: 700, color: '#FF9900' }}>0.00%</div>
+                <div style={{ padding: 12, borderRadius: 8, background: 'rgba(15, 23, 42, 0.023)', textAlign: 'center' }}>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--aws-orange-ink)' }}>0.00%</div>
                   <div style={{ fontSize: 10, color: 'var(--text-tertiary)', marginTop: 2 }}>Unconfirmed Actions</div>
                 </div>
-                <div style={{ padding: 12, borderRadius: 8, background: 'rgba(255,255,255,0.03)', textAlign: 'center' }}>
-                  <div style={{ fontSize: 18, fontWeight: 700, color: '#AB47BC' }}>$0.00</div>
+                <div style={{ padding: 12, borderRadius: 8, background: 'rgba(15, 23, 42, 0.023)', textAlign: 'center' }}>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: '#7a3fb8' }}>$0.00</div>
                   <div style={{ fontSize: 10, color: 'var(--text-tertiary)', marginTop: 2 }}>Token Leak Cost</div>
                 </div>
               </div>
@@ -548,7 +548,7 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           {/* Tab 10: Delivery Sequence */}
           {activeTab === 10 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-              <h4 style={{ margin: 0, fontSize: 18, color: '#00E676' }}>11. Enterprise AI Practical Delivery Sequence</h4>
+              <h4 style={{ margin: 0, fontSize: 18, color: '#1e7e34' }}>11. Enterprise AI Practical Delivery Sequence</h4>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {[
@@ -563,12 +563,12 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
                   { step: '9. Gradual launch', desc: 'Deploy with instant rollback capability.' },
                   { step: '10. Maintain & review', desc: 'Update whitepaper citations as AWS services evolve.' }
                 ].map((item, idx) => (
-                  <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '8px 12px', borderRadius: 6, background: 'rgba(255,255,255,0.02)' }}>
-                    <div style={{ width: 24, height: 24, borderRadius: 99, background: 'rgba(0,230,118,0.15)', color: '#00E676', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700 }}>
+                  <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '8px 12px', borderRadius: 6, background: 'rgba(15, 23, 42, 0.022)' }}>
+                    <div style={{ width: 24, height: 24, borderRadius: 99, background: 'rgba(0,230,118,0.15)', color: '#1e7e34', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700 }}>
                       {idx + 1}
                     </div>
                     <div>
-                      <span style={{ fontWeight: 600, color: '#FFFFFF' }}>{item.step}</span>
+                      <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{item.step}</span>
                       <span style={{ color: 'var(--text-tertiary)', marginLeft: 8 }}>{item.desc}</span>
                     </div>
                   </div>
@@ -581,7 +581,7 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
           {activeTab === 11 && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <h4 style={{ margin: 0, fontSize: 18, color: '#00E676' }}>12. Launch-Readiness Checklist</h4>
+                <h4 style={{ margin: 0, fontSize: 18, color: '#1e7e34' }}>12. Launch-Readiness Checklist</h4>
                 <button
                   className="btn-action"
                   onClick={onOpenCopilot}
@@ -589,9 +589,9 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
                     height: 30,
                     padding: '0 14px',
                     fontSize: 11,
-                    background: 'linear-gradient(135deg, rgba(255,153,0,0.2), rgba(255,153,0,0.05))',
+                    background: 'var(--bg-surface-solid)',
                     border: '1px solid rgba(255,153,0,0.4)',
-                    color: '#FF9900',
+                    color: 'var(--aws-orange-ink)',
                     fontWeight: 700
                   }}
                 >
@@ -623,8 +623,8 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
                       gap: 12,
                       padding: '10px 14px',
                       borderRadius: 8,
-                      background: checkedGates[gate.id] ? 'rgba(0, 230, 118, 0.06)' : 'rgba(255, 255, 255, 0.02)',
-                      border: checkedGates[gate.id] ? '1px solid rgba(0, 230, 118, 0.25)' : '1px solid rgba(255, 255, 255, 0.06)',
+                      background: checkedGates[gate.id] ? 'rgba(0, 230, 118, 0.06)' : 'rgba(15, 23, 42, 0.022)',
+                      border: checkedGates[gate.id] ? '1px solid rgba(0, 230, 118, 0.25)' : '1px solid rgba(15, 23, 42, 0.026)',
                       cursor: 'pointer',
                       transition: 'all 0.15s ease'
                     }}
@@ -633,7 +633,7 @@ export const AiGovernanceModal: React.FC<AiGovernanceModalProps> = ({ onClose, o
                       type="checkbox"
                       checked={!!checkedGates[gate.id]}
                       onChange={() => {}} // Controlled via parent div click
-                      style={{ accentColor: '#00E676', width: 16, height: 16, cursor: 'pointer' }}
+                      style={{ accentColor: '#1e7e34', width: 16, height: 16, cursor: 'pointer' }}
                     />
                     <span style={{ fontSize: 13, color: checkedGates[gate.id] ? '#FFFFFF' : 'var(--text-secondary)' }}>
                       {gate.text}

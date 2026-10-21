@@ -264,9 +264,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
   };
 
   const getTimerColor = (sec: number) => {
-    if (sec < 480) return '#30d158'; // Green (< 8 mins)
-    if (sec < 720) return '#ff9f0a'; // Amber (8-12 mins)
-    return '#ff453a'; // Red (> 12 mins)
+    if (sec < 480) return '#1e7e34'; // Green (< 8 mins)
+    if (sec < 720) return '#9a5b00'; // Amber (8-12 mins)
+    return '#c9302c'; // Red (> 12 mins)
   };
 
   const formatTime = (secs: number) => {
@@ -279,8 +279,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
 
   return (
     <div className="speaker-remote-mobile-root" style={{
-      background: '#000000',
-      color: '#f5f5f7',
+      background: 'var(--bg-canvas)',
+      color: 'var(--text-primary)',
       minHeight: '100dvh',
       display: 'flex',
       flexDirection: 'column',
@@ -293,10 +293,10 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         position: 'sticky',
         top: 0,
         zIndex: 100,
-        background: 'rgba(0, 0, 0, 0.88)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+        background: 'var(--bg-surface-solid)',
+
+
+        borderBottom: '1px solid rgba(15, 23, 42, 0.090)',
         padding: '10px 16px',
         paddingTop: 'max(10px, env(safe-area-inset-top, 10px))',
         paddingLeft: 'max(16px, env(safe-area-inset-left, 16px))',
@@ -311,8 +311,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               width: 8,
               height: 8,
               borderRadius: '50%',
-              background: isConnected ? '#30d158' : '#ff9f0a',
-              boxShadow: isConnected ? '0 0 8px #30d158' : 'none'
+              background: isConnected ? '#1e7e34' : '#9a5b00',
+              boxShadow: isConnected ? '0 0 8px #1e7e34' : 'none'
             }} />
             <button
               onClick={() => {
@@ -322,7 +322,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: '#86868b',
+                color: 'var(--text-tertiary)',
                 fontSize: 12,
                 fontWeight: 600,
                 letterSpacing: '0.04em',
@@ -335,14 +335,14 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               }}
               title="Change Room Code"
             >
-              <span>ROOM: <strong style={{ color: '#fff' }}>{roomCode}</strong></span>
+              <span>ROOM: <strong style={{ color: 'var(--text-primary)' }}>{roomCode}</strong></span>
               <Edit3 size={11} color="var(--accent)" />
             </button>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             {/* Presentation Clock with Pacing Indicator */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'rgba(255, 255, 255, 0.08)', padding: '3px 8px', borderRadius: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'rgba(15, 23, 42, 0.028)', padding: '3px 8px', borderRadius: 12 }}>
               <Clock size={11} color="var(--accent)" />
               <span style={{ fontSize: 12, fontWeight: 700, fontFamily: 'var(--font-mono)', color: 'var(--accent)' }}>
                 {formatTime(timerSeconds)}
@@ -353,7 +353,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   height: 6,
                   borderRadius: '50%',
                   background: getTimerColor(timerSeconds),
-                  boxShadow: `0 0 6px ${getTimerColor(timerSeconds)}`
+                  boxShadow: 'var(--shadow-glass)'
                 }}
                 title={timerSeconds < 480 ? 'Pacing: On Track' : timerSeconds < 720 ? 'Pacing: Wrap up' : 'Pacing: Move to conclusion'}
               />
@@ -363,9 +363,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             <button
               onClick={handleToggleAudio}
               style={{
-                background: stageState.audioEnabled ? 'rgba(48, 209, 88, 0.2)' : 'rgba(255, 255, 255, 0.08)',
-                border: `1px solid ${stageState.audioEnabled ? '#30d158' : 'rgba(255, 255, 255, 0.12)'}`,
-                color: stageState.audioEnabled ? '#30d158' : '#8e8e93',
+                background: stageState.audioEnabled ? 'rgba(48, 209, 88, 0.2)' : 'rgba(15, 23, 42, 0.028)',
+                border: `1px solid ${stageState.audioEnabled ? '#1e7e34' : 'rgba(15, 23, 42, 0.032)'}`,
+                color: stageState.audioEnabled ? '#1e7e34' : '#6e6e73',
                 fontSize: 11,
                 padding: '3px 8px',
                 borderRadius: 12,
@@ -384,9 +384,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               <button
                 onClick={onExitRemote}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
+                  background: 'rgba(15, 23, 42, 0.030)',
                   border: 'none',
-                  color: '#86868b',
+                  color: 'var(--text-tertiary)',
                   fontSize: 11,
                   padding: '3px 8px',
                   borderRadius: 12,
@@ -403,7 +403,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         <div style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr 1fr',
-          background: 'rgba(255, 255, 255, 0.06)',
+          background: 'rgba(15, 23, 42, 0.026)',
           borderRadius: 14,
           padding: 2,
           gap: 2
@@ -421,8 +421,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               borderRadius: 12,
               border: 'none',
               cursor: 'pointer',
-              background: speaker === 'devarsh' ? '#0a84ff' : 'transparent',
-              color: speaker === 'devarsh' ? '#ffffff' : '#98989d',
+              background: speaker === 'devarsh' ? '#0066cc' : 'transparent',
+              color: speaker === 'devarsh' ? '#ffffff' : '#6e6e73',
               transition: 'all 0.18s ease'
             }}
           >
@@ -442,8 +442,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               borderRadius: 12,
               border: 'none',
               cursor: 'pointer',
-              background: speaker === 'aman' ? '#ff9f0a' : 'transparent',
-              color: speaker === 'aman' ? '#000000' : '#98989d',
+              background: speaker === 'aman' ? '#9a5b00' : 'transparent',
+              color: speaker === 'aman' ? '#ffffff' : '#6e6e73',
               transition: 'all 0.18s ease'
             }}
           >
@@ -463,8 +463,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               borderRadius: 12,
               border: 'none',
               cursor: 'pointer',
-              background: speaker === 'both' ? '#30d158' : 'transparent',
-              color: speaker === 'both' ? '#000000' : '#98989d',
+              background: speaker === 'both' ? '#1e7e34' : 'transparent',
+              color: speaker === 'both' ? '#ffffff' : '#6e6e73',
               transition: 'all 0.18s ease'
             }}
           >
@@ -480,7 +480,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         overflowX: 'auto',
         padding: '8px 16px',
         background: '#07080b',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+        borderBottom: '1px solid rgba(15, 23, 42, 0.080)',
         WebkitOverflowScrolling: 'touch',
         scrollbarWidth: 'none'
       }}>
@@ -496,9 +496,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                 flexShrink: 0,
                 padding: '5px 9px',
                 borderRadius: 11,
-                border: isCurrent ? '1.5px solid var(--accent)' : '1px solid rgba(255, 255, 255, 0.1)',
-                background: isCurrent ? 'rgba(255, 153, 0, 0.16)' : 'rgba(255, 255, 255, 0.04)',
-                color: isCurrent ? '#ffffff' : '#8e8e93',
+                border: isCurrent ? '1.5px solid var(--accent)' : '1px solid rgba(15, 23, 42, 0.090)',
+                background: isCurrent ? 'rgba(255, 153, 0, 0.16)' : 'rgba(15, 23, 42, 0.024)',
+                color: isCurrent ? 'var(--text-primary)' : '#6e6e73',
                 fontSize: 11,
                 fontWeight: isCurrent ? 700 : 500,
                 display: 'flex',
@@ -513,7 +513,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                 height: 16,
                 borderRadius: 8,
                 background: isCurrent ? 'var(--accent)' : 'rgba(255, 255, 255, 0.12)',
-                color: isCurrent ? '#000000' : '#8e8e93',
+                color: isCurrent ? '#ffffff' : '#6e6e73',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -536,7 +536,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                 padding: '1px 4px',
                 borderRadius: 5,
                 background: initials === 'D+A' ? 'rgba(48, 209, 88, 0.2)' : isLeadDev ? 'rgba(10, 132, 255, 0.2)' : 'rgba(255, 159, 10, 0.2)',
-                color: initials === 'D+A' ? '#30d158' : isLeadDev ? '#5ac8fa' : '#ff9f0a',
+                color: initials === 'D+A' ? '#1e7e34' : isLeadDev ? '#0a6fb8' : '#9a5b00',
                 fontWeight: 700
               }}>
                 {initials}
@@ -563,7 +563,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               fontSize: 10,
               fontWeight: 700,
               textTransform: 'uppercase',
-              color: isPresenter ? 'var(--accent)' : '#5ac8fa',
+              color: isPresenter ? 'var(--accent)' : '#0a6fb8',
               letterSpacing: '0.04em'
             }}>
               Big Screen Active Mode
@@ -571,7 +571,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             <span style={{
               fontSize: 12,
               fontWeight: 600,
-              color: '#ffffff',
+              color: 'var(--text-primary)',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis'
@@ -590,8 +590,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             fontSize: 11,
             fontWeight: 700,
             cursor: 'pointer',
-            background: isPresenter ? 'rgba(255, 255, 255, 0.15)' : 'var(--accent)',
-            color: isPresenter ? '#ffffff' : '#000000',
+            background: isPresenter ? 'rgba(15, 23, 42, 0.035)' : 'var(--accent)',
+            color: isPresenter ? '#ffffff' : 'var(--text-secondary)',
             whiteSpace: 'nowrap',
             flexShrink: 0
           }}
@@ -604,7 +604,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
       {stageState.activeModal && (
         <div style={{
           padding: '12px 16px',
-          background: 'linear-gradient(180deg, rgba(255, 69, 58, 0.16) 0%, rgba(20, 20, 24, 0.96) 100%)',
+          background: 'var(--bg-surface-solid)',
           borderBottom: '1px solid rgba(255, 69, 58, 0.35)',
           display: 'flex',
           flexDirection: 'column',
@@ -625,10 +625,10 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                  stageState.activeModal === 'node' ? '🔎' : '⚠️'}
               </span>
               <div style={{ minWidth: 0 }}>
-                <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', color: '#ff453a', letterSpacing: '0.04em' }}>
+                <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', color: 'var(--status-danger)', letterSpacing: '0.04em' }}>
                   Live Tool Active on Big Screen
                 </div>
-                <div style={{ fontSize: 12.5, fontWeight: 700, color: '#ffffff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <div style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {stageState.activeModal === '6pillars' ? '6 Pillars Master Audit' :
                    stageState.activeModal === 'stresslab' ? 'Incident Stress Lab' :
                    stageState.activeModal === 'subtopics' ? 'Architectural Subtopic Labs' :
@@ -648,8 +648,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                 padding: '5px 12px',
                 borderRadius: 10,
                 border: 'none',
-                background: '#ff453a',
-                color: '#ffffff',
+                background: '#c9302c',
+                color: 'var(--text-primary)',
                 fontSize: 11,
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -663,17 +663,17 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
           {/* 1. 6 Pillars Controller */}
           {stageState.activeModal === '6pillars' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <div style={{ fontSize: 10, color: '#8e8e93', fontWeight: 600, textTransform: 'uppercase' }}>
+              <div style={{ fontSize: 10, color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>
                 Select Pillar on Big Screen:
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 5 }}>
                 {[
-                  { name: 'Operational Excellence', short: 'Ops Excellence', icon: '⚡', color: '#0071e3' },
-                  { name: 'Security', short: 'Security', icon: '🛡️', color: '#ff375f' },
-                  { name: 'Reliability', short: 'Reliability', icon: '🔄', color: '#30d158' },
-                  { name: 'Performance Efficiency', short: 'Performance', icon: '🚀', color: '#ff9f0a' },
-                  { name: 'Cost Optimization', short: 'Cost Opt', icon: '💰', color: '#bf5af2' },
-                  { name: 'Sustainability', short: 'Sustainability', icon: '🌿', color: '#64d2ff' },
+                  { name: 'Operational Excellence', short: 'Ops Excellence', icon: '⚡', color: 'var(--accent)' },
+                  { name: 'Security', short: 'Security', icon: '🛡️', color: '#c4143d' },
+                  { name: 'Reliability', short: 'Reliability', icon: '🔄', color: 'var(--status-success)' },
+                  { name: 'Performance Efficiency', short: 'Performance', icon: '🚀', color: 'var(--status-warning)' },
+                  { name: 'Cost Optimization', short: 'Cost Opt', icon: '💰', color: 'var(--accent)' },
+                  { name: 'Sustainability', short: 'Sustainability', icon: '🌿', color: '#0066cc' },
                 ].map(p => {
                   const isActive = (stageState.modalSubState?.pillarId || 'Operational Excellence') === p.name;
                   return (
@@ -683,9 +683,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       style={{
                         padding: '8px 10px',
                         borderRadius: 10,
-                        border: isActive ? `1.5px solid ${p.color}` : '1px solid rgba(255,255,255,0.1)',
-                        background: isActive ? `${p.color}25` : 'rgba(255,255,255,0.05)',
-                        color: isActive ? '#ffffff' : '#98989d',
+                        border: isActive ? `1.5px solid ${p.color}` : '1px solid rgba(15, 23, 42, 0.030)',
+                        background: isActive ? `${p.color}25` : 'rgba(15, 23, 42, 0.025)',
+                        color: isActive ? 'var(--text-primary)' : '#6e6e73',
                         fontSize: 11,
                         fontWeight: isActive ? 700 : 500,
                         display: 'flex',
@@ -707,7 +707,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
           {/* 2. Stress Lab Controller */}
           {stageState.activeModal === 'stresslab' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <div style={{ fontSize: 10, color: '#8e8e93', fontWeight: 600, textTransform: 'uppercase' }}>
+              <div style={{ fontSize: 10, color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>
                 Select Incident Scenario on Big Screen:
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 5 }}>
@@ -725,9 +725,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       style={{
                         padding: '8px 8px',
                         borderRadius: 10,
-                        border: isActive ? '1.5px solid var(--accent)' : '1px solid rgba(255,255,255,0.1)',
-                        background: isActive ? 'rgba(255, 153, 0, 0.2)' : 'rgba(255,255,255,0.05)',
-                        color: isActive ? '#ffffff' : '#98989d',
+                        border: isActive ? '1.5px solid var(--accent)' : '1px solid rgba(15, 23, 42, 0.090)',
+                        background: isActive ? 'rgba(255, 153, 0, 0.2)' : 'rgba(15, 23, 42, 0.025)',
+                        color: isActive ? 'var(--text-primary)' : '#6e6e73',
                         fontSize: 11,
                         fontWeight: isActive ? 700 : 500,
                         display: 'flex',
@@ -749,8 +749,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   padding: '9px 12px',
                   borderRadius: 10,
                   border: 'none',
-                  background: 'linear-gradient(135deg, #ff453a, #ff9f0a)',
-                  color: '#ffffff',
+                  background: 'var(--bg-surface-solid)',
+                  color: 'var(--text-primary)',
                   fontSize: 11.5,
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -769,7 +769,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
           {/* 3. Subtopic Labs Controller */}
           {stageState.activeModal === 'subtopics' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <div style={{ fontSize: 10, color: '#8e8e93', fontWeight: 600, textTransform: 'uppercase' }}>
+              <div style={{ fontSize: 10, color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>
                 Select Subtopic Lab on Big Screen:
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 5 }}>
@@ -788,9 +788,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       style={{
                         padding: '8px 8px',
                         borderRadius: 10,
-                        border: isActive ? '1.5px solid #30d158' : '1px solid rgba(255,255,255,0.1)',
-                        background: isActive ? 'rgba(48, 209, 88, 0.2)' : 'rgba(255,255,255,0.05)',
-                        color: isActive ? '#ffffff' : '#98989d',
+                        border: isActive ? '1.5px solid #1e7e34' : '1px solid rgba(15, 23, 42, 0.090)',
+                        background: isActive ? 'rgba(48, 209, 88, 0.2)' : 'rgba(15, 23, 42, 0.025)',
+                        color: isActive ? 'var(--text-primary)' : '#6e6e73',
                         fontSize: 11,
                         fontWeight: isActive ? 700 : 500,
                         display: 'flex',
@@ -812,8 +812,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   padding: '9px 12px',
                   borderRadius: 10,
                   border: 'none',
-                  background: 'linear-gradient(135deg, #30d158, #0a84ff)',
-                  color: '#ffffff',
+                  background: 'var(--accent)',
+                  color: 'var(--text-primary)',
                   fontSize: 11.5,
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -832,7 +832,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
           {/* 4. Client Workloads Controller */}
           {stageState.activeModal === 'workloads' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <div style={{ fontSize: 10, color: '#8e8e93', fontWeight: 600, textTransform: 'uppercase' }}>
+              <div style={{ fontSize: 10, color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>
                 Select Client Workload Blueprint:
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 5 }}>
@@ -852,9 +852,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       style={{
                         padding: '8px 8px',
                         borderRadius: 10,
-                        border: isActive ? '1.5px solid var(--accent)' : '1px solid rgba(255,255,255,0.1)',
-                        background: isActive ? 'rgba(255, 153, 0, 0.2)' : 'rgba(255,255,255,0.05)',
-                        color: isActive ? '#ffffff' : '#98989d',
+                        border: isActive ? '1.5px solid var(--accent)' : '1px solid rgba(15, 23, 42, 0.090)',
+                        background: isActive ? 'rgba(255, 153, 0, 0.2)' : 'rgba(15, 23, 42, 0.025)',
+                        color: isActive ? 'var(--text-primary)' : '#6e6e73',
                         fontSize: 11,
                         fontWeight: isActive ? 700 : 500,
                         display: 'flex',
@@ -876,8 +876,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   padding: '9px 12px',
                   borderRadius: 10,
                   border: 'none',
-                  background: 'linear-gradient(135deg, rgba(255,153,0,0.92), rgba(220,120,0,0.92))',
-                  color: '#000000',
+                  background: 'var(--bg-surface-solid)',
+                  color: 'var(--text-primary)',
                   fontSize: 11.5,
                   fontWeight: 700,
                   cursor: 'pointer',
@@ -887,7 +887,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   gap: 6
                 }}
               >
-                <Play size={13} fill="#000" />
+                <Play size={13} fill="#f2f2f7" />
                 <span>Run Live Transaction Flow Pulse on Screen</span>
               </button>
             </div>
@@ -896,7 +896,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
           {/* 5. Latency Simulator Controller */}
           {stageState.activeModal === 'latency' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <div style={{ fontSize: 10, color: '#8e8e93', fontWeight: 600, textTransform: 'uppercase' }}>
+              <div style={{ fontSize: 10, color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>
                 Packet Latency Benchmark Controls:
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
@@ -906,8 +906,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                     padding: '9px 10px',
                     borderRadius: 10,
                     border: 'none',
-                    background: 'linear-gradient(135deg, #0a84ff, #5ac8fa)',
-                    color: '#ffffff',
+                    background: 'var(--accent)',
+                    color: 'var(--text-primary)',
                     fontSize: 11.5,
                     fontWeight: 700,
                     cursor: 'pointer',
@@ -927,7 +927,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                     borderRadius: 10,
                     border: 'none',
                     background: 'rgba(255, 69, 58, 0.25)',
-                    color: '#ff453a',
+                    color: 'var(--status-danger)',
                     fontSize: 11.5,
                     fontWeight: 700,
                     cursor: 'pointer',
@@ -947,7 +947,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
           {/* 6. Executive Review Controller */}
           {stageState.activeModal === 'executive' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <div style={{ fontSize: 10, color: '#8e8e93', fontWeight: 600, textTransform: 'uppercase' }}>
+              <div style={{ fontSize: 10, color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>
                 Select Workload Tier on Big Screen:
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 5 }}>
@@ -964,9 +964,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       style={{
                         padding: '8px 4px',
                         borderRadius: 10,
-                        border: isActive ? '1.5px solid var(--accent)' : '1px solid rgba(255,255,255,0.1)',
-                        background: isActive ? 'rgba(255, 153, 0, 0.2)' : 'rgba(255,255,255,0.05)',
-                        color: isActive ? '#ffffff' : '#98989d',
+                        border: isActive ? '1.5px solid var(--accent)' : '1px solid rgba(15, 23, 42, 0.090)',
+                        background: isActive ? 'rgba(255, 153, 0, 0.2)' : 'rgba(15, 23, 42, 0.025)',
+                        color: isActive ? 'var(--text-primary)' : '#6e6e73',
                         fontSize: 11,
                         fontWeight: isActive ? 700 : 500,
                         cursor: 'pointer',
@@ -984,7 +984,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
           {/* 7. Theoretical Foundations Controller */}
           {stageState.activeModal === 'theory' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <div style={{ fontSize: 10, color: '#8e8e93', fontWeight: 600, textTransform: 'uppercase' }}>
+              <div style={{ fontSize: 10, color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase' }}>
                 Select Academic Theorem on Big Screen:
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 5 }}>
@@ -1004,9 +1004,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       style={{
                         padding: '7px 8px',
                         borderRadius: 10,
-                        border: isActive ? '1.5px solid var(--accent)' : '1px solid rgba(255,255,255,0.1)',
-                        background: isActive ? 'rgba(255, 153, 0, 0.2)' : 'rgba(255,255,255,0.05)',
-                        color: isActive ? '#ffffff' : '#98989d',
+                        border: isActive ? '1.5px solid var(--accent)' : '1px solid rgba(15, 23, 42, 0.090)',
+                        background: isActive ? 'rgba(255, 153, 0, 0.2)' : 'rgba(15, 23, 42, 0.025)',
+                        color: isActive ? 'var(--text-primary)' : '#6e6e73',
                         fontSize: 10.5,
                         fontWeight: isActive ? 700 : 500,
                         cursor: 'pointer',
@@ -1056,8 +1056,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
       {/* Module Navigation Card */}
       <div style={{
         padding: '12px 16px',
-        background: 'linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(0,0,0,0) 100%)',
-        borderBottom: '1px solid rgba(255,255,255,0.08)'
+        background: 'var(--bg-surface-solid)',
+        borderBottom: '1px solid rgba(15, 23, 42, 0.080)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
           <span style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--accent)', letterSpacing: '0.06em' }}>
@@ -1069,8 +1069,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             padding: '2px 8px',
             borderRadius: 8,
             fontWeight: 600,
-            background: 'rgba(255, 255, 255, 0.08)',
-            color: '#d1d1d6'
+            background: 'rgba(15, 23, 42, 0.028)',
+            color: '#d2d2d7'
           }}>
             🎤 Both presenting
           </div>
@@ -1081,15 +1081,15 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
           fontWeight: 700,
           margin: '0 0 8px 0',
           lineHeight: 1.3,
-          color: '#ffffff'
+          color: 'var(--text-primary)'
         }}>
           {currentDomain.title}
         </h1>
 
         {/* Lead Speaker Badge & Quick Arrows */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <span style={{ fontSize: 12, color: '#98989d' }}>
-            Presenting: <strong style={{ color: '#f5f5f7' }}>Devarsh &amp; Aman</strong>
+          <span style={{ fontSize: 12, color: 'var(--text-tertiary)' }}>
+            Presenting: <strong style={{ color: 'var(--text-primary)' }}>Devarsh &amp; Aman</strong>
           </span>
 
           <div style={{ display: 'flex', gap: 6 }}>
@@ -1123,8 +1123,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         padding: '8px 16px',
         gap: 6,
         overflowX: 'auto',
-        background: '#0b0d10',
-        borderBottom: '1px solid rgba(255,255,255,0.06)'
+        background: 'var(--bg-surface-solid)',
+        borderBottom: '1px solid rgba(15, 23, 42, 0.070)'
       }}>
         <button
           onClick={() => { triggerHaptic(); setActiveTab('talk'); }}
@@ -1135,8 +1135,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             fontWeight: 600,
             border: 'none',
             cursor: 'pointer',
-            background: activeTab === 'talk' ? '#30d158' : 'rgba(255,255,255,0.06)',
-            color: activeTab === 'talk' ? '#000000' : '#86868b',
+            background: activeTab === 'talk' ? '#1e7e34' : 'rgba(255,255,255,0.06)',
+            color: activeTab === 'talk' ? '#ffffff' : '#6e6e73',
             whiteSpace: 'nowrap',
             flexShrink: 0
           }}
@@ -1153,8 +1153,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             fontWeight: 600,
             border: 'none',
             cursor: 'pointer',
-            background: activeTab === 'actions' ? '#ffffff' : 'rgba(255,255,255,0.06)',
-            color: activeTab === 'actions' ? '#000000' : '#86868b',
+            background: activeTab === 'actions' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.026)',
+            color: activeTab === 'actions' ? 'var(--text-primary)' : '#6e6e73',
             whiteSpace: 'nowrap',
             flexShrink: 0
           }}
@@ -1171,8 +1171,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             fontWeight: 600,
             border: 'none',
             cursor: 'pointer',
-            background: activeTab === 'deck' ? '#ffffff' : 'rgba(255,255,255,0.06)',
-            color: activeTab === 'deck' ? '#000000' : '#86868b',
+            background: activeTab === 'deck' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.026)',
+            color: activeTab === 'deck' ? 'var(--text-primary)' : '#6e6e73',
             whiteSpace: 'nowrap',
             flexShrink: 0
           }}
@@ -1189,8 +1189,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             fontWeight: 600,
             border: 'none',
             cursor: 'pointer',
-            background: activeTab === 'scroll' ? '#ffffff' : 'rgba(255,255,255,0.06)',
-            color: activeTab === 'scroll' ? '#000000' : '#86868b',
+            background: activeTab === 'scroll' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.026)',
+            color: activeTab === 'scroll' ? 'var(--text-primary)' : '#6e6e73',
             whiteSpace: 'nowrap',
             flexShrink: 0
           }}
@@ -1239,7 +1239,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent)', textTransform: 'uppercase' }}>
                     🎬 Presentation Deck (16:9 Canvas)
                   </span>
-                  <span style={{ fontSize: 11, color: '#86868b' }}>Slide {currentIdx + 1}/{allDomains.length}</span>
+                  <span style={{ fontSize: 11, color: 'var(--text-tertiary)' }}>Slide {currentIdx + 1}/{allDomains.length}</span>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 10 }}>
@@ -1252,8 +1252,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       fontSize: 12,
                       fontWeight: 600,
                       cursor: 'pointer',
-                      background: stageState.slideMode === 'keynote' ? '#ffffff' : 'rgba(255,255,255,0.08)',
-                      color: stageState.slideMode === 'keynote' ? '#000000' : '#ffffff'
+                      background: stageState.slideMode === 'keynote' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.028)',
+                      color: stageState.slideMode === 'keynote' ? 'var(--text-primary)' : '#ffffff'
                     }}
                   >
                     1. Architecture
@@ -1267,8 +1267,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       fontSize: 12,
                       fontWeight: 600,
                       cursor: 'pointer',
-                      background: stageState.slideMode === 'dual' ? '#ffffff' : 'rgba(255,255,255,0.08)',
-                      color: stageState.slideMode === 'dual' ? '#000000' : '#ffffff'
+                      background: stageState.slideMode === 'dual' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.028)',
+                      color: stageState.slideMode === 'dual' ? 'var(--text-primary)' : '#ffffff'
                     }}
                   >
                     2. Notes
@@ -1282,8 +1282,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       fontSize: 12,
                       fontWeight: 600,
                       cursor: 'pointer',
-                      background: stageState.slideMode === 'theory' ? '#ffffff' : 'rgba(255,255,255,0.08)',
-                      color: stageState.slideMode === 'theory' ? '#000000' : '#ffffff'
+                      background: stageState.slideMode === 'theory' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.028)',
+                      color: stageState.slideMode === 'theory' ? 'var(--text-primary)' : '#ffffff'
                     }}
                   >
                     3. Proof
@@ -1297,8 +1297,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       padding: '10px 12px',
                       borderRadius: 12,
                       border: 'none',
-                      background: 'linear-gradient(135deg, rgba(255,153,0,0.9), rgba(220,120,0,0.9))',
-                      color: '#000',
+                      background: 'var(--bg-surface-solid)',
+                      color: 'var(--text-primary)',
                       fontSize: 12,
                       fontWeight: 700,
                       cursor: 'pointer',
@@ -1308,7 +1308,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       gap: 6
                     }}
                   >
-                    <Play size={13} fill="#000" />
+                    <Play size={13} fill="#f2f2f7" />
                     <span>Run Traffic Pulse</span>
                   </button>
 
@@ -1317,9 +1317,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                     style={{
                       padding: '10px 12px',
                       borderRadius: 12,
-                      border: '1px solid rgba(255,255,255,0.15)',
-                      background: 'rgba(255,255,255,0.08)',
-                      color: '#ffffff',
+                      border: '1px solid rgba(15, 23, 42, 0.115)',
+                      background: 'rgba(15, 23, 42, 0.028)',
+                      color: 'var(--text-primary)',
                       fontSize: 12,
                       fontWeight: 600,
                       cursor: 'pointer',
@@ -1338,20 +1338,20 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
 
             {/* Section 2: Chaos Outage Injection & Healing */}
             <div style={{
-              background: stageState.isChaosActive ? 'rgba(255, 69, 58, 0.12)' : 'rgba(255, 255, 255, 0.04)',
-              border: `1px solid ${stageState.isChaosActive ? 'rgba(255, 69, 58, 0.4)' : 'rgba(255, 255, 255, 0.1)'}`,
+              background: stageState.isChaosActive ? 'rgba(255, 69, 58, 0.12)' : 'rgba(15, 23, 42, 0.024)',
+              border: `1px solid ${stageState.isChaosActive ? 'rgba(255, 69, 58, 0.4)' : 'rgba(15, 23, 42, 0.030)'}`,
               borderRadius: 18,
               padding: 16
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: stageState.isChaosActive ? '#ff453a' : 'var(--accent)', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: stageState.isChaosActive ? '#c9302c' : 'var(--accent)', textTransform: 'uppercase' }}>
                   ⚡ Multi-AZ Outage &amp; Healing
                 </span>
-                <span style={{ fontSize: 11, color: stageState.isChaosActive ? '#ff453a' : '#30d158', fontWeight: 600 }}>
+                <span style={{ fontSize: 11, color: stageState.isChaosActive ? '#c9302c' : '#1e7e34', fontWeight: 600 }}>
                   {stageState.isChaosActive ? '● OUTAGE INJECTED' : '● NOMINAL 99.99%'}
                 </span>
               </div>
-              <p style={{ fontSize: 13, color: '#a1a1a6', margin: '0 0 12px 0' }}>
+              <p style={{ fontSize: 13, color: 'var(--text-tertiary)', margin: '0 0 12px 0' }}>
                 Simulate catastrophic AZ-1 failure on the laptop display. Watch Aurora auto-failover and ALB route traffic seamlessly.
               </p>
               <button
@@ -1364,13 +1364,13 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   fontWeight: 700,
                   border: 'none',
                   cursor: 'pointer',
-                  background: stageState.isChaosActive ? '#30d158' : '#ff453a',
-                  color: stageState.isChaosActive ? '#000000' : '#ffffff',
+                  background: stageState.isChaosActive ? '#1e7e34' : '#c9302c',
+                  color: stageState.isChaosActive ? '#ffffff' : 'var(--text-secondary)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: 8,
-                  boxShadow: '0 4px 16px rgba(0,0,0,0.4)'
+                  boxShadow: 'var(--shadow-glass)'
                 }}
               >
                 {stageState.isChaosActive ? <RotateCcw size={16} /> : <Zap size={16} />}
@@ -1380,12 +1380,12 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
 
             {/* Section 3: Smooth Stage Camera Auto-Scrollers */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              background: 'rgba(15, 23, 42, 0.024)',
+              border: '1px solid rgba(15, 23, 42, 0.090)',
               borderRadius: 18,
               padding: 16
             }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#ffffff', textTransform: 'uppercase', marginBottom: 10 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', marginBottom: 10 }}>
                 🎯 Camera Viewport: Auto-Scroll Big Screen
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
@@ -1394,9 +1394,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   style={{
                     padding: '10px 12px',
                     borderRadius: 12,
-                    background: 'rgba(255, 255, 255, 0.08)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    color: '#fff',
+                    background: 'rgba(15, 23, 42, 0.028)',
+                    border: '1px solid rgba(15, 23, 42, 0.090)',
+                    color: 'var(--text-primary)',
                     fontSize: 13,
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -1414,9 +1414,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   style={{
                     padding: '10px 12px',
                     borderRadius: 12,
-                    background: 'rgba(255, 255, 255, 0.08)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    color: '#fff',
+                    background: 'rgba(15, 23, 42, 0.028)',
+                    border: '1px solid rgba(15, 23, 42, 0.090)',
+                    color: 'var(--text-primary)',
                     fontSize: 13,
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -1425,7 +1425,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                     gap: 6
                   }}
                 >
-                  <FileText size={14} color="#0a84ff" />
+                  <FileText size={14} color="#0066cc" />
                   <span>Storyline Req</span>
                 </button>
 
@@ -1434,9 +1434,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   style={{
                     padding: '10px 12px',
                     borderRadius: 12,
-                    background: 'rgba(255, 255, 255, 0.08)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    color: '#fff',
+                    background: 'rgba(15, 23, 42, 0.028)',
+                    border: '1px solid rgba(15, 23, 42, 0.090)',
+                    color: 'var(--text-primary)',
                     fontSize: 13,
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -1454,9 +1454,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   style={{
                     padding: '10px 12px',
                     borderRadius: 12,
-                    background: 'rgba(255, 255, 255, 0.08)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    color: '#fff',
+                    background: 'rgba(15, 23, 42, 0.028)',
+                    border: '1px solid rgba(15, 23, 42, 0.090)',
+                    color: 'var(--text-primary)',
                     fontSize: 13,
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -1474,9 +1474,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   style={{
                     padding: '10px 12px',
                     borderRadius: 12,
-                    background: 'rgba(255, 255, 255, 0.08)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    color: '#fff',
+                    background: 'rgba(15, 23, 42, 0.028)',
+                    border: '1px solid rgba(15, 23, 42, 0.090)',
+                    color: 'var(--text-primary)',
                     fontSize: 13,
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -1494,9 +1494,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   style={{
                     padding: '10px 12px',
                     borderRadius: 12,
-                    background: 'rgba(255, 255, 255, 0.08)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    color: '#fff',
+                    background: 'rgba(15, 23, 42, 0.028)',
+                    border: '1px solid rgba(15, 23, 42, 0.090)',
+                    color: 'var(--text-primary)',
                     fontSize: 13,
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -1505,7 +1505,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                     gap: 6
                   }}
                 >
-                  <Sparkles size={14} color="#bf5af2" />
+                  <Sparkles size={14} color="#7a3fb8" />
                   <span>Terraform IaC</span>
                 </button>
 
@@ -1514,9 +1514,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   style={{
                     padding: '10px 12px',
                     borderRadius: 12,
-                    background: 'rgba(255, 255, 255, 0.08)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    color: '#fff',
+                    background: 'rgba(15, 23, 42, 0.028)',
+                    border: '1px solid rgba(15, 23, 42, 0.090)',
+                    color: 'var(--text-primary)',
                     fontSize: 13,
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -1534,9 +1534,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   style={{
                     padding: '10px 12px',
                     borderRadius: 12,
-                    background: 'rgba(255, 255, 255, 0.08)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    color: '#fff',
+                    background: 'rgba(15, 23, 42, 0.028)',
+                    border: '1px solid rgba(15, 23, 42, 0.090)',
+                    color: 'var(--text-primary)',
                     fontSize: 13,
                     fontWeight: 600,
                     cursor: 'pointer',
@@ -1553,13 +1553,13 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
 
             {/* Section 4: Live Traffic Load & Attack Simulator */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              background: 'rgba(15, 23, 42, 0.024)',
+              border: '1px solid rgba(15, 23, 42, 0.090)',
               borderRadius: 18,
               padding: 16
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: '#ffffff', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase' }}>
                   📈 Traffic Load &amp; Attack Vectors
                 </span>
                 <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--accent)' }}>
@@ -1582,9 +1582,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                     style={{
                       padding: '8px 2px',
                       borderRadius: 10,
-                      border: '1px solid rgba(255,255,255,0.1)',
+                      border: '1px solid rgba(15, 23, 42, 0.090)',
                       background: stageState.trafficLoad === p.load ? 'var(--accent)' : 'rgba(255,255,255,0.06)',
-                      color: stageState.trafficLoad === p.load ? '#000000' : '#ffffff',
+                      color: stageState.trafficLoad === p.load ? '#ffffff' : 'var(--text-secondary)',
                       fontWeight: 700,
                       fontSize: 11,
                       cursor: 'pointer'
@@ -1603,8 +1603,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                     padding: '8px 10px',
                     borderRadius: 10,
                     border: '1px solid rgba(255,69,58,0.3)',
-                    background: stageState.activeAttack === 'az-outage' ? '#ff453a' : 'rgba(255,69,58,0.1)',
-                    color: stageState.activeAttack === 'az-outage' ? '#000000' : '#ff453a',
+                    background: stageState.activeAttack === 'az-outage' ? '#c9302c' : 'rgba(255,69,58,0.1)',
+                    color: stageState.activeAttack === 'az-outage' ? '#ffffff' : '#c9302c',
                     fontWeight: 700,
                     fontSize: 11,
                     cursor: 'pointer',
@@ -1623,8 +1623,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                     padding: '8px 10px',
                     borderRadius: 10,
                     border: '1px solid rgba(255,159,10,0.3)',
-                    background: stageState.activeAttack === 'ddos' ? '#ff9f0a' : 'rgba(255,159,10,0.1)',
-                    color: stageState.activeAttack === 'ddos' ? '#000000' : '#ff9f0a',
+                    background: stageState.activeAttack === 'ddos' ? '#9a5b00' : 'rgba(255,159,10,0.1)',
+                    color: stageState.activeAttack === 'ddos' ? '#ffffff' : '#9a5b00',
                     fontWeight: 700,
                     fontSize: 11,
                     cursor: 'pointer',
@@ -1643,8 +1643,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                     padding: '8px 10px',
                     borderRadius: 10,
                     border: '1px solid rgba(191,90,242,0.3)',
-                    background: stageState.activeAttack === 'ransomware' ? '#bf5af2' : 'rgba(191,90,242,0.1)',
-                    color: stageState.activeAttack === 'ransomware' ? '#000000' : '#bf5af2',
+                    background: stageState.activeAttack === 'ransomware' ? '#7a3fb8' : 'rgba(191,90,242,0.1)',
+                    color: stageState.activeAttack === 'ransomware' ? '#ffffff' : '#7a3fb8',
                     fontWeight: 700,
                     fontSize: 11,
                     cursor: 'pointer',
@@ -1663,8 +1663,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                     padding: '8px 10px',
                     borderRadius: 10,
                     border: '1px solid rgba(48,209,88,0.3)',
-                    background: stageState.activeAttack === 'bill-shock' ? '#30d158' : 'rgba(48,209,88,0.1)',
-                    color: stageState.activeAttack === 'bill-shock' ? '#000000' : '#30d158',
+                    background: stageState.activeAttack === 'bill-shock' ? '#1e7e34' : 'rgba(48,209,88,0.1)',
+                    color: stageState.activeAttack === 'bill-shock' ? '#ffffff' : '#1e7e34',
                     fontWeight: 700,
                     fontSize: 11,
                     cursor: 'pointer',
@@ -1681,12 +1681,12 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
 
             {/* Section 5: Architecture View Modes & Storyline Stages */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              background: 'rgba(15, 23, 42, 0.024)',
+              border: '1px solid rgba(15, 23, 42, 0.090)',
               borderRadius: 18,
               padding: 16
             }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#ffffff', textTransform: 'uppercase', marginBottom: 10 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', marginBottom: 10 }}>
                 ⚖️ Architecture View Mode &amp; Storyline
               </div>
 
@@ -1703,8 +1703,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       fontSize: 11,
                       fontWeight: 600,
                       cursor: 'pointer',
-                      background: stageState.viewMode === mode ? '#ffffff' : 'rgba(255,255,255,0.08)',
-                      color: stageState.viewMode === mode ? '#000000' : '#d1d1d6'
+                      background: stageState.viewMode === mode ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.028)',
+                      color: stageState.viewMode === mode ? 'var(--text-primary)' : '#d2d2d7'
                     }}
                   >
                     {mode === 'split' ? 'Split View' : mode === 'well-arch-only' ? 'WAF Only' : 'Naive Only'}
@@ -1726,12 +1726,12 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                     style={{
                       padding: '8px 2px',
                       borderRadius: 10,
-                      border: '1px solid rgba(255,255,255,0.1)',
+                      border: '1px solid rgba(15, 23, 42, 0.090)',
                       fontSize: 11,
                       fontWeight: 600,
                       cursor: 'pointer',
                       background: stageState.storylineStage === stage ? 'var(--accent)' : 'rgba(255,255,255,0.06)',
-                      color: stageState.storylineStage === stage ? '#000000' : '#d1d1d6'
+                      color: stageState.storylineStage === stage ? '#ffffff' : '#d2d2d7'
                     }}
                   >
                     {label}
@@ -1742,19 +1742,19 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
 
             {/* Section 6: Launch Big Screen Deep-Dive Simulators & Modals */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              background: 'rgba(15, 23, 42, 0.024)',
+              border: '1px solid rgba(15, 23, 42, 0.090)',
               borderRadius: 18,
               padding: 16
             }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: '#ffffff', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase' }}>
                   🚀 Launch Big Screen Deep-Dive Tools
                 </span>
                 {stageState.activeModal && (
                   <button
                     onClick={handleCloseModals}
-                    style={{ background: '#ff453a', border: 'none', color: '#fff', fontSize: 10, fontWeight: 700, padding: '2px 6px', borderRadius: 6, cursor: 'pointer' }}
+                    style={{ background: '#c9302c', border: 'none', color: '#fff', fontSize: 10, fontWeight: 700, padding: '2px 6px', borderRadius: 6, cursor: 'pointer' }}
                   >
                     Close Modal
                   </button>
@@ -1779,9 +1779,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                     style={{
                       padding: '10px 14px',
                       borderRadius: 12,
-                      background: stageState.activeModal === tool.id ? 'rgba(255, 153, 0, 0.2)' : 'rgba(255, 255, 255, 0.06)',
-                      border: `1px solid ${stageState.activeModal === tool.id ? 'var(--accent)' : 'rgba(255, 255, 255, 0.1)'}`,
-                      color: '#fff',
+                      background: stageState.activeModal === tool.id ? 'rgba(255, 153, 0, 0.2)' : 'rgba(15, 23, 42, 0.026)',
+                      border: `1px solid ${stageState.activeModal === tool.id ? 'var(--accent)' : 'rgba(15, 23, 42, 0.030)'}`,
+                      color: 'var(--text-primary)',
                       fontSize: 13,
                       fontWeight: 600,
                       cursor: 'pointer',
@@ -1793,7 +1793,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   >
                     <div>
                       <div style={{ color: tool.color, fontWeight: 700 }}>{tool.title}</div>
-                      <div style={{ fontSize: 11, color: '#86868b', marginTop: 2 }}>{tool.desc}</div>
+                      <div style={{ fontSize: 11, color: 'var(--text-tertiary)', marginTop: 2 }}>{tool.desc}</div>
                     </div>
                     <span style={{ fontSize: 12, color: 'var(--accent)', flexShrink: 0 }}>
                       {stageState.activeModal === tool.id ? '● Active' : 'Open →'}
@@ -1805,12 +1805,12 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
 
             {/* Section 7: Live Component Spotlights */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.04)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              background: 'rgba(15, 23, 42, 0.024)',
+              border: '1px solid rgba(15, 23, 42, 0.090)',
               borderRadius: 18,
               padding: 16
             }}>
-              <div style={{ fontSize: 12, fontWeight: 700, color: '#ffffff', textTransform: 'uppercase', marginBottom: 10 }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', textTransform: 'uppercase', marginBottom: 10 }}>
                 🔦 Laser Spotlight (Pulsing Glow on Big Screen)
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
@@ -1823,7 +1823,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       borderRadius: 10,
                       background: 'rgba(255, 153, 0, 0.1)',
                       border: '1px solid rgba(255, 153, 0, 0.25)',
-                      color: '#ffffff',
+                      color: 'var(--text-primary)',
                       fontSize: 12,
                       fontWeight: 600,
                       cursor: 'pointer',
@@ -1848,8 +1848,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {/* Opening Thesis */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
+              background: 'rgba(15, 23, 42, 0.023)',
+              border: '1px solid rgba(15, 23, 42, 0.080)',
               borderRadius: 16,
               padding: 16
             }}>
@@ -1874,8 +1874,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
 
             {/* Capstone Outro */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
+              background: 'rgba(15, 23, 42, 0.023)',
+              border: '1px solid rgba(15, 23, 42, 0.080)',
               borderRadius: 16,
               padding: 16
             }}>
@@ -1888,7 +1888,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                     sendCmd({ type: 'GOTO_MODULE', index: 14 });
                     handleScrollTo('metrics');
                   }}
-                  style={{ background: '#30d158', border: 'none', color: '#000', fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 8, cursor: 'pointer' }}
+                  style={{ background: '#1e7e34', border: 'none', color: '#000', fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 8, cursor: 'pointer' }}
                 >
                   Final Slide 15 📊
                 </button>
@@ -1907,10 +1907,10 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         bottom: 0,
         left: 0,
         right: 0,
-        background: 'rgba(10, 12, 16, 0.94)',
-        backdropFilter: 'blur(25px) saturate(180%)',
-        WebkitBackdropFilter: 'blur(25px) saturate(180%)',
-        borderTop: '1px solid rgba(255, 255, 255, 0.12)',
+        background: 'var(--bg-surface-solid)',
+
+
+        borderTop: '1px solid rgba(15, 23, 42, 0.100)',
         padding: '10px 16px',
         paddingBottom: 'max(20px, env(safe-area-inset-bottom, 20px))',
         paddingLeft: 'max(16px, env(safe-area-inset-left, 16px))',
@@ -1918,7 +1918,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         display: 'flex',
         flexDirection: 'column',
         gap: 8,
-        boxShadow: '0 -10px 30px rgba(0, 0, 0, 0.75)'
+        boxShadow: 'var(--shadow-glass)'
       }}>
         {/* Master Screen Mode Switcher Button */}
         <button
@@ -1930,9 +1930,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             border: 'none',
             cursor: 'pointer',
             background: isPresenter
-              ? 'rgba(255, 255, 255, 0.12)'
-              : 'linear-gradient(135deg, rgba(255, 153, 0, 0.92) 0%, rgba(220, 120, 0, 0.92) 100%)',
-            color: isPresenter ? '#ffffff' : '#000000',
+              ? 'rgba(15, 23, 42, 0.032)'
+              : 'var(--aws-orange)',
+            color: isPresenter ? '#ffffff' : 'var(--text-primary)',
             fontWeight: 700,
             fontSize: 14,
             display: 'flex',
@@ -1944,7 +1944,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
         >
           {isPresenter
             ? <><Monitor size={15} /> <span>Switch Screen to Studio Workspace 💻</span></>
-            : <><Play size={15} fill="#000" /> <span>Launch Full 16:9 Presentation Slides 🎬</span></>
+            : <><Play size={15} fill="#f2f2f7" /> <span>Launch Full 16:9 Presentation Slides 🎬</span></>
           }
         </button>
 
@@ -1958,8 +1958,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               borderRadius: 12,
               border: 'none',
               cursor: 'pointer',
-              background: stageState.isChaosActive ? '#30d158' : 'rgba(255, 69, 58, 0.22)',
-              color: stageState.isChaosActive ? '#000000' : '#ff453a',
+              background: stageState.isChaosActive ? '#1e7e34' : 'rgba(255, 69, 58, 0.22)',
+              color: stageState.isChaosActive ? '#ffffff' : '#c9302c',
               fontWeight: 700,
               fontSize: 12,
               display: 'flex',
@@ -1982,10 +1982,10 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               style={{
                 padding: '9px 6px',
                 borderRadius: 12,
-                border: '1px solid rgba(255, 255, 255, 0.12)',
+                border: '1px solid rgba(15, 23, 42, 0.100)',
                 cursor: 'pointer',
-                background: 'rgba(255, 255, 255, 0.06)',
-                color: '#ffffff',
+                background: 'rgba(15, 23, 42, 0.026)',
+                color: 'var(--text-primary)',
                 fontWeight: 600,
                 fontSize: 12,
                 display: 'flex',
@@ -2003,10 +2003,10 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               style={{
                 padding: '9px 6px',
                 borderRadius: 12,
-                border: '1px solid rgba(255, 255, 255, 0.12)',
+                border: '1px solid rgba(15, 23, 42, 0.100)',
                 cursor: 'pointer',
-                background: 'rgba(255, 255, 255, 0.06)',
-                color: '#ffffff',
+                background: 'rgba(15, 23, 42, 0.026)',
+                color: 'var(--text-primary)',
                 fontWeight: 600,
                 fontSize: 12,
                 display: 'flex',
@@ -2026,10 +2026,10 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             style={{
               padding: '9px 6px',
               borderRadius: 12,
-              border: '1px solid rgba(255, 255, 255, 0.12)',
+              border: '1px solid rgba(15, 23, 42, 0.100)',
               cursor: 'pointer',
-              background: 'rgba(255, 255, 255, 0.06)',
-              color: '#ffffff',
+              background: 'rgba(15, 23, 42, 0.026)',
+              color: 'var(--text-primary)',
               fontWeight: 600,
               fontSize: 12,
               display: 'flex',
@@ -2051,9 +2051,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             style={{
               padding: '12px 10px',
               borderRadius: 14,
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              background: 'rgba(255, 255, 255, 0.08)',
-              color: '#fff',
+              border: '1px solid rgba(15, 23, 42, 0.090)',
+              background: 'rgba(15, 23, 42, 0.028)',
+              color: 'var(--text-primary)',
               fontWeight: 600,
               fontSize: 13,
               cursor: currentIdx === 0 ? 'not-allowed' : 'pointer',
@@ -2076,8 +2076,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               padding: '12px 14px',
               borderRadius: 14,
               border: 'none',
-              background: 'linear-gradient(135deg, #FF9900 0%, #E88B00 100%)',
-              color: '#000000',
+              background: 'var(--aws-orange)',
+              color: 'var(--text-primary)',
               fontWeight: 700,
               fontSize: 14,
               cursor: 'pointer',
@@ -2085,7 +2085,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
               alignItems: 'center',
               justifyContent: 'center',
               gap: 6,
-              boxShadow: '0 4px 18px rgba(255, 153, 0, 0.35)'
+              boxShadow: 'var(--shadow-glass)'
             }}
           >
             <span>Next: Module {currentIdx + 2}</span>
@@ -2098,9 +2098,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             style={{
               padding: '12px 10px',
               borderRadius: 14,
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              background: 'rgba(255, 255, 255, 0.08)',
-              color: '#fff',
+              border: '1px solid rgba(15, 23, 42, 0.090)',
+              background: 'rgba(15, 23, 42, 0.028)',
+              color: 'var(--text-primary)',
               fontWeight: 600,
               fontSize: 13,
               cursor: 'pointer',
@@ -2126,9 +2126,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
           right: 0,
           bottom: 0,
           zIndex: 9999,
-          background: 'rgba(0, 0, 0, 0.85)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
+          background: 'var(--bg-surface-solid)',
+
+
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -2144,21 +2144,21 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             display: 'flex',
             flexDirection: 'column',
             gap: 14,
-            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8)'
+            boxShadow: 'var(--shadow-glass)'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <span style={{ fontSize: 14, fontWeight: 700, color: '#ffffff' }}>
+              <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
                 🔗 Connect to Stage Screen
               </span>
               <button
                 onClick={() => setIsEditingRoom(false)}
-                style={{ background: 'transparent', border: 'none', color: '#8e8e93', cursor: 'pointer', padding: 4 }}
+                style={{ background: 'transparent', border: 'none', color: 'var(--text-tertiary)', cursor: 'pointer', padding: 4 }}
               >
                 <X size={18} />
               </button>
             </div>
 
-            <p style={{ fontSize: 12, color: '#8e8e93', margin: 0, lineHeight: 1.4 }}>
+            <p style={{ fontSize: 12, color: 'var(--text-tertiary)', margin: 0, lineHeight: 1.4 }}>
               Enter the 4-digit room code shown on the laptop presentation display (e.g. <strong>WAF-1001</strong>).
             </p>
 
@@ -2172,9 +2172,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                 style={{
                   padding: '12px 14px',
                   borderRadius: 12,
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  background: 'rgba(255, 255, 255, 0.06)',
-                  color: '#ffffff',
+                  border: '1px solid rgba(15, 23, 42, 0.140)',
+                  background: 'rgba(15, 23, 42, 0.026)',
+                  color: 'var(--text-primary)',
                   fontSize: 16,
                   fontWeight: 700,
                   fontFamily: 'var(--font-mono)',
@@ -2190,9 +2190,9 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                   style={{
                     padding: '10px',
                     borderRadius: 12,
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    background: 'rgba(255, 255, 255, 0.06)',
-                    color: '#8e8e93',
+                    border: '1px solid rgba(15, 23, 42, 0.090)',
+                    background: 'rgba(15, 23, 42, 0.026)',
+                    color: 'var(--text-tertiary)',
                     fontSize: 13,
                     fontWeight: 600,
                     cursor: 'pointer'
@@ -2208,7 +2208,7 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                     borderRadius: 12,
                     border: 'none',
                     background: 'var(--accent)',
-                    color: '#000000',
+                    color: 'var(--text-primary)',
                     fontSize: 13,
                     fontWeight: 700,
                     cursor: 'pointer'

@@ -41,7 +41,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Highlight 6-pillar defense in depth',
       icon: 'shield',
       badge: 'View Mode',
-      color: '#30d158',
+      color: '#1e7e34',
       getCommand: () => ({ type: 'SET_VIEW_MODE', mode: 'well-arch-only' })
     },
     {
@@ -50,7 +50,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Expose single public subnet anti-pattern',
       icon: 'flame',
       badge: 'View Mode',
-      color: '#ff453a',
+      color: '#c9302c',
       getCommand: () => ({ type: 'SET_VIEW_MODE', mode: 'naive-only' })
     },
     {
@@ -68,7 +68,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Scroll big screen to verified cost transitions',
       icon: 'dollar',
       badge: 'FinOps',
-      color: '#30d158',
+      color: '#1e7e34',
       getCommand: () => ({ type: 'SCROLL_TO', target: 'metrics' })
     },
     {
@@ -90,7 +90,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Test S3 Object Lock WORM compliance (403 AccessDenied)',
       icon: 'flame',
       badge: 'Outage',
-      color: '#ff453a',
+      color: '#c9302c',
       getCommand: () => ({ type: 'TRIGGER_ATTACK', attackScenario: 'ransomware', label: 'Ransomware Attack' })
     },
     {
@@ -108,7 +108,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Demonstrate IOPS decoupled from capacity',
       icon: 'database',
       badge: 'Spotlight',
-      color: '#5ac8fa',
+      color: '#0a6fb8',
       getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-ebs', label: 'EBS gp3 (Right-sized 250GB)' })
     },
     {
@@ -126,7 +126,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Inspect 72% cold archive cost reductions',
       icon: 'dollar',
       badge: 'FinOps',
-      color: '#30d158',
+      color: '#1e7e34',
       getCommand: () => ({ type: 'SCROLL_TO', target: 'metrics' })
     }
   ],
@@ -148,7 +148,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Simulate datacenter blackout, test ALB rerouting',
       icon: 'flame',
       badge: 'Outage',
-      color: '#ff453a',
+      color: '#c9302c',
       getCommand: () => ({ type: 'TRIGGER_ATTACK', attackScenario: 'az-outage', label: 'AZ-1 Outage Disaster' })
     },
     {
@@ -157,7 +157,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Restore nominal Graviton3 instances across AZs',
       icon: 'rotate',
       badge: 'Live Sim',
-      color: '#30d158',
+      color: '#1e7e34',
       getCommand: () => ({ type: 'RESET_CHAOS' })
     },
     {
@@ -175,7 +175,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Multi-vector outage and failure stress lab',
       icon: 'zap',
       badge: 'Deep Dive',
-      color: '#ff9f0a',
+      color: '#9a5b00',
       getCommand: () => ({ type: 'OPEN_MODAL', modal: 'stresslab', label: 'Incident Stress Lab' })
     }
   ],
@@ -188,7 +188,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Crash primary writer, watch sub-18s promotion',
       icon: 'zap',
       badge: 'Outage',
-      color: '#ff453a',
+      color: '#c9302c',
       getCommand: () => ({ type: 'TRIGGER_CHAOS' })
     },
     {
@@ -197,7 +197,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Restore 6-way peer-repaired Aurora cluster',
       icon: 'rotate',
       badge: 'Live Sim',
-      color: '#30d158',
+      color: '#1e7e34',
       getCommand: () => ({ type: 'RESET_CHAOS' })
     },
     {
@@ -215,7 +215,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Inspect multiplexed connection pooling',
       icon: 'sparkles',
       badge: 'Spotlight',
-      color: '#5ac8fa',
+      color: '#0a6fb8',
       getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-apps', label: 'App Services Pool' })
     },
     {
@@ -246,7 +246,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Direct private routing to S3 & DynamoDB',
       icon: 'sparkles',
       badge: 'Spotlight',
-      color: '#30d158',
+      color: '#1e7e34',
       getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-sub-priv', label: 'Private Subnet (App ECS/EC2)' })
     },
     {
@@ -255,7 +255,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Edge-to-database routing & hops benchmark',
       icon: 'sliders',
       badge: 'Deep Dive',
-      color: '#5ac8fa',
+      color: '#0a6fb8',
       getCommand: () => ({ type: 'OPEN_MODAL', modal: 'latency', label: 'Packet Latency Simulator' })
     },
     {
@@ -286,7 +286,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Dedicated 10Gbps enterprise hybrid fiber link',
       icon: 'sparkles',
       badge: 'Spotlight',
-      color: '#5ac8fa',
+      color: '#0a6fb8',
       getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-dx', label: 'AWS Direct Connect (10 Gbps)' })
     },
     {
@@ -295,7 +295,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Test AWS Shield Advanced edge scrubbing',
       icon: 'flame',
       badge: 'Outage',
-      color: '#ff9f0a',
+      color: '#9a5b00',
       getCommand: () => ({ type: 'TRIGGER_ATTACK', attackScenario: 'ddos', label: 'DDoS Network Flood' })
     },
     {
@@ -326,7 +326,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Envelope encryption & automatic 30-day rotation',
       icon: 'lock',
       badge: 'Spotlight',
-      color: '#30d158',
+      color: '#1e7e34',
       getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-sec-mgr', label: 'AWS Secrets Manager' })
     },
     {
@@ -344,7 +344,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Demonstrate GuardDuty anomaly detection',
       icon: 'flame',
       badge: 'Outage',
-      color: '#ff453a',
+      color: '#c9302c',
       getCommand: () => ({ type: 'TRIGGER_ATTACK', attackScenario: 'ransomware', label: 'Compromise Defense Test' })
     }
   ],
@@ -366,7 +366,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Scroll big screen to 99.99% availability dashboard',
       icon: 'sliders',
       badge: 'SLA Proof',
-      color: '#30d158',
+      color: '#1e7e34',
       getCommand: () => ({ type: 'SCROLL_TO', target: 'metrics' })
     },
     {
@@ -375,7 +375,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Simulate cascading alerts and automated triage',
       icon: 'zap',
       badge: 'Deep Dive',
-      color: '#ff9f0a',
+      color: '#9a5b00',
       getCommand: () => ({ type: 'OPEN_MODAL', modal: 'stresslab', label: 'Incident Stress Lab' })
     },
     {
@@ -397,7 +397,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Scroll big screen to verified infrastructure code',
       icon: 'sparkles',
       badge: 'IaC',
-      color: '#bf5af2',
+      color: '#7a3fb8',
       getCommand: () => ({ type: 'SCROLL_TO', target: 'iac' })
     },
     {
@@ -415,7 +415,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Canary deployments with automated rollback',
       icon: 'compass',
       badge: 'Spotlight',
-      color: '#5ac8fa',
+      color: '#0a6fb8',
       getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-cicd-pipeline', label: 'AWS CodePipeline / CI Runner' })
     },
     {
@@ -446,7 +446,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'In-memory read-aside cluster with sub-ms responses',
       icon: 'database',
       badge: 'Spotlight',
-      color: '#30d158',
+      color: '#1e7e34',
       getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-redis', label: 'Amazon ElastiCache (Redis Cluster)' })
     },
     {
@@ -455,7 +455,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Demonstrate CDN edge caching 4ms response times',
       icon: 'sliders',
       badge: 'Deep Dive',
-      color: '#5ac8fa',
+      color: '#0a6fb8',
       getCommand: () => ({ type: 'OPEN_MODAL', modal: 'latency', label: 'Latency Simulator' })
     },
     {
@@ -477,7 +477,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Simulate zombie instance cost overrun alert',
       icon: 'flame',
       badge: 'Outage',
-      color: '#ff453a',
+      color: '#c9302c',
       getCommand: () => ({ type: 'TRIGGER_ATTACK', attackScenario: 'bill-shock', label: 'FinOps Bill Shock' })
     },
     {
@@ -486,7 +486,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Interactive cloud savings and 59% ROI modeler',
       icon: 'dollar',
       badge: 'FinOps',
-      color: '#30d158',
+      color: '#1e7e34',
       getCommand: () => ({ type: 'OPEN_MODAL', modal: 'executive', label: 'Executive FinOps Calculator' })
     },
     {
@@ -504,7 +504,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Asynchronous decoupling preventing compute waste',
       icon: 'sparkles',
       badge: 'Spotlight',
-      color: '#5ac8fa',
+      color: '#0a6fb8',
       getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-sqs-orders', label: 'Amazon SQS (Orders Queue + DLQ)' })
     }
   ],
@@ -526,7 +526,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Resilient state machine with distributed retries',
       icon: 'compass',
       badge: 'Spotlight',
-      color: '#bf5af2',
+      color: '#7a3fb8',
       getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-step-fn', label: 'AWS Step Functions' })
     },
     {
@@ -544,7 +544,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Deep-dive EventBridge bus and SQS FIFO DLQ lab',
       icon: 'sliders',
       badge: 'Deep Dive',
-      color: '#30d158',
+      color: '#1e7e34',
       getCommand: () => ({ type: 'OPEN_MODAL', modal: 'subtopics', label: 'Serverless Patterns Lab' })
     }
   ],
@@ -566,7 +566,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Hallucination bounds, PII masking & compliance',
       icon: 'shield',
       badge: 'Deep Dive',
-      color: '#5ac8fa',
+      color: '#0a6fb8',
       getCommand: () => ({ type: 'OPEN_MODAL', modal: 'governance', label: 'AI Governance Inspector' })
     },
     {
@@ -575,7 +575,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Serverless SQL over S3 with Parquet pushdown',
       icon: 'database',
       badge: 'Spotlight',
-      color: '#bf5af2',
+      color: '#7a3fb8',
       getCommand: () => ({ type: 'SPOTLIGHT', targetId: 'w-athena', label: 'Amazon Athena (Presto SQL)' })
     },
     {
@@ -597,7 +597,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Test automated active-active multi-region failover',
       icon: 'flame',
       badge: 'Outage',
-      color: '#ff453a',
+      color: '#c9302c',
       getCommand: () => ({ type: 'TRIGGER_CHAOS' })
     },
     {
@@ -615,7 +615,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Verify 0 data loss (RPO = 0, RTO < 30s)',
       icon: 'rotate',
       badge: 'Live Sim',
-      color: '#30d158',
+      color: '#1e7e34',
       getCommand: () => ({ type: 'RESET_CHAOS' })
     },
     {
@@ -624,7 +624,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Multi-region disaster recovery simulation',
       icon: 'zap',
       badge: 'Deep Dive',
-      color: '#ff9f0a',
+      color: '#9a5b00',
       getCommand: () => ({ type: 'OPEN_MODAL', modal: 'stresslab', label: 'Incident Stress Lab' })
     }
   ],
@@ -646,7 +646,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Present final quantitative audit',
       icon: 'dollar',
       badge: 'FinOps',
-      color: '#30d158',
+      color: '#1e7e34',
       getCommand: () => ({ type: 'SCROLL_TO', target: 'metrics' })
     },
     {
@@ -655,7 +655,7 @@ export const domainScriptActionsMap: Record<number, DomainScriptActionDef[]> = {
       description: 'Display formal theorems (CAP, PACELC, Gall\'s Law)',
       icon: 'sparkles',
       badge: 'View Mode',
-      color: '#5ac8fa',
+      color: '#0a6fb8',
       getCommand: () => ({ type: 'SET_SLIDE_MODE', slideMode: 'theory' })
     },
     {

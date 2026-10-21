@@ -213,7 +213,7 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
         return (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 'var(--space-4)' }}>
             {/* Law & Mathematical Equation */}
-            <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 10, boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
+            <div style={{ background: 'rgba(15, 23, 42, 0.022)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 10, boxShadow: 'var(--shadow-glass)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
                   Distributed Systems Law
@@ -229,7 +229,7 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
                 {theory.lawOrTheorem.formalStatement}
               </p>
               {theory.lawOrTheorem.mathematicalFormula && (
-                <div style={{ background: 'var(--bg-canvas)', border: '1px solid var(--separator-subtle)', borderRadius: 'var(--radius-control)', padding: '12px 14px', boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.08)' }}>
+                <div style={{ background: 'var(--bg-canvas)', border: '1px solid var(--separator-subtle)', borderRadius: 'var(--radius-control)', padding: '12px 14px', boxShadow: 'var(--shadow-glass)' }}>
                   <LatexFormula
                     formula={theory.lawOrTheorem.mathematicalFormula!}
                     style={{ fontSize: 13, color: 'var(--accent)' }}
@@ -244,7 +244,7 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
             </div>
 
             {/* AWS Whitepaper & Amazon Builders' Library Citations */}
-            <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 10, boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
+            <div style={{ background: 'rgba(15, 23, 42, 0.022)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 10, boxShadow: 'var(--shadow-glass)' }}>
               <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--status-success)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
                 Official AWS Architecture Citations
               </span>
@@ -279,7 +279,7 @@ export const CustomerJourneyCard: React.FC<JourneyProps> = ({
             </div>
 
             {/* Compliance Framework */}
-            <div style={{ background: 'rgba(255, 255, 255, 0.02)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 10, boxShadow: 'inset 0 1px 0 var(--hairline-top)' }}>
+            <div style={{ background: 'rgba(15, 23, 42, 0.022)', border: '1px solid var(--separator)', borderRadius: 'var(--radius-inner)', padding: 'var(--space-4)', display: 'flex', flexDirection: 'column', gap: 10, boxShadow: 'var(--shadow-glass)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <ShieldCheck size={13} color="var(--accent)" />
                 <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
