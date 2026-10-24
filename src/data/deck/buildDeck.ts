@@ -43,6 +43,39 @@ const measuresTable = (index: number): DeckTable => {
   };
 };
 
+const shortAvailability = (val: string): string => {
+  const match = val.match(/\d+(\.\d+)?%/);
+  if (match) return match[0];
+  if (val.toLowerCase().includes('error')) return 'Unreliable';
+  if (val.toLowerCase().includes('security')) return 'Breached';
+  return val.split('(')[0].trim();
+};
+
+const shortRTO = (val: string): string => {
+  if (val.includes('< 1 Second') || val.includes('< 1s')) return '< 1s';
+  if (val.includes('< 5 Seconds') || val.includes('< 5s')) return '< 5s';
+  if (val.includes('< 30 Seconds') || val.includes('< 30s')) return '< 30s';
+  if (val.includes('< 45 Seconds') || val.includes('< 45s')) return '< 45s';
+  if (val.includes('< 60 Seconds') || val.includes('< 60s')) return '< 60s';
+  if (val.includes('< 15 Minutes') || val.includes('< 15m')) return '< 15m';
+  if (val.includes('15 Minutes')) return '15m';
+  if (val.includes('45 Minutes')) return '45m';
+  if (val.includes('2 - 4 Hours')) return '2-4h';
+  if (val.includes('4 - 6 Hours')) return '4-6h';
+  if (val.includes('4 - 8 Hours') || val.includes('4-8 Hours')) return '4-8h';
+  if (val.includes('48 Hours') || val.includes('48+ Hours')) return '48h';
+  if (val.includes('3 Hours')) return '3h';
+  if (val.includes('4 Hours')) return '4h';
+  if (val.includes('Manual Incident Triage')) return 'Hours (Triage)';
+  if (val.includes('Manual Reconciliation')) return 'Hours (Manual)';
+  if (val.includes('Manual Python Script Rerun') || val.includes('Python Script')) return 'Hours (Rerun)';
+  if (val.includes('Immune') || val.includes('N/A')) return '0s (Immune)';
+  if (val.includes('Zero')) return 'Zero Loss';
+  if (val.includes('Instant')) return 'Instant';
+  if (val.includes('Days')) return 'Days';
+  return val.split('(')[0].trim();
+};
+
 const buildModuleSlides = (index: number): DeckSlide[] => {
   const domain = allDomains[index];
   const script = moduleScripts[index];
@@ -73,14 +106,14 @@ const buildModuleSlides = (index: number): DeckSlide[] => {
   const metrics: DeckMetric[] = [
     {
       label: 'Availability',
-      naiveVal: domain.naive.availabilitySLA,
-      wafVal: domain.wellArch.availabilitySLA,
+      naiveVal: shortAvailability(domain.naive.availabilitySLA),
+      wafVal: shortAvailability(domain.wellArch.availabilitySLA),
       benefit: 'Certified High Availability'
     },
     {
       label: 'Recovery (RTO)',
-      naiveVal: domain.naive.rto,
-      wafVal: domain.wellArch.rto,
+      naiveVal: shortRTO(domain.naive.rto),
+      wafVal: shortRTO(domain.wellArch.rto),
       benefit: 'Automated Failover'
     },
     {

@@ -15,10 +15,10 @@ interface PresentationDeckProps {
   onExit: () => void;
   onExportPptx: () => void;
   isExporting: boolean;
-  renderDiagram: () => ReactNode;
+  renderDiagram: (domainIndex?: number) => ReactNode;
 }
 
-const renderSlide = (slide: DeckSlide, renderDiagram: () => ReactNode): ReactNode => {
+const renderSlide = (slide: DeckSlide, renderDiagram: (domainIndex?: number) => ReactNode): ReactNode => {
   if (slide.kind === 'module-theory') return <DeckModuleTheorySlide slide={slide} />;
   if (slide.kind === 'comparison') return <DeckComparisonSlide slide={slide} renderDiagram={renderDiagram} />;
   return <DeckTextSlide slide={slide} />;

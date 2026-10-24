@@ -5,7 +5,7 @@ import { Flame, ShieldCheck, AlertOctagon } from 'lucide-react';
 
 interface DeckComparisonSlideProps {
   slide: DeckSlide;
-  renderDiagram: () => ReactNode;
+  renderDiagram: (domainIndex?: number) => ReactNode;
 }
 
 /** One screen per module: the live naive and Well-Architected simulation side by side, with compact metrics underneath. */
@@ -43,7 +43,7 @@ export const DeckComparisonSlide: React.FC<DeckComparisonSlideProps> = ({ slide,
         </div>
         <div className="gamma-diagram-viewport">
           <FitToBox>
-            {renderDiagram()}
+            {renderDiagram(slide.domainIndex)}
           </FitToBox>
         </div>
       </div>

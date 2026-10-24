@@ -276,12 +276,12 @@ export const DeckTextSlide: React.FC<DeckTextSlideProps> = ({ slide }) => {
   };
 
   const pillarCardsData = [
-    { title: 'Operational Excellence', icon: <Activity size={30} color="#0066cc" />, desc: 'Run and monitor workloads to deliver business value, continually improving processes and procedures.' },
-    { title: 'Security', icon: <ShieldCheck size={30} color="#c9302c" />, desc: 'Protect information, systems, and assets with automated IAM zero-trust, encryption, and continuous audits.' },
-    { title: 'Reliability', icon: <RefreshCw size={30} color="#1e7e34" />, desc: 'Prevent and quickly recover from failures across multi-AZ clusters with automated self-healing.' },
-    { title: 'Performance Efficiency', icon: <Zap size={30} color="#8a4b00" />, desc: 'Use computing resources efficiently through Graviton processors, serverless, and elastic scaling.' },
-    { title: 'Cost Optimization', icon: <DollarSign size={30} color="#0066cc" />, desc: 'Avoid unnecessary cloud spending with FinOps rightsizing, Intelligent-Tiering, and automated cleanups.' },
-    { title: 'Sustainability', icon: <Leaf size={30} color="#1e7e34" />, desc: 'Minimize environmental impact through efficient resource utilization and low-carbon AWS regions.' },
+    { title: 'Operational Excellence', focus: 'Automation & Continuous Feedback', icon: <Activity size={24} color="#0066cc" />, desc: 'Automate deployment pipelines and monitor workloads continually to deliver business value.' },
+    { title: 'Security', focus: 'Zero-Trust IAM & Data Encryption', icon: <ShieldCheck size={24} color="#c9302c" />, desc: 'Protect information, identities, and systems with automated RBAC, KMS keys, and continuous audit trails.' },
+    { title: 'Reliability', focus: 'Multi-AZ Quorums & Auto-Recovery', icon: <RefreshCw size={24} color="#1e7e34" />, desc: 'Recover dynamically from infrastructure disruptions across distributed zones with automated self-healing.' },
+    { title: 'Performance Efficiency', focus: 'Elastic Compute & Graviton ARM', icon: <Zap size={24} color="#8a4b00" />, desc: 'Maximize efficiency with horizontal auto-scaling, serverless compute, and right-sized Graviton processors.' },
+    { title: 'Cost Optimization', focus: 'FinOps Governance & Intelligent-Tiering', icon: <DollarSign size={24} color="#0066cc" />, desc: 'Eliminate unnecessary cloud spend through automated lifecycle policies, spot fleets, and reserved capacity.' },
+    { title: 'Sustainability', focus: 'Carbon Footprint & Resource Utilization', icon: <Leaf size={24} color="#1e7e34" />, desc: 'Minimize environmental impact through efficient high-utilization architectures and low-carbon AWS regions.' },
   ];
 
   return (
@@ -327,7 +327,10 @@ export const DeckTextSlide: React.FC<DeckTextSlideProps> = ({ slide }) => {
             <div key={pillar.title} className="pillar-matrix-card">
               <div className="pillar-matrix-header">
                 <div className="pillar-matrix-icon-wrap">{pillar.icon}</div>
-                <h3 className="pillar-matrix-title">{pillar.title}</h3>
+                <div>
+                  <h3 className="pillar-matrix-title">{pillar.title}</h3>
+                  <span className="pillar-matrix-focus">{pillar.focus}</span>
+                </div>
               </div>
               <p className="pillar-matrix-desc">{pillar.desc}</p>
             </div>
@@ -335,7 +338,7 @@ export const DeckTextSlide: React.FC<DeckTextSlideProps> = ({ slide }) => {
         </div>
       ) : (
         /* Other Theory Slides: Authoritative Architectural Specification Rail & Table */
-        <div className="theory-spec-layout">
+        <div className={`theory-spec-layout ${slide.tables && slide.tables.length > 0 ? 'has-table-grid' : ''}`}>
           {/* Engineering Rules & Architectural Principles (Numbered, Crisp, Non-AI) */}
           <div className="theory-principles-list">
             {slide.points.map((point, idx) => {

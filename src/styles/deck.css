@@ -1,8 +1,7 @@
 /* ==========================================================================
-   ENTERPRISE PRESENTATION DECK DESIGN SYSTEM (PROJECTOR-OPTIMIZED 2X SCALE)
-   Audience: Large Lecture Hall (Visible from 50+ Meters)
-   Standard: At least 2X font scaling, high contrast, thick crisp borders,
-   bold saturated AWS colors, authentic human layouts (Zero AI Slop).
+   ENTERPRISE PRESENTATION DECK DESIGN SYSTEM
+   Standard: Professional, calibrated typography, zero overflow, zero clipping.
+   Priority: Live simulation diagrams take center stage with maximum viewport.
    ========================================================================== */
 
 .deck-root {
@@ -26,38 +25,39 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: 8px 24px;
+  padding: 8px 20px;
   background: #ffffff;
   border-bottom: 2px solid #cbd5e1;
   flex-wrap: wrap;
   z-index: 10;
+  flex-shrink: 0;
 }
 
 .deck-footer {
   border-top: 2px solid #cbd5e1;
   border-bottom: none;
-  padding: 8px 24px;
+  padding: 8px 20px;
 }
 
 .deck-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 18px;
-  font-weight: 850;
+  gap: 8px;
+  font-size: 15px;
+  font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.01em;
 }
 
 .deck-brand-pill {
-  font-size: 13px;
-  font-weight: 850;
+  font-size: 11px;
+  font-weight: 800;
   text-transform: uppercase;
-  padding: 3px 10px;
+  padding: 2px 8px;
   border-radius: 9999px;
   background: #fffbeb;
   color: #b45309;
-  border: 2px solid #fcd34d;
+  border: 1.5px solid #fcd34d;
   letter-spacing: 0.04em;
 }
 
@@ -65,24 +65,24 @@
 .deck-nav {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .deck-button {
-  min-height: 44px;
-  padding: 8px 20px;
+  min-height: 38px;
+  padding: 6px 16px;
   border-radius: var(--radius-control);
-  border: 2px solid #cbd5e1;
+  border: 1.5px solid #cbd5e1;
   background: #ffffff;
   color: #0f172a;
   font: inherit;
-  font-size: 15px;
-  font-weight: 750;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   transition: all 0.15s ease;
 }
 
@@ -101,7 +101,7 @@
   background: #0066cc;
   border-color: #0066cc;
   color: #ffffff;
-  box-shadow: 0 2px 10px rgba(0, 102, 204, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.3);
 }
 
 .deck-button-primary:hover:not(:disabled) {
@@ -112,12 +112,12 @@
 
 .deck-progress {
   flex: 1;
-  max-width: 280px;
-  height: 8px;
+  max-width: 240px;
+  height: 6px;
   background: #e2e8f0;
   border-radius: 9999px;
   overflow: hidden;
-  border: 1.5px solid #cbd5e1;
+  border: 1px solid #cbd5e1;
 }
 
 .deck-progress span {
@@ -129,8 +129,8 @@
 }
 
 .deck-counter {
-  font-size: 15px;
-  font-weight: 800;
+  font-size: 13px;
+  font-weight: 750;
   color: #0f172a;
   font-variant-numeric: tabular-nums;
 }
@@ -145,21 +145,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(8px, 1.5vw, 20px);
+  padding: 8px 16px;
   overflow: hidden;
   background: #cbd5e1;
 }
 
 .deck-slide {
-  width: min(99%, calc((100dvh - 96px) * 16 / 9));
+  width: min(99%, calc((100dvh - 86px) * 16 / 9));
   aspect-ratio: 16 / 9;
   background: #ffffff;
-  border: 2.5px solid #94a3b8;
-  border-radius: 20px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16), 0 4px 16px rgba(0, 0, 0, 0.06);
-  padding: clamp(16px, 2.2cqi, 32px);
-  overflow-y: auto;
-  overflow-x: hidden;
+  border: 2px solid #94a3b8;
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: clamp(14px, 2.0cqi, 26px);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   container-type: inline-size;
@@ -167,14 +166,14 @@
 }
 
 /* ==========================================================================
-   COMMON SLIDE HEADER & METADATA BAR (2X PROJECTOR SCALE)
+   COMMON SLIDE HEADER & METADATA BAR
    ========================================================================== */
 
 .gamma-slide {
   display: flex;
   flex-direction: column;
   height: 100%;
-  gap: clamp(10px, 1.4cqi, 18px);
+  gap: clamp(8px, 1.2cqi, 14px);
   min-height: 0;
 }
 
@@ -182,34 +181,35 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
 
 .gamma-pill-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .gamma-pill {
-  font-size: clamp(15px, 1.8cqi, 20px);
-  font-weight: 800;
-  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 750;
+  padding: 3px 10px;
   border-radius: 9999px;
   line-height: 1.3;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
 }
 
 .gamma-pill-eyebrow {
   background: #f1f5f9;
   color: #0f172a;
-  border: 2px solid #cbd5e1;
+  border: 1.5px solid #cbd5e1;
   font-family: var(--font-mono);
-  font-size: clamp(14px, 1.6cqi, 18px);
+  font-size: 11px;
   letter-spacing: 0.03em;
   text-transform: uppercase;
 }
@@ -217,25 +217,25 @@
 .gamma-pill-category {
   background: #e0f2fe;
   color: #0369a1;
-  border: 2px solid #7dd3fc;
+  border: 1.5px solid #7dd3fc;
 }
 
 .gamma-pill-pillar {
   background: #dcfce7;
   color: #15803d;
-  border: 2px solid #86efac;
+  border: 1.5px solid #86efac;
 }
 
 .gamma-disaster-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: clamp(15px, 1.8cqi, 22px);
-  font-weight: 850;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 800;
   background: #fee2e2;
   color: #b91c1c;
-  border: 2.5px solid #fca5a5;
-  padding: 6px 16px;
+  border: 1.5px solid #fca5a5;
+  padding: 3px 10px;
   border-radius: 9999px;
   letter-spacing: 0.02em;
 }
@@ -243,14 +243,14 @@
 .gamma-view-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: #ffffff;
-  border: 2px solid #cbd5e1;
+  border: 1.5px solid #cbd5e1;
   color: #0f172a;
-  font-size: clamp(15px, 1.8cqi, 20px);
-  font-weight: 800;
-  padding: 8px 18px;
-  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 750;
+  padding: 4px 12px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -266,50 +266,51 @@
   border-color: #0066cc;
 }
 
-/* Slide Header & Titles - 2X Scale for 50m Visibility */
+/* Slide Header & Titles */
 .gamma-slide-header {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
+  flex-shrink: 0;
 }
 
 .gamma-slide-title {
-  font-size: clamp(34px, 4.8cqi, 60px);
-  font-weight: 900;
-  letter-spacing: -0.025em;
-  line-height: 1.12;
+  font-size: clamp(22px, 2.8cqi, 34px);
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
   color: #0f172a;
 }
 
 .gamma-principle-banner {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   background: #f0f9ff;
-  border-left: 8px solid #0284c7;
-  border-top: 2px solid #bae6fd;
-  border-right: 2px solid #bae6fd;
-  border-bottom: 2px solid #bae6fd;
-  padding: 12px 22px;
-  border-radius: 0 14px 14px 0;
-  font-size: clamp(20px, 2.6cqi, 32px);
-  font-weight: 750;
+  border-left: 5px solid #0284c7;
+  border-top: 1px solid #bae6fd;
+  border-right: 1px solid #bae6fd;
+  border-bottom: 1px solid #bae6fd;
+  padding: 6px 14px;
+  border-radius: 0 10px 10px 0;
+  font-size: clamp(13px, 1.5cqi, 16px);
+  font-weight: 700;
   color: #0c4a6e;
 }
 
 .gamma-banner-tag {
-  font-size: clamp(14px, 1.6cqi, 18px);
-  font-weight: 900;
+  font-size: 11px;
+  font-weight: 850;
   background: #0284c7;
   color: #ffffff;
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 2px 7px;
+  border-radius: 5px;
   letter-spacing: 0.05em;
   white-space: nowrap;
 }
 
 .gamma-principle-icon {
-  font-size: 22px;
+  font-size: 16px;
   color: #0284c7;
   flex-shrink: 0;
 }
@@ -319,13 +320,14 @@
 }
 
 /* ==========================================================================
-   2-COLUMN ARCHITECTURAL DEFENSE LAYOUT (2X TYPOGRAPHY SCALE)
+   2-COLUMN ARCHITECTURAL DEFENSE LAYOUT (THEORY SLIDE)
+   Clean, balanced, non-AI layout with zero text collision.
    ========================================================================== */
 
 .defense-architecture-layout {
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 1.6cqi, 18px);
+  gap: clamp(8px, 1.2cqi, 12px);
   flex: 1;
   min-height: 0;
 }
@@ -334,28 +336,28 @@
 .defense-context-bar {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   background: #f8fafc;
-  border: 2.5px solid #cbd5e1;
-  border-radius: 14px;
-  padding: 12px 22px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 8px 14px;
+  flex-shrink: 0;
 }
 
 .defense-context-tag {
-  font-size: clamp(16px, 1.8cqi, 22px);
-  font-weight: 900;
+  font-size: 11px;
+  font-weight: 850;
   background: #0284c7;
   color: #ffffff;
-  padding: 6px 14px;
-  border-radius: 8px;
+  padding: 3px 8px;
+  border-radius: 6px;
   letter-spacing: 0.05em;
   white-space: nowrap;
 }
 
 .defense-context-text {
-  font-size: clamp(20px, 2.6cqi, 32px);
-  font-weight: 650;
+  font-size: clamp(13px, 1.5cqi, 16px);
+  font-weight: 600;
   color: #0f172a;
   line-height: 1.35;
 }
@@ -364,7 +366,7 @@
 .defense-columns-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: clamp(14px, 2.0cqi, 24px);
+  gap: clamp(10px, 1.5cqi, 18px);
   flex: 1;
   min-height: 0;
 }
@@ -372,9 +374,9 @@
 .defense-col {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  border-radius: 20px;
-  padding: clamp(18px, 2.4cqi, 28px);
+  gap: 8px;
+  border-radius: 14px;
+  padding: clamp(12px, 1.6cqi, 18px);
   position: relative;
   overflow: hidden;
 }
@@ -382,33 +384,32 @@
 /* Left Column: The Fragile Anti-Pattern */
 .defense-col-naive {
   background: #fff5f5;
-  border: 2.5px solid #fca5a5;
-  box-shadow: 0 8px 24px rgba(185, 28, 28, 0.08);
+  border: 2px solid #fca5a5;
 }
 
 /* Right Column: AWS Well-Architected Design */
 .defense-col-waf {
   background: #f0fdf4;
-  border: 2.5px solid #86efac;
-  box-shadow: 0 8px 24px rgba(22, 101, 52, 0.08);
+  border: 2px solid #86efac;
 }
 
 .defense-col-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
-  border-bottom: 2.5px solid rgba(0, 0, 0, 0.06);
-  padding-bottom: 12px;
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.06);
+  padding-bottom: 6px;
+  flex-shrink: 0;
 }
 
 .defense-col-badge {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-size: clamp(20px, 2.5cqi, 30px);
-  font-weight: 900;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 850;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -422,23 +423,23 @@
 }
 
 .defense-tag-danger {
-  font-size: clamp(15px, 1.8cqi, 20px);
-  font-weight: 850;
+  font-size: 11px;
+  font-weight: 750;
   background: #fee2e2;
   color: #b91c1c;
-  border: 2px solid #f87171;
-  padding: 4px 12px;
+  border: 1px solid #f87171;
+  padding: 2px 8px;
   border-radius: 9999px;
   letter-spacing: 0.02em;
 }
 
 .defense-tag-success {
-  font-size: clamp(15px, 1.8cqi, 20px);
-  font-weight: 850;
+  font-size: 11px;
+  font-weight: 750;
   background: #dcfce7;
   color: #15803d;
-  border: 2px solid #4ade80;
-  padding: 4px 12px;
+  border: 1px solid #4ade80;
+  padding: 2px 8px;
   border-radius: 9999px;
   letter-spacing: 0.02em;
 }
@@ -446,43 +447,44 @@
 .defense-col-body {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 8px;
   flex: 1;
   min-height: 0;
 }
 
 .defense-main-text {
-  font-size: clamp(22px, 2.8cqi, 36px);
-  font-weight: 650;
+  font-size: clamp(13px, 1.5cqi, 16px);
+  font-weight: 600;
   line-height: 1.45;
   color: #0f172a;
 }
 
 /* Callout Blocks Inside Columns */
 .defense-callout {
-  border-radius: 14px;
-  padding: 14px 20px;
+  border-radius: 10px;
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 3px;
   margin-top: auto;
+  flex-shrink: 0;
 }
 
 .callout-naive {
   background: #ffffff;
-  border: 2px solid #fca5a5;
-  border-left: 8px solid #dc2626;
+  border: 1.5px solid #fca5a5;
+  border-left: 5px solid #dc2626;
 }
 
 .callout-waf {
   background: #ffffff;
-  border: 2px solid #86efac;
-  border-left: 8px solid #16a34a;
+  border: 1.5px solid #86efac;
+  border-left: 5px solid #16a34a;
 }
 
 .defense-callout-title {
-  font-size: clamp(18px, 2.2cqi, 26px);
-  font-weight: 900;
+  font-size: 12px;
+  font-weight: 850;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -496,30 +498,32 @@
 }
 
 .defense-callout-desc {
-  font-size: clamp(18px, 2.2cqi, 26px);
-  font-weight: 600;
-  line-height: 1.4;
-  color: #1e293b;
+  font-size: 12px;
+  font-weight: 550;
+  line-height: 1.35;
+  color: #334155;
 }
 
 /* ==========================================================================
-   HIGH-IMPACT ARCHITECTURAL DELTA STRIP (2X SCALE)
+   HIGH-IMPACT ARCHITECTURAL DELTA STRIP (THEORY BOTTOM)
+   Clean, nowrap, bold comparison metrics with zero overlap.
    ========================================================================== */
 
 .gamma-metrics-strip {
   display: flex;
   align-items: center;
-  gap: clamp(14px, 2.0cqi, 24px);
+  gap: 12px;
   background: #ffffff;
-  border: 2.5px solid #cbd5e1;
-  border-radius: 16px;
-  padding: 12px 22px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 8px 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  flex-shrink: 0;
 }
 
 .gamma-metrics-header-label {
-  font-size: clamp(17px, 2.1cqi, 26px);
-  font-weight: 900;
+  font-size: 13px;
+  font-weight: 850;
   color: #0f172a;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -529,39 +533,43 @@
 .gamma-metrics-cards {
   display: flex;
   align-items: stretch;
-  gap: 16px;
+  gap: 12px;
   flex: 1;
-  flex-wrap: wrap;
+  min-width: 0;
 }
 
 .gamma-metric-box {
   flex: 1;
-  min-width: 160px;
+  min-width: 0;
   background: #f8fafc;
-  border: 2px solid #cbd5e1;
-  border-radius: 12px;
-  padding: 10px 18px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 12px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .gamma-metric-box-title {
-  font-size: clamp(15px, 1.8cqi, 22px);
-  font-weight: 850;
+  font-size: 11px;
+  font-weight: 800;
   text-transform: uppercase;
   color: #475569;
   letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 
 .gamma-metric-box-values {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   font-family: var(--font-mono);
-  font-weight: 950;
-  font-size: clamp(28px, 3.8cqi, 48px);
+  font-weight: 850;
+  font-size: 17px;
   line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .gamma-val-naive {
@@ -572,64 +580,69 @@
 
 .gamma-val-arrow {
   color: #64748b;
-  font-size: 20px;
+  font-size: 14px;
 }
 
 .gamma-val-waf {
   color: #15803d;
-  font-weight: 950;
+  font-weight: 900;
 }
 
 .gamma-val-benefit {
-  font-size: clamp(16px, 2.0cqi, 24px);
-  font-weight: 800;
+  font-size: 11px;
+  font-weight: 750;
   color: #0369a1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .gamma-table-wrap {
   flex: 1;
   overflow: auto;
-  border-radius: 14px;
-  border: 2.5px solid #cbd5e1;
+  border-radius: 12px;
+  border: 1.5px solid #cbd5e1;
   background: #ffffff;
 }
 
 /* ==========================================================================
    COMPARISON SLIDE (LIVE SIMULATION STAGE)
+   Diagram takes center stage (>80% of slide height).
    ========================================================================== */
 
 .gamma-comparison-slide {
-  gap: 8px;
+  gap: 6px;
 }
 
 .gamma-comparison-head {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 3px;
+  flex-shrink: 0;
 }
 
 .gamma-comparison-meta {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .gamma-comparison-title {
-  font-size: clamp(32px, 4.4cqi, 54px);
-  font-weight: 900;
+  font-size: clamp(20px, 2.4cqi, 28px);
+  font-weight: 850;
   letter-spacing: -0.02em;
   color: #0f172a;
 }
 
 .gamma-diagram-stage {
   flex: 1 1 0;
-  min-height: 280px;
+  min-height: 0;
   position: relative;
   overflow: hidden;
-  border-radius: 18px;
+  border-radius: 14px;
   background: #f8fafc;
-  border: 2.5px solid #cbd5e1;
+  border: 2px solid #cbd5e1;
   display: flex;
   flex-direction: column;
 }
@@ -637,9 +650,9 @@
 .gamma-sim-labels {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 36px;
-  padding: 6px 20px;
-  border-bottom: 2px solid #cbd5e1;
+  gap: 24px;
+  padding: 6px 16px;
+  border-bottom: 1.5px solid #cbd5e1;
   background: #ffffff;
   flex-shrink: 0;
 }
@@ -647,25 +660,25 @@
 .gamma-sim-lane-label {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
+  gap: 6px;
+  font-size: 12px;
   font-weight: 850;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 4px 12px;
-  border-radius: 8px;
+  padding: 3px 10px;
+  border-radius: 6px;
 }
 
 .gamma-lane-naive {
   color: #991b1b;
   background: #fee2e2;
-  border: 1.5px solid #f87171;
+  border: 1px solid #f87171;
 }
 
 .gamma-lane-waf {
   color: #166534;
   background: #dcfce7;
-  border: 1.5px solid #4ade80;
+  border: 1px solid #4ade80;
 }
 
 .gamma-diagram-viewport {
@@ -675,45 +688,40 @@
   width: 100%;
 }
 
-/* Nodes Inside the Simulation Diagram - Big, Bold, and Readable */
+/* Nodes Inside the Simulation Diagram - Clean, Bold, Readable */
 .gamma-diagram-stage .apple-node {
-  min-width: 380px;
-  max-width: 480px;
-  width: 92%;
-  padding: 12px 20px;
-  border-radius: 16px;
-  border: 2.5px solid #cbd5e1 !important;
+  min-width: 320px;
+  max-width: 440px;
+  width: 90%;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 2px solid #cbd5e1 !important;
   background: #ffffff !important;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 
 .gamma-diagram-stage .apple-node .node-icon-wrapper {
-  width: 44px;
-  height: 44px;
+  width: 34px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.gamma-diagram-stage .apple-node .node-icon-wrapper svg {
-  width: 32px !important;
-  height: 32px !important;
-}
-
 .gamma-diagram-stage .apple-node .node-info-text {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
   min-width: 0;
   flex: 1;
 }
 
 .gamma-diagram-stage .apple-node .node-text-name {
-  font-size: 20px !important;
+  font-size: 15px !important;
   font-weight: 850 !important;
   color: #0f172a !important;
   line-height: 1.25 !important;
@@ -723,7 +731,7 @@
 }
 
 .gamma-diagram-stage .apple-node .node-text-svc {
-  font-size: 15px !important;
+  font-size: 12px !important;
   font-weight: 650 !important;
   color: #475569 !important;
   line-height: 1.2 !important;
@@ -733,61 +741,60 @@
 }
 
 .gamma-diagram-stage .apple-node .node-az-pill {
-  font-size: 13px !important;
+  font-size: 11px !important;
   font-weight: 800 !important;
-  padding: 3px 10px !important;
-  border-radius: 8px !important;
+  padding: 2px 7px !important;
+  border-radius: 6px !important;
   background: #f1f5f9 !important;
   color: #0f172a !important;
-  border: 1.5px solid #cbd5e1 !important;
+  border: 1px solid #cbd5e1 !important;
   flex-shrink: 0;
 }
 
 .gamma-diagram-stage .apple-node .node-spof-badge {
-  font-size: 13px !important;
+  font-size: 11px !important;
   font-weight: 850 !important;
-  padding: 4px 10px !important;
-  border-radius: 8px !important;
+  padding: 2px 7px !important;
+  border-radius: 6px !important;
   background: #fee2e2 !important;
   color: #b91c1c !important;
-  border: 1.5px solid #f87171 !important;
+  border: 1px solid #f87171 !important;
   flex-shrink: 0;
 }
 
 .gamma-diagram-stage .apple-node .node-ha-badge {
-  font-size: 13px !important;
+  font-size: 11px !important;
   font-weight: 850 !important;
-  padding: 4px 10px !important;
-  border-radius: 8px !important;
+  padding: 2px 7px !important;
+  border-radius: 6px !important;
   background: #dcfce7 !important;
   color: #15803d !important;
-  border: 1.5px solid #86efac !important;
+  border: 1px solid #86efac !important;
   flex-shrink: 0;
 }
 
-/* Compact Comparison Footer to Maximize Diagram Height */
+/* Compact Comparison Footer - Slim 32px height to leave max stage room */
 .gamma-comparison-footer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   flex-shrink: 0;
-  margin-top: 2px;
 }
 
 .gamma-comparison-metric-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
   background: #ffffff;
   border: 1.5px solid #cbd5e1;
-  border-radius: 10px;
-  padding: 6px 14px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  padding: 5px 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
 }
 
 .gamma-comp-metric-label {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
   color: #475569;
@@ -798,10 +805,11 @@
 .gamma-comp-metric-vals {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 15px;
+  gap: 5px;
+  font-size: 13px;
   font-weight: 850;
   font-family: var(--font-mono);
+  white-space: nowrap;
 }
 
 .gamma-comp-naive {
@@ -812,7 +820,7 @@
 
 .gamma-comp-arrow {
   color: #64748b;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .gamma-comp-waf {
@@ -821,59 +829,51 @@
 }
 
 .gamma-comp-benefit {
-  font-size: 12px;
+  font-size: 11px;
   color: #0369a1;
   font-weight: 750;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ==========================================================================
-   TITLE HERO SLIDE (2X SCALE)
+   TITLE HERO SLIDE
    ========================================================================== */
 
 .gamma-title-slide {
   justify-content: center;
-  gap: clamp(16px, 2.4cqi, 30px);
-  padding: clamp(16px, 3cqi, 36px);
+  gap: clamp(12px, 1.8cqi, 20px);
+  padding: clamp(14px, 2.2cqi, 28px);
 }
 
 .gamma-title-badge-row {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .gamma-brand-badge {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-size: clamp(16px, 2.0cqi, 24px);
-  font-weight: 850;
-  padding: 8px 20px;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 5px 14px;
   border-radius: 9999px;
   background: #fffbeb;
-  border: 2.5px solid #fcd34d;
+  border: 1.5px solid #fcd34d;
   color: #b45309;
 }
 
-.gamma-mode-pill {
-  font-size: clamp(15px, 1.8cqi, 22px);
-  font-weight: 800;
-  color: #1e293b;
-  padding: 8px 18px;
-  border-radius: 9999px;
-  background: #f1f5f9;
-  border: 2px solid #cbd5e1;
-}
-
 .gamma-hero-title {
-  font-size: clamp(44px, 6.2cqi, 80px);
+  font-size: clamp(30px, 4.2cqi, 50px);
   font-weight: 950;
   letter-spacing: -0.035em;
-  line-height: 1.05;
+  line-height: 1.1;
   color: #0f172a;
-  max-width: 24ch;
+  max-width: 26ch;
 }
 
 .gamma-gradient-text {
@@ -883,42 +883,42 @@
 }
 
 .gamma-hero-subtitle {
-  font-size: clamp(22px, 2.8cqi, 34px);
-  line-height: 1.42;
+  font-size: clamp(14px, 1.8cqi, 18px);
+  line-height: 1.45;
   font-weight: 550;
-  color: #1e293b;
-  max-width: 60ch;
+  color: #334155;
+  max-width: 62ch;
 }
 
 .gamma-presenters-card {
   display: flex;
   align-items: center;
-  gap: 28px;
-  padding: 14px 26px;
+  gap: 20px;
+  padding: 10px 18px;
   background: #ffffff;
-  border: 2.5px solid #cbd5e1;
-  border-radius: 18px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 14px;
   align-self: flex-start;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .gamma-presenter {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 
 .gamma-presenter-avatar {
-  width: 48px;
-  height: 48px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   background: #0066cc;
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  font-weight: 900;
+  font-size: 15px;
+  font-weight: 850;
 }
 
 .avatar-aman {
@@ -926,43 +926,43 @@
 }
 
 .gamma-presenter-name {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 850;
   color: #0f172a;
 }
 
 .gamma-presenter-role {
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 650;
   color: #475569;
 }
 
 .gamma-presenters-divider {
-  width: 2px;
-  height: 38px;
+  width: 1.5px;
+  height: 28px;
   background: #cbd5e1;
 }
 
 .gamma-stat-cards-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
+  gap: 12px;
 }
 
 .gamma-stat-card {
   background: #ffffff;
-  border: 2.5px solid #cbd5e1;
-  border-radius: 18px;
-  padding: 18px 24px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  gap: 2px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .gamma-stat-val {
-  font-size: clamp(38px, 5.2cqi, 66px);
-  font-weight: 950;
+  font-size: clamp(24px, 3.4cqi, 38px);
+  font-weight: 900;
   color: #0f172a;
   line-height: 1;
   font-family: var(--font-mono);
@@ -977,38 +977,38 @@
 }
 
 .gamma-stat-label {
-  font-size: clamp(17px, 2.0cqi, 24px);
-  font-weight: 850;
+  font-size: 13px;
+  font-weight: 800;
   color: #0f172a;
 }
 
 .gamma-stat-sub {
-  font-size: clamp(15px, 1.7cqi, 20px);
-  font-weight: 650;
+  font-size: 11px;
+  font-weight: 600;
   color: #475569;
 }
 
 /* ==========================================================================
-   AGENDA ROADMAP & FLIGHT PLAN (2X SCALE)
+   AGENDA ROADMAP & FLIGHT PLAN
    ========================================================================== */
 
 .roadmap-timeline-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(14px, 2cqi, 24px);
+  gap: 14px;
   flex: 1;
   min-height: 0;
 }
 
 .roadmap-phase-card {
   background: #ffffff;
-  border: 2.5px solid #cbd5e1;
-  border-radius: 20px;
-  padding: clamp(18px, 2.4cqi, 28px);
+  border: 1.5px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   position: relative;
   overflow: hidden;
 }
@@ -1019,7 +1019,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 8px;
+  height: 5px;
 }
 
 .phase-1::before {
@@ -1041,47 +1041,46 @@
 }
 
 .roadmap-phase-pill {
-  font-size: clamp(16px, 1.8cqi, 22px);
-  font-weight: 900;
-  padding: 5px 12px;
-  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 850;
+  padding: 3px 8px;
+  border-radius: 6px;
   letter-spacing: 0.05em;
 }
 
 .phase-1 .roadmap-phase-pill {
   background: #e0f2fe;
   color: #0369a1;
-  border: 2px solid #7dd3fc;
+  border: 1px solid #7dd3fc;
 }
 
 .phase-2 .roadmap-phase-pill {
   background: #fef3c7;
   color: #b45309;
-  border: 2px solid #fcd34d;
+  border: 1px solid #fcd34d;
 }
 
 .phase-3 .roadmap-phase-pill {
   background: #dcfce7;
   color: #166534;
-  border: 2px solid #86efac;
+  border: 1px solid #86efac;
 }
 
 .roadmap-phase-time {
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 12px;
+  font-weight: 750;
   color: #475569;
 }
 
 .roadmap-phase-title {
-  font-size: clamp(24px, 3.0cqi, 38px);
-  font-weight: 900;
+  font-size: 18px;
+  font-weight: 850;
   color: #0f172a;
-  margin-top: 4px;
 }
 
 .roadmap-phase-desc {
-  font-size: clamp(18px, 2.3cqi, 28px);
-  color: #1e293b;
+  font-size: 13px;
+  color: #334155;
   line-height: 1.45;
   font-weight: 550;
 }
@@ -1090,18 +1089,22 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  margin-top: auto;
-  padding-top: 14px;
-  border-top: 2.5px solid #f1f5f9;
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 1.5px solid #f1f5f9;
 }
 
 .roadmap-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: clamp(18px, 2.2cqi, 26px);
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 650;
   color: #0f172a;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 12px;
 }
 
 .roadmap-check {
@@ -1110,108 +1113,129 @@
 }
 
 /* ==========================================================================
-   THE SIX PILLARS MATRIX (2X TYPOGRAPHY SCALE AS REQUESTED IN IMAGE)
-   Text inside boxes is doubled and crystal clear.
+   THE SIX PILLARS MATRIX
+   Balanced, clean 3x2 grid with zero clipping.
    ========================================================================== */
 
 .pillars-matrix-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(14px, 2cqi, 24px);
+  gap: 14px;
   flex: 1;
   min-height: 0;
 }
 
 .pillar-matrix-card {
   background: #ffffff;
-  border: 2.5px solid #cbd5e1;
-  border-radius: 20px;
-  padding: clamp(18px, 2.4cqi, 28px);
+  border: 1.5px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
 .pillar-matrix-header {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .pillar-matrix-icon-wrap {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
   background: #f1f5f9;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 2px solid #cbd5e1;
+  border: 1px solid #cbd5e1;
 }
 
 .pillar-matrix-title {
-  font-size: clamp(22px, 2.8cqi, 36px);
-  font-weight: 900;
+  font-size: 16px;
+  font-weight: 850;
   color: #0f172a;
+  line-height: 1.2;
+}
+
+.pillar-matrix-focus {
+  display: block;
+  font-size: 11px;
+  font-weight: 750;
+  color: #0284c7;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
 }
 
 .pillar-matrix-desc {
-  font-size: clamp(20px, 2.5cqi, 32px);
-  font-weight: 600;
-  color: #1e293b;
-  line-height: 1.42;
+  font-size: 13px;
+  font-weight: 550;
+  color: #334155;
+  line-height: 1.45;
 }
 
 /* ==========================================================================
-   THEORY SPECIFICATION RAILS (2X SCALE)
+   THEORY SPECIFICATION RAILS (16:9 SIDE-BY-SIDE GRID)
+   Principles on Left, Reference Table on Right: ZERO CLIPPING!
    ========================================================================== */
 
 .theory-spec-layout {
   display: flex;
   flex-direction: column;
-  gap: clamp(12px, 1.6cqi, 18px);
+  gap: 10px;
   flex: 1;
   min-height: 0;
+}
+
+.theory-spec-layout.has-table-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: stretch;
 }
 
 .theory-principles-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  justify-content: center;
 }
 
 .theory-principle-row {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  gap: 12px;
   background: #ffffff;
-  border: 2.5px solid #cbd5e1;
-  border-radius: 16px;
-  padding: 14px 22px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
 }
 
 .row-color-0 {
-  border-left: 8px solid #0284c7;
+  border-left: 5px solid #0284c7;
 }
 
 .row-color-1 {
-  border-left: 8px solid #d97706;
+  border-left: 5px solid #d97706;
 }
 
 .row-color-2 {
-  border-left: 8px solid #15803d;
+  border-left: 5px solid #15803d;
 }
 
 .theory-rule-badge {
-  font-size: clamp(15px, 1.8cqi, 20px);
-  font-weight: 900;
+  font-size: 11px;
+  font-weight: 850;
   color: #ffffff;
   background: #0f172a;
-  padding: 5px 12px;
-  border-radius: 8px;
+  padding: 3px 8px;
+  border-radius: 5px;
   letter-spacing: 0.05em;
   white-space: nowrap;
 }
@@ -1219,21 +1243,21 @@
 .theory-rule-content {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   flex: 1;
 }
 
 .theory-rule-title {
-  font-size: clamp(22px, 2.8cqi, 34px);
-  font-weight: 900;
+  font-size: 15px;
+  font-weight: 850;
   color: #0f172a;
 }
 
 .theory-rule-text {
-  font-size: clamp(20px, 2.5cqi, 30px);
-  font-weight: 600;
-  color: #1e293b;
-  line-height: 1.42;
+  font-size: 13px;
+  font-weight: 550;
+  color: #334155;
+  line-height: 1.35;
 }
 
 .theory-spec-table-container {
@@ -1241,7 +1265,7 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .theory-table-header {
@@ -1250,7 +1274,7 @@
 }
 
 .theory-table-tag {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 850;
   letter-spacing: 0.05em;
   color: #475569;
@@ -1260,31 +1284,32 @@
 .theory-table-inner {
   flex: 1;
   overflow: auto;
-  border: 2.5px solid #cbd5e1;
-  border-radius: 14px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
 }
 
 /* ==========================================================================
-   CLOSING SCORECARD SLIDE (2X SCALE)
+   CLOSING SCORECARD SLIDE
    ========================================================================== */
 
 .gamma-closing-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
+  gap: 14px;
   flex: 1;
   min-height: 0;
 }
 
 .gamma-closing-card {
   background: #ffffff;
-  border: 2.5px solid #cbd5e1;
-  border-radius: 18px;
-  padding: 20px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 20px 18px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 .card-availability {
@@ -1308,9 +1333,9 @@
 }
 
 .gamma-closing-icon-wrap {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1332,18 +1357,19 @@
 }
 
 .gamma-closing-title {
-  font-size: clamp(20px, 2.5cqi, 30px);
-  font-weight: 900;
+  font-size: 15px;
+  font-weight: 850;
   color: #0f172a;
 }
 
 .gamma-closing-delta {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: clamp(28px, 3.8cqi, 48px);
-  font-weight: 950;
+  gap: 6px;
+  font-size: 22px;
+  font-weight: 900;
   font-family: var(--font-mono);
+  white-space: nowrap;
 }
 
 .gamma-closing-old {
@@ -1354,11 +1380,11 @@
 
 .gamma-closing-arrow {
   color: #64748b;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .gamma-closing-new {
-  font-weight: 950;
+  font-weight: 900;
 }
 
 .new-success {
@@ -1374,37 +1400,38 @@
 }
 
 .gamma-closing-desc {
-  font-size: clamp(18px, 2.2cqi, 26px);
-  color: #1e293b;
+  font-size: 13px;
+  color: #334155;
   line-height: 1.4;
-  font-weight: 600;
+  font-weight: 550;
 }
 
 .gamma-closing-takeaway {
   background: #f8fafc;
-  border: 2.5px solid #cbd5e1;
-  border-left: 10px solid #0066cc;
-  border-radius: 16px;
-  padding: 16px 26px;
-  font-size: clamp(20px, 2.6cqi, 32px);
-  font-weight: 650;
+  border: 1.5px solid #cbd5e1;
+  border-left: 6px solid #0066cc;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
   color: #0f172a;
+  flex-shrink: 0;
 }
 
 .gamma-takeaway-bold {
-  font-weight: 900;
+  font-weight: 850;
   color: #0066cc;
 }
 
 /* ==========================================================================
-   TABLES (2X HIGH-CONTRAST FOR PROJECTORS)
+   TABLES (COMPACT, HIGH-CONTRAST, ZERO OVERFLOW)
    ========================================================================== */
 
 .deck-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: clamp(18px, 2.2cqi, 26px);
-  line-height: 1.4;
+  font-size: 13px;
+  line-height: 1.35;
   color: #0f172a;
   background: #ffffff;
 }
@@ -1413,29 +1440,29 @@
 .deck-table td {
   text-align: left;
   vertical-align: top;
-  padding: 12px 18px;
-  border-bottom: 2px solid #e2e8f0;
+  padding: 6px 10px;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .deck-table thead th {
-  font-weight: 900;
+  font-weight: 850;
   color: #0f172a;
   background: #f1f5f9;
-  border-bottom: 2.5px solid #cbd5e1;
+  border-bottom: 1.5px solid #cbd5e1;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-size: clamp(16px, 2.0cqi, 24px);
+  font-size: 11px;
 }
 
 .deck-table tbody th {
-  font-weight: 850;
+  font-weight: 800;
   color: #0f172a;
   white-space: nowrap;
 }
 
 .deck-table td {
-  color: #1e293b;
-  font-weight: 600;
+  color: #334155;
+  font-weight: 550;
 }
 
 .deck-table tr:hover td {
@@ -1461,18 +1488,18 @@
 .gamma-diagram-stage .apple-node,
 .gamma-diagram-viewport .apple-node,
 .deck-diagram .apple-node {
-  min-width: 380px;
-  max-width: 480px;
-  width: 92%;
-  border: 2.5px solid #cbd5e1 !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+  min-width: 320px;
+  max-width: 440px;
+  width: 90%;
+  border: 2px solid #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
   background: #ffffff !important;
 }
 
 .gamma-diagram-stage .node-text-name,
 .gamma-diagram-viewport .node-text-name,
 .deck-diagram .node-text-name {
-  font-size: 20px !important;
+  font-size: 15px !important;
   font-weight: 850 !important;
   color: #0f172a !important;
 }
@@ -1480,7 +1507,7 @@
 .gamma-diagram-stage .node-text-svc,
 .gamma-diagram-viewport .node-text-svc,
 .deck-diagram .node-text-svc {
-  font-size: 15px !important;
+  font-size: 12px !important;
   font-weight: 650 !important;
   color: #475569 !important;
 }
@@ -1492,10 +1519,10 @@
 @media (max-width: 768px) {
   .deck-topbar,
   .deck-footer {
-    padding: 8px 14px;
+    padding: 6px 12px;
   }
   .deck-stage-wrap {
-    padding: 6px;
+    padding: 4px;
     align-items: flex-start;
   }
   .deck-slide {
@@ -1508,7 +1535,8 @@
   .roadmap-timeline-grid,
   .pillars-matrix-grid,
   .gamma-closing-grid,
-  .gamma-stat-cards-grid {
+  .gamma-stat-cards-grid,
+  .theory-spec-layout.has-table-grid {
     grid-template-columns: 1fr;
   }
   .gamma-presenters-card {

@@ -77,9 +77,9 @@ export const theorySlides: DeckSlide[] = [
     tables: [spofTable],
     title: 'Single Point of Failure: The Killer of Apps',
     points: [
-      'Chains are where availability dies: five 99% services in a line yield only 95% uptime',
-      '95% availability means your company suffers nearly 18 days of downtime per year',
-      'Eliminate single points of failure by decoupling dependencies and adding redundancy'
+      'The Serial Chain Hazard: Five 99% services in a single line yield only 95% total combined uptime',
+      'The Compounding Downtime: 95% availability means your company suffers nearly 18 days of unplanned outages per year',
+      'Decoupling Remedy: Eliminate single points of failure by decoupling dependencies and introducing automated redundancy'
     ],
     domainIndex: 0,
     lines: [
@@ -96,9 +96,9 @@ export const theorySlides: DeckSlide[] = [
     tables: [ninesTable, redundancyTable],
     title: 'The Reality of Availability: What 99.9% Actually Means',
     points: [
-      'Three Nines (99.9%) allows almost 9 hours of unplanned customer downtime per year',
-      'Four Nines (99.99%) cuts annual downtime to under 53 minutes',
-      'Multi-AZ redundancy changes the game: two 99.9% zones reach 99.9999% availability'
+      'Three Nines (99.9%): Allows almost 9 hours of unplanned customer-facing downtime every year',
+      'Four Nines (99.99%): Drastically cuts annual downtime to under 53 minutes across all services',
+      'Multi-AZ Multiplier: Two independent 99.9% zones achieve 99.9999% combined availability'
     ],
     domainIndex: 0,
     lines: [
