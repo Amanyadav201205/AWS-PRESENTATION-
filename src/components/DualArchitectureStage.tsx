@@ -349,11 +349,11 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
       const isFailingPath = isWellArch ? false : isChaos || isHighLoad || activeAttack !== 'none';
       const stroke = isWellArch ? '#1e7e34' : isFailingPath ? '#c9302c' : '#9a5b00';
       return (
-        <svg key={key} className="diagram-path-connector" width="100%" height="46" viewBox="0 0 200 46" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-          <line x1="100" y1="0" x2="100" y2="46" stroke={stroke} strokeWidth={isFailingPath ? 3 : 2} strokeDasharray={isFailingPath ? '5 4' : undefined} opacity={0.85} />
+        <svg key={key} className="diagram-path-connector" width="100%" height="16" viewBox="0 0 200 16" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+          <line x1="100" y1="0" x2="100" y2="16" stroke={stroke} strokeWidth={isFailingPath ? 3.5 : 2.5} strokeDasharray={isFailingPath ? '4 3' : undefined} opacity={0.9} />
           {trafficActive && !(isChaos && !isWellArch) && (
-            <circle cx="100" cy="6" r="4" fill={stroke}>
-              <animate attributeName="cy" from="2" to="44" dur={animDuration(isWellArch ? 0.9 : 1.2)} repeatCount="indefinite" />
+            <circle cx="100" cy="8" r="3.5" fill={stroke}>
+              <animate attributeName="cy" from="2" to="14" dur={animDuration(isWellArch ? 0.7 : 1.0)} repeatCount="indefinite" />
             </circle>
           )}
         </svg>

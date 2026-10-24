@@ -624,78 +624,183 @@
 
 .gamma-diagram-stage {
   flex: 1 1 0;
-  min-height: 240px;
+  min-height: 280px;
   position: relative;
   overflow: hidden;
   border-radius: 18px;
   background: #f8fafc;
   border: 2.5px solid #cbd5e1;
+  display: flex;
+  flex-direction: column;
 }
 
 .gamma-sim-labels {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 4vw;
-  padding: 10px 20px;
-  border-bottom: 2.5px solid #cbd5e1;
+  gap: 36px;
+  padding: 6px 20px;
+  border-bottom: 2px solid #cbd5e1;
   background: #ffffff;
+  flex-shrink: 0;
 }
 
 .gamma-sim-lane-label {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: clamp(18px, 2.2cqi, 28px);
-  font-weight: 900;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 850;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 8px 16px;
-  border-radius: 10px;
+  padding: 4px 12px;
+  border-radius: 8px;
 }
 
 .gamma-lane-naive {
   color: #991b1b;
   background: #fee2e2;
-  border: 2px solid #f87171;
+  border: 1.5px solid #f87171;
 }
 
 .gamma-lane-waf {
   color: #166534;
   background: #dcfce7;
-  border: 2px solid #4ade80;
+  border: 1.5px solid #4ade80;
 }
 
+.gamma-diagram-viewport {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  width: 100%;
+}
+
+/* Nodes Inside the Simulation Diagram - Big, Bold, and Readable */
+.gamma-diagram-stage .apple-node {
+  min-width: 380px;
+  max-width: 480px;
+  width: 92%;
+  padding: 12px 20px;
+  border-radius: 16px;
+  border: 2.5px solid #cbd5e1 !important;
+  background: #ffffff !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08) !important;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.gamma-diagram-stage .apple-node .node-icon-wrapper {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.gamma-diagram-stage .apple-node .node-icon-wrapper svg {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+.gamma-diagram-stage .apple-node .node-info-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.gamma-diagram-stage .apple-node .node-text-name {
+  font-size: 20px !important;
+  font-weight: 850 !important;
+  color: #0f172a !important;
+  line-height: 1.25 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gamma-diagram-stage .apple-node .node-text-svc {
+  font-size: 15px !important;
+  font-weight: 650 !important;
+  color: #475569 !important;
+  line-height: 1.2 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gamma-diagram-stage .apple-node .node-az-pill {
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  padding: 3px 10px !important;
+  border-radius: 8px !important;
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border: 1.5px solid #cbd5e1 !important;
+  flex-shrink: 0;
+}
+
+.gamma-diagram-stage .apple-node .node-spof-badge {
+  font-size: 13px !important;
+  font-weight: 850 !important;
+  padding: 4px 10px !important;
+  border-radius: 8px !important;
+  background: #fee2e2 !important;
+  color: #b91c1c !important;
+  border: 1.5px solid #f87171 !important;
+  flex-shrink: 0;
+}
+
+.gamma-diagram-stage .apple-node .node-ha-badge {
+  font-size: 13px !important;
+  font-weight: 850 !important;
+  padding: 4px 10px !important;
+  border-radius: 8px !important;
+  background: #dcfce7 !important;
+  color: #15803d !important;
+  border: 1.5px solid #86efac !important;
+  flex-shrink: 0;
+}
+
+/* Compact Comparison Footer to Maximize Diagram Height */
 .gamma-comparison-footer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 .gamma-comparison-metric-card {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   background: #ffffff;
-  border: 2.5px solid #cbd5e1;
-  border-radius: 14px;
-  padding: 10px 18px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 6px 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
 }
 
 .gamma-comp-metric-label {
-  font-size: clamp(16px, 1.8cqi, 22px);
-  font-weight: 850;
+  font-size: 12px;
+  font-weight: 800;
   text-transform: uppercase;
   color: #475569;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 
 .gamma-comp-metric-vals {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: clamp(26px, 3.4cqi, 44px);
-  font-weight: 900;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 850;
   font-family: var(--font-mono);
 }
 
@@ -707,18 +812,19 @@
 
 .gamma-comp-arrow {
   color: #64748b;
-  font-size: 16px;
+  font-size: 12px;
 }
 
 .gamma-comp-waf {
   color: #15803d;
-  font-weight: 950;
+  font-weight: 900;
 }
 
 .gamma-comp-benefit {
-  font-size: clamp(16px, 2.0cqi, 24px);
+  font-size: 12px;
   color: #0369a1;
-  font-weight: 800;
+  font-weight: 750;
+  white-space: nowrap;
 }
 
 /* ==========================================================================
@@ -1352,21 +1458,30 @@
   transform-origin: top left;
 }
 
+.gamma-diagram-stage .apple-node,
+.gamma-diagram-viewport .apple-node,
 .deck-diagram .apple-node {
-  min-width: 320px;
+  min-width: 380px;
+  max-width: 480px;
+  width: 92%;
   border: 2.5px solid #cbd5e1 !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+  background: #ffffff !important;
 }
 
+.gamma-diagram-stage .node-text-name,
+.gamma-diagram-viewport .node-text-name,
 .deck-diagram .node-text-name {
-  font-size: 22px !important;
-  font-weight: 900 !important;
+  font-size: 20px !important;
+  font-weight: 850 !important;
   color: #0f172a !important;
 }
 
+.gamma-diagram-stage .node-text-svc,
+.gamma-diagram-viewport .node-text-svc,
 .deck-diagram .node-text-svc {
-  font-size: 16px !important;
-  font-weight: 700 !important;
+  font-size: 15px !important;
+  font-weight: 650 !important;
   color: #475569 !important;
 }
 

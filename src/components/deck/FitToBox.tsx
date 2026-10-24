@@ -2,7 +2,7 @@ import { ReactNode, useLayoutEffect, useRef, useState } from 'react';
 
 /** Layout width the simulation is designed at. It is scaled up or down from this width to fill the slide. */
 const DESIGN_WIDTH = 1100;
-const MAX_SCALE = 1.6;
+const MAX_SCALE = 2.2;
 
 interface FitToBoxProps {
   children: ReactNode;
@@ -12,7 +12,7 @@ interface FitToBoxProps {
 export const FitToBox: React.FC<FitToBoxProps> = ({ children }) => {
   const outerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
-  const [fit, setFit] = useState({ scale: 1, left: 0 });
+  const [fit, setFit] = useState({ scale: 1, left: 0, top: 0 });
 
   useLayoutEffect(() => {
     const outer = outerRef.current;
@@ -23,7 +23,9 @@ export const FitToBox: React.FC<FitToBoxProps> = ({ children }) => {
       const naturalHeight = inner.offsetHeight;
       if (naturalHeight === 0 || outer.clientHeight === 0) return;
       const scale = Math.min(outer.clientWidth / DESIGN_WIDTH, outer.clientHeight / naturalHeight, MAX_SCALE);
-      setFit({ scale, left: Math.max(0, (outer.clientWidth - DESIGN_WIDTH * scale) / 2) });
+      const left = Math.max(0, (outer.clientWidth - DESIGN_WIDTH * scale) / 2);
+      const top = Math.max(0, (outer.clientHeight - naturalHeight * scale) / 2);
+      setFit({ scale, left, top });
     };
 
     measure();
@@ -38,7 +40,7 @@ export const FitToBox: React.FC<FitToBoxProps> = ({ children }) => {
       <div
         className="fit-box-inner"
         ref={innerRef}
-        style={{ width: DESIGN_WIDTH, left: fit.left, transform: `scale(${fit.scale})` }}
+        style={{ width: DESIGN_WIDTH, left: fit.left, top: fit.top, transform: `scale(${fit.scale})` }}
       >
         {children}
       </div>
