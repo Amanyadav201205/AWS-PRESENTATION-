@@ -512,8 +512,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                 width: 16,
                 height: 16,
                 borderRadius: 8,
-                background: isCurrent ? 'var(--accent)' : 'rgba(255, 255, 255, 0.12)',
-                color: isCurrent ? '#ffffff' : '#6e6e73',
+                background: isCurrent ? 'var(--accent)' : 'rgba(15, 23, 42, 0.06)',
+                color: isCurrent ? '#ffffff' : 'var(--text-secondary)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -1135,8 +1135,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             fontWeight: 600,
             border: 'none',
             cursor: 'pointer',
-            background: activeTab === 'talk' ? '#1e7e34' : 'rgba(255,255,255,0.06)',
-            color: activeTab === 'talk' ? '#ffffff' : '#6e6e73',
+            background: activeTab === 'talk' ? '#1e7e34' : 'rgba(15, 23, 42, 0.04)',
+            color: activeTab === 'talk' ? '#ffffff' : 'var(--text-secondary)',
             whiteSpace: 'nowrap',
             flexShrink: 0
           }}
@@ -1153,8 +1153,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             fontWeight: 600,
             border: 'none',
             cursor: 'pointer',
-            background: activeTab === 'actions' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.026)',
-            color: activeTab === 'actions' ? 'var(--text-primary)' : '#6e6e73',
+            background: activeTab === 'actions' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.04)',
+            color: activeTab === 'actions' ? '#ffffff' : 'var(--text-secondary)',
             whiteSpace: 'nowrap',
             flexShrink: 0
           }}
@@ -1171,8 +1171,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             fontWeight: 600,
             border: 'none',
             cursor: 'pointer',
-            background: activeTab === 'deck' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.026)',
-            color: activeTab === 'deck' ? 'var(--text-primary)' : '#6e6e73',
+            background: activeTab === 'deck' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.04)',
+            color: activeTab === 'deck' ? '#ffffff' : 'var(--text-secondary)',
             whiteSpace: 'nowrap',
             flexShrink: 0
           }}
@@ -1189,8 +1189,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             fontWeight: 600,
             border: 'none',
             cursor: 'pointer',
-            background: activeTab === 'scroll' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.026)',
-            color: activeTab === 'scroll' ? 'var(--text-primary)' : '#6e6e73',
+            background: activeTab === 'scroll' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.04)',
+            color: activeTab === 'scroll' ? '#ffffff' : 'var(--text-secondary)',
             whiteSpace: 'nowrap',
             flexShrink: 0
           }}
@@ -1252,8 +1252,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       fontSize: 12,
                       fontWeight: 600,
                       cursor: 'pointer',
-                      background: stageState.slideMode === 'keynote' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.028)',
-                      color: stageState.slideMode === 'keynote' ? 'var(--text-primary)' : '#ffffff'
+                      background: stageState.slideMode === 'keynote' ? 'var(--accent)' : 'rgba(15, 23, 42, 0.04)',
+                      color: stageState.slideMode === 'keynote' ? '#ffffff' : 'var(--text-primary)'
                     }}
                   >
                     1. Architecture
@@ -1267,8 +1267,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       fontSize: 12,
                       fontWeight: 600,
                       cursor: 'pointer',
-                      background: stageState.slideMode === 'dual' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.028)',
-                      color: stageState.slideMode === 'dual' ? 'var(--text-primary)' : '#ffffff'
+                      background: stageState.slideMode === 'dual' ? 'var(--accent)' : 'rgba(15, 23, 42, 0.04)',
+                      color: stageState.slideMode === 'dual' ? '#ffffff' : 'var(--text-primary)'
                     }}
                   >
                     2. Notes
@@ -1282,8 +1282,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       fontSize: 12,
                       fontWeight: 600,
                       cursor: 'pointer',
-                      background: stageState.slideMode === 'theory' ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.028)',
-                      color: stageState.slideMode === 'theory' ? 'var(--text-primary)' : '#ffffff'
+                      background: stageState.slideMode === 'theory' ? 'var(--accent)' : 'rgba(15, 23, 42, 0.04)',
+                      color: stageState.slideMode === 'theory' ? '#ffffff' : 'var(--text-primary)'
                     }}
                   >
                     3. Proof
@@ -1703,8 +1703,8 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
                       fontSize: 11,
                       fontWeight: 600,
                       cursor: 'pointer',
-                      background: stageState.viewMode === mode ? 'var(--text-primary)' : 'rgba(15, 23, 42, 0.028)',
-                      color: stageState.viewMode === mode ? 'var(--text-primary)' : '#d2d2d7'
+                      background: stageState.viewMode === mode ? 'var(--accent)' : 'rgba(15, 23, 42, 0.04)',
+                      color: stageState.viewMode === mode ? '#ffffff' : 'var(--text-primary)'
                     }}
                   >
                     {mode === 'split' ? 'Split View' : mode === 'well-arch-only' ? 'WAF Only' : 'Naive Only'}
@@ -1927,12 +1927,12 @@ export const SpeakerCompanionRemote: React.FC<SpeakerCompanionRemoteProps> = ({
             width: '100%',
             padding: '11px 16px',
             borderRadius: 14,
-            border: 'none',
             cursor: 'pointer',
             background: isPresenter
-              ? 'rgba(15, 23, 42, 0.032)'
+              ? 'var(--bg-surface)'
               : 'var(--aws-orange)',
-            color: isPresenter ? '#ffffff' : 'var(--text-primary)',
+            border: isPresenter ? '1px solid var(--separator)' : 'none',
+            color: isPresenter ? 'var(--text-primary)' : '#1d1d1f',
             fontWeight: 700,
             fontSize: 14,
             display: 'flex',

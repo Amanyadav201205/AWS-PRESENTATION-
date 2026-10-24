@@ -15,6 +15,21 @@ export interface DeckTable {
   rows: string[][];
 }
 
+export interface GammaCard {
+  tag?: string;
+  icon?: string;
+  title: string;
+  desc: string;
+  variant?: 'scenario' | 'spof' | 'waf' | 'metric' | 'neutral';
+}
+
+export interface DeckMetric {
+  label: string;
+  naiveVal: string;
+  wafVal: string;
+  benefit: string;
+}
+
 export interface DeckSlide {
   id: string;
   kind: DeckSlideKind;
@@ -30,4 +45,13 @@ export interface DeckSlide {
   /** Module index (0 to 14) whose diagram or metrics the slide shows. Omit to keep the current module. */
   domainIndex?: number;
   lines: DeckLine[];
+  /** Gamma AI visual cards for modern slide layouts */
+  cards?: GammaCard[];
+  /** The AWS Well-Architected Pillars relevant to this slide */
+  pillars?: string[];
+  /** Real-world metrics comparing naive vs Well-Architected */
+  metrics?: DeckMetric[];
+  /** Category or domain subtitle */
+  category?: string;
 }
+

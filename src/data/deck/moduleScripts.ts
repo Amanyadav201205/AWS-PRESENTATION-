@@ -1,8 +1,11 @@
-/** Spoken text and slide bullets for one module. Index matches domainIndex in allDomains (0 to 14). */
+/** Spoken text and slide bullets for one module. Index matches domainIndex in allDomains (0 to 14).
+ * Tailored for college undergraduates learning AWS Well-Architected Framework:
+ * Scenario-driven, engaging, practical analogies, with zero dry formulas or academic citations.
+ */
 export interface ModuleScript {
   /** Three short bullets printed on the module's theory slide. */
   points: [string, string, string];
-  /** Spoken on the theory slide: the named principle and what it means for this design. */
+  /** Spoken on the theory slide: the real-world scenario and what students should learn. */
   theory: string;
   /** Spoken at normal load: the naive build on the left, card by card. */
   leftRest: string;
@@ -13,169 +16,198 @@ export interface ModuleScript {
 }
 
 export const moduleScripts: ModuleScript[] = [
+  // 1. Architecture Overview
   {
     points: [
-      'Complex systems grow from simple ones that already work',
-      'Every unpartitioned dependency lowers the whole',
-      'Answer: modular, independently testable parts'
+      'Anyone can launch a server in 5 minutes; keeping it alive is architecture',
+      'Single points of failure turn minor glitches into total company outages',
+      'AWS Well-Architected decouples every layer across 3 Availability Zones'
     ],
-    theory: 'Our first theory is Gall\'s law, from John Gall in 1977. A complex system that works evolved from a simple system that worked, and a big design drawn from scratch rarely survives contact with production. The arithmetic shows why. Reliability multiplies down the chain, so every unpartitioned dependency lowers the total. The Framework answers with modular parts that can be tested one at a time.',
-    leftRest: 'On the left is the naive build at normal load. Four cards run top to bottom: internet clients, one App Server, one Primary Database and a flat S3 bucket. The App Server and the Primary Database carry SPOF tags. Packets move down the connectors toward a single path.',
-    rightRest: 'On the right is the Well-Architected build at the same load: six cards from global clients through CloudFront with AWS WAF, the Application Load Balancer, the Auto-Scaling compute pool, Aurora Multi-AZ and the regional S3 store. Each card carries an HA tag, and the green connectors show healthy traffic on every hop.',
-    underFailure: 'Now we push to one hundred thousand users and inject the regional outage. On the left, the App Server and the Primary Database shake and turn red, their connectors turn red and dashed, and the packets stop, so the stack goes dark. On the right, the compute and database cards pulse green as they recover, and the traffic stays on the healthy path. The strip below shows availability at 98.5 percent on the left and 99.99 on the right.',
+    theory: "Welcome everyone! Here is the golden rule of cloud computing: anyone can follow a 5-minute tutorial to deploy a web app. But what happens when 50,000 students try to register for classes at the exact same second? In a naive build, your web app, business logic, and database all sit on one single machine. When that machine glitches, your entire business vanishes. AWS Well-Architected solves this by splitting your application into independent, auto-scaling tiers across multiple physical data centers.",
+    leftRest: "Look at the naive build on the left at normal load. Traffic flows directly from the internet into one lonely App Server, which connects to a single Primary Database and a flat S3 bucket. Notice the bright red SPOF tags. If either that server or that database has a hardware glitch, the entire platform goes dark.",
+    rightRest: "Now look at the AWS Well-Architected build on the right. Global users hit AWS CloudFront CDN with AWS WAF shielding the perimeter. An Application Load Balancer distributes requests across an Auto Scaling fleet of EC2 instances across three Availability Zones, backed by Amazon Aurora Multi-AZ. Every component carries an HA tag, and traffic flows smoothly through healthy redundant paths.",
+    underFailure: "Now we crank traffic to one hundred thousand users and inject a catastrophic regional data center outage! On the left, the naive server chokes, shakes violently, turns red, and the whole site collapses with 504 timeouts. On the right, AWS instantly detects the failed zone, routes traffic to healthy nodes, and auto-scales replacement workers in seconds. Availability holds at 99.99%!"
   },
+
+  // 2. Storage Layer
   {
     points: [
-      'Split data into k pieces plus parity pieces across zones',
-      'Rebuild from any k of the n pieces, so losing n minus k is survivable',
-      'Eleven nines of durability without tripling every disk'
+      'Ransomware and accidental deletions can wipe unversioned buckets in seconds',
+      'S3 Object Lock enforces write-once-read-many (WORM) immutability',
+      'Intelligent-Tiering cuts monthly storage bills by 70% automatically'
     ],
-    theory: 'The theory here is Reed-Solomon erasure coding, published by Irving Reed and Gustave Solomon in 1960. Split data into k pieces, add parity pieces, and you can rebuild the original from any k of the n. That is how S3 claims eleven nines of durability without keeping three full copies of every disk. The math gives the chance of losing data as a binomial tail. Spread enough independent shards across zones and that chance becomes vanishingly small.',
-    leftRest: 'On the left, the naive storage build at normal load. Three cards: a monolithic App Server, one 3 TB gp2 volume and a public, flat S3 bucket. The App Server and the volume carry SPOF tags, so losing either one takes the scans offline. Packets flow down the connectors.',
-    rightRest: 'On the right, the Well-Architected storage layout: five cards. The app instance pool, a right-sized gp3 volume, S3 Intelligent-Tiering, Glacier Deep Archive for old scans and an AWS Backup vault. Each card carries an HA tag, and the green connectors show data moving from hot to cold tiers.',
-    underFailure: 'Now the ransomware wiper runs at peak load. On the left, the public bucket and the 3 TB volume shake and turn red as the data is deleted, and the packets stop. On the right, the storage cards pulse green: Object Lock rejects every delete and AWS Backup keeps the immutable recovery points. The strip shows the monthly bill, 420 dollars on the left and 118 on the right.',
+    theory: "Think about storage like this: what happens if an intern accidentally runs a delete script, or ransomware gets hold of your AWS credentials? In a naive setup, your files sit in a flat, unversioned S3 bucket—once deleted, they are gone forever. AWS Well-Architected protects your data with S3 Object Lock, making files physically impossible to delete or overwrite even by root admins, while Intelligent-Tiering automatically moves cold files to Glacier Deep Archive to slash storage costs.",
+    leftRest: "On the left is the standard storage setup: an App Server writing directly to an unmonitored 3-terabyte gp2 disk and a flat, public S3 bucket. There is zero versioning, zero encryption lifecycle, and both carry SPOF tags. One ransomware payload or disk failure means permanent data loss.",
+    rightRest: "On the right is the Well-Architected storage fortress. We use high-performance gp3 volumes sized specifically for current IOPS, S3 Intelligent-Tiering that automatically transitions old scans to Glacier Deep Archive, and an isolated AWS Backup vault protected by Object Lock in strict compliance mode.",
+    underFailure: "Now we simulate a malicious ransomware attack trying to purge all company records. On the left, the naive storage disk and bucket turn bright red and data is wiped out completely. On the right, S3 Object Lock returns a hard 403 Forbidden to every delete request, and AWS Backup retains pristine immutable snapshots. Notice the monthly bill: 420 dollars on the left drops to 118 dollars on the right!"
   },
+
+  // 3. Compute Layer
   {
     points: [
-      'Speedup is capped by the serial share of the work',
-      'Bigger single machines hit a hardware wall',
-      'Stateless instances scale out across zones'
+      'One giant server hits a hardware wall and wastes thousands of dollars when idle',
+      'Horizontal scaling beats vertical scaling: small stateless workers across zones',
+      'AWS Graviton processors deliver 40% better price-performance with zero waste'
     ],
-    theory: 'Our theory is Amdahl\'s law, from Gene Amdahl in 1967, with Gustafson\'s later view of scaled workloads. The speedup from more processors is capped by the serial fraction of the work. A monolith keeps a large serial part, so buying a bigger machine hits a wall. Horizontal scaling wins because stateless instances split the parallel part across many machines. Elasticity then matches supply to demand, instead of buying for one peak a year.',
-    leftRest: 'On the left, the naive compute build at normal load. Web traffic enters one Monolith EC2 instance, an m5.4xlarge, with local app storage behind it. Both carry SPOF tags. Packets run down a single path, and the monolith is the only thing serving them.',
-    rightRest: 'On the right, the Well-Architected compute layout. The load balancer fans out to three Auto Scaling nodes, one in each zone, one of them a Spot worker. Each node shows its AZ pill and an HA tag, and green connectors show the traffic spread across all three zones.',
-    underFailure: 'Now the flash sale hits: one hundred thousand users. On the left, the monolith overloads, shakes and turns red, its connector turns red and dashed, and the packets stop, so the system goes down. On the right, the zone a node fails and pulses green as the load balancer routes around it, while replacement instances launch. The strip shows the bill falling from 584 to 168 dollars a month.',
+    theory: "Imagine college course registration opens at 9 AM. 10,000 students hit submit simultaneously. If you try to survive by buying one giant, expensive 64-core EC2 machine, that's called vertical scaling—and it always hits a hardware ceiling. Even worse, at 3 AM when students are asleep, you're paying for that giant monster to sit completely idle. The AWS Well-Architected way is horizontal scaling: small, stateless Graviton instances that dynamically multiply when traffic surges and disappear when it quiets down.",
+    leftRest: "On the left, the naive compute build: all traffic funnels into one giant Monolith EC2 instance running 24/7 with local storage. It carries a prominent SPOF tag. If that single operating system freezes or exhausts its memory, every single customer is locked out.",
+    rightRest: "On the right, the Well-Architected compute pool. An Application Load Balancer distributes traffic evenly across stateless EC2 instances powered by energy-efficient AWS Graviton processors, spread across Availability Zones A, B, and C, including Spot instances for massive cost savings.",
+    underFailure: "Now a sudden flash sale hits with 100,000 concurrent requests! The left monolith instantly maxes out at 99% CPU, overheats, shakes, and crashes completely. On the right, when one zone experiences high load, the Application Load Balancer routes traffic to the remaining zones while Auto Scaling spins up new instances. The system never drops a beat, and monthly compute costs drop from 584 dollars down to 168 dollars!"
   },
+
+  // 4. Database Layer
   {
     points: [
-      'Partition: choose availability or consistency',
-      'Else: choose latency or consistency',
-      'Quorum of 4 writes and 3 reads out of 6 copies'
+      'Self-managed MySQL on EC2 means manual backup scripts and hours of downtime',
+      'Amazon Aurora replicates data 6 ways across 3 Availability Zones',
+      'Automated failover promotes a healthy read replica in under 30 seconds'
     ],
-    theory: 'The theory for databases is the CAP theorem from Eric Brewer in 2000, and its extension PACELC from Daniel Abadi in 2012. During a partition you trade availability against consistency. Otherwise you trade latency against consistency. Aurora resolves this with a quorum of six copies across three zones. Writes need four of the six and reads need three, so every read overlaps the latest committed write.',
-    leftRest: 'On the left, the naive database build at normal load. The app servers feed one self-managed MySQL host on EC2, with a local backup script beside it. Both carry SPOF tags. Every packet queues behind the same single host.',
-    rightRest: 'On the right, the Aurora cluster: a writer node in zone a, read replicas in zones b and c, and the distributed storage engine underneath. Each node shows its AZ pill and an HA tag, and the green connectors show the path from the app pool through the cluster.',
-    underFailure: 'Now the writer node crashes at peak load. On the left, the MySQL host goes red and shakes, the packets stop, and there is no replica to take over, so recovery means hours of manual work. On the right, the Aurora writer pulses green as the cluster promotes a read replica in zone b. The strip shows recovery in under 30 seconds on the right, against four to six hours on the left.',
+    theory: "Every student has experienced this: your college exam results are published, you refresh the page, and the database crashes! Why? Because the university put MySQL on a single virtual machine with a naive cron backup script. When the writer node crashes, someone has to wake up at 2 AM and manually restore yesterday's backup. Amazon Aurora solves this with storage that continuously replicates six copies across three availability zones. If the master database dies, Aurora promotes a standby replica in under 30 seconds with zero data loss.",
+    leftRest: "On the left is the fragile database build: a self-managed MySQL database running on an EC2 host, backed up by a midnight bash script that locks database tables. It has a SPOF tag, and every query queues up behind a single disk.",
+    rightRest: "On the right is the Aurora Multi-AZ cluster. We have a dedicated writer instance in Zone A, high-speed read replicas in Zones B and C, and a distributed cloud storage engine underneath. Read traffic is offloaded to replicas so the writer never chokes on report queries.",
+    underFailure: "Now we simulate a sudden hardware crash on the primary database writer! On the left, the MySQL server shakes, crashes to red, and leaves the app completely broken for four to six hours. On the right, Aurora detects the crash immediately and promotes the Zone B replica to primary writer in under 30 seconds. Zero transactions lost, and the application keeps humming!"
   },
+
+  // 5. Networking Environment
   {
     points: [
-      'Trust zones so one breach cannot reach the rest',
-      'Independent layers multiply the attacker\'s odds down',
-      'Private and isolated subnets with no internet route'
+      'Putting databases on public subnets with open ports invites automated botnets',
+      '3-Tier VPC isolation: Public (ALB), Private (App), and Isolated (Database)',
+      'Security groups act as strict firewalls referencing other tiers by security group ID'
     ],
-    theory: 'Our theory is the Saltzer and Schroeder principle of least privilege and compartmentalization, from 1975. Split the system into trust zones so that a breach in one cannot compromise the others. If three independent layers each stop ten percent of attacks, the attacker must beat all three, which is one chance in a thousand. The database sits in a subnet with no route to the internet at all.',
-    leftRest: 'On the left, the naive network. A port scanner and botnet sit at the top, then the default flat VPC, then the public MySQL database. The database carries a SPOF tag and a 0.0.0.0/0 port 3306 tag, so anyone on the internet can reach it.',
-    rightRest: 'On the right, five tiers: external traffic, the internet gateway, the public subnet with the load balancer and NAT gateway, the private application subnet, and the isolated subnet holding Aurora. Only the top two cards face the internet, and the isolated subnet has no route to the gateway.',
-    underFailure: 'Now the scanner and botnet attack the network. On the left, the public MySQL card shakes and turns red, its connector turns red and dashed, and the scanner reaches the database through the open port. On the right, the attack stops at the top of the chain, and the isolated subnet pulses green because nothing outside can reach it. The strip shows the same gap in availability: 98.5 percent against 99.99.',
+    theory: "When beginners start on AWS, they often make a terrifying mistake: they deploy their database in a default VPC with a public IP address and port 3306 wide open to 0.0.0.0/0. Within minutes, automated port scanners in Eastern Europe detect it and start brute-forcing passwords. The Well-Architected rule is Defense in Depth: you build a 3-tier VPC. Only the load balancer touches the internet. Your application servers sit in private subnets, and your database sits in an isolated subnet with zero internet route.",
+    leftRest: "On the left is the naive network topology: external botnets and scanners have direct access to a flat, default VPC where the MySQL database has a public IP address and open port 3306. There are no firewalls, no private routing, and a massive SPOF tag.",
+    rightRest: "On the right is the 3-Tier Multi-AZ VPC: the Internet Gateway only connects to public subnets holding the Application Load Balancer and NAT Gateways. Application servers live in private subnets, and Aurora lives in an isolated subnet with no route to the internet. Security groups enforce strict least-privilege traffic flow.",
+    underFailure: "Now an automated botnet initiates a massive port scan and brute-force attack! On the left, the scanner hits port 3306 directly, compromises the database, and the red connector indicates an active breach. On the right, the attack is stopped dead at the perimeter: the database is physically unreachable from the public internet, and availability stays at 99.99%!"
   },
+
+  // 6. Connecting Networks
   {
     points: [
-      'A full mesh of N networks needs N(N-1)/2 links',
-      'A hub needs one attachment per network',
-      'Transitive routing comes with the hub'
+      'Direct VPC peering creates a spaghetti nightmare: 20 VPCs require 190 messy links',
+      'AWS Transit Gateway acts as a central cloud router with one attachment per VPC',
+      'Redundant Direct Connect plus automated BGP VPN failover prevents link blackouts'
     ],
-    theory: 'The theory is the count of connections in a full mesh. With N networks, peering every pair takes N times N minus one over two links. Twenty VPCs means one hundred and ninety peering links, each with routes kept by hand. A hub such as Transit Gateway needs one attachment per network. That moves the cost from quadratic to linear, and it gives transitive routing for free.',
-    leftRest: 'On the left, the naive connectivity: corporate HQ at the top, then one IPsec VPN over the internet tagged SPOF, then three VPCs wired by peering. Every packet from headquarters funnels through that single VPN.',
-    rightRest: 'On the right, the Well-Architected connectivity: headquarters, a 10 gigabit Direct Connect circuit and a backup VPN running BGP, into a Transit Gateway hub. Egress passes a central firewall, and the spoke VPCs hang off the hub. Green connectors show the hub carrying the traffic.',
-    underFailure: 'Now the primary Direct Connect fibre is cut. On the left, the single IPsec VPN shakes and turns red, its connector goes red and dashed, and the packets stop, so engineering, accounting and logistics lose the cloud. On the right, the Direct Connect card pulses green as BGP moves traffic to the backup VPN within seconds. The strip shows 98.0 percent on the left and 99.99 on the right.',
+    theory: "Imagine your university or company grows to have 20 different departments and cloud environments. If you connect them using direct VPC peering, every VPC must be linked to every other VPC. That requires 190 separate peering connections! If one cable breaks or someone misconfigures a route table, troubleshooting is impossible. AWS Transit Gateway replaces that spaghetti mess with a central hub-and-spoke router: each network connects once to the hub, and routing happens automatically with enterprise-grade firewalls.",
+    leftRest: "On the left, the naive enterprise connection: corporate headquarters connects to three VPCs using a single unencrypted IPsec VPN over the public internet, cross-wired with direct peering links. That single VPN tunnel is a massive single point of failure.",
+    rightRest: "On the right is the Well-Architected hub: headquarters connects via a high-speed 10 Gbps AWS Direct Connect circuit with an automatic BGP IPsec VPN backup. Both terminate at AWS Transit Gateway, which routes cleanly to spoke VPCs through an AWS Network Firewall.",
+    underFailure: "Now a physical backhoe severs the primary fiber line! On the left, the single VPN fails, turns red, and engineering, accounting, and logistics lose all access to the cloud. On the right, BGP automatically shifts traffic to the backup VPN within three seconds. Nobody on campus even notices a hiccup!"
   },
+
+  // 7. Securing Applications & Data Access
   {
     points: [
-      'Assume the attacker knows the system; only the key is secret',
-      'Short-lived credentials from IAM roles',
-      'Secrets rotated automatically, data encrypted under KMS keys'
+      'Hardcoding AWS access keys in source code leads to immediate GitHub credential theft',
+      'IAM roles provide temporary 1-hour credentials with zero secrets stored on disk',
+      'AWS Secrets Manager rotates database passwords every 30 days automatically'
     ],
-    theory: 'Kerckhoffs\'s principle, stated in 1883, and Shannon\'s maxim from 1949 say the same thing: assume the enemy knows the system, so only the key is secret. Hardcoded credentials break that rule at the root. The fix is short-lived identity from IAM roles, secrets in Secrets Manager rotated every thirty days, and envelope encryption under a KMS customer managed key.',
-    leftRest: 'On the left, the naive security build. The malicious attacker sits at the top, then an app with hardcoded keys and a database with a cleartext password, both tagged SPOF. Nothing stands between the attacker and the database.',
-    rightRest: 'On the right, the Well-Architected security layout. The WAF with OWASP managed rules sits at the edge, then an IAM role with least-privilege temporary credentials, Secrets Manager, the KMS customer managed key and GuardDuty. Every card carries an HA tag, and each request passes the WAF first.',
-    underFailure: 'Now the SQL injection and the stolen key arrive together. On the left, the app with hardcoded keys shakes and turns red, its connector goes red and dashed, and the packets reach the database. On the right, the WAF blocks the injection with a 403 at the edge, and GuardDuty flags the anomalous calls, and their cards pulse green. The strip sets the two builds side by side.',
+    theory: "Here is a nightmare scenario every computer science student should know: you push your project to GitHub, and inside config.js you accidentally left your AWS root access key and database password. Within 30 seconds, automated scraper bots steal that key and spin up $10,000 worth of crypto miners! AWS Well-Architected enforces zero hardcoded secrets: applications use IAM Roles that generate short-lived temporary tokens, while AWS Secrets Manager rotates database passwords automatically without dropping connections.",
+    leftRest: "On the left is the security nightmare: a malicious attacker targets an application server running with permanent root credentials hardcoded in plain text files, connecting to a database with an unrotated password. Zero encryption at rest and zero perimeter defense.",
+    rightRest: "On the right is the Well-Architected security posture: AWS WAF inspects incoming HTTP traffic for OWASP Top 10 vulnerabilities, IAM Roles grant short-lived least-privilege tokens, Secrets Manager rotates passwords every 30 days, and AWS KMS encrypts all data with customer-managed keys.",
+    underFailure: "Now an attacker launches a SQL injection attack paired with stolen API credentials! On the left, the server shakes, data is exfiltrated, and the database is compromised. On the right, AWS WAF immediately blocks the SQL injection with a 403 Forbidden, and Amazon GuardDuty flags the anomalous credential call in real time!"
   },
+
+  // 8. Monitoring, Elasticity & High Availability
   {
     points: [
-      'Series availabilities multiply, parallel ones reinforce',
-      'Redundancy pays only when failures are detected fast',
-      'Health checks are part of the availability maths'
+      'Finding out your app is broken from angry users on Twitter is an operational failure',
+      'CloudWatch Synthetics canaries simulate real user checkouts 24/7/365',
+      'EventBridge and Lambda automatically restart unhealthy services in 45 seconds'
     ],
-    theory: 'This module\'s theory is the availability rule for parallel systems. Availability in series multiplies. Availability in parallel is one minus the product of the failure probabilities. Three independent zones at 99.9 percent each give one minus one in a billion, which is nine nines for the compute tier. Redundancy only pays if failures are detected quickly, so health checks and monitoring belong in the calculation.',
-    leftRest: 'On the left, the naive monitoring build. An unmonitored EC2 instance tagged SPOF, then angry customers on Twitter, then a manual SSH terminal. Packets reach the instance, and nothing watches it.',
-    rightRest: 'On the right, the Well-Architected monitoring chain: a Synthetics canary, composite alarms, X-Ray tracing, an EventBridge rule and a self-healing Lambda. Green connectors show the signal travelling from the canary to the Lambda that recovers the task.',
-    underFailure: 'Now a silent memory leak builds at peak load. On the left, the unmonitored instance shakes and turns red, and the packets stop while customers find the outage first. On the right, the composite alarm and the self-healing Lambda pulse green as the canary catches the checkout timeout and the task is recycled. The strip shows recovery going from two to four hours down to under 45 seconds.',
+    theory: "How do you know if your website is down? In amateur companies, you find out when angry customers start tweeting at your CEO! You then spend four hours frantically SSH-ing into servers reading giant log files trying to find the bug. In AWS Well-Architected, CloudWatch Synthetics canaries act as automated robot users clicking through your login and checkout buttons every minute. If latency spikes, composite alarms page the on-call engineer and EventBridge triggers an automatic Lambda function to self-heal the server in 45 seconds.",
+    leftRest: "On the left, the blind monitoring setup: an unmonitored EC2 instance with no alarms, waiting for angry customer complaints on social media, followed by stressful manual SSH terminal debugging. Downtime stretches for hours.",
+    rightRest: "On the right is automated observability: CloudWatch Synthetics canaries run simulated user journeys every 60 seconds, AWS X-Ray traces request latencies to the exact line of code, and EventBridge hooks into a self-healing Lambda worker.",
+    underFailure: "Now a silent memory leak causes the application to slowly choke! On the left, the server crashes, packets stop, and nobody knows until customer support is flooded with complaints. On the right, the canary detects the timeout in 15 seconds, and Lambda automatically replaces the unhealthy task in 45 seconds. Mean Time to Recovery drops from 4 hours to under a minute!"
   },
+
+  // 9. Automating the Architecture (IaC & DevOps)
   {
     points: [
-      'Systems mirror the organization that builds them',
-      'Describe the desired state in code under version control',
-      'A pipeline converges reality back to the code'
+      'Clicking buttons in the AWS console leads to human error and unrepeatable setups',
+      'Infrastructure as Code (Terraform & AWS CDK) turns architectures into reviewable code',
+      'AWS Config continuously detects manual configuration drift and auto-remediates it'
     ],
-    theory: 'Conway\'s law, from Melvin Conway in 1968, says a system mirrors the communication structure of the organization that builds it. Declarative infrastructure counters the drift that follows. Describe the desired state in code, keep it in version control, and let a pipeline converge the real environment to it. The gap between desired and actual state shrinks to zero, because nothing changes outside the pipeline.',
-    leftRest: 'On the left, the naive automation build. A developer works in the console, the production VPC and a drifted security group follow, both tagged SPOF. Hand-made changes go straight to production with no record.',
-    rightRest: 'On the right, the Well-Architected automation chain. A Git pull request feeds the CI runner, which builds an immutable multi-AZ VPC. The AWS Config drift detector and the Systems Manager playbook sit at the end. Green connectors show every change passing through the pipeline.',
-    underFailure: 'Now someone opens port 22 to the world from the console. On the left, the drifted security group shakes and turns red, and nothing reports it. On the right, AWS Config flags the rule and the Systems Manager playbook pulses green as it removes the open rule automatically. The strip shows recovery: days to reconstruct on the left, under 15 minutes on the right.',
+    theory: "When you build a project for class, you click around in the AWS console creating servers and VPCs. But in production, 'ClickOps' is a catastrophe. If a server dies, nobody remembers which buttons they clicked three months ago. If someone accidentally deletes a firewall rule on Friday evening, production goes dark. AWS Well-Architected requires Infrastructure as Code: your entire cloud architecture is written in Terraform or AWS CDK, checked into GitHub, tested in automated CI/CD pipelines, and deployed identically across staging and production.",
+    leftRest: "On the left is manual ClickOps: a developer makes unrecorded changes directly in the AWS production console, leading to security group configuration drift and zero audit trail. If disaster strikes, rebuilding takes days of guesswork.",
+    rightRest: "On the right is automated GitOps: every infrastructure change is proposed in a pull request, scanned by security linters, and deployed via a continuous delivery pipeline. AWS Config constantly audits the environment, backed by AWS Systems Manager remediation runbooks.",
+    underFailure: "Now someone accidentally opens SSH port 22 to the world directly from the console! On the left, the vulnerability sits undetected indefinitely. On the right, AWS Config detects the compliance violation within seconds, and Systems Manager automatically closes the unauthorized port. Recovery takes 15 minutes instead of 5 days!"
   },
+
+  // 10. Caching Content
   {
     points: [
-      'About 80 percent of reads hit about 20 percent of items',
-      'Cache that slice at the edge and in memory',
-      'Effective latency falls as the hit ratio rises'
+      "80% of reads request the same 20% of content—don't hit the database every time",
+      'Amazon CloudFront delivers static assets in 18ms from 600+ edge locations',
+      'ElastiCache Redis serves hot database queries from RAM, reducing CPU load by 85%'
     ],
-    theory: 'The theory here is Zipf\'s law and the 80-20 rule that Pareto observed. A small slice of the content draws most of the reads. Caching that slice at the edge and in memory changes the average latency. The effective time is the hit ratio times the cache time, plus the miss ratio times the origin time. At a 95 percent hit ratio, a two-millisecond cache and an eighty-millisecond origin give about six milliseconds.',
-    leftRest: 'On the left, the naive caching build. Global visitors go straight to an uncached origin server, then to the primary SQL database. Both carry SPOF tags, and every image and repeated query lands on them.',
-    rightRest: 'On the right, the Well-Architected caching chain: the CloudFront CDN with more than 600 edge locations, the private S3 origin, ElastiCache Redis, the application microservices and the protected Aurora database. Each card takes load off the next, and the green connectors show it.',
-    underFailure: 'Now the flash sale hits the cache layer at 50,000 requests a second. On the left, the origin server and the SQL database shake and turn red, the packets stop, and the connection pool runs dry. On the right, CloudFront and ElastiCache pulse green as they absorb the spike, and the database behind them stays in service. The strip shows the monthly bill: 490 dollars on the left, 165 on the right.',
+    theory: "Imagine an influencer with 10 million followers tweets a link to your e-commerce store. 100,000 people click the link at the exact same second. If your server queries the MySQL database 100,000 times for the exact same product photo and description, your database will melt. In computer science, 80% of user traffic asks for the exact same 20% of data. By placing CloudFront at the edge and ElastiCache Redis in front of the database, you serve requests in 18 milliseconds directly from RAM and reduce database load by 85%.",
+    leftRest: "On the left, the uncached disaster: every single visitor request travels thousands of miles to hit an uncached origin server, which repeatedly queries the primary SQL database for the same images and product data. CPU sits dangerously high.",
+    rightRest: "On the right, multi-tiered caching: Amazon CloudFront with 600+ edge locations caches static images and HTML near the user. ElastiCache Redis holds hot session data and query results in microsecond-fast memory, shielding the Aurora database behind it.",
+    underFailure: "Now a viral traffic spike hits with 50,000 requests per second! On the left, the database connection pool exhausts, the server shakes, turns red, and the site goes offline. On the right, CloudFront absorbs 96% of the traffic at the edge, Redis handles the rest, and database CPU barely rises above 11%. Monthly cost drops from 490 to 165 dollars!"
   },
+
+  // 11. Building Decoupled Architecture
   {
     points: [
-      'A blocking chain multiplies availabilities together',
-      'Over an unreliable link, delivery needs retries and idempotency',
-      'A queue lets each service run at its own availability'
+      'Synchronous chains are fragile: if your payment or email service lags, checkout fails',
+      'Amazon SQS acts as a shock absorber, safely storing messages for up to 14 days',
+      'Dead Letter Queues (DLQ) ensure not a single customer order is ever dropped'
     ],
-    theory: 'The theory is that a synchronous chain multiplies availability. Five services at 99 percent each, called in a blocking chain, give about 95 percent. The two generals problem adds a warning: over an unreliable link you can never be certain the other side received a message, so you need retries and idempotent handlers. A queue breaks the chain. The producer hands off the message and moves on, and each consumer runs at its own availability.',
-    leftRest: 'On the left, the naive checkout. The customer goes to a monolithic web server, then the payment gateway, then the third-party email vendor. All three carry SPOF tags, so one slow step holds up the whole checkout.',
-    rightRest: 'On the right, the Well-Architected checkout. The shopper goes to a fast ingestion API, then the Amazon SQS orders queue with its dead-letter queue, then SNS fans out to the payment worker and the notification worker. Green connectors show the order handed to the queue.',
-    underFailure: 'Now the email vendor goes down during 20,000 Black Friday orders. On the left, the email vendor and the monolithic web server shake and turn red, the packets stop, and checkout fails. On the right, the orders queue and the notification worker pulse green. Shoppers still get confirmation, the backlog waits in SQS, and the dead-letter queue catches anything that keeps failing.',
+    theory: "Here is why tight coupling kills apps: suppose you're building DoorDash or Uber Eats. When a user taps 'Place Order', your app synchronously charges their card, alerts the restaurant, assigns a driver, and sends a receipt email. If the third-party email service takes 10 seconds to respond or crashes, the user's order fails! In a decoupled architecture, the order is dropped into an Amazon SQS message queue in 85 milliseconds. The user gets instant confirmation, and background workers process payment, restaurant alerts, and emails independently at their own pace.",
+    leftRest: "On the left is the fragile synchronous chain: the web server calls the payment processor, which synchronously waits for a third-party email API. All three components are tightly coupled with SPOF tags. If any single service stalls, the entire checkout fails.",
+    rightRest: "On the right is the asynchronous decoupled architecture: the checkout API drops the order into an Amazon SQS queue in under 85 milliseconds. Amazon SNS fans out the message to payment workers and notification workers. A Dead Letter Queue captures any failed message for safe retries.",
+    underFailure: "Now the external email vendor goes offline during a massive Black Friday rush! On the left, checkout threads freeze, servers shake red, and thousands of customer orders are lost. On the right, orders safely queue up in SQS. Customers receive instant checkout confirmations, and messages are processed seamlessly once the vendor recovers!"
   },
+
+  // 12. Serverless Architecture & Microservices
   {
     points: [
-      'Average items in a system equal arrival rate times time in system',
-      'Capacity that follows arrivals removes idle cost',
-      'Zero requests means near-zero spend'
+      'Running virtual machines 24/7 means paying for servers that sit idle at 3 AM',
+      'AWS Lambda executes code on-demand with zero servers, zero OS patches, and zero idle cost',
+      'Instantly scales from zero to tens of thousands of concurrent requests in milliseconds'
     ],
-    theory: 'The theory here is Little\'s law, from John Little in 1961. The average number of items in a system equals the arrival rate multiplied by the average time each item spends inside. If capacity follows arrivals instead of a fixed fleet, idle cost goes to zero. At three in the morning the arrival rate is close to zero, so the bill is close to zero too.',
-    leftRest: 'On the left, the naive serverless build. Two monolith virtual machines, one in zone a and one in zone b, both tagged SPOF, and a manual OS patching window. Both VMs are paid for around the clock.',
-    rightRest: 'On the right, the Well-Architected serverless chain: API Gateway, the ARM64 auth Lambda, Step Functions, the order-processing Lambda and DynamoDB on demand. The cards are services rather than servers, and green connectors show each request passing through them.',
-    underFailure: 'Now a burst of 40,000 invocations hits. On the left, both virtual machines shake and turn red, the packets stop, and new instances take minutes to boot. On the right, API Gateway, the Lambdas and DynamoDB pulse green as they scale out at once, and the request keeps flowing. The strip shows recovery time: 15 minutes for AMI boot on the left, under a second on the right.',
+    theory: "If you rent a fleet of Linux virtual machines, you pay for them 24 hours a day, 365 days a year—even at 3 AM when zero users are visiting your app. Plus, your engineering team has to spend weekends patching Linux operating systems and upgrading security libraries. Serverless flips this model completely: with AWS Lambda and API Gateway, you write pure business logic code. When an HTTP request arrives, AWS spins up a container in milliseconds, runs your function, and shuts it down. When nobody is using your app, your bill is literally zero dollars.",
+    leftRest: "On the left, traditional server-based infrastructure: two monolithic virtual machines running around the clock in Zones A and B, requiring constant OS security patches and costing money every second even when idle.",
+    rightRest: "On the right, the modern serverless microservices stack: Amazon API Gateway routes incoming REST calls directly to AWS Lambda functions powered by ARM64 Graviton, orchestrated by AWS Step Functions, with data stored in Amazon DynamoDB on-demand.",
+    underFailure: "Now a massive surge of 40,000 invocations arrives in 5 seconds! On the left, both virtual machines hit out-of-memory errors, shake red, and fail because booting replacement AMIs takes 10 minutes. On the right, AWS Lambda scales out concurrently in milliseconds, DynamoDB automatically adjusts capacity, and every request succeeds with sub-second response times!"
   },
+
+  // 13. Data Pipelines
   {
     points: [
-      'Lambda architecture: a batch layer and a speed layer',
-      'Kappa architecture: one stream for both',
-      'Columnar Parquet on S3 scans only the columns a query needs'
+      'Running nightly mysqldump scripts on production databases causes severe table locks',
+      'Amazon Kinesis Firehose streams live clickstream events into an S3 Data Lake',
+      'Serverless AWS Glue and Amazon Athena query columnar Parquet data at 85% lower cost'
     ],
-    theory: 'The theory is the split between the Lambda architecture, proposed by Nathan Marz around 2011, and the Kappa architecture, proposed by Jay Kreps in 2014. Lambda runs a batch layer and a speed layer side by side. Kappa unifies them into one stream. AWS favors the streaming side for freshness, and columnar Parquet on S3 for cost, because a query reads only the columns it needs.',
-    leftRest: 'On the left, the naive data pipeline. The production relational database, a cron worker on EC2 and a local CSV on disk, all tagged SPOF. The nightly job reads the live database, so it competes with customers for the same tables.',
-    rightRest: 'On the right, the Well-Architected data pipeline. Live event producers feed Kinesis Firehose, Glue converts the stream, the S3 data lake stores it, and Athena queries it in place. The production database is not on this path at all.',
-    underFailure: 'Now a 100x payload spike arrives with corrupted records. On the left, the cron worker runs out of memory, the local disk shakes and turns red, the packets stop, and the dashboards show stale zeros. On the right, Kinesis Firehose and Glue pulse green, route the bad records to a quarantine bucket, and Athena keeps answering queries. The strip shows a manual rerun on the left and delivery in under 60 seconds on the right.',
+    theory: "In many companies, analytics is an afterthought. Every midnight, an engineer sets up a cron script that runs a giant SQL query across the live production database. What happens? The production database locks up, real users experience timeouts, and the Python script runs out of memory. AWS Well-Architected separates analytics from transactions: live user clickstream data is streamed continuously into Amazon Kinesis, transformed into columnar Parquet format by serverless AWS Glue, and queried in seconds using Amazon Athena without putting a single ounce of load on production databases.",
+    leftRest: "On the left is the fragile legacy pipeline: a nightly cron script queries the production database directly, competing with live customers for disk IOPS and dumping raw CSV files onto a local disk. Reports are 24 hours out of date.",
+    rightRest: "On the right is the serverless streaming data lake: live event producers publish to Amazon Kinesis Data Firehose, AWS Glue cleans and partitions the data into columnar Parquet format on Amazon S3, and Amazon Athena runs instant serverless SQL queries.",
+    underFailure: "Now an unexpected 100x spike of clickstream data arrives with corrupted records! On the left, the cron worker runs out of memory, crashes red, and leaves company dashboards showing blank zeros. On the right, Kinesis Firehose buffers the surge, routes corrupted records to an S3 quarantine bucket, and Athena delivers analytics in under 60 seconds!"
   },
+
+  // 14. Disaster Recovery & Business Continuity
   {
     points: [
-      'Four strategies: backup, pilot light, warm standby, active-active',
-      'Lower RTO and RPO raise standby cost',
-      'Choose by the cost of downtime, not by fear'
+      'Storing database backups in the same region is not a disaster recovery strategy',
+      'Multi-Region Active-Active ensures business survival even if an entire region goes dark',
+      'Amazon Route 53 ARC shifts global DNS traffic to a secondary region in under 60 seconds'
     ],
-    theory: 'The theory is the cost of recovery. As RTO and RPO approach zero, the cost of standby capacity rises. AWS describes four strategies: backup and restore, pilot light, warm standby, and multi-region active-active. In our model, backup and restore costs one unit with a twenty-four hour RTO. Active-active costs about seven units and recovers in under thirty seconds. Pick the strategy that matches the cost of downtime.',
-    leftRest: 'On the left, the naive disaster recovery. The primary region us-east-1, an untested snapshot in the same region, and the panicked ops team, with SPOF tags on the region and the snapshot. Everything sits in one region.',
-    rightRest: 'On the right, the Well-Architected disaster recovery. Route 53 Application Recovery Controller at the top, the primary region, a secondary region in eu-west-1, the Aurora Global Database and cross-region S3 replication. Green connectors show traffic and data running to both regions.',
-    underFailure: 'Now the whole us-east-1 region goes dark. On the left, the primary region and the untested snapshot shake and turn red, the packets stop, and the ops team rebuilds by hand. On the right, the primary region card pulses green as Route 53 ARC shifts traffic to eu-west-1 and Aurora promotes the secondary cluster. The strip shows recovery: three to five days on the left, under a minute on the right.',
+    theory: "Ask any IT manager about their disaster recovery plan, and they'll say: 'Oh, we take daily backups.' But where are those backups stored? In the same AWS data center region! What happens if a massive natural disaster, hurricane, or power grid failure knocks out the entire Northern Virginia region? Your backups go down with it! AWS Well-Architected provides multi-region disaster recovery: using Aurora Global Database, your data is replicated to Europe or Oregon in under one second. If a region goes dark, Route 53 Application Recovery Controller flips global traffic in under a minute.",
+    leftRest: "On the left is 'backup and pray': all production workloads, storage, and unverified backups sit in a single region, us-east-1. If that region experiences a major outage, the ops team faces days of manual reconstruction.",
+    rightRest: "On the right is Multi-Region Active-Active: Route 53 ARC sits at the top, routing traffic across us-east-1 and eu-west-1. Aurora Global Database continuously synchronizes data across continents in under one second, paired with cross-region S3 replication.",
+    underFailure: "Now the worst-case scenario happens: the entire us-east-1 region loses power! On the left, the primary region collapses, the team panics, and the business faces 3 to 5 days of total downtime. On the right, Route 53 ARC immediately shifts 100% of global traffic to eu-west-1, Aurora promotes the secondary cluster, and the entire business is fully operational in under 30 seconds!"
   },
+
+  // 15. Executive Conclusion & Architectural Scorecard
   {
     points: [
-      'Architecture is a continuous practice, not a one-time sign-off',
-      'Fitness functions protect qualities as the system changes',
-      'The six pillars are the fitness checks'
+      'Architecture is not a one-time diagram—it is a continuous engineering culture',
+      'Availability jumps from 98.5% to 99.99%, eliminating 3 critical high-risk issues',
+      'Monthly spend drops from $4,450 to $1,820—a massive 59% FinOps cost reduction'
     ],
-    theory: 'The last theory is evolutionary architecture, set out by Neal Ford, Rebecca Parsons and Patrick Kua in 2017. An architecture is guided, incremental change, protected by fitness functions that check its qualities after every change. The six pillars act as those fitness checks. A Well-Architected review scores the system across them, and the score is a weighted sum of the pillars.',
-    leftRest: 'On the left, the naive verdict. The technical debt backlog and the uncontained blast radius, both tagged SPOF. Two cards, no guardrails, and the packets run into both.',
-    rightRest: 'On the right, the Well-Architected governance: AWS Organizations with service control policies, the GitOps CI/CD pipelines, and proactive telemetry with auto-healing. Every card carries an HA tag, and the green connectors show the governance path.',
-    underFailure: 'Now the unannounced audit stress test. On the left, the backlog and the blast radius shake and turn red, the packets stop, and the audit finds unencrypted data and public credentials. On the right, the governance and pipeline cards pulse green as Config and Security Hub report compliance and the telemetry heals the disruption. The final slide sums up the change.',
+    theory: "To wrap up our defense: building cloud architectures is not about drawing pretty boxes on a whiteboard once and forgetting about them. It is an ongoing discipline grounded in the six pillars of the AWS Well-Architected Framework: Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, and Sustainability. As you've seen across all fifteen domains, applying these principles transforms fragile, stressful single-point-of-failure systems into resilient, self-healing platforms that scale effortlessly.",
+    leftRest: "On the left, the final verdict of the naive architecture: an uncontained blast radius, technical debt, security vulnerabilities, and unpredictable downtime that costs companies tens of thousands of dollars and ruins developer sleep.",
+    rightRest: "On the right, the Well-Architected verdict: enterprise guardrails via AWS Organizations, automated GitOps CI/CD pipelines, end-to-end observability, and self-healing infrastructure that delivers certified 99.99% high availability.",
+    underFailure: "Now we run the ultimate unannounced enterprise compliance audit! On the left, the naive system fails completely: auditors find unencrypted data, leaked credentials, and unmitigated single points of failure. On the right, AWS Config and Security Hub prove 100% compliance across all six pillars. Availability jumps from 98.5% to 99.99%, recovery drops from days to 30 seconds, and monthly spend drops by 59%. Thank you, and we're ready for your questions!"
   }
 ];

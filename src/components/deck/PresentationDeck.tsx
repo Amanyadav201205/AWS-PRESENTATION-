@@ -1,10 +1,11 @@
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { deckSlides, DECK_SLIDE_COUNT } from '../../data/deck/buildDeck';
 import { DeckSlide } from '../../data/deck/deckTypes';
 import { talkTrackBeats } from '../../data/talkTrackBeats';
 import { DeckComparisonSlide } from './DeckComparisonSlide';
 import { DeckModuleTheorySlide } from './DeckModuleTheorySlide';
 import { DeckTextSlide } from './DeckTextSlide';
+import { Cloud, Download, LogOut, ChevronLeft, ChevronRight, Mic } from 'lucide-react';
 
 interface PresentationDeckProps {
   /** Index of the line on the stage. The slide follows the line. */
@@ -38,15 +39,29 @@ export const PresentationDeck: React.FC<PresentationDeckProps> = ({
   const lineCount = talkTrackBeats.length;
   const currentLine = Math.max(lineIndex + 1, 0);
 
+  const beatIndex = Math.min(Math.max(lineIndex, 0), lineCount - 1);
+  const currentBeat = talkTrackBeats[beatIndex];
+  const isDevarsh = currentBeat?.speaker === 'devarsh';
+  const speakerName = isDevarsh ? 'Devarsh' : 'Aman';
+
   return (
     <div className="presenter-overlay deck-root" role="dialog" aria-modal="true" aria-label="Presentation deck">
       <header className="deck-topbar">
-        <span className="deck-brand">AWS Well-Architected Framework</span>
+        <div className="deck-brand">
+          <Cloud size={18} color="#FF9900" />
+          <span>AWS Well-Architected Framework</span>
+          <span className="deck-brand-pill">16:9 Presentation</span>
+        </div>
+
         <div className="deck-topbar-actions">
           <button type="button" className="deck-button" onClick={onExportPptx} disabled={isExporting}>
-            {isExporting ? 'Building PowerPoint…' : 'Download PowerPoint'}
+            <Download size={14} />
+            <span>{isExporting ? 'Building PowerPoint…' : 'Download PowerPoint'}</span>
           </button>
-          <button type="button" className="deck-button" onClick={onExit}>Exit deck (Esc)</button>
+          <button type="button" className="deck-button" onClick={onExit}>
+            <LogOut size={14} />
+            <span>Exit deck (Esc)</span>
+          </button>
         </div>
       </header>
 
@@ -58,9 +73,64 @@ export const PresentationDeck: React.FC<PresentationDeckProps> = ({
 
       <footer className="deck-footer">
         <div className="deck-nav">
-          <button type="button" className="deck-button" onClick={() => onStep(-1)} disabled={lineIndex <= 0} aria-label="Previous line">← Previous</button>
-          <button type="button" className="deck-button deck-button-primary" onClick={() => onStep(1)} disabled={lineIndex >= lineCount - 1} aria-label="Next line">Next line →</button>
+          <button
+            type="button"
+            className="deck-button"
+            onClick={() => onStep(-1)}
+            disabled={lineIndex <= 0}
+            aria-label="Previous line"
+          >
+            <ChevronLeft size={16} />
+            <span>Previous</span>
+          </button>
+          <button
+            type="button"
+            className="deck-button deck-button-primary"
+            onClick={() => onStep(1)}
+            disabled={lineIndex >= lineCount - 1}
+            aria-label="Next line"
+          >
+            <span>Next line</span>
+            <ChevronRight size={16} />
+          </button>
         </div>
+
+        {/* Live Spoken Prompter Snippet */}
+        {currentBeat && (
+          <div className="deck-prompter-preview" style={{ display: 'flex', alignItems: 'center', gap: 8, maxWidth: 500, overflow: 'hidden' }}>
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 4,
+                fontSize: 11,
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                padding: '2px 8px',
+                borderRadius: 9999,
+                background: isDevarsh ? 'rgba(0, 102, 204, 0.12)' : 'rgba(255, 153, 0, 0.15)',
+                color: isDevarsh ? '#0066cc' : '#8a4b00',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              <Mic size={10} />
+              {speakerName}
+            </span>
+            <span
+              style={{
+                fontSize: 12,
+                color: 'var(--text-secondary)',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }}
+              title={currentBeat.say}
+            >
+              "{currentBeat.say}"
+            </span>
+          </div>
+        )}
+
         <div className="deck-progress" role="progressbar" aria-valuemin={1} aria-valuemax={DECK_SLIDE_COUNT} aria-valuenow={safeIndex + 1} aria-label="Slide progress">
           <span style={{ width: `${progress}%` }} />
         </div>
