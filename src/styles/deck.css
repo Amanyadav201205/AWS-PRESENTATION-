@@ -1,7 +1,8 @@
 /* ==========================================================================
-   GAMMA AI-GRADE PRESENTATION DECK DESIGN SYSTEM
-   Standard: Modern, engaging, card-based executive presentation.
-   Vibrant badges, crisp contrast, high-definition diagrams, zero formulas.
+   ENTERPRISE PRESENTATION DECK DESIGN SYSTEM (PROJECTOR-OPTIMIZED)
+   Audience: Large Lecture Hall (Visible from 50+ Meters)
+   Standard: High contrast, thick crisp borders, bold saturated AWS colors,
+   authentic human-engineered architecture layouts (Zero AI Slop).
    ========================================================================== */
 
 .deck-root {
@@ -10,8 +11,8 @@
   z-index: 900;
   display: flex;
   flex-direction: column;
-  background: var(--bg-canvas);
-  color: var(--text-primary);
+  background: #f1f5f9;
+  color: #0f172a;
   font-family: var(--font-sans);
 }
 
@@ -25,68 +26,70 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: 10px 24px;
-  background: var(--bg-surface-solid);
-  border-bottom: 1px solid var(--separator-subtle);
+  padding: 12px 28px;
+  background: #ffffff;
+  border-bottom: 2px solid #cbd5e1;
   flex-wrap: wrap;
   z-index: 10;
 }
 
 .deck-footer {
-  border-top: 1px solid var(--separator-subtle);
+  border-top: 2px solid #cbd5e1;
   border-bottom: none;
-  padding: 10px 24px;
+  padding: 12px 28px;
 }
 
 .deck-brand {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: var(--text-sm);
-  font-weight: 700;
-  color: var(--text-primary);
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
   letter-spacing: -0.01em;
 }
 
 .deck-brand-pill {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 800;
   text-transform: uppercase;
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: 9999px;
-  background: var(--aws-orange-subtle);
-  color: var(--aws-orange-ink);
-  border: 1px solid var(--aws-orange-border);
+  background: #fffbeb;
+  color: #b45309;
+  border: 1.5px solid #fcd34d;
+  letter-spacing: 0.04em;
 }
 
 .deck-topbar-actions,
 .deck-nav {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .deck-button {
-  min-height: 38px;
-  padding: 6px 14px;
+  min-height: 42px;
+  padding: 8px 18px;
   border-radius: var(--radius-control);
-  border: 1px solid var(--separator);
-  background: var(--bg-surface);
-  color: var(--text-primary);
+  border: 2px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
   font: inherit;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   transition: all 0.15s ease;
 }
 
 .deck-button:hover:not(:disabled) {
-  background: var(--bg-subtle);
-  border-color: var(--text-quaternary);
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #000000;
 }
 
 .deck-button:disabled {
@@ -95,39 +98,40 @@
 }
 
 .deck-button-primary {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: #0066cc;
+  border-color: #0066cc;
   color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 102, 204, 0.25);
+  box-shadow: 0 2px 10px rgba(0, 102, 204, 0.35);
 }
 
 .deck-button-primary:hover:not(:disabled) {
-  background: var(--accent-hover);
-  border-color: var(--accent-hover);
+  background: #0052a3;
+  border-color: #0052a3;
+  color: #ffffff;
 }
 
 .deck-progress {
   flex: 1;
-  max-width: 260px;
-  height: 6px;
-  background: var(--bg-subtle);
+  max-width: 280px;
+  height: 8px;
+  background: #e2e8f0;
   border-radius: 9999px;
   overflow: hidden;
-  border: 1px solid var(--separator-subtle);
+  border: 1.5px solid #cbd5e1;
 }
 
 .deck-progress span {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, var(--accent) 0%, var(--aws-orange) 100%);
+  background: linear-gradient(90deg, #0066cc 0%, #d97706 100%);
   border-radius: 9999px;
   transition: width 200ms ease;
 }
 
 .deck-counter {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 750;
+  color: #0f172a;
   font-variant-numeric: tabular-nums;
 }
 
@@ -141,19 +145,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(10px, 2vw, 24px);
+  padding: clamp(12px, 2vw, 28px);
   overflow: hidden;
-  background: var(--bg-canvas);
+  background: #e2e8f0;
 }
 
 .deck-slide {
-  width: min(100%, calc((100dvh - 120px) * 16 / 9));
+  width: min(100%, calc((100dvh - 130px) * 16 / 9));
   aspect-ratio: 16 / 9;
   background: #ffffff;
-  border: 1px solid var(--separator);
+  border: 2px solid #cbd5e1;
   border-radius: 20px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
-  padding: clamp(16px, 2.5vw, 36px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: clamp(18px, 2.6cqi, 36px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -162,134 +166,151 @@
 }
 
 /* ==========================================================================
-   GAMMA SLIDE COMMON LAYOUT
+   COMMON SLIDE HEADER & METADATA BAR
    ========================================================================== */
 
 .gamma-slide {
   display: flex;
   flex-direction: column;
   height: 100%;
-  gap: clamp(10px, 1.4cqi, 18px);
+  gap: clamp(12px, 1.6cqi, 20px);
   min-height: 0;
 }
 
-/* Slide Metadata Bar */
 .gamma-slide-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .gamma-pill-group {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .gamma-pill {
-  font-size: clamp(11px, 1.2cqi, 13px);
-  font-weight: 600;
-  padding: 3px 10px;
+  font-size: clamp(12px, 1.4cqi, 15px);
+  font-weight: 750;
+  padding: 5px 12px;
   border-radius: 9999px;
   line-height: 1.3;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 
 .gamma-pill-eyebrow {
-  background: var(--bg-subtle);
-  color: var(--text-secondary);
-  border: 1px solid var(--separator);
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 2px solid #cbd5e1;
   font-family: var(--font-mono);
-  font-size: clamp(10px, 1.1cqi, 12px);
-  letter-spacing: 0.02em;
+  font-size: clamp(11px, 1.2cqi, 13px);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .gamma-pill-category {
-  background: var(--accent-subtle);
-  color: var(--accent);
-  border: 1px solid rgba(0, 102, 204, 0.2);
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 2px solid #7dd3fc;
 }
 
 .gamma-pill-pillar {
-  background: rgba(48, 209, 88, 0.1);
-  color: var(--status-success);
-  border: 1px solid rgba(48, 209, 88, 0.25);
+  background: #dcfce7;
+  color: #15803d;
+  border: 2px solid #86efac;
 }
 
 .gamma-disaster-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: clamp(11px, 1.2cqi, 13px);
-  font-weight: 700;
-  background: var(--status-danger-subtle);
-  color: var(--status-danger);
-  border: 1px solid rgba(201, 48, 44, 0.3);
-  padding: 3px 10px;
+  gap: 8px;
+  font-size: clamp(12px, 1.4cqi, 15px);
+  font-weight: 800;
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 2px solid #fca5a5;
+  padding: 5px 14px;
   border-radius: 9999px;
+  letter-spacing: 0.02em;
 }
 
 .gamma-view-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: var(--bg-surface);
-  border: 1px solid var(--separator);
-  color: var(--text-secondary);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 8px;
+  gap: 8px;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  color: #0f172a;
+  font-size: clamp(12px, 1.3cqi, 14px);
+  font-weight: 750;
+  padding: 6px 14px;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
 
 .gamma-view-toggle:hover {
-  background: var(--bg-subtle);
-  color: var(--text-primary);
+  background: #f8fafc;
+  border-color: #94a3b8;
 }
 
 .gamma-view-toggle.active {
-  background: var(--accent);
+  background: #0066cc;
   color: #ffffff;
-  border-color: var(--accent);
+  border-color: #0066cc;
 }
 
-/* Slide Header & Titles */
+/* Slide Header & Titles - Massive for 50m Lecture Hall Readability */
 .gamma-slide-header {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .gamma-slide-title {
-  font-size: clamp(20px, 3cqi, 34px);
-  font-weight: 750;
+  font-size: clamp(28px, 4.0cqi, 48px);
+  font-weight: 850;
   letter-spacing: -0.025em;
   line-height: 1.15;
-  color: var(--text-primary);
+  color: #0f172a;
 }
 
 .gamma-principle-banner {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: linear-gradient(90deg, rgba(0, 102, 204, 0.08) 0%, rgba(0, 102, 204, 0.02) 100%);
-  border-left: 4px solid var(--accent);
-  padding: 6px 14px;
-  border-radius: 0 10px 10px 0;
-  font-size: clamp(12px, 1.4cqi, 15px);
-  font-weight: 600;
-  color: var(--text-primary);
+  gap: 12px;
+  background: #f0f9ff;
+  border-left: 6px solid #0284c7;
+  border-top: 1.5px solid #bae6fd;
+  border-right: 1.5px solid #bae6fd;
+  border-bottom: 1.5px solid #bae6fd;
+  padding: 10px 18px;
+  border-radius: 0 12px 12px 0;
+  font-size: clamp(16px, 1.9cqi, 22px);
+  font-weight: 700;
+  color: #0c4a6e;
+}
+
+.gamma-banner-tag {
+  font-size: clamp(11px, 1.2cqi, 13px);
+  font-weight: 850;
+  background: #0284c7;
+  color: #ffffff;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 
 .gamma-principle-icon {
-  font-size: 14px;
+  font-size: 18px;
+  color: #0284c7;
+  flex-shrink: 0;
 }
 
 .gamma-principle-text {
@@ -297,224 +318,309 @@
 }
 
 /* ==========================================================================
-   GAMMA 3-CARD GRID (THEORY SLIDE)
+   NON-AI 2-COLUMN ARCHITECTURAL DEFENSE LAYOUT (THEORY SLIDE)
+   Eliminates the "3 pair cards" AI aesthetic completely.
    ========================================================================== */
 
-.gamma-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(12px, 1.8cqi, 22px);
-  flex: 1;
-  min-height: 0;
-  align-items: stretch;
-}
-
-.gamma-card {
+.defense-architecture-layout {
   display: flex;
   flex-direction: column;
-  background: #ffffff;
-  border-radius: 16px;
-  padding: clamp(14px, 1.8cqi, 22px);
-  border: 1px solid var(--separator);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  gap: clamp(12px, 1.6cqi, 18px);
+  flex: 1;
+  min-height: 0;
+}
+
+/* Production Challenge Context Bar */
+.defense-context-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f8fafc;
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 10px 18px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.defense-context-tag {
+  font-size: clamp(12px, 1.3cqi, 14px);
+  font-weight: 850;
+  background: #0284c7;
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.defense-context-text {
+  font-size: clamp(15px, 1.8cqi, 21px);
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.35;
+}
+
+/* 2-Column Architectural Contrast Grid */
+.defense-columns-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(14px, 2.0cqi, 24px);
+  flex: 1;
+  min-height: 0;
+}
+
+.defense-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: 18px;
+  padding: clamp(16px, 2.2cqi, 24px);
   position: relative;
   overflow: hidden;
 }
 
-.gamma-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+/* Left Column: The Fragile Anti-Pattern */
+.defense-col-naive {
+  background: #fff5f5;
+  border: 2px solid #fca5a5;
+  box-shadow: 0 6px 20px rgba(185, 28, 28, 0.08);
 }
 
-.gamma-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
+/* Right Column: AWS Well-Architected Design */
+.defense-col-waf {
+  background: #f0fdf4;
+  border: 2px solid #86efac;
+  box-shadow: 0 6px 20px rgba(22, 101, 52, 0.08);
 }
 
-/* Card Variants */
-.gamma-card-scenario {
-  border-color: rgba(0, 102, 204, 0.25);
-  background: linear-gradient(180deg, rgba(0, 102, 204, 0.03) 0%, #ffffff 100%);
-}
-.gamma-card-scenario::before {
-  background: var(--accent);
-}
-
-.gamma-card-spof {
-  border-color: rgba(201, 48, 44, 0.25);
-  background: linear-gradient(180deg, rgba(201, 48, 44, 0.03) 0%, #ffffff 100%);
-}
-.gamma-card-spof::before {
-  background: var(--status-danger);
+.defense-col-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.06);
+  padding-bottom: 10px;
 }
 
-.gamma-card-waf {
-  border-color: rgba(30, 126, 52, 0.3);
-  background: linear-gradient(180deg, rgba(30, 126, 52, 0.03) 0%, #ffffff 100%);
-}
-.gamma-card-waf::before {
-  background: var(--status-success);
-}
-
-.gamma-card-header {
-  margin-bottom: 8px;
-}
-
-.gamma-card-badge {
+.defense-col-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: clamp(10px, 1.2cqi, 12px);
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  gap: 8px;
+  font-size: clamp(14px, 1.6cqi, 18px);
+  font-weight: 850;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-.gamma-icon-scenario {
-  color: var(--accent);
-}
-.gamma-icon-spof {
-  color: var(--status-danger);
-}
-.gamma-icon-waf {
-  color: var(--status-success);
+.badge-naive {
+  color: #991b1b;
 }
 
-.gamma-card-title {
-  font-size: clamp(15px, 1.8cqi, 20px);
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  line-height: 1.25;
-  color: var(--text-primary);
-  margin-bottom: 8px;
+.badge-waf {
+  color: #166534;
 }
 
-.gamma-card-desc {
-  font-size: clamp(12px, 1.4cqi, 15px);
-  line-height: 1.45;
-  color: var(--text-secondary);
+.defense-tag-danger {
+  font-size: clamp(12px, 1.3cqi, 14px);
+  font-weight: 750;
+  background: #fee2e2;
+  color: #b91c1c;
+  border: 1.5px solid #f87171;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  letter-spacing: 0.02em;
+}
+
+.defense-tag-success {
+  font-size: clamp(12px, 1.3cqi, 14px);
+  font-weight: 750;
+  background: #dcfce7;
+  color: #15803d;
+  border: 1.5px solid #4ade80;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  letter-spacing: 0.02em;
+}
+
+.defense-col-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
   flex: 1;
+  min-height: 0;
 }
 
-.gamma-card-footer {
-  margin-top: 12px;
-  padding-top: 8px;
-  border-top: 1px solid var(--separator-subtle);
-}
-
-.gamma-card-footer-pill {
-  font-size: 11px;
+.defense-main-text {
+  font-size: clamp(16px, 2.0cqi, 23px);
   font-weight: 600;
-  color: var(--text-tertiary);
+  line-height: 1.45;
+  color: #0f172a;
+}
+
+/* Callout Blocks Inside Columns */
+.defense-callout {
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: auto;
+}
+
+.callout-naive {
+  background: #ffffff;
+  border: 2px solid #fca5a5;
+  border-left: 6px solid #dc2626;
+}
+
+.callout-waf {
+  background: #ffffff;
+  border: 2px solid #86efac;
+  border-left: 6px solid #16a34a;
+}
+
+.defense-callout-title {
+  font-size: clamp(13px, 1.5cqi, 16px);
+  font-weight: 850;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
+.callout-naive .defense-callout-title {
+  color: #991b1b;
+}
+
+.callout-waf .defense-callout-title {
+  color: #166534;
+}
+
+.defense-callout-desc {
+  font-size: clamp(13px, 1.5cqi, 16px);
+  font-weight: 550;
+  line-height: 1.4;
+  color: #334155;
+}
+
 /* ==========================================================================
-   GAMMA METRICS STRIP (THEORY BOTTOM)
+   HIGH-IMPACT ARCHITECTURAL DELTA STRIP (THEORY BOTTOM)
+   Large, bold comparison metrics visible from 50m.
    ========================================================================== */
 
 .gamma-metrics-strip {
   display: flex;
   align-items: center;
-  gap: 16px;
-  background: var(--bg-surface);
-  border: 1px solid var(--separator);
-  border-radius: 12px;
-  padding: 8px 16px;
+  gap: clamp(12px, 1.8cqi, 20px);
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 10px 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.gamma-metrics-header-label {
+  font-size: clamp(13px, 1.5cqi, 16px);
+  font-weight: 850;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.gamma-metrics-cards {
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+  flex: 1;
   flex-wrap: wrap;
 }
 
-.gamma-metrics-label {
+.gamma-metric-box {
+  flex: 1;
+  min-width: 140px;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 8px 14px;
   display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 700;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.gamma-metric-box-title {
+  font-size: clamp(12px, 1.3cqi, 14px);
+  font-weight: 800;
   text-transform: uppercase;
-  color: var(--text-primary);
+  color: #475569;
   letter-spacing: 0.04em;
 }
 
-.gamma-metrics-items {
+.gamma-metric-box-values {
   display: flex;
   align-items: center;
-  gap: clamp(10px, 2cqi, 24px);
-  flex-wrap: wrap;
-  flex: 1;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-weight: 850;
+  font-size: clamp(20px, 2.6cqi, 32px);
+  line-height: 1.1;
 }
 
-.gamma-metric-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: clamp(11px, 1.3cqi, 13px);
-  font-weight: 500;
+.gamma-val-naive {
+  color: #b91c1c;
+  text-decoration: line-through;
+  opacity: 0.85;
 }
 
-.gamma-metric-name {
-  color: var(--text-tertiary);
+.gamma-val-arrow {
+  color: #64748b;
+  font-size: 16px;
 }
 
-.gamma-metric-naive {
-  color: var(--status-danger);
-  font-weight: 600;
+.gamma-val-waf {
+  color: #15803d;
+  font-weight: 900;
 }
 
-.gamma-metric-arrow {
-  color: var(--text-quaternary);
-}
-
-.gamma-metric-waf {
-  color: var(--status-success);
+.gamma-val-benefit {
+  font-size: clamp(12px, 1.3cqi, 14px);
   font-weight: 700;
-}
-
-.gamma-metric-benefit {
-  color: var(--text-secondary);
-  font-size: 11px;
-  font-weight: 600;
+  color: #0369a1;
 }
 
 .gamma-table-wrap {
   flex: 1;
   overflow: auto;
   border-radius: 12px;
-  border: 1px solid var(--separator);
+  border: 2px solid #cbd5e1;
   background: #ffffff;
 }
 
 /* ==========================================================================
-   GAMMA COMPARISON SLIDE
+   COMPARISON SLIDE (LIVE SIMULATION STAGE)
    ========================================================================== */
 
 .gamma-comparison-slide {
-  gap: 8px;
+  gap: 10px;
 }
 
 .gamma-comparison-head {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .gamma-comparison-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .gamma-comparison-title {
-  font-size: clamp(17px, 2.3cqi, 26px);
-  font-weight: 700;
+  font-size: clamp(26px, 3.4cqi, 42px);
+  font-weight: 850;
   letter-spacing: -0.02em;
-  color: var(--text-primary);
+  color: #0f172a;
 }
 
 .gamma-diagram-stage {
@@ -522,439 +628,675 @@
   min-height: 240px;
   position: relative;
   overflow: hidden;
-  border-radius: 14px;
-  background: var(--bg-surface);
-  border: 1px solid var(--separator);
+  border-radius: 16px;
+  background: #f8fafc;
+  border: 2px solid #cbd5e1;
 }
 
 .gamma-sim-labels {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 4vw;
-  padding: 8px 16px;
-  border-bottom: 1px solid var(--separator);
+  padding: 10px 20px;
+  border-bottom: 2px solid #cbd5e1;
   background: #ffffff;
 }
 
 .gamma-sim-lane-label {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  font-weight: 700;
+  gap: 8px;
+  font-size: clamp(13px, 1.5cqi, 17px);
+  font-weight: 850;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding-bottom: 2px;
+  padding: 6px 12px;
+  border-radius: 8px;
 }
 
 .gamma-lane-naive {
-  color: var(--status-danger);
+  color: #991b1b;
+  background: #fee2e2;
+  border: 1.5px solid #f87171;
 }
 
 .gamma-lane-waf {
-  color: var(--status-success);
+  color: #166534;
+  background: #dcfce7;
+  border: 1.5px solid #4ade80;
 }
 
 .gamma-comparison-footer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 14px;
 }
 
 .gamma-comparison-metric-card {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  background: var(--bg-surface);
-  border: 1px solid var(--separator);
-  border-radius: 10px;
-  padding: 6px 12px;
+  gap: 3px;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 8px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .gamma-comp-metric-label {
-  font-size: 11px;
-  font-weight: 600;
+  font-size: clamp(12px, 1.3cqi, 14px);
+  font-weight: 800;
   text-transform: uppercase;
-  color: var(--text-tertiary);
-  letter-spacing: 0.04em;
+  color: #475569;
+  letter-spacing: 0.05em;
 }
 
 .gamma-comp-metric-vals {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: clamp(12px, 1.4cqi, 15px);
-  font-weight: 700;
+  gap: 8px;
+  font-size: clamp(18px, 2.4cqi, 28px);
+  font-weight: 850;
   font-family: var(--font-mono);
 }
 
 .gamma-comp-naive {
-  color: var(--status-danger);
+  color: #b91c1c;
+  text-decoration: line-through;
+  opacity: 0.85;
 }
 
 .gamma-comp-arrow {
-  color: var(--text-quaternary);
-  font-size: 11px;
+  color: #64748b;
+  font-size: 14px;
 }
 
 .gamma-comp-waf {
-  color: var(--status-success);
+  color: #15803d;
+  font-weight: 900;
 }
 
 .gamma-comp-benefit {
-  font-size: 11px;
-  color: var(--text-secondary);
-  font-weight: 500;
+  font-size: clamp(12px, 1.3cqi, 14px);
+  color: #0369a1;
+  font-weight: 700;
 }
 
 /* ==========================================================================
-   GAMMA TITLE HERO SLIDE
+   TITLE HERO SLIDE (PROJECTOR-OPTIMIZED)
    ========================================================================== */
 
 .gamma-title-slide {
   justify-content: center;
   gap: clamp(14px, 2.2cqi, 26px);
-  padding: clamp(16px, 3cqi, 32px);
+  padding: clamp(16px, 3cqi, 36px);
 }
 
 .gamma-title-badge-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .gamma-brand-badge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  padding: 4px 12px;
+  gap: 8px;
+  font-size: clamp(13px, 1.5cqi, 16px);
+  font-weight: 800;
+  padding: 6px 16px;
   border-radius: 9999px;
-  background: var(--aws-orange-subtle);
-  border: 1px solid var(--aws-orange-border);
-  color: var(--aws-orange-ink);
+  background: #fffbeb;
+  border: 2px solid #fcd34d;
+  color: #b45309;
 }
 
 .gamma-mode-pill {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-tertiary);
-  padding: 4px 10px;
+  font-size: clamp(13px, 1.4cqi, 15px);
+  font-weight: 750;
+  color: #334155;
+  padding: 6px 14px;
   border-radius: 9999px;
-  background: var(--bg-subtle);
+  background: #f1f5f9;
+  border: 2px solid #cbd5e1;
 }
 
 .gamma-hero-title {
-  font-size: clamp(28px, 5cqi, 54px);
-  font-weight: 850;
+  font-size: clamp(38px, 5.5cqi, 68px);
+  font-weight: 900;
   letter-spacing: -0.035em;
-  line-height: 1.08;
-  color: var(--text-primary);
-  max-width: 22ch;
+  line-height: 1.06;
+  color: #0f172a;
+  max-width: 24ch;
 }
 
 .gamma-gradient-text {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--aws-orange-ink) 100%);
+  background: linear-gradient(135deg, #0066cc 0%, #d97706 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gamma-hero-subtitle {
-  font-size: clamp(14px, 1.8cqi, 18px);
-  line-height: 1.5;
-  color: var(--text-secondary);
-  max-width: 58ch;
+  font-size: clamp(17px, 2.1cqi, 24px);
+  line-height: 1.45;
+  font-weight: 550;
+  color: #334155;
+  max-width: 60ch;
 }
 
 .gamma-presenters-card {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding: 10px 18px;
-  background: var(--bg-surface);
-  border: 1px solid var(--separator);
-  border-radius: 14px;
+  gap: 24px;
+  padding: 12px 22px;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: 16px;
   align-self: flex-start;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .gamma-presenter {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .gamma-presenter-avatar {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: var(--accent);
+  background: #0066cc;
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 15px;
+  font-weight: 850;
 }
 
-.gamma-presenters-card .gamma-presenter:last-child .gamma-presenter-avatar {
-  background: var(--aws-orange-ink);
+.avatar-aman {
+  background: #d97706;
 }
 
 .gamma-presenter-name {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-size: 16px;
+  font-weight: 800;
+  color: #0f172a;
 }
 
 .gamma-presenter-role {
-  font-size: 11px;
-  color: var(--text-tertiary);
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
 }
 
 .gamma-presenters-divider {
-  width: 1px;
-  height: 28px;
-  background: var(--separator);
+  width: 2px;
+  height: 32px;
+  background: #cbd5e1;
 }
 
 .gamma-stat-cards-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  gap: 16px;
 }
 
 .gamma-stat-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--separator);
-  border-radius: 14px;
-  padding: 12px 16px;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 16px 20px;
   display: flex;
   flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .gamma-stat-val {
-  font-size: clamp(22px, 3.2cqi, 32px);
-  font-weight: 800;
-  color: var(--text-primary);
+  font-size: clamp(30px, 4.2cqi, 52px);
+  font-weight: 900;
+  color: #0f172a;
   line-height: 1;
   font-family: var(--font-mono);
-  margin-bottom: 4px;
 }
 
 .gamma-stat-success {
-  color: var(--status-success);
+  color: #15803d;
 }
+
 .gamma-stat-accent {
-  color: var(--accent);
+  color: #0066cc;
 }
 
 .gamma-stat-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-size: clamp(13px, 1.5cqi, 16px);
+  font-weight: 800;
+  color: #0f172a;
 }
 
 .gamma-stat-sub {
-  font-size: 11px;
-  color: var(--text-tertiary);
+  font-size: clamp(12px, 1.3cqi, 14px);
+  font-weight: 600;
+  color: #475569;
 }
 
 /* ==========================================================================
-   GAMMA AGENDA SLIDE
+   AGENDA ROADMAP & FLIGHT PLAN (NON-AI TIMELINE)
    ========================================================================== */
 
-.gamma-agenda-cards-grid {
+.roadmap-timeline-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: clamp(14px, 2cqi, 24px);
   flex: 1;
+  min-height: 0;
 }
 
-.gamma-agenda-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--separator);
+.roadmap-phase-card {
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: 18px;
+  padding: clamp(16px, 2.2cqi, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+.roadmap-phase-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+}
+
+.phase-1::before {
+  background: #0284c7;
+}
+
+.phase-2::before {
+  background: #d97706;
+}
+
+.phase-3::before {
+  background: #15803d;
+}
+
+.roadmap-phase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.roadmap-phase-pill {
+  font-size: clamp(12px, 1.3cqi, 14px);
+  font-weight: 850;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+}
+
+.phase-1 .roadmap-phase-pill {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1.5px solid #7dd3fc;
+}
+
+.phase-2 .roadmap-phase-pill {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1.5px solid #fcd34d;
+}
+
+.phase-3 .roadmap-phase-pill {
+  background: #dcfce7;
+  color: #166534;
+  border: 1.5px solid #86efac;
+}
+
+.roadmap-phase-time {
+  font-size: 13px;
+  font-weight: 750;
+  color: #475569;
+}
+
+.roadmap-phase-title {
+  font-size: clamp(17px, 2.1cqi, 24px);
+  font-weight: 850;
+  color: #0f172a;
+  margin-top: 4px;
+}
+
+.roadmap-phase-desc {
+  font-size: clamp(14px, 1.6cqi, 17px);
+  color: #334155;
+  line-height: 1.45;
+}
+
+.roadmap-milestones {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 2px solid #f1f5f9;
+}
+
+.roadmap-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: clamp(13px, 1.5cqi, 16px);
+  font-weight: 650;
+  color: #0f172a;
+}
+
+.roadmap-check {
+  color: #0284c7;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   THE SIX PILLARS MATRIX (NON-AI COHESIVE 6-BLOCK)
+   ========================================================================== */
+
+.pillars-matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(12px, 1.8cqi, 20px);
+  flex: 1;
+  min-height: 0;
+}
+
+.pillar-matrix-card {
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
   border-radius: 16px;
-  padding: 18px;
+  padding: clamp(14px, 1.8cqi, 20px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.pillar-matrix-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pillar-matrix-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid #cbd5e1;
+}
+
+.pillar-matrix-title {
+  font-size: clamp(15px, 1.8cqi, 20px);
+  font-weight: 850;
+  color: #0f172a;
+}
+
+.pillar-matrix-desc {
+  font-size: clamp(13px, 1.5cqi, 16px);
+  color: #334155;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   THEORY SPECIFICATION RAILS (NON-AI RULES VIEW)
+   ========================================================================== */
+
+.theory-spec-layout {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.6cqi, 18px);
+  flex: 1;
+  min-height: 0;
+}
+
+.theory-principles-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.gamma-agenda-num {
-  font-size: 24px;
-  font-weight: 800;
-  font-family: var(--font-mono);
-  color: var(--accent);
+.theory-principle-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 12px 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
-.gamma-agenda-content h3 {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 6px;
+.row-color-0 {
+  border-left: 6px solid #0284c7;
 }
 
-.gamma-agenda-content p {
-  font-size: 13px;
-  color: var(--text-secondary);
+.row-color-1 {
+  border-left: 6px solid #d97706;
+}
+
+.row-color-2 {
+  border-left: 6px solid #15803d;
+}
+
+.theory-rule-badge {
+  font-size: 12px;
+  font-weight: 850;
+  color: #ffffff;
+  background: #0f172a;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.theory-rule-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.theory-rule-title {
+  font-size: clamp(15px, 1.7cqi, 19px);
+  font-weight: 850;
+  color: #0f172a;
+}
+
+.theory-rule-text {
+  font-size: clamp(14px, 1.6cqi, 18px);
+  font-weight: 550;
+  color: #334155;
   line-height: 1.4;
-  margin-bottom: 12px;
 }
 
-.gamma-mini-list {
-  list-style: none;
-  padding: 0;
+.theory-spec-table-container {
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.gamma-mini-list li {
-  font-size: 12px;
-  color: var(--text-secondary);
-  position: relative;
-  padding-left: 14px;
+.theory-table-header {
+  display: flex;
+  align-items: center;
 }
 
-.gamma-mini-list li::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  color: var(--accent);
-  font-weight: bold;
+.theory-table-tag {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #475569;
+  text-transform: uppercase;
+}
+
+.theory-table-inner {
+  flex: 1;
+  overflow: auto;
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
 }
 
 /* ==========================================================================
-   GAMMA CLOSING SLIDE
+   CLOSING SCORECARD SLIDE
    ========================================================================== */
 
 .gamma-closing-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+  gap: 16px;
   flex: 1;
+  min-height: 0;
 }
 
 .gamma-closing-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--separator);
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
   border-radius: 16px;
-  padding: 16px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.card-availability {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+.card-finops {
+  border-color: #7dd3fc;
+  background: #f0f9ff;
+}
+
+.card-rto {
+  border-color: #fcd34d;
+  background: #fffbeb;
+}
+
+.card-hri {
+  border-color: #86efac;
+  background: #f0fdf4;
 }
 
 .gamma-closing-icon-wrap {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.icon-wrap-success {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.icon-wrap-accent {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.icon-wrap-amber {
+  background: #fef3c7;
+  color: #b45309;
+}
+
 .gamma-closing-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-primary);
+  font-size: clamp(15px, 1.8cqi, 19px);
+  font-weight: 850;
+  color: #0f172a;
 }
 
 .gamma-closing-delta {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 17px;
-  font-weight: 800;
+  gap: 8px;
+  font-size: clamp(20px, 2.8cqi, 34px);
+  font-weight: 900;
   font-family: var(--font-mono);
 }
 
 .gamma-closing-old {
-  color: var(--status-danger);
+  color: #b91c1c;
   text-decoration: line-through;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .gamma-closing-arrow {
-  color: var(--text-quaternary);
-  font-size: 12px;
+  color: #64748b;
+  font-size: 18px;
+}
+
+.gamma-closing-new {
+  font-weight: 900;
+}
+
+.new-success {
+  color: #15803d;
+}
+
+.new-accent {
+  color: #0284c7;
+}
+
+.new-amber {
+  color: #b45309;
 }
 
 .gamma-closing-desc {
-  font-size: 12px;
-  color: var(--text-secondary);
-  line-height: 1.35;
+  font-size: clamp(13px, 1.5cqi, 16px);
+  color: #334155;
+  line-height: 1.4;
 }
 
 .gamma-closing-takeaway {
-  background: linear-gradient(90deg, rgba(0, 102, 204, 0.08) 0%, rgba(255, 153, 0, 0.08) 100%);
-  border: 1px solid rgba(0, 102, 204, 0.25);
-  border-radius: 12px;
-  padding: 10px 16px;
-  font-size: 14px;
-  color: var(--text-primary);
+  background: #f8fafc;
+  border: 2px solid #cbd5e1;
+  border-left: 8px solid #0066cc;
+  border-radius: 14px;
+  padding: 14px 22px;
+  font-size: clamp(15px, 1.8cqi, 20px);
+  font-weight: 600;
+  color: #0f172a;
 }
 
 .gamma-takeaway-bold {
-  font-weight: 750;
-  color: var(--accent);
+  font-weight: 850;
+  color: #0066cc;
 }
 
 /* ==========================================================================
-   GAMMA THEORY DOC SLIDE (Pillars, SPOF, Nines, Blast Radius)
-   ========================================================================== */
-
-.gamma-theory-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 12px;
-  margin-bottom: 12px;
-}
-
-.gamma-theory-point-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--separator);
-  border-radius: 12px;
-  padding: 12px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.gamma-point-badge {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: var(--accent);
-  letter-spacing: 0.04em;
-}
-
-.gamma-point-text {
-  font-size: 13px;
-  line-height: 1.4;
-  color: var(--text-primary);
-}
-
-.gamma-theory-tables-wrap {
-  flex: 1;
-  overflow: auto;
-  border-radius: 12px;
-  border: 1px solid var(--separator);
-  background: #ffffff;
-}
-
-/* ==========================================================================
-   TABLES (CLEAN HIGH-CONTRAST)
+   TABLES (CLEAN HIGH-CONTRAST FOR PROJECTORS)
    ========================================================================== */
 
 .deck-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: clamp(11px, 1.4cqi, 14px);
-  line-height: 1.35;
-  color: var(--text-primary);
+  font-size: clamp(13px, 1.5cqi, 17px);
+  line-height: 1.4;
+  color: #0f172a;
   background: #ffffff;
 }
 
@@ -962,36 +1304,37 @@
 .deck-table td {
   text-align: left;
   vertical-align: top;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--separator-subtle);
+  padding: 10px 14px;
+  border-bottom: 1.5px solid #e2e8f0;
 }
 
 .deck-table thead th {
-  font-weight: 700;
-  color: var(--text-primary);
-  background: var(--bg-surface);
-  border-bottom: 2px solid var(--separator);
+  font-weight: 850;
+  color: #0f172a;
+  background: #f1f5f9;
+  border-bottom: 2px solid #cbd5e1;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-size: 11px;
+  letter-spacing: 0.05em;
+  font-size: clamp(12px, 1.4cqi, 15px);
 }
 
 .deck-table tbody th {
-  font-weight: 600;
-  color: var(--text-primary);
+  font-weight: 750;
+  color: #0f172a;
   white-space: nowrap;
 }
 
 .deck-table td {
-  color: var(--text-secondary);
+  color: #334155;
+  font-weight: 550;
 }
 
 .deck-table tr:hover td {
-  background: var(--bg-subtle);
+  background: #f8fafc;
 }
 
 /* ==========================================================================
-   SIMULATION OVERLAYS & DIAGRAM STAGE (INSPECTION MODAL INTACT)
+   SIMULATION OVERLAYS & DIAGRAM STAGE (INSPECTION & PACKETS INTACT)
    ========================================================================== */
 
 .fit-box {
@@ -1007,26 +1350,31 @@
 }
 
 .deck-diagram .apple-node {
-  min-width: 300px;
+  min-width: 320px;
+  border: 2px solid #cbd5e1 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06) !important;
 }
 
 .deck-diagram .node-text-name {
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 18px !important;
+  font-weight: 850 !important;
+  color: #0f172a !important;
 }
 
 .deck-diagram .node-text-svc {
-  font-size: 12px;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+  color: #475569 !important;
 }
 
 /* ==========================================================================
-   RESPONSIVENESS (MOBILE / TABLET)
+   RESPONSIVENESS (MOBILE / TABLET ADAPTATION)
    ========================================================================== */
 
 @media (max-width: 768px) {
   .deck-topbar,
   .deck-footer {
-    padding: 8px 12px;
+    padding: 8px 14px;
   }
   .deck-stage-wrap {
     padding: 8px;
@@ -1035,11 +1383,12 @@
   .deck-slide {
     width: 100%;
     aspect-ratio: auto;
-    min-height: 70dvh;
+    min-height: 75dvh;
     overflow-y: auto;
   }
-  .gamma-cards-grid,
-  .gamma-agenda-cards-grid,
+  .defense-columns-grid,
+  .roadmap-timeline-grid,
+  .pillars-matrix-grid,
   .gamma-closing-grid,
   .gamma-stat-cards-grid {
     grid-template-columns: 1fr;

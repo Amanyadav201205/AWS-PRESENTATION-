@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DeckSlide } from '../../data/deck/deckTypes';
 import { DeckTable } from './DeckTable';
-import { Sparkles, AlertTriangle, Target, CheckCircle2, Table as TableIcon } from 'lucide-react';
+import { ShieldCheck, AlertOctagon, Table as TableIcon } from 'lucide-react';
 
 interface DeckModuleTheorySlideProps {
   slide: DeckSlide;
@@ -10,30 +10,13 @@ interface DeckModuleTheorySlideProps {
 export const DeckModuleTheorySlide: React.FC<DeckModuleTheorySlideProps> = ({ slide }) => {
   const [showTable, setShowTable] = useState(false);
 
-  const cards = slide.cards && slide.cards.length >= 3 ? slide.cards : [
-    {
-      tag: '🎯 Real-World Scenario',
-      title: 'The Challenge',
-      desc: slide.points[0] ?? 'High user load and real-world conditions test fragile single-server setups.',
-      variant: 'scenario' as const
-    },
-    {
-      tag: '⚠️ Naive Anti-Pattern',
-      title: 'Single Point of Failure',
-      desc: slide.points[1] ?? 'Unpartitioned dependencies and monolithic instances crash when traffic spikes.',
-      variant: 'spof' as const
-    },
-    {
-      tag: '🚀 Well-Architected Fix',
-      title: 'Resilient Cloud Design',
-      desc: slide.points[2] ?? 'Decoupled, multi-AZ services with automated healing provide 99.99% availability.',
-      variant: 'waf' as const
-    }
-  ];
+  const scenarioText = slide.points[0] ?? 'Production traffic and real-world failure modes test architectural resilience.';
+  const naiveText = slide.points[1] ?? 'Unpartitioned monolithic components create single points of failure that choke under load.';
+  const wellArchText = slide.points[2] ?? 'Decoupled multi-AZ services with automated scaling and self-healing maintain 99.99% uptime.';
 
   return (
     <div className="gamma-slide gamma-theory-slide">
-      {/* Top Metadata Bar */}
+      {/* Top Metadata Bar - High Contrast */}
       <div className="gamma-slide-meta">
         <div className="gamma-pill-group">
           <span className="gamma-pill gamma-pill-eyebrow">{slide.eyebrow}</span>
@@ -49,24 +32,24 @@ export const DeckModuleTheorySlide: React.FC<DeckModuleTheorySlideProps> = ({ sl
             onClick={() => setShowTable(!showTable)}
             title="Toggle component breakdown table"
           >
-            <TableIcon size={13} />
-            <span>{showTable ? 'Show Gamma Cards' : 'View Component Specs'}</span>
+            <TableIcon size={16} />
+            <span>{showTable ? 'Show Architecture Defense' : 'View Component Specs'}</span>
           </button>
         )}
       </div>
 
-      {/* Slide Header */}
+      {/* Slide Header: Large High-Contrast Title for Projectors */}
       <div className="gamma-slide-header">
         <h2 className="gamma-slide-title">{slide.title}</h2>
         {slide.banner && (
           <div className="gamma-principle-banner">
-            <span className="gamma-principle-icon">⚡</span>
-            <span className="gamma-principle-text">{slide.banner}</span>
+            <span className="gamma-banner-tag">CORE PRINCIPLE</span>
+            <span className="gamma-principle-text">{slide.banner.replace(/^Core Principle:\s*/i, '')}</span>
           </div>
         )}
       </div>
 
-      {/* Main Slide Content: 3-Card Gamma Layout or Detailed Table */}
+      {/* Main Slide Content */}
       {showTable ? (
         <div className="gamma-table-wrap">
           {slide.tables?.map((table) => (
@@ -74,55 +57,70 @@ export const DeckModuleTheorySlide: React.FC<DeckModuleTheorySlideProps> = ({ sl
           ))}
         </div>
       ) : (
-        <div className="gamma-cards-grid">
-          {cards.map((card, idx) => {
-            const isScenario = card.variant === 'scenario' || idx === 0;
-            const isSpof = card.variant === 'spof' || idx === 1;
-            const isWaf = card.variant === 'waf' || idx === 2;
+        <div className="defense-architecture-layout">
+          {/* Real-World Context Bar */}
+          <div className="defense-context-bar">
+            <span className="defense-context-tag">PRODUCTION CHALLENGE:</span>
+            <span className="defense-context-text">{scenarioText}</span>
+          </div>
 
-            return (
-              <div
-                key={card.tag ?? idx}
-                className={`gamma-card ${isScenario ? 'gamma-card-scenario' : isSpof ? 'gamma-card-spof' : 'gamma-card-waf'}`}
-              >
-                <div className="gamma-card-header">
-                  <div className="gamma-card-badge">
-                    {isScenario && <Target size={14} className="gamma-icon-scenario" />}
-                    {isSpof && <AlertTriangle size={14} className="gamma-icon-spof" />}
-                    {isWaf && <Sparkles size={14} className="gamma-icon-waf" />}
-                    <span>{card.tag}</span>
-                  </div>
+          {/* 2-Column Architectural Contrast (Human-Engineered, Non-AI) */}
+          <div className="defense-columns-grid">
+            {/* Left: Anti-Pattern Column */}
+            <div className="defense-col defense-col-naive">
+              <div className="defense-col-header">
+                <div className="defense-col-badge badge-naive">
+                  <AlertOctagon size={18} />
+                  <span>THE FRAGILE ANTI-PATTERN</span>
                 </div>
-                <h3 className="gamma-card-title">{card.title}</h3>
-                <p className="gamma-card-desc">{card.desc}</p>
-                <div className="gamma-card-footer">
-                  <span className="gamma-card-footer-pill">
-                    {isScenario && 'Student Scenario'}
-                    {isSpof && 'What Breaks (SPOF)'}
-                    {isWaf && 'AWS Solution'}
-                  </span>
+                <span className="defense-tag-danger">Single Point of Failure</span>
+              </div>
+              <div className="defense-col-body">
+                <p className="defense-main-text">{naiveText}</p>
+                <div className="defense-callout callout-naive">
+                  <div className="defense-callout-title">Production Consequence</div>
+                  <div className="defense-callout-desc">Single zone hardware failure or traffic spike causes cascading outages, 504 timeouts, and hours of manual rebuilds.</div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+
+            {/* Right: Well-Architected Column */}
+            <div className="defense-col defense-col-waf">
+              <div className="defense-col-header">
+                <div className="defense-col-badge badge-waf">
+                  <ShieldCheck size={18} />
+                  <span>AWS WELL-ARCHITECTED DESIGN</span>
+                </div>
+                <span className="defense-tag-success">Certified High Availability</span>
+              </div>
+              <div className="defense-col-body">
+                <p className="defense-main-text">{wellArchText}</p>
+                <div className="defense-callout callout-waf">
+                  <div className="defense-callout-title">Architectural Guarantee</div>
+                  <div className="defense-callout-desc">Multi-AZ automated health checks, stateless elasticity, and distributed data replication maintain 99.99% continuity.</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
-      {/* Bottom Key Metrics Strip */}
+      {/* Bottom High-Impact Metrics Callout Deck (Big Bold Type Visible from 50m) */}
       {slide.metrics && slide.metrics.length > 0 && (
         <div className="gamma-metrics-strip">
-          <div className="gamma-metrics-label">
-            <CheckCircle2 size={13} color="var(--status-success)" />
-            <span>Well-Architected Impact:</span>
+          <div className="gamma-metrics-header-label">
+            <span>ARCHITECTURAL DELTA:</span>
           </div>
-          <div className="gamma-metrics-items">
+          <div className="gamma-metrics-cards">
             {slide.metrics.map((metric) => (
-              <div key={metric.label} className="gamma-metric-item">
-                <span className="gamma-metric-name">{metric.label}:</span>
-                <span className="gamma-metric-naive">{metric.naiveVal}</span>
-                <span className="gamma-metric-arrow">➔</span>
-                <span className="gamma-metric-waf">{metric.wafVal}</span>
-                <span className="gamma-metric-benefit">({metric.benefit})</span>
+              <div key={metric.label} className="gamma-metric-box">
+                <span className="gamma-metric-box-title">{metric.label}</span>
+                <div className="gamma-metric-box-values">
+                  <span className="gamma-val-naive">{metric.naiveVal}</span>
+                  <span className="gamma-val-arrow">➔</span>
+                  <span className="gamma-val-waf">{metric.wafVal}</span>
+                </div>
+                <span className="gamma-val-benefit">{metric.benefit}</span>
               </div>
             ))}
           </div>
