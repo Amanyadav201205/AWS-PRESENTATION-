@@ -205,7 +205,7 @@ ARCHITECTURAL VERDICT:
 The architecture satisfies all requirements across Storage, Compute, Database,
 Networking, Hybrid Connectivity, Security, Monitoring, Automation, Caching,
 Decoupled Queues, Serverless Microservices, Data Pipelines, and Disaster Recovery.
-Signed: Certified AWS Solutions Architect Lead`,
+Signed: Presenter Lead`,
       notes: 'Official executive certification and sign-off document for boardroom review.'
     }
   },
