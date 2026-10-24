@@ -42,7 +42,6 @@ export const DeckTextSlide: React.FC<DeckTextSlideProps> = ({ slide }) => {
             <Cloud size={16} color="#FF9900" />
             <span>AWS Well-Architected Framework</span>
           </span>
-          <span className="gamma-mode-pill">Certified Solutions Architect Defense</span>
         </div>
 
         <h1 className="gamma-hero-title">
@@ -58,7 +57,7 @@ export const DeckTextSlide: React.FC<DeckTextSlideProps> = ({ slide }) => {
             <div className="gamma-presenter-avatar">DP</div>
             <div>
               <div className="gamma-presenter-name">Devarsh Patel</div>
-              <div className="gamma-presenter-role">AWS Solutions Architect Presenter</div>
+              <div className="gamma-presenter-role">Presenter</div>
             </div>
           </div>
           <div className="gamma-presenters-divider" />
@@ -66,7 +65,7 @@ export const DeckTextSlide: React.FC<DeckTextSlideProps> = ({ slide }) => {
             <div className="gamma-presenter-avatar avatar-aman">AK</div>
             <div>
               <div className="gamma-presenter-name">Aman Kumar</div>
-              <div className="gamma-presenter-role">AWS Solutions Architect Presenter</div>
+              <div className="gamma-presenter-role">Presenter</div>
             </div>
           </div>
         </div>
