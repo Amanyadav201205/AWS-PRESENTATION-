@@ -21,7 +21,7 @@ export const DeckComparisonSlide: React.FC<DeckComparisonSlideProps> = ({ slide,
           {slide.category && <span className="gamma-pill gamma-pill-category">{slide.category}</span>}
           {slide.banner && (
             <span className="gamma-disaster-pill">
-              <Flame size={15} color="#b91c1c" />
+              <Flame size={20} color="#b91c1c" />
               <span>{slide.banner}</span>
             </span>
           )}
@@ -34,11 +34,11 @@ export const DeckComparisonSlide: React.FC<DeckComparisonSlideProps> = ({ slide,
         <FitToBox>
           <div className="gamma-sim-labels" aria-hidden="true">
             <div className="gamma-sim-lane-label gamma-lane-naive">
-              <AlertOctagon size={16} />
+              <AlertOctagon size={22} />
               <span>FRAGILE ANTI-PATTERN · SINGLE POINT OF FAILURE</span>
             </div>
             <div className="gamma-sim-lane-label gamma-lane-waf">
-              <ShieldCheck size={16} />
+              <ShieldCheck size={22} />
               <span>AWS WELL-ARCHITECTED · RESILIENT MULTI-AZ CLUSTER</span>
             </div>
           </div>

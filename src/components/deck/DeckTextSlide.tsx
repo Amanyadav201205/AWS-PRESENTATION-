@@ -277,12 +277,12 @@ export const DeckTextSlide: React.FC<DeckTextSlideProps> = ({ slide }) => {
   };
 
   const pillarCardsData = [
-    { title: 'Operational Excellence', icon: <Activity size={20} color="#0066cc" />, desc: 'Run and monitor workloads to deliver business value, continually improving processes and procedures.' },
-    { title: 'Security', icon: <ShieldCheck size={20} color="#c9302c" />, desc: 'Protect information, systems, and assets with automated IAM zero-trust, encryption, and continuous audits.' },
-    { title: 'Reliability', icon: <RefreshCw size={20} color="#1e7e34" />, desc: 'Prevent and quickly recover from failures across multi-AZ clusters with automated self-healing.' },
-    { title: 'Performance Efficiency', icon: <Zap size={20} color="#8a4b00" />, desc: 'Use computing resources efficiently through Graviton processors, serverless, and elastic scaling.' },
-    { title: 'Cost Optimization', icon: <DollarSign size={20} color="#0066cc" />, desc: 'Avoid unnecessary cloud spending with FinOps rightsizing, Intelligent-Tiering, and automated cleanups.' },
-    { title: 'Sustainability', icon: <Leaf size={20} color="#1e7e34" />, desc: 'Minimize environmental impact through efficient resource utilization and low-carbon AWS regions.' },
+    { title: 'Operational Excellence', icon: <Activity size={30} color="#0066cc" />, desc: 'Run and monitor workloads to deliver business value, continually improving processes and procedures.' },
+    { title: 'Security', icon: <ShieldCheck size={30} color="#c9302c" />, desc: 'Protect information, systems, and assets with automated IAM zero-trust, encryption, and continuous audits.' },
+    { title: 'Reliability', icon: <RefreshCw size={30} color="#1e7e34" />, desc: 'Prevent and quickly recover from failures across multi-AZ clusters with automated self-healing.' },
+    { title: 'Performance Efficiency', icon: <Zap size={30} color="#8a4b00" />, desc: 'Use computing resources efficiently through Graviton processors, serverless, and elastic scaling.' },
+    { title: 'Cost Optimization', icon: <DollarSign size={30} color="#0066cc" />, desc: 'Avoid unnecessary cloud spending with FinOps rightsizing, Intelligent-Tiering, and automated cleanups.' },
+    { title: 'Sustainability', icon: <Leaf size={30} color="#1e7e34" />, desc: 'Minimize environmental impact through efficient resource utilization and low-carbon AWS regions.' },
   ];
 
   return (

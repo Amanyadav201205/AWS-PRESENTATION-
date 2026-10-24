@@ -32,7 +32,7 @@ export const DeckModuleTheorySlide: React.FC<DeckModuleTheorySlideProps> = ({ sl
             onClick={() => setShowTable(!showTable)}
             title="Toggle component breakdown table"
           >
-            <TableIcon size={16} />
+            <TableIcon size={20} />
             <span>{showTable ? 'Show Architecture Defense' : 'View Component Specs'}</span>
           </button>
         )}
@@ -70,7 +70,7 @@ export const DeckModuleTheorySlide: React.FC<DeckModuleTheorySlideProps> = ({ sl
             <div className="defense-col defense-col-naive">
               <div className="defense-col-header">
                 <div className="defense-col-badge badge-naive">
-                  <AlertOctagon size={18} />
+                  <AlertOctagon size={24} />
                   <span>THE FRAGILE ANTI-PATTERN</span>
                 </div>
                 <span className="defense-tag-danger">Single Point of Failure</span>
@@ -88,7 +88,7 @@ export const DeckModuleTheorySlide: React.FC<DeckModuleTheorySlideProps> = ({ sl
             <div className="defense-col defense-col-waf">
               <div className="defense-col-header">
                 <div className="defense-col-badge badge-waf">
-                  <ShieldCheck size={18} />
+                  <ShieldCheck size={24} />
                   <span>AWS WELL-ARCHITECTED DESIGN</span>
                 </div>
                 <span className="defense-tag-success">Certified High Availability</span>

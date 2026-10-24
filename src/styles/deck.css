@@ -1,8 +1,8 @@
 /* ==========================================================================
-   ENTERPRISE PRESENTATION DECK DESIGN SYSTEM (PROJECTOR-OPTIMIZED)
+   ENTERPRISE PRESENTATION DECK DESIGN SYSTEM (PROJECTOR-OPTIMIZED 2X SCALE)
    Audience: Large Lecture Hall (Visible from 50+ Meters)
-   Standard: High contrast, thick crisp borders, bold saturated AWS colors,
-   authentic human-engineered architecture layouts (Zero AI Slop).
+   Standard: At least 2X font scaling, high contrast, thick crisp borders,
+   bold saturated AWS colors, authentic human layouts (Zero AI Slop).
    ========================================================================== */
 
 .deck-root {
@@ -11,7 +11,7 @@
   z-index: 900;
   display: flex;
   flex-direction: column;
-  background: #f1f5f9;
+  background: #e2e8f0;
   color: #0f172a;
   font-family: var(--font-sans);
 }
@@ -26,7 +26,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: 12px 28px;
+  padding: 8px 24px;
   background: #ffffff;
   border-bottom: 2px solid #cbd5e1;
   flex-wrap: wrap;
@@ -36,28 +36,28 @@
 .deck-footer {
   border-top: 2px solid #cbd5e1;
   border-bottom: none;
-  padding: 12px 28px;
+  padding: 8px 24px;
 }
 
 .deck-brand {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 18px;
+  font-weight: 850;
   color: #0f172a;
   letter-spacing: -0.01em;
 }
 
 .deck-brand-pill {
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 13px;
+  font-weight: 850;
   text-transform: uppercase;
   padding: 3px 10px;
   border-radius: 9999px;
   background: #fffbeb;
   color: #b45309;
-  border: 1.5px solid #fcd34d;
+  border: 2px solid #fcd34d;
   letter-spacing: 0.04em;
 }
 
@@ -70,15 +70,15 @@
 }
 
 .deck-button {
-  min-height: 42px;
-  padding: 8px 18px;
+  min-height: 44px;
+  padding: 8px 20px;
   border-radius: var(--radius-control);
   border: 2px solid #cbd5e1;
   background: #ffffff;
   color: #0f172a;
   font: inherit;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 15px;
+  font-weight: 750;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -129,8 +129,8 @@
 }
 
 .deck-counter {
-  font-size: 14px;
-  font-weight: 750;
+  font-size: 15px;
+  font-weight: 800;
   color: #0f172a;
   font-variant-numeric: tabular-nums;
 }
@@ -145,20 +145,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(12px, 2vw, 28px);
+  padding: clamp(8px, 1.5vw, 20px);
   overflow: hidden;
-  background: #e2e8f0;
+  background: #cbd5e1;
 }
 
 .deck-slide {
-  width: min(100%, calc((100dvh - 130px) * 16 / 9));
+  width: min(99%, calc((100dvh - 96px) * 16 / 9));
   aspect-ratio: 16 / 9;
   background: #ffffff;
-  border: 2px solid #cbd5e1;
+  border: 2.5px solid #94a3b8;
   border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05);
-  padding: clamp(18px, 2.6cqi, 36px);
-  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16), 0 4px 16px rgba(0, 0, 0, 0.06);
+  padding: clamp(16px, 2.2cqi, 32px);
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   container-type: inline-size;
@@ -166,14 +167,14 @@
 }
 
 /* ==========================================================================
-   COMMON SLIDE HEADER & METADATA BAR
+   COMMON SLIDE HEADER & METADATA BAR (2X PROJECTOR SCALE)
    ========================================================================== */
 
 .gamma-slide {
   display: flex;
   flex-direction: column;
   height: 100%;
-  gap: clamp(12px, 1.6cqi, 20px);
+  gap: clamp(10px, 1.4cqi, 18px);
   min-height: 0;
 }
 
@@ -193,9 +194,9 @@
 }
 
 .gamma-pill {
-  font-size: clamp(12px, 1.4cqi, 15px);
-  font-weight: 750;
-  padding: 5px 12px;
+  font-size: clamp(15px, 1.8cqi, 20px);
+  font-weight: 800;
+  padding: 6px 14px;
   border-radius: 9999px;
   line-height: 1.3;
   display: inline-flex;
@@ -208,7 +209,7 @@
   color: #0f172a;
   border: 2px solid #cbd5e1;
   font-family: var(--font-mono);
-  font-size: clamp(11px, 1.2cqi, 13px);
+  font-size: clamp(14px, 1.6cqi, 18px);
   letter-spacing: 0.03em;
   text-transform: uppercase;
 }
@@ -229,12 +230,12 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: clamp(12px, 1.4cqi, 15px);
-  font-weight: 800;
+  font-size: clamp(15px, 1.8cqi, 22px);
+  font-weight: 850;
   background: #fee2e2;
   color: #b91c1c;
-  border: 2px solid #fca5a5;
-  padding: 5px 14px;
+  border: 2.5px solid #fca5a5;
+  padding: 6px 16px;
   border-radius: 9999px;
   letter-spacing: 0.02em;
 }
@@ -246,10 +247,10 @@
   background: #ffffff;
   border: 2px solid #cbd5e1;
   color: #0f172a;
-  font-size: clamp(12px, 1.3cqi, 14px);
-  font-weight: 750;
-  padding: 6px 14px;
-  border-radius: 10px;
+  font-size: clamp(15px, 1.8cqi, 20px);
+  font-weight: 800;
+  padding: 8px 18px;
+  border-radius: 12px;
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -265,18 +266,18 @@
   border-color: #0066cc;
 }
 
-/* Slide Header & Titles - Massive for 50m Lecture Hall Readability */
+/* Slide Header & Titles - 2X Scale for 50m Visibility */
 .gamma-slide-header {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .gamma-slide-title {
-  font-size: clamp(28px, 4.0cqi, 48px);
-  font-weight: 850;
+  font-size: clamp(34px, 4.8cqi, 60px);
+  font-weight: 900;
   letter-spacing: -0.025em;
-  line-height: 1.15;
+  line-height: 1.12;
   color: #0f172a;
 }
 
@@ -285,30 +286,30 @@
   align-items: center;
   gap: 12px;
   background: #f0f9ff;
-  border-left: 6px solid #0284c7;
-  border-top: 1.5px solid #bae6fd;
-  border-right: 1.5px solid #bae6fd;
-  border-bottom: 1.5px solid #bae6fd;
-  padding: 10px 18px;
-  border-radius: 0 12px 12px 0;
-  font-size: clamp(16px, 1.9cqi, 22px);
-  font-weight: 700;
+  border-left: 8px solid #0284c7;
+  border-top: 2px solid #bae6fd;
+  border-right: 2px solid #bae6fd;
+  border-bottom: 2px solid #bae6fd;
+  padding: 12px 22px;
+  border-radius: 0 14px 14px 0;
+  font-size: clamp(20px, 2.6cqi, 32px);
+  font-weight: 750;
   color: #0c4a6e;
 }
 
 .gamma-banner-tag {
-  font-size: clamp(11px, 1.2cqi, 13px);
-  font-weight: 850;
+  font-size: clamp(14px, 1.6cqi, 18px);
+  font-weight: 900;
   background: #0284c7;
   color: #ffffff;
-  padding: 3px 8px;
+  padding: 4px 10px;
   border-radius: 6px;
   letter-spacing: 0.05em;
   white-space: nowrap;
 }
 
 .gamma-principle-icon {
-  font-size: 18px;
+  font-size: 22px;
   color: #0284c7;
   flex-shrink: 0;
 }
@@ -318,8 +319,7 @@
 }
 
 /* ==========================================================================
-   NON-AI 2-COLUMN ARCHITECTURAL DEFENSE LAYOUT (THEORY SLIDE)
-   Eliminates the "3 pair cards" AI aesthetic completely.
+   2-COLUMN ARCHITECTURAL DEFENSE LAYOUT (2X TYPOGRAPHY SCALE)
    ========================================================================== */
 
 .defense-architecture-layout {
@@ -334,28 +334,28 @@
 .defense-context-bar {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   background: #f8fafc;
-  border: 2px solid #cbd5e1;
-  border-radius: 12px;
-  padding: 10px 18px;
+  border: 2.5px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 12px 22px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
 }
 
 .defense-context-tag {
-  font-size: clamp(12px, 1.3cqi, 14px);
-  font-weight: 850;
+  font-size: clamp(16px, 1.8cqi, 22px);
+  font-weight: 900;
   background: #0284c7;
   color: #ffffff;
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
   letter-spacing: 0.05em;
   white-space: nowrap;
 }
 
 .defense-context-text {
-  font-size: clamp(15px, 1.8cqi, 21px);
-  font-weight: 600;
+  font-size: clamp(20px, 2.6cqi, 32px);
+  font-weight: 650;
   color: #0f172a;
   line-height: 1.35;
 }
@@ -373,8 +373,8 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border-radius: 18px;
-  padding: clamp(16px, 2.2cqi, 24px);
+  border-radius: 20px;
+  padding: clamp(18px, 2.4cqi, 28px);
   position: relative;
   overflow: hidden;
 }
@@ -382,15 +382,15 @@
 /* Left Column: The Fragile Anti-Pattern */
 .defense-col-naive {
   background: #fff5f5;
-  border: 2px solid #fca5a5;
-  box-shadow: 0 6px 20px rgba(185, 28, 28, 0.08);
+  border: 2.5px solid #fca5a5;
+  box-shadow: 0 8px 24px rgba(185, 28, 28, 0.08);
 }
 
 /* Right Column: AWS Well-Architected Design */
 .defense-col-waf {
   background: #f0fdf4;
-  border: 2px solid #86efac;
-  box-shadow: 0 6px 20px rgba(22, 101, 52, 0.08);
+  border: 2.5px solid #86efac;
+  box-shadow: 0 8px 24px rgba(22, 101, 52, 0.08);
 }
 
 .defense-col-header {
@@ -399,16 +399,16 @@
   justify-content: space-between;
   gap: 10px;
   flex-wrap: wrap;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.06);
-  padding-bottom: 10px;
+  border-bottom: 2.5px solid rgba(0, 0, 0, 0.06);
+  padding-bottom: 12px;
 }
 
 .defense-col-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: clamp(14px, 1.6cqi, 18px);
-  font-weight: 850;
+  gap: 10px;
+  font-size: clamp(20px, 2.5cqi, 30px);
+  font-weight: 900;
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -422,23 +422,23 @@
 }
 
 .defense-tag-danger {
-  font-size: clamp(12px, 1.3cqi, 14px);
-  font-weight: 750;
+  font-size: clamp(15px, 1.8cqi, 20px);
+  font-weight: 850;
   background: #fee2e2;
   color: #b91c1c;
-  border: 1.5px solid #f87171;
-  padding: 3px 10px;
+  border: 2px solid #f87171;
+  padding: 4px 12px;
   border-radius: 9999px;
   letter-spacing: 0.02em;
 }
 
 .defense-tag-success {
-  font-size: clamp(12px, 1.3cqi, 14px);
-  font-weight: 750;
+  font-size: clamp(15px, 1.8cqi, 20px);
+  font-weight: 850;
   background: #dcfce7;
   color: #15803d;
-  border: 1.5px solid #4ade80;
-  padding: 3px 10px;
+  border: 2px solid #4ade80;
+  padding: 4px 12px;
   border-radius: 9999px;
   letter-spacing: 0.02em;
 }
@@ -452,37 +452,37 @@
 }
 
 .defense-main-text {
-  font-size: clamp(16px, 2.0cqi, 23px);
-  font-weight: 600;
+  font-size: clamp(22px, 2.8cqi, 36px);
+  font-weight: 650;
   line-height: 1.45;
   color: #0f172a;
 }
 
 /* Callout Blocks Inside Columns */
 .defense-callout {
-  border-radius: 12px;
-  padding: 12px 16px;
+  border-radius: 14px;
+  padding: 14px 20px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
   margin-top: auto;
 }
 
 .callout-naive {
   background: #ffffff;
   border: 2px solid #fca5a5;
-  border-left: 6px solid #dc2626;
+  border-left: 8px solid #dc2626;
 }
 
 .callout-waf {
   background: #ffffff;
   border: 2px solid #86efac;
-  border-left: 6px solid #16a34a;
+  border-left: 8px solid #16a34a;
 }
 
 .defense-callout-title {
-  font-size: clamp(13px, 1.5cqi, 16px);
-  font-weight: 850;
+  font-size: clamp(18px, 2.2cqi, 26px);
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -496,31 +496,30 @@
 }
 
 .defense-callout-desc {
-  font-size: clamp(13px, 1.5cqi, 16px);
-  font-weight: 550;
+  font-size: clamp(18px, 2.2cqi, 26px);
+  font-weight: 600;
   line-height: 1.4;
-  color: #334155;
+  color: #1e293b;
 }
 
 /* ==========================================================================
-   HIGH-IMPACT ARCHITECTURAL DELTA STRIP (THEORY BOTTOM)
-   Large, bold comparison metrics visible from 50m.
+   HIGH-IMPACT ARCHITECTURAL DELTA STRIP (2X SCALE)
    ========================================================================== */
 
 .gamma-metrics-strip {
   display: flex;
   align-items: center;
-  gap: clamp(12px, 1.8cqi, 20px);
+  gap: clamp(14px, 2.0cqi, 24px);
   background: #ffffff;
-  border: 2px solid #cbd5e1;
-  border-radius: 14px;
-  padding: 10px 18px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  border: 2.5px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 12px 22px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
 }
 
 .gamma-metrics-header-label {
-  font-size: clamp(13px, 1.5cqi, 16px);
-  font-weight: 850;
+  font-size: clamp(17px, 2.1cqi, 26px);
+  font-weight: 900;
   color: #0f172a;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -530,26 +529,26 @@
 .gamma-metrics-cards {
   display: flex;
   align-items: stretch;
-  gap: 14px;
+  gap: 16px;
   flex: 1;
   flex-wrap: wrap;
 }
 
 .gamma-metric-box {
   flex: 1;
-  min-width: 140px;
+  min-width: 160px;
   background: #f8fafc;
-  border: 2px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 8px 14px;
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 10px 18px;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
 .gamma-metric-box-title {
-  font-size: clamp(12px, 1.3cqi, 14px);
-  font-weight: 800;
+  font-size: clamp(15px, 1.8cqi, 22px);
+  font-weight: 850;
   text-transform: uppercase;
   color: #475569;
   letter-spacing: 0.04em;
@@ -558,10 +557,10 @@
 .gamma-metric-box-values {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-family: var(--font-mono);
-  font-weight: 850;
-  font-size: clamp(20px, 2.6cqi, 32px);
+  font-weight: 950;
+  font-size: clamp(28px, 3.8cqi, 48px);
   line-height: 1.1;
 }
 
@@ -573,25 +572,25 @@
 
 .gamma-val-arrow {
   color: #64748b;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .gamma-val-waf {
   color: #15803d;
-  font-weight: 900;
+  font-weight: 950;
 }
 
 .gamma-val-benefit {
-  font-size: clamp(12px, 1.3cqi, 14px);
-  font-weight: 700;
+  font-size: clamp(16px, 2.0cqi, 24px);
+  font-weight: 800;
   color: #0369a1;
 }
 
 .gamma-table-wrap {
   flex: 1;
   overflow: auto;
-  border-radius: 12px;
-  border: 2px solid #cbd5e1;
+  border-radius: 14px;
+  border: 2.5px solid #cbd5e1;
   background: #ffffff;
 }
 
@@ -600,7 +599,7 @@
    ========================================================================== */
 
 .gamma-comparison-slide {
-  gap: 10px;
+  gap: 8px;
 }
 
 .gamma-comparison-head {
@@ -617,8 +616,8 @@
 }
 
 .gamma-comparison-title {
-  font-size: clamp(26px, 3.4cqi, 42px);
-  font-weight: 850;
+  font-size: clamp(32px, 4.4cqi, 54px);
+  font-weight: 900;
   letter-spacing: -0.02em;
   color: #0f172a;
 }
@@ -628,9 +627,9 @@
   min-height: 240px;
   position: relative;
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: 18px;
   background: #f8fafc;
-  border: 2px solid #cbd5e1;
+  border: 2.5px solid #cbd5e1;
 }
 
 .gamma-sim-labels {
@@ -638,54 +637,54 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 4vw;
   padding: 10px 20px;
-  border-bottom: 2px solid #cbd5e1;
+  border-bottom: 2.5px solid #cbd5e1;
   background: #ffffff;
 }
 
 .gamma-sim-lane-label {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: clamp(13px, 1.5cqi, 17px);
-  font-weight: 850;
+  gap: 10px;
+  font-size: clamp(18px, 2.2cqi, 28px);
+  font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 6px 12px;
-  border-radius: 8px;
+  padding: 8px 16px;
+  border-radius: 10px;
 }
 
 .gamma-lane-naive {
   color: #991b1b;
   background: #fee2e2;
-  border: 1.5px solid #f87171;
+  border: 2px solid #f87171;
 }
 
 .gamma-lane-waf {
   color: #166534;
   background: #dcfce7;
-  border: 1.5px solid #4ade80;
+  border: 2px solid #4ade80;
 }
 
 .gamma-comparison-footer {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  gap: 16px;
 }
 
 .gamma-comparison-metric-card {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   background: #ffffff;
-  border: 2px solid #cbd5e1;
-  border-radius: 12px;
-  padding: 8px 16px;
+  border: 2.5px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 10px 18px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .gamma-comp-metric-label {
-  font-size: clamp(12px, 1.3cqi, 14px);
-  font-weight: 800;
+  font-size: clamp(16px, 1.8cqi, 22px);
+  font-weight: 850;
   text-transform: uppercase;
   color: #475569;
   letter-spacing: 0.05em;
@@ -694,9 +693,9 @@
 .gamma-comp-metric-vals {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: clamp(18px, 2.4cqi, 28px);
-  font-weight: 850;
+  gap: 10px;
+  font-size: clamp(26px, 3.4cqi, 44px);
+  font-weight: 900;
   font-family: var(--font-mono);
 }
 
@@ -708,65 +707,65 @@
 
 .gamma-comp-arrow {
   color: #64748b;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .gamma-comp-waf {
   color: #15803d;
-  font-weight: 900;
+  font-weight: 950;
 }
 
 .gamma-comp-benefit {
-  font-size: clamp(12px, 1.3cqi, 14px);
+  font-size: clamp(16px, 2.0cqi, 24px);
   color: #0369a1;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 /* ==========================================================================
-   TITLE HERO SLIDE (PROJECTOR-OPTIMIZED)
+   TITLE HERO SLIDE (2X SCALE)
    ========================================================================== */
 
 .gamma-title-slide {
   justify-content: center;
-  gap: clamp(14px, 2.2cqi, 26px);
+  gap: clamp(16px, 2.4cqi, 30px);
   padding: clamp(16px, 3cqi, 36px);
 }
 
 .gamma-title-badge-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
 .gamma-brand-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: clamp(13px, 1.5cqi, 16px);
-  font-weight: 800;
-  padding: 6px 16px;
+  gap: 10px;
+  font-size: clamp(16px, 2.0cqi, 24px);
+  font-weight: 850;
+  padding: 8px 20px;
   border-radius: 9999px;
   background: #fffbeb;
-  border: 2px solid #fcd34d;
+  border: 2.5px solid #fcd34d;
   color: #b45309;
 }
 
 .gamma-mode-pill {
-  font-size: clamp(13px, 1.4cqi, 15px);
-  font-weight: 750;
-  color: #334155;
-  padding: 6px 14px;
+  font-size: clamp(15px, 1.8cqi, 22px);
+  font-weight: 800;
+  color: #1e293b;
+  padding: 8px 18px;
   border-radius: 9999px;
   background: #f1f5f9;
   border: 2px solid #cbd5e1;
 }
 
 .gamma-hero-title {
-  font-size: clamp(38px, 5.5cqi, 68px);
-  font-weight: 900;
+  font-size: clamp(44px, 6.2cqi, 80px);
+  font-weight: 950;
   letter-spacing: -0.035em;
-  line-height: 1.06;
+  line-height: 1.05;
   color: #0f172a;
   max-width: 24ch;
 }
@@ -778,42 +777,42 @@
 }
 
 .gamma-hero-subtitle {
-  font-size: clamp(17px, 2.1cqi, 24px);
-  line-height: 1.45;
+  font-size: clamp(22px, 2.8cqi, 34px);
+  line-height: 1.42;
   font-weight: 550;
-  color: #334155;
+  color: #1e293b;
   max-width: 60ch;
 }
 
 .gamma-presenters-card {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding: 12px 22px;
+  gap: 28px;
+  padding: 14px 26px;
   background: #ffffff;
-  border: 2px solid #cbd5e1;
-  border-radius: 16px;
+  border: 2.5px solid #cbd5e1;
+  border-radius: 18px;
   align-self: flex-start;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
 }
 
 .gamma-presenter {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .gamma-presenter-avatar {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: #0066cc;
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 15px;
-  font-weight: 850;
+  font-size: 18px;
+  font-weight: 900;
 }
 
 .avatar-aman {
@@ -821,43 +820,43 @@
 }
 
 .gamma-presenter-name {
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 20px;
+  font-weight: 850;
   color: #0f172a;
 }
 
 .gamma-presenter-role {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 650;
   color: #475569;
 }
 
 .gamma-presenters-divider {
   width: 2px;
-  height: 32px;
+  height: 38px;
   background: #cbd5e1;
 }
 
 .gamma-stat-cards-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 18px;
 }
 
 .gamma-stat-card {
   background: #ffffff;
-  border: 2px solid #cbd5e1;
-  border-radius: 16px;
-  padding: 16px 20px;
+  border: 2.5px solid #cbd5e1;
+  border-radius: 18px;
+  padding: 18px 24px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
 }
 
 .gamma-stat-val {
-  font-size: clamp(30px, 4.2cqi, 52px);
-  font-weight: 900;
+  font-size: clamp(38px, 5.2cqi, 66px);
+  font-weight: 950;
   color: #0f172a;
   line-height: 1;
   font-family: var(--font-mono);
@@ -872,19 +871,19 @@
 }
 
 .gamma-stat-label {
-  font-size: clamp(13px, 1.5cqi, 16px);
-  font-weight: 800;
+  font-size: clamp(17px, 2.0cqi, 24px);
+  font-weight: 850;
   color: #0f172a;
 }
 
 .gamma-stat-sub {
-  font-size: clamp(12px, 1.3cqi, 14px);
-  font-weight: 600;
+  font-size: clamp(15px, 1.7cqi, 20px);
+  font-weight: 650;
   color: #475569;
 }
 
 /* ==========================================================================
-   AGENDA ROADMAP & FLIGHT PLAN (NON-AI TIMELINE)
+   AGENDA ROADMAP & FLIGHT PLAN (2X SCALE)
    ========================================================================== */
 
 .roadmap-timeline-grid {
@@ -897,13 +896,13 @@
 
 .roadmap-phase-card {
   background: #ffffff;
-  border: 2px solid #cbd5e1;
-  border-radius: 18px;
-  padding: clamp(16px, 2.2cqi, 24px);
+  border: 2.5px solid #cbd5e1;
+  border-radius: 20px;
+  padding: clamp(18px, 2.4cqi, 28px);
   display: flex;
   flex-direction: column;
   gap: 10px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
   position: relative;
   overflow: hidden;
 }
@@ -914,7 +913,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 6px;
+  height: 8px;
 }
 
 .phase-1::before {
@@ -936,48 +935,49 @@
 }
 
 .roadmap-phase-pill {
-  font-size: clamp(12px, 1.3cqi, 14px);
-  font-weight: 850;
-  padding: 4px 10px;
-  border-radius: 6px;
+  font-size: clamp(16px, 1.8cqi, 22px);
+  font-weight: 900;
+  padding: 5px 12px;
+  border-radius: 8px;
   letter-spacing: 0.05em;
 }
 
 .phase-1 .roadmap-phase-pill {
   background: #e0f2fe;
   color: #0369a1;
-  border: 1.5px solid #7dd3fc;
+  border: 2px solid #7dd3fc;
 }
 
 .phase-2 .roadmap-phase-pill {
   background: #fef3c7;
   color: #b45309;
-  border: 1.5px solid #fcd34d;
+  border: 2px solid #fcd34d;
 }
 
 .phase-3 .roadmap-phase-pill {
   background: #dcfce7;
   color: #166534;
-  border: 1.5px solid #86efac;
+  border: 2px solid #86efac;
 }
 
 .roadmap-phase-time {
-  font-size: 13px;
-  font-weight: 750;
+  font-size: 16px;
+  font-weight: 800;
   color: #475569;
 }
 
 .roadmap-phase-title {
-  font-size: clamp(17px, 2.1cqi, 24px);
-  font-weight: 850;
+  font-size: clamp(24px, 3.0cqi, 38px);
+  font-weight: 900;
   color: #0f172a;
   margin-top: 4px;
 }
 
 .roadmap-phase-desc {
-  font-size: clamp(14px, 1.6cqi, 17px);
-  color: #334155;
+  font-size: clamp(18px, 2.3cqi, 28px);
+  color: #1e293b;
   line-height: 1.45;
+  font-weight: 550;
 }
 
 .roadmap-milestones {
@@ -985,16 +985,16 @@
   flex-direction: column;
   gap: 8px;
   margin-top: auto;
-  padding-top: 12px;
-  border-top: 2px solid #f1f5f9;
+  padding-top: 14px;
+  border-top: 2.5px solid #f1f5f9;
 }
 
 .roadmap-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: clamp(13px, 1.5cqi, 16px);
-  font-weight: 650;
+  gap: 10px;
+  font-size: clamp(18px, 2.2cqi, 26px);
+  font-weight: 700;
   color: #0f172a;
 }
 
@@ -1004,60 +1004,62 @@
 }
 
 /* ==========================================================================
-   THE SIX PILLARS MATRIX (NON-AI COHESIVE 6-BLOCK)
+   THE SIX PILLARS MATRIX (2X TYPOGRAPHY SCALE AS REQUESTED IN IMAGE)
+   Text inside boxes is doubled and crystal clear.
    ========================================================================== */
 
 .pillars-matrix-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: clamp(12px, 1.8cqi, 20px);
+  gap: clamp(14px, 2cqi, 24px);
   flex: 1;
   min-height: 0;
 }
 
 .pillar-matrix-card {
   background: #ffffff;
-  border: 2px solid #cbd5e1;
-  border-radius: 16px;
-  padding: clamp(14px, 1.8cqi, 20px);
+  border: 2.5px solid #cbd5e1;
+  border-radius: 20px;
+  padding: clamp(18px, 2.4cqi, 28px);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  gap: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
 }
 
 .pillar-matrix-header {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
 }
 
 .pillar-matrix-icon-wrap {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
   background: #f1f5f9;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 1px solid #cbd5e1;
+  border: 2px solid #cbd5e1;
 }
 
 .pillar-matrix-title {
-  font-size: clamp(15px, 1.8cqi, 20px);
-  font-weight: 850;
+  font-size: clamp(22px, 2.8cqi, 36px);
+  font-weight: 900;
   color: #0f172a;
 }
 
 .pillar-matrix-desc {
-  font-size: clamp(13px, 1.5cqi, 16px);
-  color: #334155;
-  line-height: 1.4;
+  font-size: clamp(20px, 2.5cqi, 32px);
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.42;
 }
 
 /* ==========================================================================
-   THEORY SPECIFICATION RAILS (NON-AI RULES VIEW)
+   THEORY SPECIFICATION RAILS (2X SCALE)
    ========================================================================== */
 
 .theory-spec-layout {
@@ -1071,39 +1073,39 @@
 .theory-principles-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .theory-principle-row {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: 16px;
   background: #ffffff;
-  border: 2px solid #cbd5e1;
-  border-radius: 14px;
-  padding: 12px 18px;
+  border: 2.5px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 14px 22px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .row-color-0 {
-  border-left: 6px solid #0284c7;
+  border-left: 8px solid #0284c7;
 }
 
 .row-color-1 {
-  border-left: 6px solid #d97706;
+  border-left: 8px solid #d97706;
 }
 
 .row-color-2 {
-  border-left: 6px solid #15803d;
+  border-left: 8px solid #15803d;
 }
 
 .theory-rule-badge {
-  font-size: 12px;
-  font-weight: 850;
+  font-size: clamp(15px, 1.8cqi, 20px);
+  font-weight: 900;
   color: #ffffff;
   background: #0f172a;
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
   letter-spacing: 0.05em;
   white-space: nowrap;
 }
@@ -1111,21 +1113,21 @@
 .theory-rule-content {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
   flex: 1;
 }
 
 .theory-rule-title {
-  font-size: clamp(15px, 1.7cqi, 19px);
-  font-weight: 850;
+  font-size: clamp(22px, 2.8cqi, 34px);
+  font-weight: 900;
   color: #0f172a;
 }
 
 .theory-rule-text {
-  font-size: clamp(14px, 1.6cqi, 18px);
-  font-weight: 550;
-  color: #334155;
-  line-height: 1.4;
+  font-size: clamp(20px, 2.5cqi, 30px);
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.42;
 }
 
 .theory-spec-table-container {
@@ -1133,7 +1135,7 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .theory-table-header {
@@ -1142,8 +1144,8 @@
 }
 
 .theory-table-tag {
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 850;
   letter-spacing: 0.05em;
   color: #475569;
   text-transform: uppercase;
@@ -1152,31 +1154,31 @@
 .theory-table-inner {
   flex: 1;
   overflow: auto;
-  border: 2px solid #cbd5e1;
-  border-radius: 12px;
+  border: 2.5px solid #cbd5e1;
+  border-radius: 14px;
 }
 
 /* ==========================================================================
-   CLOSING SCORECARD SLIDE
+   CLOSING SCORECARD SLIDE (2X SCALE)
    ========================================================================== */
 
 .gamma-closing-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 18px;
   flex: 1;
   min-height: 0;
 }
 
 .gamma-closing-card {
   background: #ffffff;
-  border: 2px solid #cbd5e1;
-  border-radius: 16px;
-  padding: 18px;
+  border: 2.5px solid #cbd5e1;
+  border-radius: 18px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
 }
 
 .card-availability {
@@ -1200,9 +1202,9 @@
 }
 
 .gamma-closing-icon-wrap {
-  width: 50px;
-  height: 50px;
-  border-radius: 14px;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1224,17 +1226,17 @@
 }
 
 .gamma-closing-title {
-  font-size: clamp(15px, 1.8cqi, 19px);
-  font-weight: 850;
+  font-size: clamp(20px, 2.5cqi, 30px);
+  font-weight: 900;
   color: #0f172a;
 }
 
 .gamma-closing-delta {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: clamp(20px, 2.8cqi, 34px);
-  font-weight: 900;
+  gap: 10px;
+  font-size: clamp(28px, 3.8cqi, 48px);
+  font-weight: 950;
   font-family: var(--font-mono);
 }
 
@@ -1246,11 +1248,11 @@
 
 .gamma-closing-arrow {
   color: #64748b;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .gamma-closing-new {
-  font-weight: 900;
+  font-weight: 950;
 }
 
 .new-success {
@@ -1266,35 +1268,36 @@
 }
 
 .gamma-closing-desc {
-  font-size: clamp(13px, 1.5cqi, 16px);
-  color: #334155;
+  font-size: clamp(18px, 2.2cqi, 26px);
+  color: #1e293b;
   line-height: 1.4;
+  font-weight: 600;
 }
 
 .gamma-closing-takeaway {
   background: #f8fafc;
-  border: 2px solid #cbd5e1;
-  border-left: 8px solid #0066cc;
-  border-radius: 14px;
-  padding: 14px 22px;
-  font-size: clamp(15px, 1.8cqi, 20px);
-  font-weight: 600;
+  border: 2.5px solid #cbd5e1;
+  border-left: 10px solid #0066cc;
+  border-radius: 16px;
+  padding: 16px 26px;
+  font-size: clamp(20px, 2.6cqi, 32px);
+  font-weight: 650;
   color: #0f172a;
 }
 
 .gamma-takeaway-bold {
-  font-weight: 850;
+  font-weight: 900;
   color: #0066cc;
 }
 
 /* ==========================================================================
-   TABLES (CLEAN HIGH-CONTRAST FOR PROJECTORS)
+   TABLES (2X HIGH-CONTRAST FOR PROJECTORS)
    ========================================================================== */
 
 .deck-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: clamp(13px, 1.5cqi, 17px);
+  font-size: clamp(18px, 2.2cqi, 26px);
   line-height: 1.4;
   color: #0f172a;
   background: #ffffff;
@@ -1304,29 +1307,29 @@
 .deck-table td {
   text-align: left;
   vertical-align: top;
-  padding: 10px 14px;
-  border-bottom: 1.5px solid #e2e8f0;
+  padding: 12px 18px;
+  border-bottom: 2px solid #e2e8f0;
 }
 
 .deck-table thead th {
-  font-weight: 850;
+  font-weight: 900;
   color: #0f172a;
   background: #f1f5f9;
-  border-bottom: 2px solid #cbd5e1;
+  border-bottom: 2.5px solid #cbd5e1;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  font-size: clamp(12px, 1.4cqi, 15px);
+  font-size: clamp(16px, 2.0cqi, 24px);
 }
 
 .deck-table tbody th {
-  font-weight: 750;
+  font-weight: 850;
   color: #0f172a;
   white-space: nowrap;
 }
 
 .deck-table td {
-  color: #334155;
-  font-weight: 550;
+  color: #1e293b;
+  font-weight: 600;
 }
 
 .deck-table tr:hover td {
@@ -1351,19 +1354,19 @@
 
 .deck-diagram .apple-node {
   min-width: 320px;
-  border: 2px solid #cbd5e1 !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06) !important;
+  border: 2.5px solid #cbd5e1 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
 }
 
 .deck-diagram .node-text-name {
-  font-size: 18px !important;
-  font-weight: 850 !important;
+  font-size: 22px !important;
+  font-weight: 900 !important;
   color: #0f172a !important;
 }
 
 .deck-diagram .node-text-svc {
-  font-size: 14px !important;
-  font-weight: 650 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
   color: #475569 !important;
 }
 
@@ -1377,13 +1380,13 @@
     padding: 8px 14px;
   }
   .deck-stage-wrap {
-    padding: 8px;
+    padding: 6px;
     align-items: flex-start;
   }
   .deck-slide {
     width: 100%;
     aspect-ratio: auto;
-    min-height: 75dvh;
+    min-height: 80dvh;
     overflow-y: auto;
   }
   .defense-columns-grid,
