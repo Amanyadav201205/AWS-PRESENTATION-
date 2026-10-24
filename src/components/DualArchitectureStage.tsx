@@ -271,7 +271,7 @@ export const DualArchitectureStage: React.FC<DualStageProps> = ({
 
         <div className="node-flow-row">
           {tierGroup.nodes.map((node) => {
-            const isFailed = (!isWellArch && isChaos && affectedNodeIds.includes(node.id)) || (!isWellArch && activeAttack === 'az-outage');
+            const isFailed = (!isWellArch && (isChaos || activeAttack !== 'none') && (affectedNodeIds.includes(node.id) || node.isSPOF || node.type !== 'client'));
             const isHealedWellArch = isWellArch && (isChaos || activeAttack !== 'none');
             const isOverloaded = !isWellArch && (isHighLoad || activeAttack === 'ddos');
             const isDynamicScaled = isWellArch && node.id.startsWith('dyn-scale');

@@ -16,11 +16,27 @@ interface PresentationDeckProps {
   onExportPptx: () => void;
   isExporting: boolean;
   renderDiagram: (domainIndex?: number) => ReactNode;
+  onTriggerChaos?: () => void;
+  isChaosActive?: boolean;
 }
 
-const renderSlide = (slide: DeckSlide, renderDiagram: (domainIndex?: number) => ReactNode): ReactNode => {
+const renderSlide = (
+  slide: DeckSlide,
+  renderDiagram: (domainIndex?: number) => ReactNode,
+  onTriggerChaos?: () => void,
+  isChaosActive?: boolean
+): ReactNode => {
   if (slide.kind === 'module-theory') return <DeckModuleTheorySlide slide={slide} />;
-  if (slide.kind === 'comparison') return <DeckComparisonSlide slide={slide} renderDiagram={renderDiagram} />;
+  if (slide.kind === 'comparison') {
+    return (
+      <DeckComparisonSlide
+        slide={slide}
+        renderDiagram={renderDiagram}
+        onTriggerChaos={onTriggerChaos}
+        isChaosActive={isChaosActive}
+      />
+    );
+  }
   return <DeckTextSlide slide={slide} />;
 };
 
@@ -31,7 +47,9 @@ export const PresentationDeck: React.FC<PresentationDeckProps> = ({
   onExit,
   onExportPptx,
   isExporting,
-  renderDiagram
+  renderDiagram,
+  onTriggerChaos,
+  isChaosActive
 }) => {
   const safeIndex = Math.min(Math.max(slideIndex, 0), DECK_SLIDE_COUNT - 1);
   const slide = deckSlides[safeIndex];
@@ -67,7 +85,7 @@ export const PresentationDeck: React.FC<PresentationDeckProps> = ({
 
       <main className="deck-stage-wrap">
         <section className="deck-slide" aria-live="polite" aria-label={`Slide ${safeIndex + 1} of ${DECK_SLIDE_COUNT}`}>
-          {renderSlide(slide, renderDiagram)}
+          {renderSlide(slide, renderDiagram, onTriggerChaos, isChaosActive)}
         </section>
       </main>
 

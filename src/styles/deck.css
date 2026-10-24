@@ -151,13 +151,16 @@
 }
 
 .deck-slide {
-  width: min(99%, calc((100dvh - 86px) * 16 / 9));
+  height: 100%;
+  max-width: 100%;
   aspect-ratio: 16 / 9;
+  width: auto;
+  box-sizing: border-box;
   background: #ffffff;
   border: 2px solid #94a3b8;
   border-radius: 16px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
-  padding: clamp(14px, 2.0cqi, 26px);
+  padding: clamp(12px, 1.8cqi, 22px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -238,6 +241,53 @@
   padding: 3px 10px;
   border-radius: 9999px;
   letter-spacing: 0.02em;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.gamma-disaster-pill.is-interactive {
+  cursor: pointer;
+}
+
+.gamma-disaster-pill.is-interactive:hover {
+  background: #fecaca;
+  border-color: #ef4444;
+  color: #991b1b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.2);
+}
+
+.disaster-trigger-action {
+  font-size: 10px;
+  font-weight: 900;
+  background: #dc2626;
+  color: #ffffff;
+  padding: 1px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+  margin-left: 4px;
+}
+
+.gamma-disaster-pill.is-active-outage {
+  background: #fef2f2;
+  border-color: #ef4444;
+  color: #991b1b;
+  box-shadow: 0 0 0 2px #ef4444, 0 0 16px rgba(239, 68, 68, 0.45);
+  animation: disaster-outage-pulse 1s infinite alternate ease-in-out;
+}
+
+@keyframes disaster-outage-pulse {
+  from { box-shadow: 0 0 0 2px #ef4444, 0 0 12px rgba(239, 68, 68, 0.35); }
+  to { box-shadow: 0 0 0 3px #dc2626, 0 0 22px rgba(220, 38, 38, 0.65); }
+}
+
+.disaster-trigger-action.is-active {
+  background: #b91c1c;
+  animation: blink 0.7s infinite ease-in-out;
+}
+
+.disaster-active-flame {
+  animation: spof-shake 0.25s infinite ease-in-out;
 }
 
 .gamma-view-toggle {
@@ -695,12 +745,26 @@
   width: 90%;
   padding: 8px 14px;
   border-radius: 12px;
-  border: 2px solid #cbd5e1 !important;
-  background: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+  border: 2px solid #cbd5e1;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+.gamma-diagram-stage .apple-node.node-failed {
+  border-color: #dc2626 !important;
+  border-width: 2.5px !important;
+  background: linear-gradient(135deg, rgba(254, 226, 226, 0.98) 0%, rgba(254, 202, 202, 0.92) 100%) !important;
+  box-shadow: 0 0 0 2.5px #dc2626, 0 0 25px rgba(220, 38, 38, 0.7), inset 0 0 14px rgba(220, 38, 38, 0.3) !important;
+  animation: spof-shake 0.18s infinite ease-in-out !important;
+}
+
+.gamma-diagram-stage .apple-node.node-resilient-pulse {
+  border-color: #16a34a !important;
+  border-width: 2px !important;
+  box-shadow: 0 0 0 2px #22c55e, 0 0 18px rgba(34, 197, 94, 0.45) !important;
 }
 
 .gamma-diagram-stage .apple-node .node-icon-wrapper {

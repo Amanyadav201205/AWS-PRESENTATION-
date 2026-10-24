@@ -6,10 +6,17 @@ import { Flame, ShieldCheck, AlertOctagon } from 'lucide-react';
 interface DeckComparisonSlideProps {
   slide: DeckSlide;
   renderDiagram: (domainIndex?: number) => ReactNode;
+  onTriggerChaos?: () => void;
+  isChaosActive?: boolean;
 }
 
 /** One screen per module: the live naive and Well-Architected simulation side by side, with compact metrics underneath. */
-export const DeckComparisonSlide: React.FC<DeckComparisonSlideProps> = ({ slide, renderDiagram }) => {
+export const DeckComparisonSlide: React.FC<DeckComparisonSlideProps> = ({
+  slide,
+  renderDiagram,
+  onTriggerChaos,
+  isChaosActive = false
+}) => {
   const metrics = slide.metrics ?? [];
 
   return (
@@ -20,10 +27,18 @@ export const DeckComparisonSlide: React.FC<DeckComparisonSlideProps> = ({ slide,
           <span className="gamma-pill gamma-pill-eyebrow">{slide.eyebrow}</span>
           {slide.category && <span className="gamma-pill gamma-pill-category">{slide.category}</span>}
           {slide.banner && (
-            <span className="gamma-disaster-pill">
-              <Flame size={18} color="#b91c1c" />
+            <button
+              type="button"
+              className={`gamma-disaster-pill is-interactive ${isChaosActive ? 'is-active-outage' : ''}`}
+              onClick={onTriggerChaos}
+              title={isChaosActive ? 'Click to resolve and reset outage' : 'Click to trigger this live disaster outage test'}
+            >
+              <Flame size={18} color={isChaosActive ? '#ef4444' : '#b91c1c'} className={isChaosActive ? 'disaster-active-flame' : ''} />
               <span>{slide.banner}</span>
-            </span>
+              <span className={`disaster-trigger-action ${isChaosActive ? 'is-active' : ''}`}>
+                {isChaosActive ? '🔥 OUTAGE ACTIVE · CLICK TO RESET' : '⚡ TRIGGER OUTAGE'}
+              </span>
+            </button>
           )}
         </div>
         <h2 className="gamma-comparison-title">{slide.title}</h2>

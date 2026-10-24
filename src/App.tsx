@@ -968,6 +968,8 @@ export function App() {
             onExit={() => setDisplayMode('studio')}
             onExportPptx={handleExportPptx}
             isExporting={isExportingPptx}
+            onTriggerChaos={chaosPhase === 'idle' ? handleTriggerChaos : handleResetChaos}
+            isChaosActive={chaosPhase !== 'idle'}
             renderDiagram={(domainIdx) => {
               const effectiveDomain = domainIdx !== undefined ? (allDomains[domainIdx] || activeDomain) : activeDomain;
               return (
