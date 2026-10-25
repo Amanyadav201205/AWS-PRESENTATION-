@@ -17,11 +17,11 @@ export const titleSlide: DeckSlide = {
   domainIndex: 0,
   lines: [
     {
-      say: "Welcome everyone! Anyone can launch a cloud server in five minutes following a YouTube tutorial. But keeping a real platform alive when fifty thousand eager customers hit your checkout simultaneously is true cloud engineering. We are your presenters, Devarsh and Aman, and today we're taking you through fifteen mission-critical modules of the AWS Well-Architected Framework.",
+      say: "Welcome everyone! Launching a cloud server takes five minutes, but keeping it alive under fifty thousand concurrent shoppers is true cloud engineering. We are your presenters, Devarsh and Aman, covering fifteen mission-critical modules of the AWS Well-Architected Framework.",
       cues: [ENTER_DECK, SHOW_BOTH, RECOVER]
     },
     {
-      say: "Look at the four scorecard targets on screen: across fifteen live domains and all six core pillars, our mission today is to elevate system availability from a fragile 98.5% up to a certified 99.99%, while cutting monthly cloud spend by 59%—from $4,450 down to $1,820. Every module pairs real-world customer requirements with live interactive traffic and disaster injection!"
+      say: "Our scorecard targets today: elevate system availability from 98.5% to 99.99%, while cutting monthly cloud spend by 59%—from $4,450 down to $1,820. Every module pairs real-world customer requirements with live interactive traffic and disaster injection!"
     }
   ]
 };
@@ -41,7 +41,7 @@ export const agendaSlide: DeckSlide = {
   domainIndex: 0,
   lines: [
     {
-      say: "Here is our twenty-minute flight plan on screen. Phase 1 covers the fundamental cloud laws: the six pillars, the myth of the single server, the mathematics of availability, and blast radius. Phase 2 dives straight into core infrastructure: storage immutability, Graviton compute, Aurora database clusters, and 3-tier isolated VPCs. Then Phase 3 tackles advanced enterprise modernization: zero-trust security, synthetic canaries, SQS decoupling, serverless Lambda, and multi-region disaster recovery!"
+      say: "Here is our twenty-minute flight plan: Phase 1 covers core cloud laws—pillars, SPOF, availability mathematics, and blast radius. Phase 2 dives into storage immutability, Graviton compute, Aurora databases, and 3-tier VPCs. Phase 3 tackles zero-trust security, observability, decoupling, serverless, and multi-region recovery."
     }
   ]
 };
@@ -65,7 +65,7 @@ export const theorySlides: DeckSlide[] = [
     domainIndex: 0,
     lines: [
       {
-        say: "Imagine a customer comes to you saying: 'Build me the fastest app in the world!' If you spin up a hundred massive servers with zero budget guardrails, you just failed the Cost Optimization pillar. As cloud engineers, we never make arbitrary guesses. Everything in AWS balances across these six pillars on screen: Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization, and Sustainability. Good architecture is knowing how to make deliberate trade-offs to satisfy the customer's exact business goals."
+        say: "If a customer asks for the world's fastest app and you launch a hundred giant servers without guardrails, you fail Cost Optimization. Good cloud architecture balances all six pillars on screen—Operational Excellence, Security, Reliability, Performance, Cost, and Sustainability—making deliberate trade-offs for business goals."
       }
     ]
   },
@@ -84,7 +84,7 @@ export const theorySlides: DeckSlide[] = [
     domainIndex: 0,
     lines: [
       {
-        say: "What is a Single Point of Failure? Think of old-school Christmas tree lights: if one tiny bulb blows out, the entire string goes completely dark. In software, look at Rule 1 on the left: if your customer journey requires five independent services in a serial chain, each with 99% uptime, your combined availability drops to 95.1%! Look at the table on the right: that means nearly 18 full days of customer downtime every year! Chains are where availability goes to die. Rule 3 is our remedy: decouple dependencies and engineer automated multi-AZ redundancy."
+        say: "A Single Point of Failure is like old Christmas lights: one dead bulb darkens the entire string. In software, chaining five 99% services together drops combined availability to 95.1%—nearly 18 days of downtime per year! Our golden remedy: decouple dependencies with automated multi-AZ redundancy."
       }
     ]
   },
@@ -103,7 +103,7 @@ export const theorySlides: DeckSlide[] = [
     domainIndex: 0,
     lines: [
       {
-        say: "When a customer asks for three nines—99.9% uptime—it sounds like an A+ grade. But look at the table on screen: 99.9% actually permits almost nine full hours of unplanned outage every year! If an e-commerce store loses $100,000 an hour, that's nearly a million dollars gone. Look at Rule 2: Four nines—99.99%—slashes annual downtime to under 53 minutes. And the secret to getting there isn't buying a more expensive machine; it's Rule 3: redundancy across independent Availability Zones. Two 99.9% zones fail together only once in a million attempts!"
+        say: "Three nines—99.9% uptime—sounds great, but permits almost nine hours of downtime annually, costing millions. Four nines—99.99%—slashes downtime to under 53 minutes. We don't buy bigger machines; we engineer redundancy across independent Availability Zones. Two 99.9% zones fail together only once in a million!"
       }
     ]
   },
@@ -122,7 +122,7 @@ export const theorySlides: DeckSlide[] = [
     domainIndex: 0,
     lines: [
       {
-        say: "Think of blast radius like watertight bulkheads on a ship: if one compartment floods, the bulkheads seal off the water so the ship stays afloat. In cloud systems, if one microservice catches fire, we contain the blast radius so customers can still use the rest of the app. When you interview a customer, you ask two golden questions: What is your RTO—Recovery Time Objective—how long can you tolerate being down? And what is your RPO—Recovery Point Objective—how much transactional data can you afford to lose? Our goal across all fifteen modules is to take RTO from hours down to seconds."
+        say: "Blast radius is like watertight bulkheads: if one compartment floods, the ship stays afloat. When designing for customers, we define two metrics: RTO—how long you can tolerate being down, and RPO—how much data you can afford to lose. We reduce RTO from hours to seconds."
       }
     ]
   },
@@ -141,7 +141,7 @@ export const theorySlides: DeckSlide[] = [
     domainIndex: 0,
     lines: [
       {
-        say: "Here is how to read every live simulation stage today. The left column shows the naive anti-pattern: single instances, flat networks, labeled with bright red SPOF tags. The right column shows the AWS Well-Architected build with load balancers, multi-AZ clusters, and green HA tags. Notice the animated packet streams: green dots mean healthy data flow. When we inject flash traffic and regional disasters, watch the left cards violently shake and collapse into red failure, while the AWS cluster heals automatically and maintains uninterrupted customer flow!"
+        say: "On every simulation stage: the left column shows the fragile anti-pattern with red SPOF tags. The right column shows the AWS Well-Architected build with load balancers and green HA tags. When we inject disasters, watch the left side collapse while AWS auto-heals seamlessly!"
       }
     ]
   }
@@ -162,10 +162,10 @@ export const closingSlide: DeckSlide = {
   domainIndex: 14,
   lines: [
     {
-      say: "Looking at our final executive scorecard on screen across all fifteen domains: system availability jumps from 98.5% up to 99.99%. Monthly cloud spend drops from $4,450 down to $1,820—delivering a massive 59% FinOps savings. Recovery time plummets from 4-8 hours down to under thirty seconds, and three critical high-risk enterprise issues drop to zero!"
+      say: "Our final executive scorecard across all fifteen domains: availability jumps from 98.5% to 99.99%. Monthly cloud spend drops from $4,450 down to $1,820—saving 59% in cloud costs. Recovery time plummets from hours to under thirty seconds, eliminating all high-risk vulnerabilities."
     },
     {
-      say: "That is the ultimate value we deliver to customers through the AWS Well-Architected Framework: start from the failure your business cannot afford to accept, name the pillar it touches, and build the smallest, most resilient design that survives it. Thank you so much for your time, and Aman and I are excited to open the floor for your questions!"
+      say: "That is the true value of the AWS Well-Architected Framework: design backward from failure, honor the six pillars, and build self-healing systems. Thank you so much, and Devarsh and Aman are excited to open the floor for your questions!"
     }
   ]
 };
