@@ -44,7 +44,7 @@ export const DeckModuleTheorySlide: React.FC<DeckModuleTheorySlideProps> = ({ sl
         {slide.banner && (
           <div className="gamma-principle-banner">
             <span className="gamma-banner-tag">CORE PRINCIPLE</span>
-            <span className="gamma-principle-text">{slide.banner.replace(/^Core Principle:\s*/i, '')}</span>
+            <span className="gamma-principle-text">{slide.banner.replace(/^Core Principle[·:\s]*/i, '')}</span>
           </div>
         )}
       </div>
@@ -60,7 +60,7 @@ export const DeckModuleTheorySlide: React.FC<DeckModuleTheorySlideProps> = ({ sl
         <div className="defense-architecture-layout">
           {/* Real-World Context Bar */}
           <div className="defense-context-bar">
-            <span className="defense-context-tag">PRODUCTION CHALLENGE:</span>
+            <span className="defense-context-tag">PRODUCTION CHALLENGE</span>
             <span className="defense-context-text">{scenarioText}</span>
           </div>
 
@@ -109,7 +109,7 @@ export const DeckModuleTheorySlide: React.FC<DeckModuleTheorySlideProps> = ({ sl
       {slide.metrics && slide.metrics.length > 0 && (
         <div className="gamma-metrics-strip">
           <div className="gamma-metrics-header-label">
-            <span>ARCHITECTURAL DELTA:</span>
+            <span>ARCHITECTURAL DELTA</span>
           </div>
           <div className="gamma-metrics-cards">
             {slide.metrics.map((metric) => (

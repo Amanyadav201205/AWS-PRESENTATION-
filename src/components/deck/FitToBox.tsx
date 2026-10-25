@@ -1,7 +1,7 @@
 import { ReactNode, useLayoutEffect, useRef, useState } from 'react';
 
 /** Layout width the simulation is designed at. It is scaled up or down from this width to fill the slide. */
-const DESIGN_WIDTH = 1100;
+const DESIGN_WIDTH = 980;
 const MAX_SCALE = 2.2;
 
 interface FitToBoxProps {

@@ -115,36 +115,37 @@ export const PresentationDeck: React.FC<PresentationDeckProps> = ({
 
         {/* Live Spoken Prompter Snippet */}
         {currentBeat && (
-          <div className="deck-prompter-preview" style={{ display: 'flex', alignItems: 'center', gap: 8, maxWidth: 500, overflow: 'hidden' }}>
+          <div className="deck-prompter-preview" style={{ display: 'flex', alignItems: 'center', gap: 10, maxWidth: 620, overflow: 'hidden' }}>
             <span
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: 4,
-                fontSize: 11,
-                fontWeight: 700,
+                gap: 5,
+                fontSize: 12,
+                fontWeight: 800,
                 textTransform: 'uppercase',
-                padding: '2px 8px',
+                padding: '3px 10px',
                 borderRadius: 9999,
                 background: isDevarsh ? 'rgba(0, 102, 204, 0.12)' : 'rgba(255, 153, 0, 0.15)',
                 color: isDevarsh ? '#0066cc' : '#8a4b00',
                 whiteSpace: 'nowrap'
               }}
             >
-              <Mic size={10} />
+              <Mic size={12} />
               {speakerName}
             </span>
             <span
               style={{
-                fontSize: 12,
-                color: 'var(--text-secondary)',
+                fontSize: 14,
+                fontWeight: 600,
+                color: '#0f172a',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis'
               }}
               title={currentBeat.say}
             >
-              "{currentBeat.say}"
+              {currentBeat.say}
             </span>
           </div>
         )}

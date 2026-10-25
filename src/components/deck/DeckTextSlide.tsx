@@ -255,7 +255,7 @@ export const DeckTextSlide: React.FC<DeckTextSlideProps> = ({ slide }) => {
         </div>
 
         <div className="gamma-closing-takeaway">
-          <span className="gamma-takeaway-bold">The Golden Rule:</span> Start from the failure your business cannot afford to accept, name the pillar it touches, and build the smallest, most resilient design that survives it.
+          <span className="gamma-takeaway-bold">The Golden Rule —</span> Start from the failure your business cannot afford to accept, name the pillar it touches, and build the smallest, most resilient design that survives it.
         </div>
       </div>
     );
@@ -343,10 +343,10 @@ export const DeckTextSlide: React.FC<DeckTextSlideProps> = ({ slide }) => {
           <div className="theory-principles-list">
             {slide.points.map((point, idx) => {
               const ruleNum = `RULE 0${idx + 1}`;
-              const [lead, ...rest] = point.split(':');
-              const hasColon = rest.length > 0;
-              const ruleTitle = hasColon ? lead.trim() : `Principle ${idx + 1}`;
-              const ruleDesc = hasColon ? rest.join(':').trim() : point;
+              const separator = point.includes(' — ') ? ' — ' : point.includes(' · ') ? ' · ' : point.includes(':') ? ':' : null;
+              const [lead, ...rest] = separator ? point.split(separator) : [point];
+              const ruleTitle = separator ? lead.trim() : `Principle ${idx + 1}`;
+              const ruleDesc = separator ? rest.join(' — ').trim() : point;
 
               return (
                 <div key={idx} className={`theory-principle-row row-color-${idx % 3}`}>

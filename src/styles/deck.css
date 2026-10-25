@@ -325,7 +325,7 @@
 }
 
 .gamma-slide-title {
-  font-size: clamp(22px, 2.8cqi, 34px);
+  font-size: clamp(26px, 3.2cqi, 38px);
   font-weight: 850;
   letter-spacing: -0.02em;
   line-height: 1.15;
@@ -343,17 +343,17 @@
   border-bottom: 1px solid #bae6fd;
   padding: 6px 14px;
   border-radius: 0 10px 10px 0;
-  font-size: clamp(13px, 1.5cqi, 16px);
+  font-size: clamp(14px, 1.7cqi, 18px);
   font-weight: 700;
   color: #0c4a6e;
 }
 
 .gamma-banner-tag {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 850;
   background: #0284c7;
   color: #ffffff;
-  padding: 2px 7px;
+  padding: 2px 8px;
   border-radius: 5px;
   letter-spacing: 0.05em;
   white-space: nowrap;
@@ -395,18 +395,18 @@
 }
 
 .defense-context-tag {
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 850;
   background: #0284c7;
   color: #ffffff;
-  padding: 3px 8px;
+  padding: 3px 9px;
   border-radius: 6px;
   letter-spacing: 0.05em;
   white-space: nowrap;
 }
 
 .defense-context-text {
-  font-size: clamp(13px, 1.5cqi, 16px);
+  font-size: clamp(15px, 1.8cqi, 19px);
   font-weight: 600;
   color: #0f172a;
   line-height: 1.35;
@@ -458,7 +458,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 850;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -473,23 +473,23 @@
 }
 
 .defense-tag-danger {
-  font-size: 11px;
-  font-weight: 750;
+  font-size: 12px;
+  font-weight: 800;
   background: #fee2e2;
   color: #b91c1c;
   border: 1px solid #f87171;
-  padding: 2px 8px;
+  padding: 2px 9px;
   border-radius: 9999px;
   letter-spacing: 0.02em;
 }
 
 .defense-tag-success {
-  font-size: 11px;
-  font-weight: 750;
+  font-size: 12px;
+  font-weight: 800;
   background: #dcfce7;
   color: #15803d;
   border: 1px solid #4ade80;
-  padding: 2px 8px;
+  padding: 2px 9px;
   border-radius: 9999px;
   letter-spacing: 0.02em;
 }
@@ -503,7 +503,7 @@
 }
 
 .defense-main-text {
-  font-size: clamp(13px, 1.5cqi, 16px);
+  font-size: clamp(15px, 1.8cqi, 19px);
   font-weight: 600;
   line-height: 1.45;
   color: #0f172a;
@@ -533,7 +533,7 @@
 }
 
 .defense-callout-title {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 850;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -548,7 +548,7 @@
 }
 
 .defense-callout-desc {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 550;
   line-height: 1.35;
   color: #334155;
@@ -572,7 +572,7 @@
 }
 
 .gamma-metrics-header-label {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 850;
   color: #0f172a;
   text-transform: uppercase;
@@ -601,7 +601,7 @@
 }
 
 .gamma-metric-box-title {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
   color: #475569;
@@ -615,7 +615,7 @@
   gap: 6px;
   font-family: var(--font-mono);
   font-weight: 850;
-  font-size: 17px;
+  font-size: 19px;
   line-height: 1.1;
   white-space: nowrap;
   overflow: hidden;
@@ -630,7 +630,7 @@
 
 .gamma-val-arrow {
   color: #64748b;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .gamma-val-waf {
@@ -639,7 +639,7 @@
 }
 
 .gamma-val-benefit {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 750;
   color: #0369a1;
   white-space: nowrap;
@@ -679,7 +679,7 @@
 }
 
 .gamma-comparison-title {
-  font-size: clamp(20px, 2.4cqi, 28px);
+  font-size: clamp(24px, 2.8cqi, 32px);
   font-weight: 850;
   letter-spacing: -0.02em;
   color: #0f172a;
@@ -711,11 +711,11 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 850;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 3px 10px;
+  padding: 4px 12px;
   border-radius: 6px;
 }
 
@@ -743,14 +743,14 @@
   min-width: 320px;
   max-width: 440px;
   width: 90%;
-  padding: 8px 14px;
+  padding: 10px 16px;
   border-radius: 12px;
   border: 2px solid #cbd5e1;
   background: #ffffff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .gamma-diagram-stage .apple-node.node-failed {
@@ -768,8 +768,8 @@
 }
 
 .gamma-diagram-stage .apple-node .node-icon-wrapper {
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -785,7 +785,7 @@
 }
 
 .gamma-diagram-stage .apple-node .node-text-name {
-  font-size: 15px !important;
+  font-size: 18px !important;
   font-weight: 850 !important;
   color: #0f172a !important;
   line-height: 1.25 !important;
@@ -795,7 +795,7 @@
 }
 
 .gamma-diagram-stage .apple-node .node-text-svc {
-  font-size: 12px !important;
+  font-size: 14px !important;
   font-weight: 650 !important;
   color: #475569 !important;
   line-height: 1.2 !important;
@@ -805,9 +805,9 @@
 }
 
 .gamma-diagram-stage .apple-node .node-az-pill {
-  font-size: 11px !important;
+  font-size: 12px !important;
   font-weight: 800 !important;
-  padding: 2px 7px !important;
+  padding: 3px 8px !important;
   border-radius: 6px !important;
   background: #f1f5f9 !important;
   color: #0f172a !important;
@@ -816,9 +816,9 @@
 }
 
 .gamma-diagram-stage .apple-node .node-spof-badge {
-  font-size: 11px !important;
+  font-size: 12px !important;
   font-weight: 850 !important;
-  padding: 2px 7px !important;
+  padding: 3px 8px !important;
   border-radius: 6px !important;
   background: #fee2e2 !important;
   color: #b91c1c !important;
@@ -827,9 +827,9 @@
 }
 
 .gamma-diagram-stage .apple-node .node-ha-badge {
-  font-size: 11px !important;
+  font-size: 12px !important;
   font-weight: 850 !important;
-  padding: 2px 7px !important;
+  padding: 3px 8px !important;
   border-radius: 6px !important;
   background: #dcfce7 !important;
   color: #15803d !important;
@@ -858,7 +858,7 @@
 }
 
 .gamma-comp-metric-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
   color: #475569;
@@ -870,7 +870,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 850;
   font-family: var(--font-mono);
   white-space: nowrap;
@@ -884,7 +884,7 @@
 
 .gamma-comp-arrow {
   color: #64748b;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .gamma-comp-waf {
@@ -893,7 +893,7 @@
 }
 
 .gamma-comp-benefit {
-  font-size: 11px;
+  font-size: 12px;
   color: #0369a1;
   font-weight: 750;
   white-space: nowrap;
@@ -1312,13 +1312,13 @@
 }
 
 .theory-rule-title {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 850;
   color: #0f172a;
 }
 
 .theory-rule-text {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 550;
   color: #334155;
   line-height: 1.35;

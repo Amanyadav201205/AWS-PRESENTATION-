@@ -231,7 +231,7 @@ export const TalkTrackPanel: React.FC<TalkTrackPanelProps> = ({ isLinked, stageL
         <ol style={{ margin: '8px 0 0', padding: '0 0 0 22px', display: 'flex', flexDirection: 'column', gap: 10 }}>
           {talkTrackBeats.map((beat, index) => (
             <li key={beat.id} aria-current={index === stageLineIndex ? 'step' : undefined} style={{ fontSize: 14, lineHeight: 1.45, color: index === stageLineIndex ? COLORS.text : COLORS.textSecondary, fontWeight: index === stageLineIndex ? 650 : 400 }}>
-              <span style={{ color: SPEAKER_COLORS[beat.speaker], fontWeight: 700 }}>{SPEAKER_NAMES[beat.speaker]}: </span>
+              <span style={{ color: SPEAKER_COLORS[beat.speaker], fontWeight: 700 }}>{SPEAKER_NAMES[beat.speaker]} · </span>
               {beat.say}
             </li>
           ))}
