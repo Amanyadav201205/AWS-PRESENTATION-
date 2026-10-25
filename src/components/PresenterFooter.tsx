@@ -5,9 +5,9 @@ export const PresenterFooter: React.FC = () => {
     <footer className="executive-footer-clean" role="contentinfo" aria-label="Architecture Capstone Authors">
       <div className="footer-clean-authors-row">
         <span className="footer-byline">
-          BY{' '}
+          <span className="footer-by-label">BY</span>
           <span className="highlight-author author-devarsh">Devarsh Patel</span>
-          {' '}&amp;{' '}
+          <span className="footer-ampersand">&amp;</span>
           <span className="highlight-author author-aman">Aman Kumar Yadav</span>
         </span>
       </div>

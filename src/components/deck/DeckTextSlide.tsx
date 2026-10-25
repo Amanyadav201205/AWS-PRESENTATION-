@@ -64,7 +64,7 @@ export const DeckTextSlide: React.FC<DeckTextSlideProps> = ({ slide }) => {
           <div className="gamma-presenter">
             <div className="gamma-presenter-avatar avatar-aman">AK</div>
             <div>
-              <div className="gamma-presenter-name">Aman Kumar</div>
+              <div className="gamma-presenter-name">Aman Kumar Yadav</div>
               <div className="gamma-presenter-role">Presenter</div>
             </div>
           </div>
