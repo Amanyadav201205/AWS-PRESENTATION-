@@ -42,3 +42,8 @@ skills-main/
 skills-main
 skills/
 *.zip
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
